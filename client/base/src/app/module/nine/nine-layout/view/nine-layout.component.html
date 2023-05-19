@@ -1,0 +1,57 @@
+<nz-layout>
+  <nz-sider nzCollapsible [(nzCollapsed)]="isCollapsed" [nzTrigger]="null" [style]="isCollapsed ? flexWidth80 : flexWidth230">
+    <div class="logo"></div>
+    <ul nz-menu nzTheme="dark" nzMode="inline">
+      <ng-container *ngFor="let menu of menus">
+
+        <ng-container *ngIf="menu.items">
+          <li nz-submenu nzTitle="{{menu.label}}" nzIcon="{{menu.icon}}">
+            <ul *ngIf="menu.items">
+              <ng-container *ngFor="let submenu of menu.items">
+                <li routerLink="{{submenu.routerLink}}" nz-menu-item>{{submenu.label}}</li>
+              </ng-container>
+            </ul>
+          </li>
+        </ng-container>
+
+        <ng-container *ngIf="!menu.items">
+          <li routerLink="{{menu.routerLink}}" nz-menu-item>
+            <span nz-icon nzType="{{menu.icon}}"></span>
+            <span>{{menu.label}}</span>
+          </li>
+        </ng-container>
+
+      </ng-container>
+      <!-- <li nz-submenu nzTitle="Team" nzIcon="team">
+        <ul>
+          <li nz-menu-item>Team 1</li>
+          <li nz-menu-item>Team 2</li>
+        </ul>
+      </li>
+      <li nz-menu-item>
+        <span nz-icon nzType="file"></span>
+        <span>File</span>
+      </li> -->
+    </ul>
+  </nz-sider>
+  <nz-layout>
+    <nz-header>
+      <span
+        class="trigger"
+        nz-icon
+        [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"
+        (click)="isCollapsed = !isCollapsed"
+      ></span>
+    </nz-header>
+    <nz-content>
+      <nz-breadcrumb>
+        <nz-breadcrumb-item>User</nz-breadcrumb-item>
+        <nz-breadcrumb-item>Bill</nz-breadcrumb-item>
+      </nz-breadcrumb>
+      <div class="inner-content">
+        <router-outlet></router-outlet>
+      </div>
+    </nz-content>
+    <nz-footer>Ant Design ©2020 Implement By Angular</nz-footer>
+  </nz-layout>
+</nz-layout>

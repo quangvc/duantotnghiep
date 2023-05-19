@@ -1,0 +1,26 @@
+{
+  "action": "Hành động",
+
+  "button": {
+    "add_new": "Thêm mới",
+    "update": "Cập nhật",
+    "edit": "Chỉnh sửa",
+    "delete": "Xóa"
+  },
+  "auth": {
+    "login": "Đăng nhập",
+    "register": "Đăng ký",
+    "name": "Họ tên",
+    "username": "Tên người dùng",
+    "password": "Mật khẩu",
+    "email": "Địa chỉ Email",
+    "forgot_pasword": "Quên mật khẩu",
+    "or_register_now": "Hoặc Đăng ký ngay !!"
+  },
+  "user": {
+    "name": "Quản lý người dùng",
+    "role": "Phân quyền",
+    "user_list": "Danh sách người dùng",
+    "role_list": "Danh sách quyền"
+  }
+}

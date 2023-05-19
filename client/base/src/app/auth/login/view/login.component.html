@@ -1,0 +1,28 @@
+<div class="card mid">
+  <h3>{{'auth.login' | translate}}</h3><br>
+  <form nz-form [formGroup]="formLogin" class="login-form" (ngSubmit)="save()">
+    <nz-form-item>
+      <nz-form-control nzErrorTip="Please input your username!">
+        <nz-input-group nzPrefixIcon="user">
+          <input type="text" nz-input formControlName="username" placeholder="{{'auth.username' | translate}}" />
+        </nz-input-group>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-control nzErrorTip="Please input your Password!">
+        <nz-input-group nzPrefixIcon="lock">
+          <input type="password" nz-input formControlName="password" placeholder="{{'auth.password' | translate}}" />
+        </nz-input-group>
+      </nz-form-control>
+    </nz-form-item>
+    <div nz-row class="login-form-margin">
+      <div nz-col [nzSpan]="12">
+      </div>
+      <div nz-col [nzSpan]="12">
+        <a class="login-form-forgot">{{'auth.forgot_pasword' | translate}}</a>
+      </div>
+    </div>
+    <button nz-button class="login-form-button login-form-margin" [nzType]="'primary'">{{'auth.login' | translate}}</button>
+    <a>{{'auth.or_register_now' | translate}}</a>
+  </form>
+</div>

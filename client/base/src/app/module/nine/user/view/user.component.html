@@ -1,0 +1,49 @@
+<div class="mb-3 d-flex justify-content-between">
+  <button nz-button nzType="primary" nzSize="large" (click)="showModalAddUser()" >{{'button.add_new' | translate}}</button>
+
+  <form class="d-flex">
+    <nz-input-group [nzSuffix]="suffixIconSearch" nzSize="large">
+      <input type="text" nz-input placeholder="input search text" />
+    </nz-input-group>
+    <ng-template #suffixIconSearch>
+      <span nz-icon nzType="search"></span>
+    </ng-template>
+  </form>
+
+</div>
+<nz-table #basicTable [nzData]="users">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Age</th>
+      <th>Address</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let data of basicTable.data">
+      <td>{{ data.name }}</td>
+      <td>{{ data.age }}</td>
+      <td>{{ data.address }}</td>
+      <td>
+        <q-menu
+          [model]="menus"
+          (buttonItem)="dropdownItemsButton(data)">
+        </q-menu>
+      </td>
+    </tr>
+  </tbody>
+</nz-table>
+
+
+
+<!--  -->
+<ng-container *ngIf="isVisibleUser">
+  <app-add-user
+    [user]="user"
+    [isVisibleUser]="isVisibleUser"
+    (submitUser)="submitUser()"
+    (closeUser)="closeUser()">
+  </app-add-user>
+</ng-container>
+

@@ -1,0 +1,40 @@
+<div class="card mid">
+      <h3>{{'auth.register' | translate}}</h3><br>
+      <form nz-form [formGroup]="formRegister" class="login-form" (ngSubmit)="save()">
+
+        <nz-form-item>
+          <nz-form-control nzErrorTip="{{'auth.name' | translate}}!">
+            <nz-input-group nzPrefixIcon="user">
+              <input type="text" nz-input formControlName="name" placeholder="{{'auth.name' | translate}}" />
+            </nz-input-group>
+          </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+          <nz-form-control nzErrorTip="{{'auth.username' | translate}}!">
+            <nz-input-group nzPrefixIcon="user">
+              <input type="text" nz-input formControlName="username" placeholder="{{'auth.username' | translate}}" />
+            </nz-input-group>
+          </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+          <nz-form-control nzErrorTip="{{'auth.password' | translate}}!">
+            <nz-input-group nzPrefixIcon="lock">
+              <input type="password" nz-input formControlName="password" placeholder="{{'auth.password' | translate}}" />
+            </nz-input-group>
+          </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+          <nz-form-control nzErrorTip="{{'auth.email' | translate}}!">
+            <nz-input-group nzPrefixIcon="lock">
+              <input type="email" nz-input formControlName="email" placeholder="{{'auth.email' | translate}}" />
+            </nz-input-group>
+          </nz-form-control>
+        </nz-form-item>
+
+        <button nz-button class="login-form-button login-form-margin" [nzType]="'primary'">{{'auth.register' | translate}}</button>
+      </form>
+      <button nz-button class="login-form-button login-form-margin" [nzType]="'primary'">{{'auth.login' | translate}} ngay!</button>
+  </div>

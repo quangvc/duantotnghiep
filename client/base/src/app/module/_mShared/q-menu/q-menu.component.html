@@ -1,0 +1,20 @@
+<a nz-dropdown nzTrigger="click" [nzDropdownMenu]="menu">
+  <button nz-button nzType="primary" [nzSize]="size" nzShape="circle" (click)="dropdownItemsButton(data)">
+    <span style="position: absolute;top: 10px; left: 11px;" nz-icon nzType="setting"></span>
+  </button>
+</a>
+<nz-dropdown-menu #menu="nzDropdownMenu">
+  <ul nz-menu style="top: 12px; width: 160px;">
+    <ng-container *ngFor="let menu of model">
+
+      <ng-container *ngIf="menu.separator">
+        <li nz-menu-divider *ngIf="!menu.visible || menu.visible == null"></li>
+      </ng-container>
+
+      <ng-container *ngIf="!menu.separator">
+        <li nz-menu-item *ngIf="menu.visible || menu.visible == null" (click)="onItemClick($event,menu)">{{menu.label}}</li>
+      </ng-container>
+
+    </ng-container>
+  </ul>
+</nz-dropdown-menu>
