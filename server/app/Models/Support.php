@@ -11,7 +11,7 @@ class Support extends Model
     protected $table = 'tbl_support';
 
     protected $fillable = [
-        'name', 'email', 'phone', 'content', 'status', 'created_at', 'updated_at'
+        'name', 'email', 'phone', 'content', 'status'
 
     ];
 }

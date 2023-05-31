@@ -7,6 +7,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class User extends Authenticatable
 {
@@ -19,7 +22,7 @@ class User extends Authenticatable
      */
     public $table = 'tbl_users';
     protected $fillable = [
-        'name','email','password','gender','phone_number','avatar','role','hotel_id','remember_token','created_at','updated_at'
+        'name','email','password','gender','phone_number','avatar','active', 'role', 'hotel_id'
     ];
 
     /**
@@ -40,4 +43,19 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function blogs(): HasMany
+    {
+        return $this->hasMany(Blog::class);
+    }
+
+    public function bookings(): HasMany
+    {
+        return $this->hasMany(Booking::class);
+    }
+
+    public function hotel(): BelongsTo
+    {
+        return $this->belongsTo(Hotel::class);
+    }
 }

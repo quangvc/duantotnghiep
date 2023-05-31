@@ -65,6 +65,7 @@ class AuthController extends Controller
                 'email' => $fields['email'],
                 'phone_number' => $fields['phone_number'],
                 'password' => bcrypt($fields['password']),
+                'gender' => $request->gender
             ]);
             $token = $user->createToken('authToken')->plainTextToken;
 
@@ -92,51 +93,7 @@ class AuthController extends Controller
 
 
 
-    public function authenticate1(Request $request): RedirectResponse
-    {
-        $credentials = $request->validate([
-            'email' => ['required', 'email'],
-            'password' => ['required'],
-        ]);
-        $remember = $request->input('remember');
-        if (Auth::attempt(['email' => $credentials['email'], 'password' => $credentials['password']], $remember)) {
-            $request->session()->regenerate();
- 
-            return redirect()
-            ->route('welcome')->with('success', 'Sign In Successfully');
-            // ->intended('welcome')->with('success', 'Sign In Successfully');
-        }
-        
-        return back()->withErrors([
-            'email' => 'Thông tin đăng nhập không đúng',
-        ])->onlyInput('email');
-    }
-
-    public function logout1(Request $request): RedirectResponse
-    {
-        Auth::logout();
     
-        $request->session()->invalidate();
-    
-        $request->session()->regenerateToken();
-    
-        return redirect('/');
-    }
-
-    public function signup1(Request $request) 
-    {
-        $user = new User();
-        $user->name = $request->name;
-        $user->email = $request->email;
-        $user->password = bcrypt($request->password);
-        $user->save();
-        return redirect()->route('welcome')->with('success', 'Sign Up Successfully');
-    }
-
-    public function forgotPass1(Request $request) 
-    {
-        return view('auth.forgot-password');
-    }
 
     public function sentResetLink1 (Request $request) {
         $request->validate(['email' => 'required|email']);
