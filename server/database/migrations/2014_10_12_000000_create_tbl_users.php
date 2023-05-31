@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('tbl_users', function (Blueprint $table) {
             $table->id();
             $table->string('name', 255);
+
             $table->string('email')->unique()->nullable();
             $table->string('password', 255);
             $table->boolean('gender')->nullable();
