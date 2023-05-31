@@ -17,6 +17,7 @@ class HotelController extends Controller
         if ($request) {
             return MessageStatusAPI::notFound();
         }
+
         return $request;
     }
 }
