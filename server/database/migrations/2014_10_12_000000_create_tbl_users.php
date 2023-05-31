@@ -16,12 +16,13 @@ return new class extends Migration
         Schema::create('tbl_users', function (Blueprint $table) {
             $table->id();
             $table->string('name', 255);
-            $table->string('email')->unique();
+
+            $table->string('email')->unique()->nullable();
             $table->string('password', 255);
-            $table->boolean('gender');
-            $table->string('phone_number')->unique();
+            $table->boolean('gender')->nullable();
+            $table->string('phone_number')->unique()->nullable();
             $table->string('avatar', 255);
-            $table->tinyInteger('role');
+            $table->tinyInteger('role')->default(1);
             $table->integer('hotel_id');
             $table->rememberToken();
             $table->timestamps();

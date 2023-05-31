@@ -13,7 +13,86 @@ use Illuminate\Support\Str;
 
 class AuthController extends Controller
 {
-    public function authenticate(Request $request): RedirectResponse
+    public function login(Request $request)
+    {
+        try {
+            $credentials = $request->validate([
+                'email' => ['required', 'email'],
+                'password' => ['required'],
+            ]);
+
+            $remember = $request->remember;
+        if (Auth::attempt(['email' => $credentials['email'], 'password' => $credentials['password'], 'active' => 1], $remember)) {
+
+                $user = User::where('email', $request->email)->first();
+                auth()->user()->tokens()->delete();
+                $tokenResult = $user->createToken('authToken')->plainTextToken;
+
+                return response()->json([
+                    'user' => $user,
+                    'token' => $tokenResult,
+                ]);
+            } else {
+                throw new \Exception('Thông tin đăng nhập không đúng');
+            }
+        
+        } catch (\Exception $error) {            
+            return response()->json ([
+                'message' => 'Thông tin đăng nhập không đúng',
+                'error' => $error,
+            ], 500);
+        }
+    }
+
+    public function logout(Request $request)
+    {   
+        auth()->user()->tokens()->delete();
+
+        return [
+            'message' => 'Logged out'
+        ];
+    }
+
+    public function register(Request $request) {
+            $fields = $request->validate([
+                'name' => 'required|string|min:6|max:50',
+                'email' => 'required_without:phone|email|unique:tbl_users,email',
+                'phone_number' => 'required|unique:tbl_users,phone_number|numeric|digits_between:9,12',
+                'password' => 'required|confirmed',
+            ]);
+            $user = User::create([
+                'name' => $fields['name'],
+                'email' => $fields['email'],
+                'phone_number' => $fields['phone_number'],
+                'password' => bcrypt($fields['password']),
+            ]);
+            $token = $user->createToken('authToken')->plainTextToken;
+
+        return response([
+            'user' => $user,
+            'token' => $token,
+        ], 201);
+
+    
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    public function authenticate1(Request $request): RedirectResponse
     {
         $credentials = $request->validate([
             'email' => ['required', 'email'],
@@ -33,7 +112,7 @@ class AuthController extends Controller
         ])->onlyInput('email');
     }
 
-    public function logout(Request $request): RedirectResponse
+    public function logout1(Request $request): RedirectResponse
     {
         Auth::logout();
     
@@ -44,7 +123,7 @@ class AuthController extends Controller
         return redirect('/');
     }
 
-    public function signup(Request $request) 
+    public function signup1(Request $request) 
     {
         $user = new User();
         $user->name = $request->name;
@@ -54,12 +133,12 @@ class AuthController extends Controller
         return redirect()->route('welcome')->with('success', 'Sign Up Successfully');
     }
 
-    public function forgotPass(Request $request) 
+    public function forgotPass1(Request $request) 
     {
         return view('auth.forgot-password');
     }
 
-    public function sentResetLink (Request $request) {
+    public function sentResetLink1 (Request $request) {
         $request->validate(['email' => 'required|email']);
         
         $status = Password::sendResetLink(
@@ -73,7 +152,7 @@ class AuthController extends Controller
 
 
 
-    public function updatepass (Request $request) {
+    public function updatepass1 (Request $request) {
         $request->validate([
             'token' => 'required',
             'email' => 'required|email',
