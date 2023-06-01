@@ -27,7 +27,7 @@ Route::get('/hotels', [HotelController::class, 'index']);
 Route::get('/login', function () {
     return view('auth.login');
 })->name('login');
-Route::post('/signin', [AuthController::class, 'authenticate'])->name('signin');
+Route::post('/signin', [AuthController::class, 'login'])->name('signin');
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::get('/signup', function () {
