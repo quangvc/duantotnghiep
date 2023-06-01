@@ -24,6 +24,8 @@ import { NzCardModule } from 'ng-zorro-antd/card';
 import { LoginComponent } from './auth/login/view/login.component';
 import { RegisterComponent } from './auth/register/view/register.component';
 import { SharedModule } from './_shared/shared/shared.module';
+import { MainComponent } from './main/main/main.component';
+import { MainModule } from './main/main.module';
 
 registerLocaleData(en);
 
