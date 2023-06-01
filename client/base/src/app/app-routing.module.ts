@@ -13,6 +13,7 @@ import { ServiceComponent } from './main/service/service.component';
 import { TeamComponent } from './main/team/team.component';
 
 const routes: Routes = [
+  { path: '', redirectTo: '/main/home', pathMatch: 'full' },
   { path: 'main' , component: MainComponent,
   children: [
                 { path: "home", component: HomeComponent },
