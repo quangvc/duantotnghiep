@@ -21,7 +21,7 @@ Route::get('/', function () {
     return view('welcome');
 })->name('welcome');
 
-Route::get('/hotels', [HotelController::class, 'index']);
+
 
 
 Route::get('/login', function () {
