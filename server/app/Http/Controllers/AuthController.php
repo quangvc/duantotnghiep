@@ -10,37 +10,29 @@ use Illuminate\Support\Facades\Password;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use Illuminate\Validation\ValidationException;
+use Spatie\Permission\Models\Role;
 
 class AuthController extends Controller
 {
     public function login(Request $request)
     {
-        try {
-            $credentials = $request->validate([
-                'email' => ['required', 'email'],
-                'password' => ['required'],
+
+        $credentials = $request->validate([
+            'email' => ['required', 'email'],
+            'password' => ['required'],
+        ]);
+
+        $user = User::where('email', $request->email)->first();
+
+        if (!$user || !Hash::check($request->password, $user->password)) {
+            throw ValidationException::withMessages([
+                'email' => ['The provided credentials are incorrect.'],
             ]);
-
-            $remember = $request->remember;
-            if (Auth::attempt(['email' => $credentials['email'], 'password' => $credentials['password'], 'active' => 1], $remember)) {
-
-                $user = User::where('email', $request->email)->first();
-                auth()->user()->tokens()->delete();
-                $tokenResult = $user->createToken('authToken')->plainTextToken;
-
-                return response()->json([
-                    'user' => $user,
-                    'token' => $tokenResult,
-                ]);
-            } else {
-                throw new \Exception('Thông tin đăng nhập không đúng');
-            }
-        } catch (\Exception $error) {
-            return response()->json([
-                'message' => 'Thông tin đăng nhập không đúng',
-                'error' => $error,
-            ], 500);
         }
+
+        $tokenResult = $user->createToken('authToken')->plainTextToken;
+        return $tokenResult;
     }
 
     public function logout(Request $request)
@@ -67,6 +59,8 @@ class AuthController extends Controller
             'password' => bcrypt($fields['password']),
             'gender' => $request->gender
         ]);
+
+        $this->assignRolePartner($user); // add role user
         $token = $user->createToken('authToken')->plainTextToken;
 
         return response([
@@ -75,25 +69,7 @@ class AuthController extends Controller
         ], 201);
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    public function sentResetLink1(Request $request)
+    public function sentResetLink(Request $request)
     {
         $request->validate(['email' => 'required|email']);
 
@@ -106,9 +82,7 @@ class AuthController extends Controller
             : back()->withErrors(['email' => __($status)]);
     }
 
-
-
-    public function updatepass1(Request $request)
+    public function updatepass(Request $request)
     {
         $request->validate([
             'token' => 'required',
@@ -132,5 +106,22 @@ class AuthController extends Controller
         return $status === Password::PASSWORD_RESET
             ? redirect()->route('login')->with('status', __($status))
             : back()->withErrors(['email' => [__($status)]]);
+    }
+
+    /**
+     * Assign roles to the user
+     *
+     * @return void
+     * @param mixed $user
+     */
+    private function assignRole($user)
+    {
+        $roleUserApi = Role::findByName('client', 'api');
+        $user->assignRole($roleUserApi);
+    }
+    private function assignRolePartner($user)
+    {
+        $roleUserApi = Role::findByName('partner', 'api');
+        $user->assignRole($roleUserApi);
     }
 }
