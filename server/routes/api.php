@@ -6,7 +6,7 @@ use App\Http\Controllers\API\RoomTypesController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\HotelController;
+use App\Http\Controllers\API\HotelController;
 
 
 /*
@@ -33,8 +33,8 @@ Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logo
 Route::group(
     ['prefix' => 'hotels'], // Thêm `prefix` để xác định endpoint chung của API
     function () {
-        Route::get('/', [HotelController::class, 'index']);
-        Route::post('/create', [HotelController::class, 'create']);
+        Route::get('/', [HotelController::class, 'index'])->middleware('permission:view_hotel');
+        Route::post('/create', [HotelController::class, 'create'])->middleware('permission:add_hotel');
         Route::put('/update/{id}', [HotelController::class, 'update']);
         Route::delete('/destroy/{id}', [HotelController::class, 'destroy']);
     }

@@ -10,10 +10,11 @@ use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable, HasRoles;
 
     /**
      * The attributes that are mass assignable.
@@ -22,7 +23,7 @@ class User extends Authenticatable
      */
     public $table = 'tbl_users';
     protected $fillable = [
-        'name','email','password','gender','phone_number','avatar','active', 'role', 'hotel_id'
+        'name', 'email', 'password', 'gender', 'phone_number', 'avatar', 'active', 'hotel_id',
     ];
 
     /**
