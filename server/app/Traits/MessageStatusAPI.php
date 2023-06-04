@@ -13,7 +13,10 @@ trait MessageStatusAPI
     {
         return 'Retrieved successfully';
     }
-
+    public static function detail($request)
+    {
+        return response()->json(['request' => $request, 'message' => 'Retrieved successfully'], 400);
+    }
     /**
      * Message Store
      * 
@@ -63,20 +66,5 @@ trait MessageStatusAPI
     public static function notFound()
     {
         return response()->json(['message' => 'Not found'], 404);
-    }
-
-    /**
-     * Super Admin exists with mail
-     * 
-     * @return \Illuminate\Http\Response
-     */
-    public static function superAdminExistWithMail()
-    {
-        return response()->json(['message' => 'Super Admin exists with mail'], 400);
-    }
-
-    public static function exception()
-    {
-        return response()->json(['message' => 'An error occurred, please try again later']);
     }
 }

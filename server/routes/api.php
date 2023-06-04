@@ -36,6 +36,7 @@ Route::group(
         Route::get('/', [HotelController::class, 'index'])->middleware('permission:view_hotel');
         Route::post('/create', [HotelController::class, 'create'])->middleware('permission:add_hotel');
         Route::put('/update/{id}', [HotelController::class, 'update']);
+        Route::post('/detail/{id}', [HotelController::class, 'detail']);
         Route::delete('/destroy/{id}', [HotelController::class, 'destroy']);
     }
 );

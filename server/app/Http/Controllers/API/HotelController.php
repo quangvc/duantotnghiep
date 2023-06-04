@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Hotel;
 use App\Traits\MessageStatusAPI;
 use App\Http\Requests\HotelRequest;
+use Illuminate\Support\Facades\Log;
 
 class HotelController extends Controller
 {
@@ -19,9 +20,19 @@ class HotelController extends Controller
                 if (auth()->user()->hasRole('partner')) {
                     $query->where('id', hotel()->id);
                 }
-            })
-            ->get();
+            })->get();
         return $hotels;
+    }
+    public function detail($id)
+    {
+        $hotelDetail = Hotel::join('tbl_regions', 'tbl_hotels.region_id', '=', 'tbl_regions.id')
+            ->select('tbl_hotels.*', 'tbl_regions.name as region_name')
+            ->where('tbl_hotels.id', $id)
+            ->first();
+        if (!$hotelDetail) {
+            return MessageStatusAPI::notFound();
+        }
+        return MessageStatusAPI::detail($hotelDetail);
     }
 
     public function create(HotelRequest $request)
