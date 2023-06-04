@@ -1,0 +1,42 @@
+<nz-modal
+  [(nzVisible)]="displayCreateUpdateRoomType"
+  nzTitle="Thêm mới"
+  nzWidth="980px"
+  (nzOnCancel)="handleCancel()"
+  (nzOnOk)="handleOk()">
+  <ng-container *nzModalContent>
+    <form>
+      <div class="row">
+
+        <div class="col-6">
+          <div class="mb-3">
+            <label for="name" class="form-label">{{'room_type.name' | translate}}</label>
+            <input type="text" class="form-control" id="name" placeholder="name@example.com">
+          </div>
+        </div>
+
+        <div class="col-6">
+          <div class="mb-3">
+            <label for="name" class="form-label">{{'room_type.price_per_night' | translate}}</label>
+            <input type="text" class="form-control" id="name" placeholder="name@example.com">
+          </div>
+        </div>
+
+        <div class="col-6">
+          <div class="mb-3">
+            <label for="name" class="form-label">{{'room_type.capacity' | translate}}</label>
+            <input type="text" class="form-control" id="name" placeholder="name@example.com">
+          </div>
+        </div>
+
+        <div class="col-12">
+          <div class="mb-3">
+            <label for="description" class="form-label">{{'description' | translate}}</label>
+            <textarea class="form-control" id="description" rows="3"></textarea>
+          </div>
+        </div>
+
+      </div>
+    </form>
+  </ng-container>
+</nz-modal>

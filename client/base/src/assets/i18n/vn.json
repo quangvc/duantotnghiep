@@ -1,11 +1,15 @@
 {
   "action": "Hành động",
+  "status": "Trạng thái",
+  "description": "Mô tả",
 
   "button": {
     "add_new": "Thêm mới",
     "update": "Cập nhật",
     "edit": "Chỉnh sửa",
-    "delete": "Xóa"
+    "delete": "Xóa",
+    "save": "Lưu",
+    "cancel": "Hủy"
   },
   "auth": {
     "login": "Đăng nhập",
@@ -22,5 +26,23 @@
     "role": "Phân quyền",
     "user_list": "Danh sách người dùng",
     "role_list": "Danh sách quyền"
+  },
+  "hotel": {
+    "name": "Khách sạn",
+    "address": "Địa chỉ",
+    "phone_number": "Số điện thoại",
+    "rate": "Đánh giá",
+    "region": "Khu vực"
+  },
+  "region": {
+    "name": "Tên khu vực"
+  },
+  "room": {
+    "room_number": "Số phòng"
+  },
+  "room_type": {
+    "name": "Tên loại phòng",
+    "price_per_night": "Giá 1 đêm",
+    "capacity": "Capacity"
   }
 }
