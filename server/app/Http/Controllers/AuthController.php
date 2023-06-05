@@ -17,22 +17,29 @@ class AuthController extends Controller
 {
     public function login(Request $request)
     {
+        // input phải có name là login
+        $login = $request->login;
+        $fieldType = filter_var($login, FILTER_VALIDATE_EMAIL) ? 'email' : 'phone_number';
 
         $credentials = $request->validate([
-            'email' => ['required', 'email'],
+            'login' => 'required|max:255',
             'password' => ['required'],
         ]);
 
-        $user = User::where('email', $request->email)->first();
+        $remember = $request->remember;
+        if (Auth::attempt([$fieldType => $login, 'password' => $credentials['password'], 'active' => 1], $remember)) {
 
-        if (!$user || !Hash::check($request->password, $user->password)) {
-            throw ValidationException::withMessages([
-                'email' => ['The provided credentials are incorrect.'],
+            $user = User::where('email', $request->login)->orWhere('phone_number', $request->login)->first();
+            auth()->user()->tokens()->delete();
+            $tokenResult = $user->createToken('authToken')->plainTextToken;
+
+            return response()->json([
+                'user' => $user,
+                'token' => $tokenResult,
             ]);
+        } else {
+            throw new \Exception('Thông tin đăng nhập không đúng');
         }
-
-        $tokenResult = $user->createToken('authToken')->plainTextToken;
-        return $tokenResult;
     }
 
     public function logout(Request $request)
@@ -52,6 +59,8 @@ class AuthController extends Controller
             'phone_number' => 'required|unique:tbl_users,phone_number|numeric|digits_between:9,12',
             'password' => 'required|confirmed',
         ]);
+        // phải có input name password_confirmation
+
         $user = User::create([
             'name' => $fields['name'],
             'email' => $fields['email'],
@@ -78,8 +87,8 @@ class AuthController extends Controller
         );
 
         return $status === Password::RESET_LINK_SENT
-            ? back()->with(['status' => __($status)])
-            : back()->withErrors(['email' => __($status)]);
+            ? response()->json(['status' => __($status)])
+            : response()->json(['email' => __($status)]);
     }
 
     public function updatepass(Request $request)
@@ -104,8 +113,8 @@ class AuthController extends Controller
         );
 
         return $status === Password::PASSWORD_RESET
-            ? redirect()->route('login')->with('status', __($status))
-            : back()->withErrors(['email' => [__($status)]]);
+            ? response()->json('status', __($status))
+            : response()->json(['email' => [__($status)]]);
     }
 
     /**
@@ -125,3 +134,5 @@ class AuthController extends Controller
         $user->assignRole($roleUserApi);
     }
 }
+
+
