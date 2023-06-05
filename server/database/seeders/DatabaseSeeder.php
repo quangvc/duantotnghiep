@@ -37,8 +37,8 @@ class DatabaseSeeder extends Seeder
             'name' => 'client',
         ]);
 
-        $partnerApi = Role::create([
-            'name' => 'partner',
+        $managerApi = Role::create([
+            'name' => 'manager',
         ]);
 
         $adminPermissions = [
@@ -68,14 +68,14 @@ class DatabaseSeeder extends Seeder
         $userID = [1];
         $roleAdminApi = Role::findByName('admin');
         $roleClientApi = Role::findByName('client');
-        $rolePartnerApi = Role::findByName('partner');
+        $roleManagerApi = Role::findByName('manager');
 
         foreach ($userID as $userIDS) {
             $user = User::find($userIDS);
             $user->assignRole($roleAdminApi, 'admin');
             $roleAdminApi->syncPermissions($adminPermissions);
             $roleClientApi->syncPermissions($clientPermission);
-            $rolePartnerApi->syncPermissions($clientPermission);
+            $roleManagerApi->syncPermissions($clientPermission);
         }
     }
 }
