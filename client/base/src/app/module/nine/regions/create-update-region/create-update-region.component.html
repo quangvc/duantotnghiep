@@ -1,0 +1,21 @@
+<nz-modal
+  [(nzVisible)]="displayCreateUpdateRegion"
+  nzTitle="Thêm mới"
+  nzWidth="980px"
+  (nzOnCancel)="handleCancel()"
+  (nzOnOk)="handleOk()">
+  <ng-container *nzModalContent>
+    <form [formGroup]="formRegion">
+      <div class="row">
+
+        <div class="col-12">
+          <div class="mb-3">
+            <label for="name" class="form-label">{{'region.name' | translate}}</label>
+            <input type="text" class="form-control" id="name" formControlName="name" placeholder="name@example.com">
+          </div>
+        </div>
+
+      </div>
+    </form>
+  </ng-container>
+</nz-modal>

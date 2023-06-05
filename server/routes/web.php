@@ -21,7 +21,6 @@ Route::get('/', function () {
     return view('welcome');
 })->name('welcome');
 
-
 Route::get('/admin', function () {
     return view('admin.index');
 })->name('admin.login');

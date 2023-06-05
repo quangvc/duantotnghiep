@@ -40,6 +40,28 @@ export class NineLayoutComponent implements OnInit {
           }
         ]
       },
+      {
+        label: "Quản lý chung",
+        icon: 'home',
+        items: [
+          {
+            label: "Quản lý khách sạn",
+            routerLink: "hotels",
+          },
+          {
+            label: "Quản lý khu vực",
+            routerLink: "regions",
+          },
+          {
+            label: "Quản lý phòng",
+            routerLink: "rooms",
+          },
+          {
+            label: "Quản lý loại phòng",
+            routerLink: "room-types",
+          }
+        ]
+      },
     ]
   }
 

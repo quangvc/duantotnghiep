@@ -29,5 +29,15 @@
       "age": 32,
       "address": "Sidney No. 1 Lake Park"
     }
+  ],
+  "regions": [
+    {
+      "name": " Hà Nội",
+      "id": 1
+    },
+    {
+      "name": " Hải Phòng",
+      "id": 2
+    }
   ]
 }

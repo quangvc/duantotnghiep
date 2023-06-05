@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Password;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use Illuminate\Validation\ValidationException;
+use Spatie\Permission\Models\Role;
 
 class AuthController extends Controller
 {
@@ -58,6 +60,7 @@ class AuthController extends Controller
             'password' => 'required|confirmed',
         ]);
         // phải có input name password_confirmation
+
         $user = User::create([
             'name' => $fields['name'],
             'email' => $fields['email'],
@@ -65,6 +68,8 @@ class AuthController extends Controller
             'password' => bcrypt($fields['password']),
             'gender' => $request->gender
         ]);
+
+        $this->assignRolePartner($user); // add role user
         $token = $user->createToken('authToken')->plainTextToken;
 
         return response([
@@ -110,6 +115,23 @@ class AuthController extends Controller
         return $status === Password::PASSWORD_RESET
             ? response()->json('status', __($status))
             : response()->json(['email' => [__($status)]]);
+    }
+
+    /**
+     * Assign roles to the user
+     *
+     * @return void
+     * @param mixed $user
+     */
+    private function assignRole($user)
+    {
+        $roleUserApi = Role::findByName('client', 'api');
+        $user->assignRole($roleUserApi);
+    }
+    private function assignRolePartner($user)
+    {
+        $roleUserApi = Role::findByName('partner', 'api');
+        $user->assignRole($roleUserApi);
     }
 }
 
