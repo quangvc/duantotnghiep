@@ -1,6 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
+import { NineStatus } from 'src/app/module/_mShared/enum/enum';
 import { MenuItem } from 'src/app/module/_mShared/model/menuItem.class';
+import { Enum } from 'src/app/module/_mShared/service/enum.service';
 import { RegionsService } from 'src/app/module/_mShared/service/regions.service';
 
 @Component({
@@ -20,15 +22,32 @@ export class RegionsComponent implements OnInit, OnDestroy {
   region: any;
   menus: MenuItem[] = [];
 
+  statusOption: any;
+
   ngOnInit() {
     this.getRegion();
+    this.getOptionEnum();
+  }
+
+  getOptionEnum(){
+    this.statusOption = Enum.convertEnum(NineStatus);
+  }
+
+  viewNameStatus(regions:any){
+    for (const item of regions) {
+      this.statusOption.forEach((status:any) => {
+        if(item.status == status.value){
+          item.txtStatus = status.text;
+        }
+      });
+    }
   }
 
   getRegion(){
     let obs = this.regionService.getRegion().subscribe((res) => {
       this.regions = res;
+      this.viewNameStatus(this.regions);
     })
-
   }
 
   dropdownItemsButton(data:any){

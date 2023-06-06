@@ -27,7 +27,8 @@ export class CreateUpdateRegionComponent implements OnInit {
 
   private formBuilderRegion(){
     this.formRegion = this.fb.group({
-      name: [null, Validators.required]
+      name: [null, Validators.required],
+      status: [-1]
     })
   }
 

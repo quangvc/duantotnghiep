@@ -33,10 +33,12 @@
   "regions": [
     {
       "name": " Hà Nội",
+      "status": -1,
       "id": 1
     },
     {
       "name": " Hải Phòng",
+      "status": -1,
       "id": 2
     }
   ]
