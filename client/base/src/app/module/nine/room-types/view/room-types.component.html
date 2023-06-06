@@ -19,12 +19,19 @@
       <td>{{ data.price_per_night }}</td>
       <td>{{ data.capacity }}</td>
       <td>{{ data.description }}</td>
-      <td></td>
+      <td>
+        <q-menu
+          [model]="menus"
+          (buttonItem)="dropdownItemsButton(data)">
+        </q-menu>
+      </td>
     </tr>
   </tbody>
 </nz-table>
 
 <create-update-room-type
+  *ngIf="displayCreateUpdateRoomType"
   [displayCreateUpdateRoomType]="displayCreateUpdateRoomType"
+  [roomType]="roomType"
   (closeModal)="cancel($event)">
 </create-update-room-type>

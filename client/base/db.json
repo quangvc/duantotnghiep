@@ -41,5 +41,14 @@
       "status": -1,
       "id": 2
     }
+  ],
+  "room_type": [
+    {
+      "name": "rẻw",
+      "price_per_night": 123,
+      "capacity": 2,
+      "description": "ểwrwer",
+      "id": 1
+    }
   ]
 }

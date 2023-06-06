@@ -14,10 +14,51 @@ export class NineLayoutComponent implements OnInit {
   flexWidth80: string = 'flex: 0 0 80px; max-width: 80px; min-width: 80px; width: 80px;';
   flexWidth230: string = 'flex: 0 0 230px; max-width: 230px; min-width: 230px; width: 230px;';
 
-  menus: MenuItem[] = [];
+  menus: MenuItem[] = [
+    {
+      label: "Quản lý người dùng",
+      icon: 'user',
+      items: [
+        {
+          label: "Danh sách người dùng",
+          routerLink: "user",
+        },
+        {
+          label: "Danh sách quyền",
+          routerLink: "role",
+        },
+        {
+          label: "Phân quyền",
+          routerLink: "user-role",
+        }
+      ]
+    },
+    {
+      label: "Quản lý chung",
+      icon: 'home',
+      items: [
+        {
+          label: "Quản lý khách sạn",
+          routerLink: "hotels",
+        },
+        {
+          label: "Quản lý khu vực",
+          routerLink: "regions",
+        },
+        {
+          label: "Quản lý phòng",
+          routerLink: "rooms",
+        },
+        {
+          label: "Quản lý loại phòng",
+          routerLink: "room-types",
+        }
+      ]
+    },
+  ];
 
   ngOnInit() {
-    this.getMenus();
+    // this.getMenus();
   }
 
   getMenus(){

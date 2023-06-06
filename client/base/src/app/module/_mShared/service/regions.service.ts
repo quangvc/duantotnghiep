@@ -21,10 +21,6 @@ export class RegionsService {
     return this.http.post(this.URL, data);
   }
 
-  register(data: any) {
-    return this.http.post(this.URL, data);
-  }
-
   updateRegion(id:any, data:any): Observable<any>{
     return this.http.put(`${this.URL}/${id}`,data)
   }

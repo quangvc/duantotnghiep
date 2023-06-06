@@ -15,6 +15,7 @@ import { NzMessageModule } from 'ng-zorro-antd/message';
 import { NzModalModule } from 'ng-zorro-antd/modal';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 
 @NgModule({
   imports: [],
@@ -37,6 +38,7 @@ import { HttpClientModule } from '@angular/common/http';
     NzInputModule,
     NzEmptyModule,
     NzTableModule,
+    NzCheckboxModule
   ],
 })
 export class SharedModule {}
