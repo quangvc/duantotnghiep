@@ -3,6 +3,7 @@
 use App\Http\Controllers\API\RegionController;
 use App\Http\Controllers\API\RoomController;
 use App\Http\Controllers\API\RoomTypesController;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
@@ -28,8 +29,10 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/send-reset-link', [AuthController::class, 'sentResetLink']);
 
-
 Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logout']);
+
+Route::apiResource('users', UserController::class);
+
 
 Route::group(
     ['prefix' => 'hotels'], // Thêm `prefix` để xác định endpoint chung của API
