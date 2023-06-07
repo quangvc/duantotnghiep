@@ -15,13 +15,15 @@ class HotelController extends Controller
     public function index()
     {
         // auth('api')->user(); lấy thông tin người dùng đang login
+        $user = auth('api')->user();
         $hotels = Hotel::with('rooms')
-            ->whereExists(function ($query) {
-                if (auth()->user()->hasRole('partner')) {
-                    $query->where('id', hotel()->id);
-                }
-            })->get();
-        return $hotels;
+            ->join('tbl_regions', 'tbl_hotels.region_id', '=', 'tbl_regions.id')
+            ->select('tbl_hotels.*', 'tbl_regions.name as region_name');
+        if ($user->hasRole('manager')) {
+            $hotels->where('id', hotel()->id);
+        }
+        $hotels->get();
+        return response()->json(['data' => $hotels, 'message' => 'Message'], 200);
     }
     public function detail($id)
     {
