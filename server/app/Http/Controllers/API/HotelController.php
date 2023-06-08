@@ -17,7 +17,7 @@ class HotelController extends Controller
         // auth('api')->user(); lấy thông tin người dùng đang login
         $hotels = Hotel::with('rooms')
             ->whereExists(function ($query) {
-                if (auth()->user()->hasRole('partner')) {
+                if (auth()->user()->hasRole('manager')) {
                     $query->where('id', hotel()->id);
                 }
             })->get();
