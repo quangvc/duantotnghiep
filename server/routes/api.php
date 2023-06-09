@@ -37,7 +37,7 @@ Route::apiResource('users', UserController::class);
 Route::group(
     ['prefix' => 'hotels'], // Thêm `prefix` để xác định endpoint chung của API
     function () {
-        Route::get('/', [HotelController::class, 'index'])->middleware('permission:view_hotel');
+        Route::get('/', [HotelController::class, 'index']);
         Route::post('/create', [HotelController::class, 'create'])->middleware('permission:add_hotel');
         Route::put('/update/{id}', [HotelController::class, 'update']);
         Route::post('/detail/{id}', [HotelController::class, 'detail']);

@@ -12,12 +12,20 @@ class RoomController extends Controller
 
     public function index()
     {
-        $rooms = Room::select('tbl_rooms.*', 'tbl_room_types.name as room_type_name', 'tbl_room_types.price_per_night as price', 'tbl_room_types.capacity as capacity', 'tbl_hotels.hotel_name')
-            ->join('tbl_room_types', 'tbl_rooms.room_type_id', '=', 'tbl_room_types.id')
-            ->join('tbl_hotels', 'tbl_rooms.hotel_id', '=', 'tbl_hotels.id')
-            ->get();
+        $roleManager = auth()->user()->hasRole('manager');
+        $roleAdmin = auth()->user()->hasRole('admin');
 
-        return response()->json(['data' => $rooms, 'message' => 'Message'], 200);
+        $id_hotelRoom = auth()->user()->hotel_id;
+        if ($id_hotelRoom && $roleManager) {
+            $rooms = Room::select('tbl_rooms.*', 'tbl_room_types.name as room_type_name', 'tbl_room_types.price_per_night as price', 'tbl_room_types.capacity as capacity', 'tbl_hotels.hotel_name')
+                ->join('tbl_room_types', 'tbl_rooms.room_type_id', '=', 'tbl_room_types.id')
+                ->join('tbl_hotels', 'tbl_rooms.hotel_id', '=', 'tbl_hotels.id')
+                ->where('hotel_id', '=', auth()->user()->hotel_id)
+                ->get();
+
+            return response()->json(['data' => $rooms, 'message' => 'Message'], 200);
+        }
+        return MessageStatusAPI::notFound();
     }
 
     public function create(RoomRequest $request)
