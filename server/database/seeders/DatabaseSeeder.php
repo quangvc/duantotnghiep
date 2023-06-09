@@ -111,14 +111,14 @@ class DatabaseSeeder extends Seeder
             $userAdmin->assignRole($roleAdminApi, 'admin');
             $roleAdminApi->syncPermissions($adminPermissions);
             $roleClientApi->syncPermissions($clientPermission);
-            $roleManagerApi->syncPermissions($clientPermission);
+            $roleManagerApi->syncPermissions($managerPermissions);
         }
         foreach ($userID as $userIDS) {
             $userManager = User::find(2);
             $userManager->assignRole($roleManagerApi, 'manager');
             $roleAdminApi->syncPermissions($adminPermissions);
             $roleClientApi->syncPermissions($clientPermission);
-            $roleManagerApi->syncPermissions($clientPermission);
+            $roleManagerApi->syncPermissions($managerPermissions);
         }
     }
 }
