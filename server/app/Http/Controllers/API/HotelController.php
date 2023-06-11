@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Hotel;
 use App\Traits\MessageStatusAPI;
 use App\Http\Requests\HotelRequest;
+use App\Http\Resources\API\HotelResource;
 use Illuminate\Support\Facades\Log;
 
 class HotelController extends Controller
@@ -21,7 +22,7 @@ class HotelController extends Controller
                     $query->where('id', hotel()->id);
                 }
             })->get();
-        return $hotels;
+        return HotelResource::collection($hotels);
     }
     public function detail($id)
     {

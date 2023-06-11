@@ -33,7 +33,7 @@ Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logo
 
 Route::apiResource('users', UserController::class);
 
-
+Route::apiResource('hotels', HotelController::class);
 Route::group(
     ['prefix' => 'hotels'], // Thêm `prefix` để xác định endpoint chung của API
     function () {
@@ -44,7 +44,7 @@ Route::group(
         Route::delete('/destroy/{id}', [HotelController::class, 'destroy']);
     }
 );
-
+Route::apiResource('rooms', RoomController::class);
 Route::group(
     ['prefix' => 'rooms'], // Thêm `prefix` để xác định endpoint chung của API
     function () {
@@ -54,6 +54,8 @@ Route::group(
         Route::delete('/destroy/{id}', [RoomController::class, 'destroy']);
     }
 );
+Route::apiResource('rooms', RoomController::class);
+
 Route::group(
     ['prefix' => 'room-types'], // Thêm `prefix` để xác định endpoint chung của API
     function () {
