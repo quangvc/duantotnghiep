@@ -14,6 +14,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NineModule } from './module/nine/nine.module';
 
+
+
 import { I18nModule } from './i18n/i18n.module';
 
 import { NzInputModule } from 'ng-zorro-antd/input';
@@ -44,7 +46,8 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     AppRoutingModule,
     BrowserAnimationsModule,
     NineModule,
-    SharedModule
+    SharedModule,
+    FormsModule
   ],
   providers: [
     { provide: NZ_I18N, useValue: en_US }

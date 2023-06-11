@@ -12,6 +12,17 @@ import { RoomComponent } from './room/room.component';
 import { ServiceComponent } from './service/service.component';
 import { TeamComponent } from './team/team.component';
 import { AppModule } from '../app.module';
+import { HotelComponent } from './hotel/hotel.component';
+import { CarouselComponent } from './carousel/carousel.component';
+import { HotelDetailComponent } from './hotel-detail/hotel-detail.component';
+
+// Primeng
+import { ButtonModule } from 'primeng/button';
+import { CheckboxModule } from 'primeng/checkbox';
+import { DropdownModule } from 'primeng/dropdown'
+import { FormsModule } from '@angular/forms';
+
+
 
 
 
@@ -27,11 +38,18 @@ import { AppModule } from '../app.module';
     RoomComponent,
     ServiceComponent,
     TeamComponent,
+    HotelComponent,
+    CarouselComponent,
+    HotelDetailComponent,
   ],
   imports: [
     CommonModule,
     MainRoutingModule,
-    AppModule
+    AppModule,
+    ButtonModule,
+    CheckboxModule,
+    FormsModule,
+    DropdownModule,
   ]
 })
 export class MainModule { }

@@ -7,7 +7,11 @@
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
-          "style": "scss"
+          "style": [
+            "node_modules/primeng/resources/themes/lara-light-blue/theme.css",
+            "node_modules/primeng/resources/primeng.min.css",
+            "scss"
+          ]
         }
       },
       "root": "",
