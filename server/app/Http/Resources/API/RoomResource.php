@@ -17,20 +17,20 @@ class RoomResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'room_number' => $this->room_number,
+            'status' => $this->status,
             'hotel' => [
                 'idHotel' => $this->hotel->id,
                 'name' => $this->hotel->hotel_name
             ],
-            'room_number' => $this->room_number,
             'room_type' => [
                 'id' => $this->room_type->id,
                 'name' => $this->room_type->name,
-                'price' => $this->room_type->price,
+                'price' => $this->room_type->price_per_night,
                 'capacity' => $this->room_type->capacity,
                 'description' => $this->room_type->description,
 
             ],
-            'status' => $this->status,
         ];
     }
 }

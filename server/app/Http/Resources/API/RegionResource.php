@@ -16,7 +16,7 @@ class RegionResource extends ResourceCollection
     {
         return [
             'id' => $this->id,
-            'name ' => $this->name,
+            'name' => $this->name,
         ];
     }
 }

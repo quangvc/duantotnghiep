@@ -13,21 +13,22 @@ class RoomController extends Controller
 
     public function index()
     {
-        // 'tbl_rooms.*', 'tbl_hotels.hotel_name', 'tbl_rooms.hotel_id', 'tbl_rooms.room_number', 'tbl_rooms.status', 'tbl_room_types.name as room_type_name', 'tbl_room_types.price_per_night as price', 'tbl_room_types.capacity as capacity'
-        $roleManager = auth()->user()->hasRole('manager');
+        $role = auth()->user()->getRoleNames()->first();
+        if ($role == 'admin') {
+            $rooms = Room::all();
+            return RoomResource::collection($rooms);
+        }
         $id_hotelRoom = auth()->user()->hotel_id;
-        if ($id_hotelRoom && $roleManager) {
+        if ($id_hotelRoom != 0 && $role == 'manager') {
             $rooms = Room::with('hotel')
                 ->where('hotel_id', '=', auth()->user()->hotel_id)
                 ->get();
-
             return RoomResource::collection($rooms);
-            return $rooms;
         }
         return MessageStatusAPI::notFound();
     }
 
-    public function store(RoomRequest $request)
+    public function create(RoomRequest $request)
     {
         $validated = $request->validated();
         $room = Room::firstOrCreate([
@@ -40,10 +41,19 @@ class RoomController extends Controller
         return MessageStatusAPI::store();
     }
 
+    public function detail($id)
+    {
+        $room = Room::find($id);
+        if ($room) {
+            return RoomResource::collection($room);
+        } else {
+            return MessageStatusAPI::notFound();
+        }
+    }
+
     public function destroy($id)
     {
         $room = Room::find($id);
-
         if ($room) {
             $room->delete();
             return MessageStatusAPI::destroy();

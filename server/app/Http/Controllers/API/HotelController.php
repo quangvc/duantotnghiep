@@ -16,12 +16,11 @@ class HotelController extends Controller
     public function index()
     {
         // auth('api')->user(); lấy thông tin người dùng đang login
-        $hotels = Hotel::with('rooms')
-            ->whereExists(function ($query) {
-                if (auth()->user()->hasRole('manager')) {
-                    $query->where('id', hotel()->id);
-                }
-            })->get();
+        $hotels = Hotel::whereExists(function ($query) {
+            if (auth()->user()->hasRole('manager')) {
+                $query->where('id', hotel()->id);
+            }
+        })->get();
         return HotelResource::collection($hotels);
     }
     public function detail($id)
