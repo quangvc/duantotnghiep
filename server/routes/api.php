@@ -5,11 +5,12 @@ use App\Http\Controllers\Api\CommentController;
 use App\Http\Controllers\API\RegionController;
 use App\Http\Controllers\API\RoomController;
 use App\Http\Controllers\API\RoomTypesController;
-use App\Http\Controllers\UserController;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\API\HotelController;
+use App\Http\Controllers\API\UserController;
 use App\Models\Room;
 
 /*
@@ -45,6 +46,7 @@ Route::group(
         Route::delete('/destroy/{id}', [HotelController::class, 'destroy'])->middleware('permission:delete_hotel');
     }
 );
+Route::apiResource('users', UserController::class);
 Route::group(
     ['prefix' => 'rooms'], // Thêm `prefix` để xác định endpoint chung của API
     function () {
