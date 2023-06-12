@@ -13,13 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('tbl_rooms', function (Blueprint $table) {
-            $table->id();
-            $table->integer('hotel_id');
-            $table->integer('room_type_id');
-            $table->integer('room_number');
-            $table->tinyInteger('status');
-            $table->timestamps();
+        Schema::table('tbl_blogs', function (Blueprint $table) {
+            $table->string('image')->after('content')->nullable();
         });
     }
 
@@ -30,6 +25,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tbl_rooms');
+        //
     }
 };

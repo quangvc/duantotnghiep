@@ -13,13 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('tbl_rooms', function (Blueprint $table) {
-            $table->id();
-            $table->integer('hotel_id');
-            $table->integer('room_type_id');
-            $table->integer('room_number');
-            $table->tinyInteger('status');
-            $table->timestamps();
+        Schema::table('tbl_coupons', function (Blueprint $table) {
+            $table->foreignId('hotel_id')->constrained('tbl_hotels')->references('id')->after('id');
         });
     }
 
@@ -30,6 +25,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tbl_rooms');
+        //
     }
 };

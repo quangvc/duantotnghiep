@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Region extends Model
 {
     use HasFactory;
-    protected $table = 'tbl_images';
+    protected $table = 'tbl_regions';
 
     protected $fillable = [
         'name'

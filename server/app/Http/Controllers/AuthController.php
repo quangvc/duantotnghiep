@@ -27,7 +27,7 @@ class AuthController extends Controller
         ]);
 
         $remember = $request->remember;
-        if (Auth::attempt([$fieldType => $login, 'password' => $credentials['password'], 'active' => 1], $remember)) {
+        if (Auth::guard('web')->attempt([$fieldType => $login, 'password' => $credentials['password'], 'active' => 1], $remember)) {
 
             $user = User::where('email', $request->login)->orWhere('phone_number', $request->login)->first();
             auth()->user()->tokens()->delete();
@@ -36,6 +36,8 @@ class AuthController extends Controller
             return response()->json([
                 'user' => $user,
                 'token' => $tokenResult,
+                'role' => auth('api')->user()->getRoleNames(),
+                'permissions' => auth('api')->user()->getAllPermissions(),
             ]);
         } else {
             throw new \Exception('Thông tin đăng nhập không đúng');
@@ -69,7 +71,7 @@ class AuthController extends Controller
             'gender' => $request->gender
         ]);
 
-        $this->assignRolePartner($user); // add role user
+        $this->assignRoleClient($user); // add role user
         $token = $user->createToken('authToken')->plainTextToken;
 
         return response([
@@ -123,16 +125,12 @@ class AuthController extends Controller
      * @return void
      * @param mixed $user
      */
-    private function assignRole($user)
+    private function assignRoleClient($user)
     {
         $roleUserApi = Role::findByName('client', 'api');
         $user->assignRole($roleUserApi);
     }
-    private function assignRolePartner($user)
-    {
-        $roleUserApi = Role::findByName('partner', 'api');
-        $user->assignRole($roleUserApi);
-    }
+
 }
 
 
