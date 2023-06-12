@@ -5,23 +5,23 @@ import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class RegionsService {
+export class HotelsService {
 
   constructor(
     private http: HttpClient
   ) { }
 
-  URL = 'http://localhost:3000/regions';
+  URL = 'http://localhost:3000/hotels';
 
-  getRegion(): Observable<any>{
+  getHotels(): Observable<any>{
     return this.http.get(this.URL)
   }
 
-  createRegion(data: any): Observable<any>{
+  createHotel(data: any): Observable<any>{
     return this.http.post(this.URL, data);
   }
 
-  updateRegion(id:any, data:any): Observable<any>{
+  updateHotel(id:any, data:any): Observable<any>{
     return this.http.put(`${this.URL}/${id}`,data)
   }
 

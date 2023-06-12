@@ -43,6 +43,6 @@
   "room_type": {
     "name": "Tên loại phòng",
     "price_per_night": "Giá 1 đêm",
-    "capacity": "Capacity"
+    "capacity": "Số lượng người ở"
   }
 }
