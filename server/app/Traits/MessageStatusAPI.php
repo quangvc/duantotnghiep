@@ -9,11 +9,8 @@ trait MessageStatusAPI
      * 
      * @return string
      */
-    public static function show()
-    {
-        return 'Retrieved successfully';
-    }
-    public static function detail($request)
+   
+    public static function show($request)
     {
         return response()->json(['request' => $request, 'message' => 'Retrieved successfully'], 400);
     }

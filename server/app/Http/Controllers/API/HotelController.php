@@ -22,7 +22,7 @@ class HotelController extends Controller
         })->get();
         return HotelResource::collection($hotels);
     }
-    public function detail($id)
+    public function show($id)
     {
         $hotelDetail = Hotel::join('tbl_regions', 'tbl_hotels.region_id', '=', 'tbl_regions.id')
             ->select('tbl_hotels.*', 'tbl_regions.name as region_name')
@@ -31,7 +31,7 @@ class HotelController extends Controller
         if (!$hotelDetail) {
             return MessageStatusAPI::notFound();
         }
-        return MessageStatusAPI::detail($hotelDetail);
+        return MessageStatusAPI::show($hotelDetail);
     }
 
     public function create(HotelRequest $request)
