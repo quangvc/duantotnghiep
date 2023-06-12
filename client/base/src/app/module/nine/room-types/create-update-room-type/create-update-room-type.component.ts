@@ -44,7 +44,7 @@ export class CreateUpdateRoomTypeComponent implements OnInit {
     if(this.formRoomType.valid){
       let data = {
         ...this.formRoomType.value,
-        id: 1
+        id: Math.floor(Math.random() * 999999)
       }
       let create = this.roomTypeService.createRoomType(data);
       let update = this.roomTypeService.createRoomType(data);
