@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\API\BlogController;
+use App\Http\Controllers\Api\CommentController;
 use App\Http\Controllers\API\RegionController;
 use App\Http\Controllers\API\RoomController;
 use App\Http\Controllers\API\RoomTypesController;
@@ -70,5 +72,23 @@ Route::group(
         Route::post('/create', [RegionController::class, 'create']);
         Route::put('/update/{id}', [RegionController::class, 'update']);
         Route::delete('/destroy/{id}', [RegionController::class, 'destroy']);
+    }
+);
+Route::group(
+    ['prefix' => 'blogs'], // Thêm `prefix` để xác định endpoint chung của API
+    function () {
+        Route::get('/', [BlogController::class, 'index']);
+        Route::post('/create', [BlogController::class, 'create']);
+        Route::put('/update/{id}', [BlogController::class, 'update']);
+        Route::delete('/destroy/{id}', [BlogController::class, 'destroy']);
+    }
+);
+Route::group(
+    ['prefix' => 'comment'], // Thêm `prefix` để xác định endpoint chung của API
+    function () {
+        Route::get('/', [CommentController::class, 'index']);
+        Route::post('/create', [CommentController::class, 'create']);
+        Route::put('/update/{id}', [CommentController::class, 'update']);
+        Route::delete('/destroy/{id}', [CommentController::class, 'destroy']);
     }
 );
