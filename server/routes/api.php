@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\BookingController;
 use App\Http\Controllers\API\RegionController;
 use App\Http\Controllers\API\RoomController;
 use App\Http\Controllers\API\RoomTypesController;
@@ -8,7 +9,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\API\HotelController;
-
+use App\Http\Controllers\API\CouponController;
+use App\Http\Requests\CouponRequest;
 
 /*
 |--------------------------------------------------------------------------
@@ -70,5 +72,23 @@ Route::group(
         Route::post('/create', [RegionController::class, 'create']);
         Route::put('/update/{id}', [RegionController::class, 'update']);
         Route::delete('/destroy/{id}', [RegionController::class, 'destroy']);
+    }
+);
+Route::group(
+    ['prefix' => 'coupons'], // Thêm `prefix` để xác định endpoint chung của API
+    function () {
+        Route::get('/', [CouponController::class, 'index']);
+        Route::post('/create', [CouponController::class, 'create']);
+        Route::put('/update/{id}', [CouponController::class, 'update']);
+        Route::delete('/destroy/{id}', [CouponController::class, 'destroy']);
+    }
+);
+Route::group(
+    ['prefix' => 'bookings'], // Thêm `prefix` để xác định endpoint chung của API
+    function () {
+        Route::get('/', [BookingController::class, 'index']);
+        Route::post('/create', [BookingController::class, 'create']);
+        Route::put('/update/{id}', [BookingController::class, 'update']);
+        Route::delete('/destroy/{id}', [BookingController::class, 'destroy']);
     }
 );
