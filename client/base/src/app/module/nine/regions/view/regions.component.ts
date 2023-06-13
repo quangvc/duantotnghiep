@@ -12,6 +12,8 @@ import { RegionsService } from 'src/app/module/_mShared/service/regions.service'
 })
 export class RegionsComponent implements OnInit, OnDestroy {
 
+  private subscription = new Subscription();
+
   displayCreateUpdateRegion: boolean = false;
 
   constructor(
@@ -48,6 +50,8 @@ export class RegionsComponent implements OnInit, OnDestroy {
       this.regions = res;
       this.viewNameStatus(this.regions);
     })
+
+    this.subscription.add(obs);
   }
 
   dropdownItemsButton(data:any){
@@ -83,7 +87,7 @@ export class RegionsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(){
-
+    this.subscription.unsubscribe();
   }
 
 }

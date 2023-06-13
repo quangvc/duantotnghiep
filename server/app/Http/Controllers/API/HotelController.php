@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Hotel;
 use App\Traits\MessageStatusAPI;
 use App\Http\Requests\HotelRequest;
-use Illuminate\Support\Facades\Log;
+use App\Http\Resources\API\HotelResource;
 
 class HotelController extends Controller
 {
@@ -15,13 +15,12 @@ class HotelController extends Controller
     public function index()
     {
         // auth('api')->user(); lấy thông tin người dùng đang login
-        $hotels = Hotel::with('rooms')
-            ->whereExists(function ($query) {
-                if (auth()->user()->hasRole('manager')) {
-                    $query->where('id', hotel()->id);
-                }
-            })->get();
-        return $hotels;
+        $hotels = Hotel::whereExists(function ($query) {
+            if (auth()->user()->hasRole('manager')) {
+                $query->where('id', hotel()->id);
+            }
+        })->get();
+        return HotelResource::collection($hotels);
     }
     public function detail($id)
     {
