@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('tbl_coupons', function (Blueprint $table) {
-            $table->foreignId('hotel_id')->constrained('tbl_hotels')->references('id')->after('id');
+            $table->foreignId('hotel_id')->nullable()->constrained('tbl_hotels')->references('id')->after('id');
         });
     }
 
