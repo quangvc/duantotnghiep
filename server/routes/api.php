@@ -81,7 +81,7 @@ Route::group(
         Route::get('/', [RegionController::class, 'index']);
         Route::post('/', [RegionController::class, 'store']);
         Route::put('/{id}', [RegionController::class, 'update']);
-        Route::get('/{id}', [RegionController::class, 'update']);
+        Route::get('/{id}', [RegionController::class, 'show']);
         Route::delete('/{id}', [RegionController::class, 'destroy']);
     }
 );
