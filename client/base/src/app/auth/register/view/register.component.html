@@ -36,5 +36,5 @@
 
         <button nz-button class="login-form-button login-form-margin" [nzType]="'primary'">{{'auth.register' | translate}}</button>
       </form>
-      <button nz-button class="login-form-button login-form-margin" [nzType]="'primary'">{{'auth.login' | translate}} ngay!</button>
+      <button nz-button class="login-form-button login-form-margin" [nzType]="'primary'" (click)="linkToLogin()" >{{'auth.login' | translate}} ngay!</button>
   </div>

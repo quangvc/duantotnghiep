@@ -1,0 +1,41 @@
+<div class="mb-3">
+  <button nz-button [nzSize]="'large'" nzType="primary" (click)="addHotel()" >{{'button.add_new' | translate}}</button>
+</div>
+<nz-table #basicTable [nzData]="hotels">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>{{'hotel.name' | translate}}</th>
+      <th>{{'hotel.address' | translate}}</th>
+      <th>{{'hotel.phone_number' | translate}}</th>
+      <th>{{'hotel.rate' | translate}}</th>
+      <th>{{'hotel.region' | translate}}</th>
+      <th>{{'status' | translate}}</th>
+      <th>{{'action' | translate}}</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let data of basicTable.data; let i = index">
+      <td>{{ i + 1 }}</td>
+      <td>{{ data.name }}</td>
+      <td>{{ data.address }}</td>
+      <td>{{ data.hotel_phone }}</td>
+      <td>{{ data.star_rating }}</td>
+      <td>{{ data.txtRegion }}</td>
+      <td>{{ data.txtStatus }}</td>
+      <td>
+        <q-menu
+          [model]="menus"
+          (buttonItem)="dropdownItemsButton(data)">
+        </q-menu>
+      </td>
+    </tr>
+  </tbody>
+</nz-table>
+
+<create-update-hotel
+  *ngIf="displayCreateUpdateHotel"
+  [displayCreateUpdateHotel]="displayCreateUpdateHotel"
+  [hotel]="hotel"
+  (closeModal)="cancel($event)">
+</create-update-hotel>

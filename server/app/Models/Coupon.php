@@ -12,7 +12,7 @@ class Coupon extends Model
     protected $table = 'tbl_coupons';
 
     protected $fillable = [
-    'name','type','value','min','max'
+    'name','type','value','min','max','hotel_id'
     ];
 
     public function bookings(): HasMany

@@ -29,5 +29,61 @@
       "age": 32,
       "address": "Sidney No. 1 Lake Park"
     }
+  ],
+  "regions": [
+    {
+      "name": "Hà Nội",
+      "status": -1,
+      "id": 1
+    },
+    {
+      "name": "Hải Phòng",
+      "status": -1,
+      "id": 2
+    }
+  ],
+  "room_type": [
+    {
+      "name": "Single",
+      "price_per_night": 120000,
+      "capacity": 2,
+      "description": "Single room",
+      "id": 1
+    },
+    {
+      "name": "Double",
+      "price_per_night": 150000,
+      "capacity": 4,
+      "description": "Double room",
+      "id": 32599
+    }
+  ],
+  "hotels": [
+    {
+      "id": 1,
+      "name": "Nine Hotel",
+      "address": "Long Biên",
+      "hotel_phone": 1234567890,
+      "region_id": "1",
+      "star_rating": null,
+      "description": "Nine Hotel nằm cạnh khu biệt thự Vincom Long Biên",
+      "status": -1
+    }
+  ],
+  "rooms": [
+    {
+      "id": 755188,
+      "hotel_id": "1",
+      "room_type_id": "1",
+      "room_number": 201,
+      "status": -1
+    },
+    {
+      "id": 76455,
+      "hotel_id": "1",
+      "room_type_id": "32599",
+      "room_number": 205,
+      "status": -1
+    }
   ]
 }

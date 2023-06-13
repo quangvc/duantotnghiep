@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Hotel;
 use App\Traits\MessageStatusAPI;
 use App\Http\Requests\HotelRequest;
-use Illuminate\Support\Facades\Log;
+use App\Http\Resources\API\HotelResource;
 
 class HotelController extends Controller
 {
@@ -15,17 +15,14 @@ class HotelController extends Controller
     public function index()
     {
         // auth('api')->user(); lấy thông tin người dùng đang login
-        $user = auth('api')->user();
-        $hotels = Hotel::with('rooms')
-            ->join('tbl_regions', 'tbl_hotels.region_id', '=', 'tbl_regions.id')
-            ->select('tbl_hotels.*', 'tbl_regions.name as region_name');
-        if ($user->hasRole('manager')) {
-            $hotels->where('id', hotel()->id);
-        }
-        $hotels->get();
-        return response()->json(['data' => $hotels, 'message' => 'Message'], 200);
+        $hotels = Hotel::whereExists(function ($query) {
+            if (auth()->user()->hasRole('manager')) {
+                $query->where('id', hotel()->id);
+            }
+        })->get();
+        return auth()->user()->id;
     }
-    public function detail($id)
+    public function show($id)
     {
         $hotelDetail = Hotel::join('tbl_regions', 'tbl_hotels.region_id', '=', 'tbl_regions.id')
             ->select('tbl_hotels.*', 'tbl_regions.name as region_name')
@@ -34,7 +31,7 @@ class HotelController extends Controller
         if (!$hotelDetail) {
             return MessageStatusAPI::notFound();
         }
-        return MessageStatusAPI::detail($hotelDetail);
+        return MessageStatusAPI::show($hotelDetail);
     }
 
     public function create(HotelRequest $request)
@@ -48,7 +45,7 @@ class HotelController extends Controller
             'description' => $validated['description'],
             'star_rating' => $validated['star_rating'],
             'region_id' => $validated['region_id'],
-            'status' => $validated['status'],
+            'id_hotel' => auth()->user()->id,
         ]);
         $hotel->save();
 
