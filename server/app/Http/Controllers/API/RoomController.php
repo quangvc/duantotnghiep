@@ -41,11 +41,11 @@ class RoomController extends Controller
         return MessageStatusAPI::store();
     }
 
-    public function detail($id)
+    public function show($id)
     {
         $room = Room::find($id);
         if ($room) {
-            return RoomResource::collection($room);
+            return new RoomResource($room);
         } else {
             return MessageStatusAPI::notFound();
         }
