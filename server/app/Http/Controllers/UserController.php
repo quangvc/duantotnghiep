@@ -18,13 +18,8 @@ class UserController extends Controller
     public function index()
     {
         $users = User::with('roles')->get();
-        $arr = [
-            'data' => UserResource::collection($users),
-            'message' => 'List users', 
-            'status' => true, 
-            
-        ];
-        return response()->json([$arr]);
+
+        return MessageStatusAPI::show(UserResource::collection($users), 'List users', 200);
     }
 
     /**
@@ -59,12 +54,11 @@ class UserController extends Controller
         } elseif ($request->role == 'admin') {
             $this->assignRoleAdmin($user);
         }
-        // $token = $user->createToken('authToken')->plainTextToken;
 
         return response([
             'user' => $user,
-            // 'token' => $token,
-        ], 201);     
+            'message' => 'Created successfully'
+        ], 201);
     }
 
     /**
@@ -75,12 +69,7 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        $arr = [
-            'status' => true, 
-            'message' => 'User information', 
-            'data' => $user->with('roles')->get()
-        ];
-        return response()->json([$arr]);
+        return MessageStatusAPI::show(new UserResource($user), 'User information', 200);
     }
 
     /**
@@ -90,6 +79,7 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+    //  update cac truong tru status
     public function update(Request $request, User $user)
     {
         $request->validate([
@@ -110,6 +100,7 @@ class UserController extends Controller
 
         return response([
             'user' => $user,
+            'message' => 'Updated successfully',
         ], 200);   
     }
 
@@ -125,6 +116,15 @@ class UserController extends Controller
         return MessageStatusAPI::destroy();
     }
 
+    public function changeStatus(Request $request, $id)
+    {
+        $user = User::find($id);
+        $user->update($request->status);
+
+        return response([
+            'message' => 'Changed status successfully',
+        ], 200);
+    }
 
     private function assignRoleClient($user)
     {

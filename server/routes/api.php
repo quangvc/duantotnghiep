@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\API\HotelController;
+use App\Http\Controllers\ProfileController;
 
 
 /*
@@ -27,12 +28,15 @@ use App\Http\Controllers\API\HotelController;
 
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
-Route::post('/send-reset-link', [AuthController::class, 'sentResetLink']);
+Route::post('/send-reset-link', [AuthController::class, 'sentResetLink'])->name('password.reset');
 
 Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logout']);
 
 Route::apiResource('users', UserController::class);
 
+Route::prefix('profile')->controller(ProfileController::class)->group(function () {
+    Route::put('/change-password',  'changePassword');
+});
 
 Route::group(
     ['prefix' => 'hotels'], // Thêm `prefix` để xác định endpoint chung của API
