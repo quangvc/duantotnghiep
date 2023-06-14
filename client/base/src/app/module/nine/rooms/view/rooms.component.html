@@ -15,7 +15,7 @@
     <tr *ngFor="let data of basicTable.data; let i = index">
       <td>{{ i + 1 }}</td>
       <td>{{ data.room_number }}</td>
-      <td>{{ data.txtRoomType }}</td>
+      <td>{{ data.room_type.name }}</td>
       <td>{{ data.txtStatus }}</td>
       <td>
         <q-menu

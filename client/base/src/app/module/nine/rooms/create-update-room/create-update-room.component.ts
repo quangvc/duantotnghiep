@@ -1,7 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { NzMessageService } from 'ng-zorro-antd/message';
 import { Subscription } from 'rxjs';
+import { ERROR, SUCCESS } from 'src/app/module/_mShared/model/url.class';
 import { HotelsService } from 'src/app/module/_mShared/service/hotels.service';
 import { RoomTypeService } from 'src/app/module/_mShared/service/room_type.service';
 import { RoomsService } from 'src/app/module/_mShared/service/rooms.service';
@@ -25,7 +27,8 @@ export class CreateUpdateRoomComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private roomTypeService: RoomTypeService,
     private hotelsService: HotelsService,
-    private roomsService: RoomsService
+    private roomsService: RoomsService,
+    private message: NzMessageService
   ) { }
 
   roomTypes: any[] = [];
@@ -44,7 +47,7 @@ export class CreateUpdateRoomComponent implements OnInit, OnDestroy {
       hotel_id: [null,Validators.required],
       room_type_id: [null,Validators.required],
       room_number: [null,Validators.required],
-      status: [-1]
+      status: [1]
     })
   }
 
@@ -60,7 +63,7 @@ export class CreateUpdateRoomComponent implements OnInit, OnDestroy {
         this.hotels = hotel;
       },
       error: (err) => {
-        alert(err)
+        this.message.create(ERROR, err.message);
       }
     })
 
@@ -68,12 +71,12 @@ export class CreateUpdateRoomComponent implements OnInit, OnDestroy {
   }
 
   getRoomTypes(){
-    let obs = this.roomTypeService.getRoomType().subscribe({
+    let obs = this.roomTypeService.getRoomTypes().subscribe({
       next: (roomType) => {
         this.roomTypes = roomType;
       },
       error: (err) => {
-        alert(err)
+        this.message.create(ERROR, err.message);
       }
     })
 
@@ -84,19 +87,20 @@ export class CreateUpdateRoomComponent implements OnInit, OnDestroy {
   handleOk(){
     if(this.formRoom.valid){
       let create = this.roomsService.createRoom(this.formRoom.value);
-      let update:any;
-      if(this.room){
-        update = this.roomsService.updateRoom(this.room.id,this.formRoom.value);
-      }
+      // let update:any;
+      // if(this.room){
+      //   update = this.roomsService.updateRoom(this.room.id,this.formRoom.value);
+      // }
 
-      let createUpdate = this.room ? update : create;
+      let createUpdate = create;
 
       createUpdate.subscribe({
         next: (room:any) => {
           this.closeModal.emit();
+          this.message.create(SUCCESS, `This is a message of ${SUCCESS}`);
         },
         error: (err:any) => {
-          alert(err);
+          this.message.create(ERROR, err);
         }
       })
     }

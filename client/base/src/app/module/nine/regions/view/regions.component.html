@@ -13,7 +13,6 @@
     <tr *ngFor="let data of basicTable.data; let i = index">
       <td>{{ i + 1 }}</td>
       <td>{{ data.name }}</td>
-      <td>{{ data.txtStatus }}</td>
       <td>
         <q-menu
           [model]="menus"
@@ -27,6 +26,6 @@
 <create-update-region
   *ngIf="displayCreateUpdateRegion"
   [displayCreateUpdateRegion]="displayCreateUpdateRegion"
-  [region]="region"
+  [regionId]="regionId"
   (closeModal)="cancel($event)">
 </create-update-region>
