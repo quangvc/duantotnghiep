@@ -12,7 +12,7 @@ class Image extends Model
     protected $table = 'tbl_images';
 
     protected $fillable = [
-        'path', 'hotel_id', 'room_type_id'
+        'path', 'hotel_id', 'room_type_id', 'updated_at', 'created_at'
     ];
 
     public function room_type(): BelongsTo
@@ -24,5 +24,4 @@ class Image extends Model
     {
         return $this->belongsTo(Hotel::class);
     }
-
 }
