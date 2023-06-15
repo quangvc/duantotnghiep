@@ -59,8 +59,8 @@ Route::group(
     function () {
         Route::get('/', [RoomController::class, 'index'])->middleware('permission:view_room');
         Route::post('/', [RoomController::class, 'store'])->middleware('permission:view_room');
-        Route::get('{id}', [RoomController::class, 'show'])->middleware('permission:show_room');
-        Route::put('{id}', [RoomController::class, 'update'])->middleware('permission:edit_room');
+        Route::get('/{id}', [RoomController::class, 'show'])->middleware('permission:show_room');
+        Route::put('/{id}', [RoomController::class, 'update'])->middleware('permission:edit_room');
         Route::delete('/{id}', [RoomController::class, 'destroy'])->middleware('permission:delete_room');
     }
 );
@@ -88,11 +88,11 @@ Route::group(
 Route::group(
     ['prefix' => 'coupons'], // Thêm `prefix` để xác định endpoint chung của API
     function () {
-        Route::get('/', [BlogController::class, 'index']);
-        Route::post('/', [BlogController::class, 'store']);
-        Route::post('/{id}', [BlogController::class, 'show']);
-        Route::put('/{id}', [BlogController::class, 'update']);
-        Route::delete('/{id}', [BlogController::class, 'destroy']);
+        Route::get('/', [CouponController::class, 'index']);
+        Route::post('/', [CouponController::class, 'store']);
+        Route::post('/{id}', [CouponController::class, 'show']);
+        Route::put('/{id}', [CouponController::class, 'update']);
+        Route::delete('/{id}', [CouponController::class, 'destroy']);
     }
 );
 Route::group(

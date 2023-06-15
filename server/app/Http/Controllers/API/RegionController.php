@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Models\Region;
 use App\Http\Requests\RegionRequest;
+use App\Http\Resources\API\RegionResource;
 use App\Traits\MessageStatusAPI;
 use Illuminate\Support\Facades\DB;
 
@@ -19,7 +20,7 @@ class RegionController extends Controller
         return response()->json(['data' => $regions, 'message' => 'Message'], 200);
     }
 
-    public function create(RegionRequest $request)
+    public function store(RegionRequest $request)
     {
         $validated = $request->validated();
         $region = new Region([
@@ -52,5 +53,15 @@ class RegionController extends Controller
             'name' => $validated['name'],
         ]);
         return MessageStatusAPI::update();
+    }
+
+    public function show($id)
+    {
+        $region = Region::find($id);
+        if ($region) {
+            return new RegionResource($region);
+        } else {
+            return MessageStatusAPI::notFound();
+        }
     }
 }
