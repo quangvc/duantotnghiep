@@ -13,8 +13,13 @@ constructor(
 ) { }
 
 URL = 'http://localhost:3000/users/';
+URL2 = 'http://127.0.0.1:8000/api/users';
 
 getUser(): Observable<UserDto>{
+  return this.http.get(this.URL)
+}
+
+getUser2(): Observable<any>{
   return this.http.get(this.URL)
 }
 

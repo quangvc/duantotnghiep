@@ -1,6 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { NzMessageService } from 'ng-zorro-antd/message';
 import { Subscription } from 'rxjs';
 import { MenuItem } from 'src/app/module/_mShared/model/menuItem.class';
+import { ERROR } from 'src/app/module/_mShared/model/url.class';
 import { RoomTypeService } from 'src/app/module/_mShared/service/room_type.service';
 
 @Component({
@@ -15,7 +17,8 @@ export class RoomTypesComponent implements OnInit, OnDestroy {
   displayCreateUpdateRoomType: boolean = false;
 
   constructor(
-    private roomTypeService: RoomTypeService
+    private roomTypeService: RoomTypeService,
+    private message: NzMessageService
   ) { }
 
   roomTypes:any[] = [];
@@ -46,8 +49,13 @@ export class RoomTypesComponent implements OnInit, OnDestroy {
   }
 
   getRoomTypes(){
-    let obs = this.roomTypeService.getRoomType().subscribe((res) => {
-      this.roomTypes = res;
+    let obs = this.roomTypeService.getRoomTypes().subscribe({
+      next: (res) => {
+        this.roomTypes = res;
+      },
+      error: (err) => {
+        this.message.create(ERROR, err.message)
+      }
     })
     this.subscription.add(obs);
   }
@@ -66,6 +74,7 @@ export class RoomTypesComponent implements OnInit, OnDestroy {
   cancel(event:any){
     this.displayCreateUpdateRoomType = false;
     this.getRoomTypes();
+    alert("thành công !")
   }
 
   ngOnDestroy(){

@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { NzMessageService } from 'ng-zorro-antd/message';
+import { firstValueFrom } from 'rxjs';
+import { AuthService } from 'src/app/auth/_aShared/service/auth.service';
 import { MenuItem } from 'src/app/module/_mShared/model/menuItem.class';
 
 @Component({
@@ -8,7 +12,7 @@ import { MenuItem } from 'src/app/module/_mShared/model/menuItem.class';
 })
 export class NineLayoutComponent implements OnInit {
 
-  constructor() { }
+  constructor(private authService: AuthService,private router: Router,private nzMessageService: NzMessageService) { }
   isCollapsed = true;
 
   flexWidth80: string = 'flex: 0 0 80px; max-width: 80px; min-width: 80px; width: 80px;';
@@ -104,6 +108,19 @@ export class NineLayoutComponent implements OnInit {
         ]
       },
     ]
+  }
+
+  async logOut(){
+    await firstValueFrom(this.authService.createLogout());
+    sessionStorage.clear();
+    this.router.navigate(['login'])
+  }
+
+  confirm(): void {
+    this.logOut();
+  }
+
+  cancel(): void {
   }
 
 }

@@ -1,7 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { NzMessageService } from 'ng-zorro-antd/message';
 import { Observable, Subscription, firstValueFrom } from 'rxjs';
 import { NineStatus } from 'src/app/module/_mShared/enum/enum';
 import { MenuItem } from 'src/app/module/_mShared/model/menuItem.class';
+import { ERROR } from 'src/app/module/_mShared/model/url.class';
 import { Enum } from 'src/app/module/_mShared/service/enum.service';
 import { HotelsService } from 'src/app/module/_mShared/service/hotels.service';
 import { RegionsService } from 'src/app/module/_mShared/service/regions.service';
@@ -20,6 +22,7 @@ export class HotelsComponent implements OnInit, OnDestroy {
   constructor(
     private hotelsService: HotelsService,
     private regionsService: RegionsService,
+    private message: NzMessageService
     ) { }
 
   hotels: any[] = [];
@@ -37,10 +40,14 @@ export class HotelsComponent implements OnInit, OnDestroy {
   }
 
   getHotels(){
-    let obs = this.hotelsService.getHotels().subscribe((res) => {
-      this.hotels = res;
-      this.viewNameStatus(this.hotels);
-      this.viewNameRegion(this.hotels);
+    let obs = this.hotelsService.getHotels().subscribe({
+      next: (res) => {
+        this.hotels = res.data;
+        this.viewNameStatus(res.data);
+      },
+      error: (err) => {{
+        this.message.create(ERROR, err.message);
+      }}
     })
     this.subscription.add(obs);
   }
@@ -52,17 +59,6 @@ export class HotelsComponent implements OnInit, OnDestroy {
           item.txtStatus = status.text;
         }
       });
-    }
-  }
-
-  async viewNameRegion(hotels:any){
-    for (const item of hotels) {
-      let region : any[] = await firstValueFrom(this.regionsService.getRegion());
-      for (const iterator of region) {
-        if(item.region_id == iterator.id){
-          item.txtRegion = iterator.name;
-        }
-      }
     }
   }
 
