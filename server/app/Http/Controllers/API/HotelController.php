@@ -8,6 +8,7 @@ use App\Models\Hotel;
 use App\Traits\MessageStatusAPI;
 use App\Http\Requests\HotelRequest;
 use App\Http\Resources\API\HotelResource;
+use App\Models\Image;
 
 class HotelController extends Controller
 {
@@ -34,7 +35,7 @@ class HotelController extends Controller
         return MessageStatusAPI::show($hotelDetail);
     }
 
-    public function create(HotelRequest $request)
+    public function store(HotelRequest $request)
     {
         $validated = $request->validated();
 
@@ -45,8 +46,9 @@ class HotelController extends Controller
             'description' => $validated['description'],
             'star_rating' => $validated['star_rating'],
             'region_id' => $validated['region_id'],
-            'status' => $validated['status'],
+            'status' => 1
         ]);
+
         $hotel->save();
 
         return MessageStatusAPI::store();
