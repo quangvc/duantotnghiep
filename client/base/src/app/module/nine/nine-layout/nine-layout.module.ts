@@ -12,8 +12,8 @@ import { SharedModule } from 'src/app/_shared/shared/shared.module';
     NzLayoutModule,
     NzBreadCrumbModule,
     NzMenuModule,
+    SharedModule,
     NineLayoutRoutes,
-    SharedModule
   ],
   declarations: [NineLayoutComponent]
 })

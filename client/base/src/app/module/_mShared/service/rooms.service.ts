@@ -1,0 +1,43 @@
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { ROOMS } from '../model/url.class';
+
+@Injectable({
+  providedIn: 'root',
+})
+export class RoomsService {
+  sessionUser: any = sessionStorage.getItem('user');
+  user: any = JSON.parse(this.sessionUser);
+
+  private API_URL = 'http://127.0.0.1:8000/api';
+
+  private httpOptions = {
+    headers: new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${this.user.token}`,
+    }),
+  };
+
+  constructor(private http: HttpClient) {}
+
+  getRooms(): Observable<any> {
+    const url = `${this.API_URL}/${ROOMS}`;
+    return this.http.get<any>(url, this.httpOptions);
+  }
+
+  createRoom(data: any): Observable<any> {
+    const url = `${this.API_URL}/${ROOMS}/create`;
+    return this.http.post<any>(url, data, this.httpOptions);
+  }
+
+  updateRoom(id: any, data: any): Observable<any> {
+    const url = `${this.API_URL}/${ROOMS}/${id}`;
+    return this.http.put<any>(url, data, this.httpOptions);
+  }
+
+  deleteRegion(id: any): Observable<any> {
+    const url = `${this.API_URL}/${ROOMS}/${id}`;
+    return this.http.delete(url, this.httpOptions);
+  }
+}

@@ -1,6 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { NzMessageService } from 'ng-zorro-antd/message';
 import { Subscription } from 'rxjs';
+import { NineStatus } from 'src/app/module/_mShared/enum/enum';
 import { MenuItem } from 'src/app/module/_mShared/model/menuItem.class';
+import { ERROR, SUCCESS } from 'src/app/module/_mShared/model/url.class';
+import { Enum } from 'src/app/module/_mShared/service/enum.service';
 import { RegionsService } from 'src/app/module/_mShared/service/regions.service';
 
 @Component({
@@ -10,25 +14,51 @@ import { RegionsService } from 'src/app/module/_mShared/service/regions.service'
 })
 export class RegionsComponent implements OnInit, OnDestroy {
 
+  private subscription = new Subscription();
+
   displayCreateUpdateRegion: boolean = false;
 
   constructor(
-    private regionService: RegionsService
+    private regionService: RegionsService,
+    private message: NzMessageService
   ) { }
 
   regions: any[] = [];
-  region: any;
+  regionId: any;
   menus: MenuItem[] = [];
+
+  statusOption: any;
 
   ngOnInit() {
     this.getRegion();
+    this.getOptionEnum();
   }
 
+  getOptionEnum(){
+    this.statusOption = Enum.convertEnum(NineStatus);
+  }
+
+  // viewNameStatus(regions:any){
+  //   for (const item of regions) {
+  //     this.statusOption.forEach((status:any) => {
+  //       if(item.status == status.value){
+  //         item.txtStatus = status.text;
+  //       }
+  //     });
+  //   }
+  // }
+
   getRegion(){
-    let obs = this.regionService.getRegion().subscribe((res) => {
-      this.regions = res;
+    let obs = this.regionService.getRegions().subscribe({
+      next: (res) => {
+        this.regions = res.data;
+      },
+      error: (err) => {
+        this.message.create(ERROR, `${err.message}`)
+      }
     })
 
+    this.subscription.add(obs);
   }
 
   dropdownItemsButton(data:any){
@@ -54,8 +84,9 @@ export class RegionsComponent implements OnInit, OnDestroy {
   }
 
   editRegion(region:any){
-    this.region = region;
+    this.regionId = region.id;
     this.displayCreateUpdateRegion = true;
+    console.log(region);
   }
 
   cancel(event:any){
@@ -64,7 +95,7 @@ export class RegionsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(){
-
+    this.subscription.unsubscribe();
   }
 
 }
