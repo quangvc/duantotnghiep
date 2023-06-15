@@ -19,9 +19,7 @@ class BlogResource extends JsonResource
             'title'=>$this->title,
             'content'=>$this->content,
             'image'=>$this->image,
-            'user_id'=>[
-                'name'=>$this->user->name,
-            ],
+            'user_name'=>$this->user->name,
         ];
     }
 }

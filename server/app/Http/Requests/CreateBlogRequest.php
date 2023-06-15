@@ -26,7 +26,6 @@ class CreateBlogRequest extends FormRequest
         return [
             'title'     => 'required|string',
             'content'   => 'required|string', 
-            'user_id'   => 'required|int', 
         ];
     }
     public function messages()
@@ -34,7 +33,6 @@ class CreateBlogRequest extends FormRequest
        return [
         'title.required'   => 'vui lòng không bỏ trống title và ghi đúng kiểu dữ liệu',
         'content.required' => 'vui lòng không bỏ trống content và ghi đúng kiểu dữ liệu',
-        'user_id.required' => 'vui lòng không bỏ trống user_id và ghi đúng kiểu dữ liệu',
        ];
     }
 }

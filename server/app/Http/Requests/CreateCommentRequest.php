@@ -25,12 +25,14 @@ class CreateCommentRequest extends FormRequest
     {
         return [
             'content'   => 'required', 
+            'rating'=> 'required', 
         ];
     }
     public function messages()
     {
        return [
         'content.required' => 'vui lòng không boe trống ',
+        'rating.required' => 'vui lòng không boe trống ',
        ];
     }
 }
