@@ -47,7 +47,6 @@ Route::group(['prefix' => 'users', 'controller' => UserController::class], funct
     Route::delete('/{user}', 'destroy');
 });
 
-
 Route::group(
     ['prefix' => 'hotels'], // Thêm `prefix` để xác định endpoint chung của API
     function () {

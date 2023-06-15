@@ -39,16 +39,6 @@ class UserController extends Controller
 
         $user= User::create($request->all());
 
-        // $user = User::create([
-        //     'name' => $fields['name'],
-        //     'email' => $fields['email'],
-        //     'phone_number' => $fields['phone_number'],
-        //     'password' => bcrypt($fields['password']),
-        //     'gender' => $request->gender,
-        //     'active' => $request->active,
-        //     'hotel_id' => $request->hotel_id,
-        // ]);
-
         if ($request->role == 'user') {
             $this->assignRoleClient($user); // add role user
         } elseif ($request->role == 'manager') {
