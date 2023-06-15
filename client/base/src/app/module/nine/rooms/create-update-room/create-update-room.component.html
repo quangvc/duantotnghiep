@@ -5,29 +5,27 @@
   (nzOnCancel)="handleCancel()"
   (nzOnOk)="handleOk()">
   <ng-container *nzModalContent>
-    <form>
+    <form [formGroup]="formRoom">
       <div class="row">
 
         <div class="col-12">
           <div class="mb-3">
-            <label for="region" class="form-label">{{'hotel.name' | translate}}</label>
-            <select class="form-select" aria-label="Default select example">
-              <option selected>Open this select menu</option>
-              <option value="1">One</option>
-              <option value="2">Two</option>
-              <option value="3">Three</option>
+            <label for="hotel" class="form-label">{{'hotel.name' | translate}}</label>
+            <select class="form-select" formControlName="hotel_id" aria-label="Default select example">
+              <ng-container *ngFor="let hotel of hotels">
+                <option [value]="hotel.id">{{hotel.name}}</option>
+              </ng-container>
             </select>
           </div>
         </div>
 
         <div class="col-12">
           <div class="mb-3">
-            <label for="region" class="form-label">{{'room_type.name' | translate}}</label>
-            <select class="form-select" aria-label="Default select example">
-              <option selected>Open this select menu</option>
-              <option value="1">One</option>
-              <option value="2">Two</option>
-              <option value="3">Three</option>
+            <label for="room_type" class="form-label">{{'room_type.name' | translate}}</label>
+            <select class="form-select" formControlName="room_type_id" aria-label="Default select example">
+              <ng-container *ngFor="let roomType of roomTypes">
+                <option [value]="roomType.id">{{roomType.name}}</option>
+              </ng-container>
             </select>
           </div>
         </div>
@@ -35,7 +33,7 @@
         <div class="col-12">
           <div class="mb-3">
             <label for="name" class="form-label">{{'room.room_number' | translate}}</label>
-            <input type="number" class="form-control" id="name" placeholder="name@example.com">
+            <input type="number" class="form-control" id="name" formControlName="room_number" placeholder="Số phòng">
           </div>
         </div>
 

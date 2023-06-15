@@ -24,7 +24,6 @@ export class RegisterComponent implements OnInit {
 
   private formBuildRegister(){
     this.formRegister = this.fb.group({
-      id: ["abc-xyc-1qwe"],
       name: [null, Validators.required],
       username: [null, Validators.required],
       password: [null, Validators.required],
@@ -32,6 +31,10 @@ export class RegisterComponent implements OnInit {
       role: [],
       isActive: [false]
     })
+  }
+
+  linkToLogin(){
+    this.router.navigate(['login']);
   }
 
   save(){

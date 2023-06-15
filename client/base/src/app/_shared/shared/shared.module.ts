@@ -15,6 +15,8 @@ import { NzMessageModule } from 'ng-zorro-antd/message';
 import { NzModalModule } from 'ng-zorro-antd/modal';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
+import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 
 @NgModule({
   imports: [],
@@ -37,6 +39,8 @@ import { HttpClientModule } from '@angular/common/http';
     NzInputModule,
     NzEmptyModule,
     NzTableModule,
+    NzCheckboxModule,
+    NzPopconfirmModule
   ],
 })
 export class SharedModule {}

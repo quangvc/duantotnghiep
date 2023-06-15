@@ -9,11 +9,8 @@ trait MessageStatusAPI
      * 
      * @return string
      */
-    public static function detail($request)
-    {
-        return response()->json(['request' => $request, 'message' => 'Retrieved successfully'], 400);
-    }
-    
+
+
     public static function show($data = null, $message = 'Retrieved successfully', $statusCode = 200)
     {
         return response()->json([
@@ -21,7 +18,7 @@ trait MessageStatusAPI
             'message' => $data == null ? 'Data not found' : $message,
         ], $data == null ? 404 : $statusCode);
     }
-    
+
     /**
      * Message Store
      * 

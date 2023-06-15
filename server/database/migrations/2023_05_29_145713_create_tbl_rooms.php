@@ -19,6 +19,7 @@ return new class extends Migration
             $table->integer('room_type_id');
             $table->integer('room_number');
             $table->tinyInteger('status');
+            $table->timestamps();
         });
     }
 
