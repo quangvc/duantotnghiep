@@ -1,10 +1,7 @@
 <?php
 
-use App\Http\Controllers\API\BookingController;
-
 use App\Http\Controllers\API\BlogController;
 use App\Http\Controllers\Api\CommentController;
-
 use App\Http\Controllers\API\RegionController;
 use App\Http\Controllers\API\RoomController;
 use App\Http\Controllers\API\RoomTypesController;
@@ -13,13 +10,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\API\HotelController;
-
-use App\Http\Controllers\API\CouponController;
-
-
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\API\ImageController;
 use App\Http\Controllers\API\UserController;
-use App\Models\Room;
-
 
 /*
 |--------------------------------------------------------------------------
@@ -38,9 +31,15 @@ use App\Models\Room;
 
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
-Route::post('/send-reset-link', [AuthController::class, 'sentResetLink']);
+Route::post('/send-reset-link', [AuthController::class, 'sentResetLink'])->name('password.reset');
 
 Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logout']);
+
+Route::apiResource('users', UserController::class);
+
+Route::prefix('profile')->controller(ProfileController::class)->group(function () {
+    Route::put('/change-password',  'changePassword');
+});
 
 
 Route::group(
@@ -81,12 +80,12 @@ Route::group(
         Route::get('/', [RegionController::class, 'index']);
         Route::post('/', [RegionController::class, 'store']);
         Route::put('/{id}', [RegionController::class, 'update']);
-        Route::get('/{id}', [RegionController::class, 'show']);
+        Route::get('/{id}', [RegionController::class, 'update']);
         Route::delete('/{id}', [RegionController::class, 'destroy']);
     }
 );
 Route::group(
-    ['prefix' => 'coupons'], // Thêm `prefix` để xác định endpoint chung của API
+    ['prefix' => 'blogs'], // Thêm `prefix` để xác định endpoint chung của API
     function () {
         Route::get('/', [CouponController::class, 'index']);
         Route::post('/', [CouponController::class, 'store']);
@@ -96,12 +95,22 @@ Route::group(
     }
 );
 Route::group(
-    ['prefix' => 'bookings'], // Thêm `prefix` để xác định endpoint chung của API
+    ['prefix' => 'comment'], // Thêm `prefix` để xác định endpoint chung của API
     function () {
         Route::get('/', [CommentController::class, 'index']);
         Route::post('/', [CommentController::class, 'store']);
         Route::post('/{id}', [CommentController::class, 'show']);
         Route::put('/{id}', [CommentController::class, 'update']);
         Route::delete('/{id}', [CommentController::class, 'destroy']);
+    }
+);
+Route::group(
+    ['prefix' => 'image'], // Thêm `prefix` để xác định endpoint chung của API
+    function () {
+        Route::get('/', [ImageController::class, 'index']);
+        Route::post('/hotel/{id}', [ImageController::class, 'storeHotel']);
+        Route::post('/room-type/{id}', [ImageController::class, 'storeRoomType']);
+        Route::put('/{id}', [ImageController::class, 'update']);
+        Route::delete('/{id}', [ImageController::class, 'destroy']);
     }
 );

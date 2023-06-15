@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Illuminate\Support\Facades\Password;
@@ -58,18 +57,17 @@ class AuthController extends Controller
         $fields = $request->validate([
             'name' => 'required|string|min:6|max:50',
             'email' => 'required_without:phone|email|unique:tbl_users,email',
-            'phone_number' => 'required|unique:tbl_users,phone_number|numeric|digits_between:9,12',
+            'phone_number' => 'required_without:email|unique:tbl_users,phone_number|numeric|digits_between:9,12',
             'password' => 'required|confirmed',
         ]);
         // phải có input name password_confirmation
 
-        $user = User::create([
-            'name' => $fields['name'],
-            'email' => $fields['email'],
-            'phone_number' => $fields['phone_number'],
-            'password' => bcrypt($fields['password']),
-            'gender' => $request->gender
-        ]);
+        $user = User::create(
+            array_merge(
+                $request->except(['password']),
+                ['password' => bcrypt($request->input('password'))]
+            )
+        );
 
         $this->assignRoleClient($user); // add role user
         $token = $user->createToken('authToken')->plainTextToken;
@@ -98,7 +96,7 @@ class AuthController extends Controller
         $request->validate([
             'token' => 'required',
             'email' => 'required|email',
-            'password' => 'required|min:8|confirmed',
+            'password' => 'required|min:6|confirmed',
         ]);
 
         $status = Password::reset(

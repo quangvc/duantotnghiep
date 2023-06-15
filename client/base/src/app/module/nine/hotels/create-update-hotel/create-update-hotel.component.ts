@@ -1,5 +1,8 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { NzMessageService } from 'ng-zorro-antd/message';
+import { Subscription } from 'rxjs';
+import { ERROR, SUCCESS } from 'src/app/module/_mShared/model/url.class';
 import { HotelsService } from 'src/app/module/_mShared/service/hotels.service';
 import { RegionsService } from 'src/app/module/_mShared/service/regions.service';
 
@@ -7,7 +10,9 @@ import { RegionsService } from 'src/app/module/_mShared/service/regions.service'
   selector: 'create-update-hotel',
   templateUrl: './create-update-hotel.component.html'
 })
-export class AddHotelComponent implements OnInit {
+export class AddHotelComponent implements OnInit, OnDestroy {
+
+  private subscription = new Subscription();
 
   @Input() hotel: any;
   @Input() displayCreateUpdateHotel: boolean = false;
@@ -18,7 +23,8 @@ export class AddHotelComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private regionsService: RegionsService,
-    private hotelsService: HotelsService
+    private hotelsService: HotelsService,
+    private message: NzMessageService
   ) { }
 
   regionOptions: any[] = [];
@@ -42,9 +48,16 @@ export class AddHotelComponent implements OnInit {
   }
 
   getRegion(){
-    this.regionsService.getRegion().subscribe((res) => {
-      this.regionOptions = res;
+    let obs = this.regionsService.getRegions().subscribe({
+      next: (res) => {
+        this.regionOptions = res;
+      },
+      error: (err) => {
+        this.message.create(ERROR, err)
+      }
     })
+
+    this.subscription.add(obs);
   }
 
   getValueFormUpdate(){
@@ -56,14 +69,20 @@ export class AddHotelComponent implements OnInit {
   handleOk(){
     if(this.formHotel.valid){
       let create = this.hotelsService.createHotel(this.formHotel.value);
-      let update;
-      if(this.hotel){
-        update = this.hotelsService.updateHotel(this.hotel.id,this.formHotel.value);
-      }
+      // let update;
+      // if(this.hotel){
+      //   update = this.hotelsService.updateHotel(this.hotel.id,this.formHotel.value);
+      // }
 
-      let createUpdate = this.hotel ? update : create;
-      createUpdate?.subscribe((res) => {
-        this.closeModal.emit();
+      let createUpdate = create;
+      createUpdate.subscribe({
+        next: (res) => {
+          this.closeModal.emit();
+          this.message.create(SUCCESS, `This is a message of ${SUCCESS}`);
+        },
+        error: (err) => {
+          this.message.create(ERROR, err.message);
+        }
       })
 
     }
@@ -71,5 +90,9 @@ export class AddHotelComponent implements OnInit {
 
   handleCancel(){
     this.closeModal.emit();
+  }
+
+  ngOnDestroy(): void {
+      this.subscription.unsubscribe();
   }
 }
