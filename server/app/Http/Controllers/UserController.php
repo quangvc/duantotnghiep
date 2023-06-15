@@ -19,7 +19,7 @@ class UserController extends Controller
     {
         $users = User::with('roles')->get();
 
-        return MessageStatusAPI::show(UserResource::collection($users), 'List users', 200);
+        return MessageStatusAPI::show(UserResource::collection($users));
     }
 
     /**
@@ -37,15 +37,17 @@ class UserController extends Controller
             'password' => 'required|confirmed',
         ]);
 
-        $user = User::create([
-            'name' => $fields['name'],
-            'email' => $fields['email'],
-            'phone_number' => $fields['phone_number'],
-            'password' => bcrypt($fields['password']),
-            'gender' => $request->gender,
-            'active' => $request->active,
-            'hotel_id' => $request->hotel_id,
-        ]);
+        $user= User::create($request->all());
+
+        // $user = User::create([
+        //     'name' => $fields['name'],
+        //     'email' => $fields['email'],
+        //     'phone_number' => $fields['phone_number'],
+        //     'password' => bcrypt($fields['password']),
+        //     'gender' => $request->gender,
+        //     'active' => $request->active,
+        //     'hotel_id' => $request->hotel_id,
+        // ]);
 
         if ($request->role == 'user') {
             $this->assignRoleClient($user); // add role user
@@ -69,7 +71,7 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        return MessageStatusAPI::show(new UserResource($user), 'User information', 200);
+        return MessageStatusAPI::show(new UserResource($user));
     }
 
     /**

@@ -32,11 +32,18 @@ Route::post('/send-reset-link', [AuthController::class, 'sentResetLink'])->name(
 
 Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logout']);
 
-Route::apiResource('users', UserController::class);
-
 Route::prefix('profile')->controller(ProfileController::class)->group(function () {
-    Route::put('/change-password',  'changePassword');
+    Route::put('/change-password', 'changePassword');
 });
+
+Route::group(['prefix' => 'users', 'controller' => UserController::class], function () {
+    Route::get('/', 'index');
+    Route::get('/{user}', 'show');
+    Route::post('/', 'store');
+    Route::put('/{user}', 'update');
+    Route::delete('/{user}', 'destroy');
+});
+
 
 Route::group(
     ['prefix' => 'hotels'], // Thêm `prefix` để xác định endpoint chung của API
