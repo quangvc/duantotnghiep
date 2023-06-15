@@ -48,7 +48,6 @@ Route::group(['prefix' => 'users', 'controller' => UserController::class], funct
 });
 
 
-
 Route::group(
     ['prefix' => 'hotels'], // Thêm `prefix` để xác định endpoint chung của API
     function () {
