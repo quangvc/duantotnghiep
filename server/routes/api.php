@@ -75,6 +75,7 @@ Route::group(
         Route::delete('/{id}', [RoomTypesController::class, 'destroy']);
     }
 );
+
 Route::group(
     ['prefix' => 'regions'], // Thêm `prefix` để xác định endpoint chung của API
     function () {
@@ -86,17 +87,17 @@ Route::group(
     }
 );
 Route::group(
-    ['prefix' => 'coupons'], // Thêm `prefix` để xác định endpoint chung của API
+    ['prefix' => 'blogs'], // Thêm `prefix` để xác định endpoint chung của API
     function () {
         Route::get('/', [BlogController::class, 'index']);
         Route::post('/', [BlogController::class, 'store']);
-        Route::post('/{id}', [BlogController::class, 'show']);
+        Route::get('/{id}', [BlogController::class, 'show']);
         Route::put('/{id}', [BlogController::class, 'update']);
         Route::delete('/{id}', [BlogController::class, 'destroy']);
     }
 );
 Route::group(
-    ['prefix' => 'bookings'], // Thêm `prefix` để xác định endpoint chung của API
+    ['prefix' => 'comment'], // Thêm `prefix` để xác định endpoint chung của API
     function () {
         Route::get('/', [CommentController::class, 'index']);
         Route::post('/', [CommentController::class, 'store']);

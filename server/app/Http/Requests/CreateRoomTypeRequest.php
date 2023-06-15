@@ -24,16 +24,20 @@ class CreateRoomTypeRequest extends FormRequest
     public function rules()
     {
         return [
-            'name'              => 'required',
-            'price_per_night'   => 'required', 
-            'capacity' => 'required', 
-            'description' => 'required', 
+            'name'            => 'required|string',
+            'price_per_night' => 'required|int', 
+            'capacity'        => 'required|int', 
+            'description'     => 'required|string', 
         ];
     }
     public function messages()
     {
        return [
-        'required' => 'vui lòng không boe trống ',
+        'name.required'     => 'vui lòng không bỏ trống tên',
+        'name.string'       => 'vui long viet dung kieu du lieu',
+        'price_per_night'   => 'vui lòng không bỏ trống giá qua đêm và đúng kiểu dữ liệu', 
+        'capacity'          => 'vui lòng không bỏ trống số lượng và đúng kiểu dữ liệu', 
+        'description'       => 'vui lòng không bỏ trống mô tả và đúng kiểu dữ liệu', 
        ];
     }
 }

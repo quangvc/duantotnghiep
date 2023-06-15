@@ -35,7 +35,7 @@ class RoomController extends Controller
             'room_number' =>  $validated['room_number'],
             'hotel_id' =>  $validated['hotel_id'],
             'room_type_id' =>  $validated['room_type_id'],
-            'status' =>  $validated['status']
+            'status' =>  $validated['status'],
         ]);
         $room->save();
         return MessageStatusAPI::store();
