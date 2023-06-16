@@ -24,15 +24,17 @@ class CreateBlogRequest extends FormRequest
     public function rules()
     {
         return [
-            'title'              => 'required',
-            'content'   => 'required', 
-            'user_id' => 'required', 
+            'title'     => 'required',
+            'content'   => 'required|string',
+            'image'=>'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ];
     }
     public function messages()
     {
        return [
-        'required' => 'vui lòng không boe trống ',
+        'title.required'   => 'lỗi',
+        'content.required' => 'vui lòng không bỏ trống content và ghi đúng kiểu dữ liệu',
+        'image.required' => 'vui lòng không bỏ trống image',
        ];
     }
 }

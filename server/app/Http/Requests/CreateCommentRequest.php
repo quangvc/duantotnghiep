@@ -24,14 +24,15 @@ class CreateCommentRequest extends FormRequest
     public function rules()
     {
         return [
-            'content'              => 'required',
-            'rating'   => 'required', 
+            'content'   => 'required', 
+            'rating'=> 'required', 
         ];
     }
     public function messages()
     {
        return [
-        'required' => 'vui lòng không boe trống ',
+        'content.required' => 'vui lòng không boe trống ',
+        'rating.required' => 'vui lòng không boe trống ',
        ];
     }
 }
