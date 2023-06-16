@@ -32,7 +32,6 @@ class RoomTypesController extends Controller
         $roomType = RoomType::findOrFail($id);
         $roomType->update($request->all());
         return MessageStatusAPI::update();
-        // return response()->json($roomType, Response::HTTP_OK);
     }
     public function show($id){
         $roomtype = RoomType::find($id);

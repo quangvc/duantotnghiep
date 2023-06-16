@@ -9,6 +9,7 @@ use App\Models\Blog;
 use Illuminate\Http\Request;
 use App\Traits\MessageStatusAPI;
 use Illuminate\Http\Response;
+use Illuminate\Validation\Rule;
 
 class BlogController extends Controller
 {
@@ -22,13 +23,26 @@ class BlogController extends Controller
         $blog = new Blog([
             'title' => $validated['title'],
             'content' => $validated['content'],
+            'image' => $validated['image'],
             'user_id' => $user_id,
         ]);
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $filename = time() . '.' . $image->getClientOriginalExtension();
+            // $image->storeAs('public/Images/blog', $image);
+            $path = public_path('Images/blog');
+            $image->move($path, $filename);
+            $image = url('public/Images/blog' . $filename);
+            $blog->image = $filename;
+        }
         $blog->save();
         return MessageStatusAPI::store();
-       
     }
     public function update(CreateBlogRequest $request, $id){
+        $request->validate([
+            // 'title' => [Rule::unique('tbl_blogs')->ignore($request->id),]
+            'title'     => 'required|unique:tbl_blogs,title,'.$request->id,
+        ]);
         $blog = Blog::find($id);
         $user_id = auth()->user()->id;
         if(!$user_id){
@@ -36,6 +50,14 @@ class BlogController extends Controller
         }
         if($user_id !== $blog->user_id){
             return MessageStatusAPI::notFound();
+        }
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $filename = time() . '.' . $image->getClientOriginalExtension();
+            $path = public_path('Images/blog');
+            $image->move($path, $filename);
+            $image = url('public/Images/blog' . $filename);
+            $blog->image = $filename;
         }
         $blog->update($request->all());
         return MessageStatusAPI::update();
