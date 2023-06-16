@@ -1,7 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { NzMessageService } from 'ng-zorro-antd/message';
 import { Subscription, firstValueFrom } from 'rxjs';
 import { NineStatus } from 'src/app/module/_mShared/enum/enum';
 import { MenuItem } from 'src/app/module/_mShared/model/menuItem.class';
+import { ERROR } from 'src/app/module/_mShared/model/url.class';
 import { Enum } from 'src/app/module/_mShared/service/enum.service';
 import { RoomTypeService } from 'src/app/module/_mShared/service/room_type.service';
 import { RoomsService } from 'src/app/module/_mShared/service/rooms.service';
@@ -19,6 +21,7 @@ export class RoomsComponent implements OnInit, OnDestroy {
   constructor(
     private roomsService: RoomsService,
     private roomTypeService: RoomTypeService,
+    private message: NzMessageService
     ) {}
 
   rooms: any[] = [];
@@ -57,12 +60,11 @@ export class RoomsComponent implements OnInit, OnDestroy {
   getRooms() {
     let obs = this.roomsService.getRooms().subscribe({
       next: (room) => {
-        this.rooms = room;
-        this.viewNameStatus(room);
-        this.viewNameRoomType(room);
+        this.rooms = room.data;
+        this.viewNameStatus(room.data);
       },
       error: (err) => {
-        alert(err);
+        this.message.create(ERROR, err.message);
       },
     });
 
@@ -79,17 +81,6 @@ export class RoomsComponent implements OnInit, OnDestroy {
     }
   }
 
-  async viewNameRoomType(rooms:any){
-
-    for (const item of rooms) {
-      let roomTypes:any = await firstValueFrom(this.roomTypeService.getRoomType());
-      for (const roomType of roomTypes) {
-        if(roomType.id == item.room_type_id){
-          item.txtRoomType = roomType.name;
-        }
-      }
-    }
-  }
 
   addRoom() {
     this.displayCreateUpdateRoom = true;

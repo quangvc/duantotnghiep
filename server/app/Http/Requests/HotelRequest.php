@@ -6,18 +6,13 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class HotelRequest extends FormRequest
 {
+    public function authorize()
+    {
+        return true;
+    }
     public function rules()
     {
         return [
-<<<<<<< Updated upstream
-            'hotel_name' => 'required|max:255',
-            'hotel_phone' => 'required|max:20',
-            'hotel_address' => 'required|max:255',
-            'description' => 'nullable',
-            'star_rating' => 'required|integer|between:1,5',
-            'region_id' => 'required|exists:tbl_regions,id',
-            'status' => 'required|boolean',
-=======
             'hotel_name' => 'required|string|max:255',
             'hotel_phone' => 'required|string|max:20|min:8',
             'hotel_address' => 'required|string|max:255',
@@ -48,10 +43,6 @@ class HotelRequest extends FormRequest
             'region_id.required' => 'Vui lòng không được nhập quá 20 số !',
             'region_id.numeric' => 'Nhập không đúng kiểu dữ liệu !',
 
-
-
-
->>>>>>> Stashed changes
         ];
     }
 }
