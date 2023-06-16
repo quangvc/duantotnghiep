@@ -12,7 +12,7 @@ class Region extends Model
     protected $table = 'tbl_regions';
 
     protected $fillable = [
-        'name'
+        'name',
     ];
 
     public function hotels(): HasMany

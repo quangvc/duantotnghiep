@@ -14,6 +14,8 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\API\ImageController;
 use App\Http\Controllers\API\UserController;
 use App\Models\Hotel;
+use App\Http\Controllers\API\CouponController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -65,9 +67,8 @@ Route::group(
     function () {
         Route::get('/', [RoomController::class, 'index'])->middleware('permission:view_room');
         Route::post('/', [RoomController::class, 'store'])->middleware('permission:view_room');
-        Route::put('/changeStatus/{id}', [RoomController::class, 'changeStatus']);
-        Route::get('{id}', [RoomController::class, 'show'])->middleware('permission:show_room');
-        Route::put('{id}', [RoomController::class, 'update'])->middleware('permission:edit_room');
+        Route::get('/{id}', [RoomController::class, 'show'])->middleware('permission:show_room');
+        Route::put('/{id}', [RoomController::class, 'update'])->middleware('permission:edit_room');
         Route::delete('/{id}', [RoomController::class, 'destroy'])->middleware('permission:delete_room');
     }
 );
@@ -89,18 +90,18 @@ Route::group(
         Route::get('/', [RegionController::class, 'index']);
         Route::post('/', [RegionController::class, 'store']);
         Route::put('/{id}', [RegionController::class, 'update']);
-        Route::get('/{id}', [RegionController::class, 'update']);
+        Route::get('/{id}', [RegionController::class, 'show']);
         Route::delete('/{id}', [RegionController::class, 'destroy']);
     }
 );
 Route::group(
-    ['prefix' => 'blogs'], // Thêm `prefix` để xác định endpoint chung của API
+    ['prefix' => 'coupons'], // Thêm `prefix` để xác định endpoint chung của API
     function () {
-        Route::get('/', [BlogController::class, 'index']);
-        Route::post('/', [BlogController::class, 'store']);
-        Route::get('/{id}', [BlogController::class, 'show']);
-        Route::put('/{id}', [BlogController::class, 'update']);
-        Route::delete('/{id}', [BlogController::class, 'destroy']);
+        Route::get('/', [CouponController::class, 'index'])->middleware('permission:view_coupon');;
+        Route::post('/', [CouponController::class, 'store'])->middleware('permission:add_coupon');
+        Route::get('/{id}', [CouponController::class, 'show'])->middleware('permission:show_coupon');;
+        Route::put('/{id}', [CouponController::class, 'update'])->middleware('permission:edit_coupon');
+        Route::delete('/{id}', [CouponController::class, 'destroy'])->middleware('permission:delete_coupon');
     }
 );
 Route::group(
