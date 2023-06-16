@@ -13,6 +13,7 @@ use App\Http\Controllers\API\HotelController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\API\ImageController;
 use App\Http\Controllers\API\UserController;
+use App\Models\Hotel;
 
 /*
 |--------------------------------------------------------------------------
@@ -52,6 +53,7 @@ Route::group(
     function () {
         Route::get('/', [HotelController::class, 'index'])->middleware('permission:view_hotel');
         Route::post('/', [HotelController::class, 'store'])->middleware('permission:add_hotel');
+        Route::put('/changeStatus/{id}', [HotelController::class, 'changeStatus']);
         Route::put('/{id}', [HotelController::class, 'update'])->middleware('permission:edit_hotel');
         Route::get('/{id}', [HotelController::class, 'show'])->middleware('permission:show_hotel');
         Route::delete('/{id}', [HotelController::class, 'destroy'])->middleware('permission:delete_hotel');
@@ -63,6 +65,7 @@ Route::group(
     function () {
         Route::get('/', [RoomController::class, 'index'])->middleware('permission:view_room');
         Route::post('/', [RoomController::class, 'store'])->middleware('permission:view_room');
+        Route::put('/changeStatus/{id}', [RoomController::class, 'changeStatus']);
         Route::get('{id}', [RoomController::class, 'show'])->middleware('permission:show_room');
         Route::put('{id}', [RoomController::class, 'update'])->middleware('permission:edit_room');
         Route::delete('/{id}', [RoomController::class, 'destroy'])->middleware('permission:delete_room');
