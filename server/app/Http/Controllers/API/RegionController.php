@@ -14,8 +14,7 @@ class RegionController extends Controller
     public function index()
     {
         $regions = Region::all();
-        // $regions = DB::table('tbl_regions')
-        //             ->join('tbl_hotels')
+        
 
         return response()->json(['data' => $regions, 'message' => 'Message'], 200);
     }

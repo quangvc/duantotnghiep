@@ -13,6 +13,8 @@ use App\Http\Controllers\API\HotelController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\API\ImageController;
 use App\Http\Controllers\API\UserController;
+use App\Http\Controllers\API\CouponController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -80,18 +82,18 @@ Route::group(
         Route::get('/', [RegionController::class, 'index']);
         Route::post('/', [RegionController::class, 'store']);
         Route::put('/{id}', [RegionController::class, 'update']);
-        Route::get('/{id}', [RegionController::class, 'update']);
+        Route::get('/{id}', [RegionController::class, 'show']);
         Route::delete('/{id}', [RegionController::class, 'destroy']);
     }
 );
 Route::group(
-    ['prefix' => 'blogs'], // Thêm `prefix` để xác định endpoint chung của API
+    ['prefix' => 'coupons'], // Thêm `prefix` để xác định endpoint chung của API
     function () {
-        Route::get('/', [CouponController::class, 'index']);
-        Route::post('/', [CouponController::class, 'store']);
-        Route::post('/{id}', [CouponController::class, 'show']);
-        Route::put('/{id}', [CouponController::class, 'update']);
-        Route::delete('/{id}', [CouponController::class, 'destroy']);
+        Route::get('/', [CouponController::class, 'index'])->middleware('permission:view_coupon');;
+        Route::post('/', [CouponController::class, 'store'])->middleware('permission:add_coupon');
+        Route::get('/{id}', [CouponController::class, 'show'])->middleware('permission:show_coupon');;
+        Route::put('/{id}', [CouponController::class, 'update'])->middleware('permission:edit_coupon');
+        Route::delete('/{id}', [CouponController::class, 'destroy'])->middleware('permission:delete_coupon');
     }
 );
 Route::group(

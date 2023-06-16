@@ -21,10 +21,14 @@ class CouponsResource extends JsonResource
             'value' => $this->value,
             'min' => $this->min,
             'max' => $this->max,
-            'hotel_id' => [
-                'idHotel' => $this->hotel->id,
-                'name' => $this->hotel->hotel_name
+            'hotel'=> [
+                'id'=>$this->hotel->id,
+                'name'=>$this->hotel->region->name,
             ],
+            'quantity'=>$this->quantity,
+            'dateStart'=>$this->dateStart,
+            'dateEnd'=>$this->dateEnd,
+
         ];
     }
 }
