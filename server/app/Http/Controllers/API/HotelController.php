@@ -89,7 +89,6 @@ class HotelController extends Controller
             'description' => 'nullable',
             'star_rating' => 'required|numeric|min:1|max:5',
             'region_id' => 'required|exists:tbl_regions,id',
-            'status' => 'nullable',
         ]);
         $hotel->update($validatedData);
         return MessageStatusAPI::update();
