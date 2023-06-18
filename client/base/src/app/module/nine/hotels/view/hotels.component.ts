@@ -84,6 +84,7 @@ export class HotelsComponent implements OnInit, OnDestroy {
   };
 
   confirmChangeStatus(event:any, data:any){
+
     this.confirmModal = this.modal.confirm({
       nzTitle: `Xác thực sự kiện !!`,
       nzContent: 'Xác nhận thay đổi trạng thái ?',
@@ -93,11 +94,12 @@ export class HotelsComponent implements OnInit, OnDestroy {
           setTimeout(Math.random() > 0.5 ? resolve : reject, 1000);
         }).catch(() => console.log('Oops errors!'))
     });
-    console.log(data)
+
   }
 
   changeStatus(data:any){
-    let obs = this.hotelsService.changeStatus(data.id,data).subscribe({
+
+    let obs = this.hotelsService.changeStatus(data.id).subscribe({
       next: (res) => {
         this.message.create(SUCCESS, "Cập nhật thành công !!");
         this.getHotels();

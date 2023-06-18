@@ -47,8 +47,8 @@ export class HotelsService {
   //   return this.http.put(url, data, this.httpOptions)
   // }
 
-  changeStatus(id:any, data:any): Observable<any>{
-    const url = `${this.API_URL}/${HOTELS}/${id}`;
+  changeStatus(id:any, data?:any): Observable<any>{
+    const url = `${this.API_URL}/${HOTELS}/changeStatus/${id}`;
     return this.http.put(url,data,this.httpOptions)
   }
 
