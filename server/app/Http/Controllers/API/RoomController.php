@@ -28,7 +28,7 @@ class RoomController extends Controller
         return MessageStatusAPI::notFound();
     }
 
-    public function create(RoomRequest $request)
+    public function store(RoomRequest $request)
     {
         $validated = $request->validated();
         $room = Room::firstOrCreate([

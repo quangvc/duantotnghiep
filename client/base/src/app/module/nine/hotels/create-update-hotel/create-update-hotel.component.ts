@@ -14,7 +14,7 @@ export class AddHotelComponent implements OnInit, OnDestroy {
 
   private subscription = new Subscription();
 
-  @Input() hotel: any;
+  @Input() hotelId: any;
   @Input() displayCreateUpdateHotel: boolean = false;
   @Output() closeModal = new EventEmitter<any>();
 
@@ -32,13 +32,14 @@ export class AddHotelComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.createFormBuildHotel();
     this.getRegion();
+    this.getValueFormUpdate();
   }
 
   private createFormBuildHotel(){
     this.formHotel = this.fb.group({
       id: Math.floor(Math.random() * 999999),
-      name: [null, Validators.required],
-      address: [null, Validators.required],
+      hotel_name: [null, Validators.required],
+      hotel_address: [null, Validators.required],
       hotel_phone: [null, Validators.required],
       region_id: [, Validators.required],
       star_rating: [null],
@@ -50,10 +51,10 @@ export class AddHotelComponent implements OnInit, OnDestroy {
   getRegion(){
     let obs = this.regionsService.getRegions().subscribe({
       next: (res) => {
-        this.regionOptions = res;
+        this.regionOptions = res.data;
       },
       error: (err) => {
-        this.message.create(ERROR, err)
+        this.message.create(ERROR, err.error.message);
       }
     })
 
@@ -61,29 +62,36 @@ export class AddHotelComponent implements OnInit, OnDestroy {
   }
 
   getValueFormUpdate(){
-    if(this.hotel){
-      this.formHotel.patchValue(this.hotel);
+    if(this.hotelId){
+      let obs = this.hotelsService.findOne(this.hotelId).subscribe({
+        next: (res) => {
+          this.formHotel.patchValue(res.data);
+          console.log(res)
+        },
+        error: (err) => {
+          this.message.create(ERROR, err.error.message);
+        }
+      })
+      this.subscription.add(obs);
     }
   }
 
   handleOk(){
     if(this.formHotel.valid){
-      let create = this.hotelsService.createHotel(this.formHotel.value);
-      // let update;
-      // if(this.hotel){
-      //   update = this.hotelsService.updateHotel(this.hotel.id,this.formHotel.value);
-      // }
+      let id = this.hotelId;
 
-      let createUpdate = create;
-      createUpdate.subscribe({
-        next: (res) => {
-          this.closeModal.emit();
-          this.message.create(SUCCESS, `This is a message of ${SUCCESS}`);
-        },
-        error: (err) => {
-          this.message.create(ERROR, err.message);
-        }
-      })
+      if(id){
+        let update = this.hotelsService.updateHotel(id,this.formHotel.value);
+        update.subscribe({
+          next: (res) => {
+            this.closeModal.emit();
+            this.message.create(SUCCESS, `Cập nhật thành công!`);
+          },
+          error: (err) => {
+            this.message.create(ERROR, err.error.message);
+          }
+        })
+      }
 
     }
   }

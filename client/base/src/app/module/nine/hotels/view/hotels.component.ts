@@ -1,9 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NzMessageService } from 'ng-zorro-antd/message';
+import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
 import { Observable, Subscription, firstValueFrom } from 'rxjs';
 import { NineStatus } from 'src/app/module/_mShared/enum/enum';
 import { MenuItem } from 'src/app/module/_mShared/model/menuItem.class';
-import { ERROR } from 'src/app/module/_mShared/model/url.class';
+import { ERROR, SUCCESS } from 'src/app/module/_mShared/model/url.class';
 import { Enum } from 'src/app/module/_mShared/service/enum.service';
 import { HotelsService } from 'src/app/module/_mShared/service/hotels.service';
 import { RegionsService } from 'src/app/module/_mShared/service/regions.service';
@@ -22,13 +23,16 @@ export class HotelsComponent implements OnInit, OnDestroy {
   constructor(
     private hotelsService: HotelsService,
     private regionsService: RegionsService,
-    private message: NzMessageService
+    private message: NzMessageService,
+    private modal: NzModalService
     ) { }
 
   hotels: any[] = [];
-  hotel: any;
+  hotelId: any;
   menus: MenuItem[] = [];
   statusOption: any;
+
+  confirmModal?: NzModalRef;
 
   ngOnInit() {
     this.getHotels();
@@ -43,23 +47,13 @@ export class HotelsComponent implements OnInit, OnDestroy {
     let obs = this.hotelsService.getHotels().subscribe({
       next: (res) => {
         this.hotels = res.data;
-        this.viewNameStatus(res.data);
+        console.log(res)
       },
       error: (err) => {{
         this.message.create(ERROR, err.message);
       }}
     })
     this.subscription.add(obs);
-  }
-
-  viewNameStatus(hotels:any){
-    for (const item of hotels) {
-      this.statusOption.forEach((status:any) => {
-        if(item.status == status.value){
-          item.txtStatus = status.text;
-        }
-      });
-    }
   }
 
   dropdownItemsButton(data:any){
@@ -86,8 +80,35 @@ export class HotelsComponent implements OnInit, OnDestroy {
 
   editHotel(hotel:any){
     this.displayCreateUpdateHotel = true;
-    this.hotel = hotel;
+    this.hotelId = hotel.id;
   };
+
+  confirmChangeStatus(event:any, data:any){
+    this.confirmModal = this.modal.confirm({
+      nzTitle: `Xác thực sự kiện !!`,
+      nzContent: 'Xác nhận thay đổi trạng thái ?',
+      nzOnOk: () =>
+        new Promise((resolve, reject) => {
+          this.changeStatus(data);
+          setTimeout(Math.random() > 0.5 ? resolve : reject, 1000);
+        }).catch(() => console.log('Oops errors!'))
+    });
+    console.log(data)
+  }
+
+  changeStatus(data:any){
+    let obs = this.hotelsService.changeStatus(data.id,data).subscribe({
+      next: (res) => {
+        this.message.create(SUCCESS, "Cập nhật thành công !!");
+        this.getHotels();
+      },
+      error: (err) => {
+        this.getHotels();
+        this.message.create(ERROR, err.error.message);
+      }
+    })
+    this.subscription.add(obs);
+  }
 
   cancel(event:any){
     this.displayCreateUpdateHotel = false;
