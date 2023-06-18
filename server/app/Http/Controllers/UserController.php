@@ -108,10 +108,14 @@ class UserController extends Controller
         return MessageStatusAPI::destroy();
     }
 
-    public function changeStatus(Request $request, $id)
+    public function changeStatus($id)
     {
         $user = User::find($id);
-        $user->update($request->status);
+        if ($user->status == 0) {
+            $user->update(['status' => 1]);
+        } else if ($user->status == 1) {
+            $user->update(['status' => 0]);
+        }       
 
         return response([
             'message' => 'Changed status successfully',

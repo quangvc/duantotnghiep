@@ -45,6 +45,7 @@ Route::group(['prefix' => 'users', 'controller' => UserController::class], funct
     Route::post('/', 'store');
     Route::put('/{user}', 'update');
     Route::delete('/{user}', 'destroy');
+    Route::put('/{id}/change-status', 'changeStatus');
 });
 
 Route::group(
