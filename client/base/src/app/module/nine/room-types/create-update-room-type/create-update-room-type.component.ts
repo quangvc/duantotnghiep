@@ -1,7 +1,7 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NzMessageService } from 'ng-zorro-antd/message';
-import { firstValueFrom } from 'rxjs';
+import { Subscription, firstValueFrom } from 'rxjs';
 import { ERROR, SUCCESS } from 'src/app/module/_mShared/model/url.class';
 import { RoomTypeService } from 'src/app/module/_mShared/service/room_type.service';
 
@@ -9,7 +9,9 @@ import { RoomTypeService } from 'src/app/module/_mShared/service/room_type.servi
   selector: 'create-update-room-type',
   templateUrl: './create-update-room-type.component.html'
 })
-export class CreateUpdateRoomTypeComponent implements OnInit {
+export class CreateUpdateRoomTypeComponent implements OnInit, OnDestroy {
+
+  private subscription = new Subscription();
 
   @Input() roomType: any;
   @Input() displayCreateUpdateRoomType: boolean = false;
@@ -47,15 +49,8 @@ export class CreateUpdateRoomTypeComponent implements OnInit {
   async handleOk(){
     if(this.formRoomType.valid){
       let create = this.roomTypeService.createRoomType(this.formRoomType.value);
-      // let update:any;
-
-      // if(this.roomType){
-      //   update = this.roomTypeService.updateRoomType(this.roomType.id,this.formRoomType.value);
-      // }
-
       let createUpdate = create;
-
-      createUpdate.subscribe({
+      let obs = await createUpdate.subscribe({
         next: (res) => {
           this.closeModal.emit();
           this.message.create(SUCCESS, `This is a message of ${SUCCESS}`);
@@ -64,12 +59,16 @@ export class CreateUpdateRoomTypeComponent implements OnInit {
           this.message.create(ERROR, err.message);
         }
       })
-
+      this.subscription.add(obs)
     }
   }
 
   handleCancel(){
     this.closeModal.emit();
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 
 }

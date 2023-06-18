@@ -36,7 +36,7 @@ export class RoomsService {
     return this.http.put<any>(url, data, this.httpOptions);
   }
 
-  deleteRegion(id: any): Observable<any> {
+  deleteRoom(id: any): Observable<any> {
     const url = `${this.API_URL}/${ROOMS}/${id}`;
     return this.http.delete(url, this.httpOptions);
   }
