@@ -128,7 +128,6 @@ class UserController extends Controller
         return MessageStatusAPI::destroy();
     }
 
-
     private function assignRoleClient($user)
     {
         $roleUserApi = Role::findByName('client', 'api');

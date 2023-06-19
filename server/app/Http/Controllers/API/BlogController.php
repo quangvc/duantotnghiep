@@ -8,6 +8,7 @@ use App\Http\Resources\API\BlogResource;
 use App\Models\Blog;
 use Illuminate\Http\Request;
 use App\Traits\MessageStatusAPI;
+use Illuminate\Support\Str;
 use Illuminate\Http\Response;
 use Illuminate\Validation\Rule;
 
@@ -22,6 +23,7 @@ class BlogController extends Controller
         $validated = $request->validated();
         $blog = new Blog([
             'title' => $validated['title'],
+            'slug' => Str::slug($validated['title']),
             'content' => $validated['content'],
             'image' => $validated['image'],
             'user_id' => $user_id,
