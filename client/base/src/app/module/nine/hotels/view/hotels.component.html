@@ -22,7 +22,7 @@
       <td>{{ data.hotel_phone }}</td>
       <td></td>
       <td>{{ data.region.name }}</td>
-      <td>{{ data.txtStatus }}</td>
+      <td><nz-switch [(ngModel)]="data.status" (ngModelChange)="confirmChangeStatus($event,data)"></nz-switch></td>
       <td>
         <q-menu
           [model]="menus"
@@ -36,6 +36,6 @@
 <create-update-hotel
   *ngIf="displayCreateUpdateHotel"
   [displayCreateUpdateHotel]="displayCreateUpdateHotel"
-  [hotel]="hotel"
+  [hotelId]="hotelId"
   (closeModal)="cancel($event)">
 </create-update-hotel>

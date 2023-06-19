@@ -28,7 +28,7 @@ export class RoomsComponent implements OnInit, OnDestroy {
   menus: MenuItem[] = [];
 
   statusOption: any;
-  room: any;
+  roomId: any;
 
   ngOnInit() {
     this.getRooms();
@@ -62,6 +62,7 @@ export class RoomsComponent implements OnInit, OnDestroy {
       next: (room) => {
         this.rooms = room.data;
         this.viewNameStatus(room.data);
+        console.log(room)
       },
       error: (err) => {
         this.message.create(ERROR, err.message);
@@ -88,7 +89,7 @@ export class RoomsComponent implements OnInit, OnDestroy {
 
   editRoom(room:any){
     this.displayCreateUpdateRoom = true;
-    this.room = room;
+    this.roomId = room.id;
   }
 
   deleteRoom(room:any){

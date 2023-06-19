@@ -14,7 +14,7 @@ class RegionController extends Controller
     public function index()
     {
         $regions = Region::all();
-        
+
 
         return response()->json(['data' => $regions, 'message' => 'Message'], 200);
     }
@@ -58,7 +58,7 @@ class RegionController extends Controller
     {
         $region = Region::find($id);
         if ($region) {
-            return new RegionResource($region);
+            return MessageStatusAPI::show($region);
         } else {
             return MessageStatusAPI::notFound();
         }
