@@ -3,7 +3,7 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 import { Subscription, firstValueFrom } from 'rxjs';
 import { NineStatus } from 'src/app/module/_mShared/enum/enum';
 import { MenuItem } from 'src/app/module/_mShared/model/menuItem.class';
-import { ERROR } from 'src/app/module/_mShared/model/url.class';
+import { ERROR, SUCCESS } from 'src/app/module/_mShared/model/url.class';
 import { Enum } from 'src/app/module/_mShared/service/enum.service';
 import { RoomTypeService } from 'src/app/module/_mShared/service/room_type.service';
 import { RoomsService } from 'src/app/module/_mShared/service/rooms.service';
@@ -28,7 +28,7 @@ export class RoomsComponent implements OnInit, OnDestroy {
   menus: MenuItem[] = [];
 
   statusOption: any;
-  room: any;
+  roomId: any;
 
   ngOnInit() {
     this.getRooms();
@@ -51,7 +51,7 @@ export class RoomsComponent implements OnInit, OnDestroy {
       {
         label: "Xóa",
         command: () => {
-          console.log(3);
+          this.deleteRoom(data);
         },
       },
     ]
@@ -62,6 +62,7 @@ export class RoomsComponent implements OnInit, OnDestroy {
       next: (room) => {
         this.rooms = room.data;
         this.viewNameStatus(room.data);
+        console.log(room)
       },
       error: (err) => {
         this.message.create(ERROR, err.message);
@@ -88,7 +89,19 @@ export class RoomsComponent implements OnInit, OnDestroy {
 
   editRoom(room:any){
     this.displayCreateUpdateRoom = true;
-    this.room = room;
+    this.roomId = room.id;
+  }
+
+  deleteRoom(room:any){
+    this.roomsService.deleteRoom(room.id).subscribe({
+      next: (res) => {
+        this.message.create(SUCCESS, "Xóa thành công !!");
+        this.getRooms();
+      },
+      error: (err) => {
+        this.message.create(ERROR, err.message);
+      }
+    })
   }
 
   cancel(event: any) {

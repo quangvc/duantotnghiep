@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NzMessageService } from 'ng-zorro-antd/message';
+import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
 import { Subscription } from 'rxjs';
 import { NineStatus } from 'src/app/module/_mShared/enum/enum';
 import { MenuItem } from 'src/app/module/_mShared/model/menuItem.class';
@@ -20,8 +21,11 @@ export class RegionsComponent implements OnInit, OnDestroy {
 
   constructor(
     private regionService: RegionsService,
-    private message: NzMessageService
+    private message: NzMessageService,
+    private modal: NzModalService
   ) { }
+
+  confirmModal?: NzModalRef;
 
   regions: any[] = [];
   regionId: any;
@@ -73,7 +77,7 @@ export class RegionsComponent implements OnInit, OnDestroy {
       {
         label: "Xóa",
         command: () => {
-          console.log(3);
+          this.showConfirm(data);
         },
       },
     ]
@@ -87,6 +91,30 @@ export class RegionsComponent implements OnInit, OnDestroy {
     this.regionId = region.id;
     this.displayCreateUpdateRegion = true;
     console.log(region);
+  }
+
+  showConfirm(data:any){
+    this.confirmModal = this.modal.confirm({
+      nzTitle: `Do you Want to delete ${data.name} ?`,
+      nzContent: 'When clicked the OK button, this dialog will be closed after 1 second',
+      nzOnOk: () =>
+        new Promise((resolve, reject) => {
+          this.deleteRegion(data);
+          setTimeout(Math.random() > 0.5 ? resolve : reject, 1000);
+        }).catch(() => console.log('Oops errors!'))
+    });
+  }
+
+  deleteRegion(data:any){
+    this.regionService.deleteRegion(data.id).subscribe({
+      next: (res) => {
+        this.message.create(SUCCESS, `Xóa ${data.name} thành công.`)
+        this.getRegion();
+      },
+      error: (err) => {
+        this.message.create(ERROR, `${err.message}`)
+      }
+    })
   }
 
   cancel(event:any){

@@ -13,7 +13,7 @@
             <label for="hotel" class="form-label">{{'hotel.name' | translate}}</label>
             <select class="form-select" formControlName="hotel_id" aria-label="Default select example">
               <ng-container *ngFor="let hotel of hotels">
-                <option [value]="hotel.id">{{hotel.name}}</option>
+                <option [value]="hotel.id">{{hotel.hotel_name}}</option>
               </ng-container>
             </select>
           </div>

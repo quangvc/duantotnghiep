@@ -33,7 +33,7 @@ export class RegionsService {
   }
 
   createRegion(data: any): Observable<any>{
-    const url = `${this.API_URL}/${REGIONS}/create`;
+    const url = `${this.API_URL}/${REGIONS}`;
     return this.http.post<any>(url, data, this.httpOptions);
   }
 

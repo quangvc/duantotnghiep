@@ -28,7 +28,7 @@ class RoomController extends Controller
         return MessageStatusAPI::notFound();
     }
 
-    public function create(RoomRequest $request)
+    public function store(RoomRequest $request)
     {
         $validated = $request->validated();
         $room = Room::firstOrCreate([
@@ -40,7 +40,35 @@ class RoomController extends Controller
         $room->save();
         return MessageStatusAPI::store();
     }
-
+    public function changeStatus($id)
+    {
+        $role = auth()->user()->getRoleNames()->first();
+        $room = Room::find($id);
+        if (!$room) {
+            return MessageStatusAPI::notFound();
+        }
+        if ($role == 'admin') {
+            if ($room->status == 1) {
+                $room->update(['status' => 0]);
+            } else {
+                $room->update(['status' => 1]);
+            }
+            return MessageStatusAPI::update();
+        }
+        $id_hotelRoom = auth()->user()->hotel_id;
+        if ($role == 'manager') {
+            if ($id_hotelRoom == $room->hotel_id) {
+                if ($room->status == 1) {
+                    $room->update(['status' => 0]);
+                } else {
+                    $room->update(['status' => 1]);
+                }
+                return $room->status;
+            } else {
+                return MessageStatusAPI::notFound();
+            }
+        }
+    }
     public function show($id)
     {
         $room = Room::find($id);

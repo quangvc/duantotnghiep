@@ -15,7 +15,7 @@ import { RoomsService } from 'src/app/module/_mShared/service/rooms.service';
 export class CreateUpdateRoomComponent implements OnInit, OnDestroy {
 
   @Input() displayCreateUpdateRoom: boolean = false;
-  @Input() room: any;
+  @Input() roomId: any;
   @Output() closeModal = new EventEmitter<any>();
 
   private subscription = new Subscription();
@@ -43,7 +43,6 @@ export class CreateUpdateRoomComponent implements OnInit, OnDestroy {
 
   private createFormRoom(){
     this.formRoom = this.fb.group({
-      id: Math.floor(Math.random() * 999999),
       hotel_id: [null,Validators.required],
       room_type_id: [null,Validators.required],
       room_number: [null,Validators.required],
@@ -52,18 +51,31 @@ export class CreateUpdateRoomComponent implements OnInit, OnDestroy {
   }
 
   getRoom(){
-    if(this.room){
-      this.formRoom.patchValue(this.room);
+    if(this.roomId){
+      this.roomsService.findOne(this.roomId).subscribe({
+        next: (res) => {
+          let room = res.data;
+          this.formRoom.patchValue({
+            hotel_id: room.hotel.idHotel,
+            room_type_id: room.room_type.id,
+            room_number: room.room_number
+          });
+        },
+        error: (err) => {
+
+        }
+      })
     }
   }
 
   getHotels(){
     let obs = this.hotelsService.getHotels().subscribe({
       next: (hotel) => {
-        this.hotels = hotel;
+        this.hotels = hotel.data;
+        console.log(hotel)
       },
       error: (err) => {
-        this.message.create(ERROR, err.message);
+        this.message.create(ERROR, err.error.message);
       }
     })
 
@@ -73,10 +85,11 @@ export class CreateUpdateRoomComponent implements OnInit, OnDestroy {
   getRoomTypes(){
     let obs = this.roomTypeService.getRoomTypes().subscribe({
       next: (roomType) => {
-        this.roomTypes = roomType;
+        this.roomTypes = roomType.data;
+        console.log(roomType)
       },
       error: (err) => {
-        this.message.create(ERROR, err.message);
+        this.message.create(ERROR, err.error.message);
       }
     })
 
@@ -85,22 +98,26 @@ export class CreateUpdateRoomComponent implements OnInit, OnDestroy {
   }
 
   handleOk(){
+    debugger;
     if(this.formRoom.valid){
-      let create = this.roomsService.createRoom(this.formRoom.value);
-      // let update:any;
-      // if(this.room){
-      //   update = this.roomsService.updateRoom(this.room.id,this.formRoom.value);
-      // }
+      let id = this.roomId;
+      let newData = {
+        ...this.formRoom.value,
+        room_number: String(this.formRoom.value.room_number)
+      }
+      let createUpdate = this.roomsService.createRoom(newData);
 
-      let createUpdate = create;
+      if(id){
+        createUpdate = this.roomsService.updateRoom(id,newData);
+      }
 
       createUpdate.subscribe({
         next: (room:any) => {
           this.closeModal.emit();
-          this.message.create(SUCCESS, `This is a message of ${SUCCESS}`);
+          this.message.create(SUCCESS, `${id ? "Cập nhật" : "Thêm mới"} thành công`);
         },
         error: (err:any) => {
-          this.message.create(ERROR, err);
+          this.message.create(ERROR, err.error.message);
         }
       })
     }

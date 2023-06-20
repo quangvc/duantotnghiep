@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\StoreUserRequest;
 use App\Models\User;
-use App\Http\Resources\UserResource;
+use App\Http\Resources\Api\UserResource;
 use Spatie\Permission\Models\Role;
 use App\Traits\MessageStatusAPI;
 
@@ -19,7 +20,7 @@ class UserController extends Controller
     {
         $users = User::with('roles')->get();
 
-        return MessageStatusAPI::show(UserResource::collection($users), 'List users', 200);
+        return MessageStatusAPI::show(UserResource::collection($users));
     }
 
     /**
@@ -28,24 +29,11 @@ class UserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreUserRequest $request)
     {    
-        $fields = $request->validate([
-            'name' => 'required|string|min:6|max:50',
-            'email' => 'required_without:phone|email|unique:tbl_users,email',
-            'phone_number' => 'required_without:email|unique:tbl_users,phone_number|numeric|digits_between:9,12',
-            'password' => 'required|confirmed',
-        ]);
+        $request->validated();
 
-        $user = User::create([
-            'name' => $fields['name'],
-            'email' => $fields['email'],
-            'phone_number' => $fields['phone_number'],
-            'password' => bcrypt($fields['password']),
-            'gender' => $request->gender,
-            'active' => $request->active,
-            'hotel_id' => $request->hotel_id,
-        ]);
+        $user = User::create($request->safe()->all());
 
         if ($request->role == 'user') {
             $this->assignRoleClient($user); // add role user
@@ -69,7 +57,7 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        return MessageStatusAPI::show(new UserResource($user), 'User information', 200);
+        return MessageStatusAPI::show(new UserResource($user));
     }
 
     /**
@@ -116,10 +104,14 @@ class UserController extends Controller
         return MessageStatusAPI::destroy();
     }
 
-    public function changeStatus(Request $request, $id)
+    public function changeStatus($id)
     {
         $user = User::find($id);
-        $user->update($request->status);
+        if ($user->active == 0) {
+            $user->update(['active' => 1]);
+        } else if ($user->active == 1) {
+            $user->update(['active' => 0]);
+        }       
 
         return response([
             'message' => 'Changed status successfully',

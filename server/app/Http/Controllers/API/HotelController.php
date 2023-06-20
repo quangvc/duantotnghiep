@@ -9,10 +9,10 @@ use App\Traits\MessageStatusAPI;
 use App\Http\Requests\HotelRequest;
 use App\Http\Resources\API\HotelResource;
 use App\Models\Image;
+use App\Models\Room;
 
 class HotelController extends Controller
 {
-
     public function index()
     {
         // auth('api')->user(); lấy thông tin người dùng đang login
@@ -34,6 +34,20 @@ class HotelController extends Controller
         }
         return MessageStatusAPI::show($hotelDetail);
     }
+    public function changeStatus($id)
+    {
+        $hotel = Hotel::find($id);
+        if (!$hotel) {
+            return MessageStatusAPI::notFound();
+        }
+        if ($hotel->status == 1) {
+            $hotel->update(['status' => 0]);
+        } else {
+            $hotel->update(['status' => 1]);
+        }
+        return MessageStatusAPI::update();
+    }
+
 
     public function store(HotelRequest $request)
     {
@@ -75,7 +89,6 @@ class HotelController extends Controller
             'description' => 'nullable',
             'star_rating' => 'required|numeric|min:1|max:5',
             'region_id' => 'required|exists:tbl_regions,id',
-            'status' => 'nullable',
         ]);
         $hotel->update($validatedData);
         return MessageStatusAPI::update();

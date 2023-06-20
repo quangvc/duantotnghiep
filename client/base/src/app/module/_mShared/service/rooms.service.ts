@@ -26,8 +26,13 @@ export class RoomsService {
     return this.http.get<any>(url, this.httpOptions);
   }
 
+  findOne(id:any): Observable<any>{
+    const url = `${this.API_URL}/${ROOMS}/${id}`;
+    return this.http.get<any>(url, this.httpOptions);
+  }
+
   createRoom(data: any): Observable<any> {
-    const url = `${this.API_URL}/${ROOMS}/create`;
+    const url = `${this.API_URL}/${ROOMS}`;
     return this.http.post<any>(url, data, this.httpOptions);
   }
 
@@ -36,7 +41,7 @@ export class RoomsService {
     return this.http.put<any>(url, data, this.httpOptions);
   }
 
-  deleteRegion(id: any): Observable<any> {
+  deleteRoom(id: any): Observable<any> {
     const url = `${this.API_URL}/${ROOMS}/${id}`;
     return this.http.delete(url, this.httpOptions);
   }

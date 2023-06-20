@@ -14,12 +14,12 @@ class RoomTypeResource extends JsonResource
      */
     public function toArray($request)
     {
-        return[
+        return [
             'id' => $this->id,
-            'name' =>$this->name,
-            'price_per_night'=>$this->price_per_night,
-            'capacity'=>$this->capacity,
-            'description'=>$this->description,
+            'name' => $this->name,
+            'price_per_night' => $this->price_per_night,
+            'capacity' => $this->capacity,
+            'description' => $this->description,
         ];
 
         // return parent::toArray($request);

@@ -51,7 +51,8 @@ export class RoomTypesComponent implements OnInit, OnDestroy {
   getRoomTypes(){
     let obs = this.roomTypeService.getRoomTypes().subscribe({
       next: (res) => {
-        this.roomTypes = res;
+        this.roomTypes = res.data;
+        console.log(res)
       },
       error: (err) => {
         this.message.create(ERROR, err.message)
@@ -74,7 +75,6 @@ export class RoomTypesComponent implements OnInit, OnDestroy {
   cancel(event:any){
     this.displayCreateUpdateRoomType = false;
     this.getRoomTypes();
-    alert("thành công !")
   }
 
   ngOnDestroy(){

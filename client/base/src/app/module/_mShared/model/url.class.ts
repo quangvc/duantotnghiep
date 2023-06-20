@@ -1,5 +1,5 @@
 
-export const USER = "user"
+export const USERS = "users"
 
 export const HOTELS = "hotels"
 export const REGIONS = "regions"

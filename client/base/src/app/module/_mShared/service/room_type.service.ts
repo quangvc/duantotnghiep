@@ -27,7 +27,7 @@ export class RoomTypeService {
   }
 
   createRoomType(data: any): Observable<any> {
-    const url = `${this.API_URL}/${ROOM_TYPES}/create`;
+    const url = `${this.API_URL}/${ROOM_TYPES}`;
     return this.http.post<any>(url, data, this.httpOptions);
   }
 
@@ -36,7 +36,7 @@ export class RoomTypeService {
     return this.http.put<any>(url, data, this.httpOptions);
   }
 
-  deleteRegion(id: any): Observable<any> {
+  deleteRoomType(id: any): Observable<any> {
     const url = `${this.API_URL}/${ROOM_TYPES}/${id}`;
     return this.http.delete(url, this.httpOptions);
   }

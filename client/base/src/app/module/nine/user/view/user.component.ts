@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { MenuItem } from 'src/app/module/_mShared/model/menuItem.class';
 import { UserDto } from 'src/app/module/_mShared/model/userDto.class';
 import { UserService } from 'src/app/module/_mShared/service/user.service';
@@ -8,7 +9,9 @@ import { UserService } from 'src/app/module/_mShared/service/user.service';
   templateUrl: './user.component.html',
   styleUrls: ['./user.component.scss']
 })
-export class UserComponent implements OnInit {
+export class UserComponent implements OnInit, OnDestroy {
+
+  private subscription = new Subscription();
 
   constructor(private userService: UserService) { }
 
@@ -25,10 +28,12 @@ export class UserComponent implements OnInit {
   }
 
   getUser(){
-    this.userService.getUser().subscribe((res) => {
-      this.users = res;
+    let obs = this.userService.getUsers().subscribe((res) => {
+      this.users = res.data;
       // console.log(this.users);
     })
+
+    this.subscription.add(obs);;
   }
 
   dropdownItemsButton(data:any){
@@ -64,6 +69,10 @@ export class UserComponent implements OnInit {
 
   closeUser(){
     this.isVisibleUser = false;
+  }
+
+  ngOnDestroy(): void {
+      this.subscription.unsubscribe();
   }
 
 }

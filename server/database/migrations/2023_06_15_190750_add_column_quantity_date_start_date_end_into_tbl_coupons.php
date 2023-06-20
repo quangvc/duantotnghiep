@@ -13,10 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('tbl_regions', function (Blueprint $table) {
-            $table->id();
-            $table->string('name', 255)->nullable();
-            $table->timestamps();
+        Schema::table('tbl_coupons', function (Blueprint $table) {
+            $table->bigInteger('quantity')->after('hotel_id')->nullable();
+            $table->date('dateStart')->after('quantity')->nullable();
+            $table->date('dateEnd')->after('dateStart')->nullable();
         });
     }
 
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tbl_regions');
+        //
     }
 };
