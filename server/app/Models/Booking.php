@@ -14,7 +14,10 @@ class Booking extends Model
     protected $table = 'tbl_bookings';
 
     protected $fillable = [
-        'booking_date', 'checkin_date', 'checkout_date', 'people_quantity', 'coupon_id', 'user_id', 'guest_name', 'guest_email', 'guest_phone', 'note', 'comment_id', 'status'
+        'booking_number', 'booking_date', 'checkin_date',
+        'checkout_date', 'people_quantity', 'coupon_id', 'user_id',
+        'guest_name', 'guest_email', 'guest_phone', 'note',
+        'comment_id', 'status'
     ];
 
     public function booking_details(): HasMany
