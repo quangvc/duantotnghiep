@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateRoomTypeRequest;
 use App\Http\Resources\API\RoomTypeResource;
+use App\Models\Room;
 use App\Models\RoomType;
 use Illuminate\Http\Request;
 use App\Traits\MessageStatusAPI;
@@ -14,8 +15,19 @@ class RoomTypesController extends Controller
 {
     //
     public function index(){
-        $roomtype = RoomType::all();
-        return RoomTypeResource::collection($roomtype);
+        $role = auth()->user()->getRoleNames()->first();
+        if ($role == 'admin') {
+            $roomtype = RoomType::all();
+            return RoomTypeResource::collection($roomtype);
+        }
+        $id_hotelRoom = auth()->user()->hotel_id;
+        if ($id_hotelRoom != 0 && $role == 'manager') {
+            $roomType = RoomType::with(['room' => function ($query) use ($id_hotelRoom) {
+                $query->where('hotel_id', '=', $id_hotelRoom);
+            }])->get();
+            return RoomTypeResource::collection($roomType);
+        }
+        return MessageStatusAPI::notFound();
     }
     public function store(CreateRoomTypeRequest $request){
         $data = $request->all();

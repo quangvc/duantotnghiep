@@ -27,6 +27,7 @@ class CreateBlogRequest extends FormRequest
             'title'     => 'required',
             'content'   => 'required|string',
             'image'=>'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'slug' =>'required|unique:blogs,slug',
         ];
     }
     public function messages()

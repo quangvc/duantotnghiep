@@ -12,6 +12,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\API\HotelController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\API\ImageController;
+use App\Http\Controllers\API\SupportController;
 use App\Http\Controllers\API\UserController;
 
 /*
@@ -90,11 +91,12 @@ Route::group(
     function () {
         Route::get('/', [BlogController::class, 'index']);
         Route::post('/', [BlogController::class, 'store']);
-        Route::get('/{id}', [BlogController::class, 'show']);
+        Route::get('/{slug}/{id}', [BlogController::class, 'show']);
         Route::put('/{id}', [BlogController::class, 'update']);
         Route::delete('/{id}', [BlogController::class, 'destroy']);
     }
 );
+
 Route::group(
     ['prefix' => 'comment'], // Thêm `prefix` để xác định endpoint chung của API
     function () {
@@ -113,5 +115,14 @@ Route::group(
         Route::post('/room-type/{id}', [ImageController::class, 'storeRoomType']);
         Route::put('/{id}', [ImageController::class, 'update']);
         Route::delete('/{id}', [ImageController::class, 'destroy']);
+    }
+);
+Route::group(
+    ['prefix' => 'support'], // Thêm `prefix` để xác định endpoint chung của API
+    function () {
+        Route::get('/', [SupportController::class, 'index']);
+        Route::post('/', [SupportController::class, 'store']);
+        Route::put('/{id}', [SupportController::class, 'update']);
+        Route::delete('/{id}', [SupportController::class, 'destroy']);
     }
 );
