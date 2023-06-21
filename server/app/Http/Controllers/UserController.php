@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\StoreUserRequest;
 use App\Models\User;
-use App\Http\Resources\UserResource;
+use App\Http\Resources\Api\UserResource;
 use Spatie\Permission\Models\Role;
 use App\Traits\MessageStatusAPI;
 
@@ -18,13 +19,8 @@ class UserController extends Controller
     public function index()
     {
         $users = User::with('roles')->get();
-        $arr = [
-            'data' => UserResource::collection($users),
-            'message' => 'List users', 
-            'status' => true, 
-            
-        ];
-        return response()->json([$arr]);
+
+        return MessageStatusAPI::show(UserResource::collection($users));
     }
 
     /**
@@ -33,24 +29,11 @@ class UserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreUserRequest $request)
     {    
-        $fields = $request->validate([
-            'name' => 'required|string|min:6|max:50',
-            'email' => 'required_without:phone|email|unique:tbl_users,email',
-            'phone_number' => 'required_without:email|unique:tbl_users,phone_number|numeric|digits_between:9,12',
-            'password' => 'required|confirmed',
-        ]);
+        $request->validated();
 
-        $user = User::create([
-            'name' => $fields['name'],
-            'email' => $fields['email'],
-            'phone_number' => $fields['phone_number'],
-            'password' => bcrypt($fields['password']),
-            'gender' => $request->gender,
-            'active' => $request->active,
-            'hotel_id' => $request->hotel_id,
-        ]);
+        $user = User::create($request->safe()->all());
 
         if ($request->role == 'user') {
             $this->assignRoleClient($user); // add role user
@@ -59,12 +42,11 @@ class UserController extends Controller
         } elseif ($request->role == 'admin') {
             $this->assignRoleAdmin($user);
         }
-        // $token = $user->createToken('authToken')->plainTextToken;
 
         return response([
             'user' => $user,
-            // 'token' => $token,
-        ], 201);     
+            'message' => 'Created successfully'
+        ], 201);
     }
 
     /**
@@ -75,12 +57,7 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        $arr = [
-            'status' => true, 
-            'message' => 'User information', 
-            'data' => $user->with('roles')->get()
-        ];
-        return response()->json([$arr]);
+        return MessageStatusAPI::show(new UserResource($user));
     }
 
     /**
@@ -90,6 +67,7 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+    //  update cac truong tru status
     public function update(Request $request, User $user)
     {
         $request->validate([
@@ -110,6 +88,7 @@ class UserController extends Controller
 
         return response([
             'user' => $user,
+            'message' => 'Updated successfully',
         ], 200);   
     }
 
@@ -125,6 +104,19 @@ class UserController extends Controller
         return MessageStatusAPI::destroy();
     }
 
+    public function changeStatus($id)
+    {
+        $user = User::find($id);
+        if ($user->active == 0) {
+            $user->update(['active' => 1]);
+        } else if ($user->active == 1) {
+            $user->update(['active' => 0]);
+        }       
+
+        return response([
+            'message' => 'Changed status successfully',
+        ], 200);
+    }
 
     private function assignRoleClient($user)
     {

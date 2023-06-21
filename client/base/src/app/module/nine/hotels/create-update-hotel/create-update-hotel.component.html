@@ -5,45 +5,44 @@
   (nzOnCancel)="handleCancel()"
   (nzOnOk)="handleOk()">
   <ng-container *nzModalContent>
-    <form>
+    <form [formGroup]="formHotel" >
       <div class="row">
 
         <div class="col-6">
           <div class="mb-3">
             <label for="name" class="form-label">{{'hotel.name' | translate}}</label>
-            <input type="text" class="form-control" id="name" placeholder="name@example.com">
+            <input type="text" class="form-control" id="name" formControlName="hotel_name">
           </div>
         </div>
 
         <div class="col-6">
           <div class="mb-3">
             <label for="address" class="form-label">{{'hotel.address' | translate}}</label>
-            <input type="text" class="form-control" id="address" placeholder="name@example.com">
+            <input type="text" class="form-control" id="address" formControlName="hotel_address">
           </div>
         </div>
 
         <div class="col-6">
           <div class="mb-3">
             <label for="phone" class="form-label">{{'hotel.phone_number' | translate}}</label>
-            <input type="number" class="form-control" id="phone" placeholder="name@example.com">
+            <input type="number" class="form-control" id="phone" formControlName="hotel_phone">
           </div>
         </div>
 
         <div class="col-6">
           <div class="mb-3">
             <label for="region" class="form-label">{{'hotel.region' | translate}}</label>
-            <select class="form-select" aria-label="Default select example">
-              <option selected>Open this select menu</option>
-              <option value="1">One</option>
-              <option value="2">Two</option>
-              <option value="3">Three</option>
+            <select class="form-select" aria-label="Default select example" formControlName="region_id">
+              <ng-container *ngFor="let region of regionOptions">
+                <option [value]="region.id">{{region.name}}</option>
+              </ng-container>
             </select>
           </div>
         </div>
         <div class="col-12">
           <div class="mb-3">
             <label for="description" class="form-label">{{'description' | translate}}</label>
-            <textarea class="form-control" id="description" rows="3"></textarea>
+            <textarea class="form-control" id="description" rows="6" formControlName="description"></textarea>
           </div>
         </div>
 

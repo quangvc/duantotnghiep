@@ -20,15 +20,22 @@
       <td>{{ data.hotel_name }}</td>
       <td>{{ data.hotel_address }}</td>
       <td>{{ data.hotel_phone }}</td>
-      <td>{{ data.star_rating }}</td>
-      <td>{{ data.regions_id }}</td>
-      <td>{{ data.status }}</td>
       <td></td>
+      <td>{{ data.region.name }}</td>
+      <td><nz-switch [(ngModel)]="data.status" (ngModelChange)="confirmChangeStatus($event,data)"></nz-switch></td>
+      <td>
+        <q-menu
+          [model]="menus"
+          (buttonItem)="dropdownItemsButton(data)">
+        </q-menu>
+      </td>
     </tr>
   </tbody>
 </nz-table>
 
 <create-update-hotel
+  *ngIf="displayCreateUpdateHotel"
   [displayCreateUpdateHotel]="displayCreateUpdateHotel"
+  [hotelId]="hotelId"
   (closeModal)="cancel($event)">
 </create-update-hotel>

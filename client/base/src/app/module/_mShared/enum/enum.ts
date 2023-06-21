@@ -1,4 +1,5 @@
 export enum NineStatus {
-  Deactive = -1,
-  Active = 0,
+  Deactive = 0,
+  Active = 1,
 }
+

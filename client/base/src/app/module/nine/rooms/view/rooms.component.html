@@ -15,14 +15,21 @@
     <tr *ngFor="let data of basicTable.data; let i = index">
       <td>{{ i + 1 }}</td>
       <td>{{ data.room_number }}</td>
-      <td>{{ data.room_type_id }}</td>
-      <td>{{ data.status }}</td>
-      <td></td>
+      <td>{{ data.room_type.name }}</td>
+      <td>{{ data.txtStatus }}</td>
+      <td>
+        <q-menu
+          [model]="menus"
+          (buttonItem)="dropdownItemsButton(data)">
+        </q-menu>
+      </td>
     </tr>
   </tbody>
 </nz-table>
 
 <create-update-room
+  *ngIf="displayCreateUpdateRoom"
+  [roomId]="roomId"
   [displayCreateUpdateRoom]="displayCreateUpdateRoom"
   (closeModal)="cancel($event)">
 </create-update-room>

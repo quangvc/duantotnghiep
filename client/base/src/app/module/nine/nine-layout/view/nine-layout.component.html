@@ -1,26 +1,31 @@
 <nz-layout>
-  <nz-sider nzCollapsible [(nzCollapsed)]="isCollapsed" [nzTrigger]="null" [style]="isCollapsed ? flexWidth80 : flexWidth230">
+  <nz-sider
+    nzCollapsible
+    [(nzCollapsed)]="isCollapsed"
+    [nzTrigger]="null"
+    [style]="isCollapsed ? flexWidth80 : flexWidth230"
+  >
     <div class="logo"></div>
     <ul nz-menu nzTheme="dark" nzMode="inline">
       <ng-container *ngFor="let menu of menus">
-
         <ng-container *ngIf="menu.items">
-          <li nz-submenu nzTitle="{{menu.label}}" nzIcon="{{menu.icon}}">
+          <li nz-submenu nzTitle="{{ menu.label }}" nzIcon="{{ menu.icon }}">
             <ul *ngIf="menu.items">
               <ng-container *ngFor="let submenu of menu.items">
-                <li routerLink="{{submenu.routerLink}}" nz-menu-item>{{submenu.label}}</li>
+                <li routerLink="{{ submenu.routerLink }}" nz-menu-item>
+                  {{ submenu.label }}
+                </li>
               </ng-container>
             </ul>
           </li>
         </ng-container>
 
         <ng-container *ngIf="!menu.items">
-          <li routerLink="{{menu.routerLink}}" nz-menu-item>
-            <span nz-icon nzType="{{menu.icon}}"></span>
-            <span>{{menu.label}}</span>
+          <li routerLink="{{ menu.routerLink }}" nz-menu-item>
+            <span nz-icon nzType="{{ menu.icon }}"></span>
+            <span>{{ menu.label }}</span>
           </li>
         </ng-container>
-
       </ng-container>
       <!-- <li nz-submenu nzTitle="Team" nzIcon="team">
         <ul>
@@ -36,12 +41,36 @@
   </nz-sider>
   <nz-layout>
     <nz-header>
-      <span
-        class="trigger"
-        nz-icon
-        [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"
-        (click)="isCollapsed = !isCollapsed"
-      ></span>
+      <div class="d-flex justify-content-between">
+        <span
+          class="trigger"
+          nz-icon
+          [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"
+          (click)="isCollapsed = !isCollapsed"
+        ></span>
+
+        <button
+          nz-button
+          nzType="text"
+          [nzSize]="'large'"
+          nzShape="round"
+          style="margin: 12px"
+          nz-popconfirm
+          nzPopconfirmTitle="Xác nhận đăng xuất !!"
+          nzPopconfirmPlacement="bottom"
+          (nzOnConfirm)="confirm()"
+          (nzOnCancel)="cancel()"
+        >
+          <span
+            span
+            nz-icon
+            nzType="logout"
+            nzTheme="outline"
+            style="position: absolute; left: 5px; top: 8px; font-size: 18px"
+          ></span>
+          Logout
+        </button>
+      </div>
     </nz-header>
     <nz-content>
       <nz-breadcrumb>

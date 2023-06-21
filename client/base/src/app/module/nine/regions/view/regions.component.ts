@@ -1,7 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { NzMessageService } from 'ng-zorro-antd/message';
+import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
 import { Subscription } from 'rxjs';
 import { NineStatus } from 'src/app/module/_mShared/enum/enum';
 import { MenuItem } from 'src/app/module/_mShared/model/menuItem.class';
+import { ERROR, SUCCESS } from 'src/app/module/_mShared/model/url.class';
 import { Enum } from 'src/app/module/_mShared/service/enum.service';
 import { RegionsService } from 'src/app/module/_mShared/service/regions.service';
 
@@ -12,14 +15,20 @@ import { RegionsService } from 'src/app/module/_mShared/service/regions.service'
 })
 export class RegionsComponent implements OnInit, OnDestroy {
 
+  private subscription = new Subscription();
+
   displayCreateUpdateRegion: boolean = false;
 
   constructor(
-    private regionService: RegionsService
+    private regionService: RegionsService,
+    private message: NzMessageService,
+    private modal: NzModalService
   ) { }
 
+  confirmModal?: NzModalRef;
+
   regions: any[] = [];
-  region: any;
+  regionId: any;
   menus: MenuItem[] = [];
 
   statusOption: any;
@@ -33,21 +42,27 @@ export class RegionsComponent implements OnInit, OnDestroy {
     this.statusOption = Enum.convertEnum(NineStatus);
   }
 
-  viewNameStatus(regions:any){
-    for (const item of regions) {
-      this.statusOption.forEach((status:any) => {
-        if(item.status == status.value){
-          item.txtStatus = status.text;
-        }
-      });
-    }
-  }
+  // viewNameStatus(regions:any){
+  //   for (const item of regions) {
+  //     this.statusOption.forEach((status:any) => {
+  //       if(item.status == status.value){
+  //         item.txtStatus = status.text;
+  //       }
+  //     });
+  //   }
+  // }
 
   getRegion(){
-    let obs = this.regionService.getRegion().subscribe((res) => {
-      this.regions = res;
-      this.viewNameStatus(this.regions);
+    let obs = this.regionService.getRegions().subscribe({
+      next: (res) => {
+        this.regions = res.data;
+      },
+      error: (err) => {
+        this.message.create(ERROR, `${err.message}`)
+      }
     })
+
+    this.subscription.add(obs);
   }
 
   dropdownItemsButton(data:any){
@@ -62,7 +77,7 @@ export class RegionsComponent implements OnInit, OnDestroy {
       {
         label: "Xóa",
         command: () => {
-          console.log(3);
+          this.showConfirm(data);
         },
       },
     ]
@@ -73,8 +88,33 @@ export class RegionsComponent implements OnInit, OnDestroy {
   }
 
   editRegion(region:any){
-    this.region = region;
+    this.regionId = region.id;
     this.displayCreateUpdateRegion = true;
+    console.log(region);
+  }
+
+  showConfirm(data:any){
+    this.confirmModal = this.modal.confirm({
+      nzTitle: `Do you Want to delete ${data.name} ?`,
+      nzContent: 'When clicked the OK button, this dialog will be closed after 1 second',
+      nzOnOk: () =>
+        new Promise((resolve, reject) => {
+          this.deleteRegion(data);
+          setTimeout(Math.random() > 0.5 ? resolve : reject, 1000);
+        }).catch(() => console.log('Oops errors!'))
+    });
+  }
+
+  deleteRegion(data:any){
+    this.regionService.deleteRegion(data.id).subscribe({
+      next: (res) => {
+        this.message.create(SUCCESS, `Xóa ${data.name} thành công.`)
+        this.getRegion();
+      },
+      error: (err) => {
+        this.message.create(ERROR, `${err.message}`)
+      }
+    })
   }
 
   cancel(event:any){
@@ -83,7 +123,7 @@ export class RegionsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(){
-
+    this.subscription.unsubscribe();
   }
 
 }

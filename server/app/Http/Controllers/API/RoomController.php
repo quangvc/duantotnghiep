@@ -6,37 +6,82 @@ use App\Http\Requests\RoomRequest;
 use App\Models\Room;
 use App\Traits\MessageStatusAPI;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\API\RoomResource;
 
 class RoomController extends Controller
 {
 
     public function index()
     {
-        $rooms = Room::select('tbl_rooms.*', 'tbl_room_types.name as room_type_name', 'tbl_room_types.price_per_night as price', 'tbl_room_types.capacity as capacity', 'tbl_hotels.hotel_name')
-            ->join('tbl_room_types', 'tbl_rooms.room_type_id', '=', 'tbl_room_types.id')
-            ->join('tbl_hotels', 'tbl_rooms.hotel_id', '=', 'tbl_hotels.id')
-            ->get();
-
-        return response()->json(['data' => $rooms, 'message' => 'Message'], 200);
+        $role = auth()->user()->getRoleNames()->first();
+        if ($role == 'admin') {
+            $rooms = Room::all();
+            return RoomResource::collection($rooms);
+        }
+        $id_hotelRoom = auth()->user()->hotel_id;
+        if ($id_hotelRoom != 0 && $role == 'manager') {
+            $rooms = Room::with('hotel')
+                ->where('hotel_id', '=', auth()->user()->hotel_id)
+                ->get();
+            return RoomResource::collection($rooms);
+        }
+        return MessageStatusAPI::notFound();
     }
 
-    public function create(RoomRequest $request)
+    public function store(RoomRequest $request)
     {
         $validated = $request->validated();
-        $room = new Room([
+        $room = Room::firstOrCreate([
             'room_number' =>  $validated['room_number'],
             'hotel_id' =>  $validated['hotel_id'],
             'room_type_id' =>  $validated['room_type_id'],
-            'status' =>  $validated['status']
+            'status' =>  $validated['status'],
         ]);
         $room->save();
         return MessageStatusAPI::store();
+    }
+    public function changeStatus($id)
+    {
+        $role = auth()->user()->getRoleNames()->first();
+        $room = Room::find($id);
+        if (!$room) {
+            return MessageStatusAPI::notFound();
+        }
+        if ($role == 'admin') {
+            if ($room->status == 1) {
+                $room->update(['status' => 0]);
+            } else {
+                $room->update(['status' => 1]);
+            }
+            return MessageStatusAPI::update();
+        }
+        $id_hotelRoom = auth()->user()->hotel_id;
+        if ($role == 'manager') {
+            if ($id_hotelRoom == $room->hotel_id) {
+                if ($room->status == 1) {
+                    $room->update(['status' => 0]);
+                } else {
+                    $room->update(['status' => 1]);
+                }
+                return $room->status;
+            } else {
+                return MessageStatusAPI::notFound();
+            }
+        }
+    }
+    public function show($id)
+    {
+        $room = Room::find($id);
+        if ($room) {
+            return new RoomResource($room);
+        } else {
+            return MessageStatusAPI::notFound();
+        }
     }
 
     public function destroy($id)
     {
         $room = Room::find($id);
-
         if ($room) {
             $room->delete();
             return MessageStatusAPI::destroy();
