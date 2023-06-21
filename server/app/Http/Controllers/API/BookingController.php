@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\BookingRequest;
 use App\Http\Resources\API\BookingResource;
 use App\Models\Booking;
+use App\Models\BookingDetail;
 use App\Traits\MessageStatusAPI;
 use Carbon\Carbon;
 use Illuminate\Http\Request as HttpRequest;
@@ -52,9 +53,14 @@ class BookingController extends Controller
             'status' => 0,
             'booking_number' =>  '',
         ]);
-
         $booking->save();
         $booking->update(['booking_number' => 'HD' . $booking->id . '_' . random_int('10000000', '99999999')]);
+        $booking_detail = new BookingDetail([
+            'booking_id' => $booking->id,
+            'room_id' => $validated['room_id'],
+        ]);
+        $booking_detail->save();
+
         return MessageStatusAPI::store();
     }
 

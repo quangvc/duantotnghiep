@@ -20,14 +20,6 @@ class Booking extends Model
         'guest_name', 'guest_email', 'guest_phone', 'note',
         'comment_id', 'status'
     ];
-    public function setCheckinDate($value)
-    {
-        $this->attributes['checkin_date'] =  Carbon::createFromFormat('d-m-Y', $value)->format('d/m/Y');
-    }
-    public function getCheckinDate()
-    {
-        return  Carbon::createFromFormat('d-m-Y', $this->attributes['checkin_date'])->format('d/m/Y');
-    }
     public function booking_details(): HasMany
     {
         return $this->hasMany(BookingDetail::class);
