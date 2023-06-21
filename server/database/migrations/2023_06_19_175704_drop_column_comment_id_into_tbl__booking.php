@@ -30,10 +30,6 @@ return new class extends Migration
             $table->integer('user_id')->after('id');
             $table->integer('blog_id')->after('user_id');
         });
-        //sửa bảng comment
-        Schema::table('tbl_blogs', function (Blueprint $table) {
-            $table->string('slug')->after('user_id');
-        });
     }
 
     /**

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\BookingRequest;
+use App\Http\Resources\API\BookingResource;
 use App\Models\Booking;
 use App\Traits\MessageStatusAPI;
 use Carbon\Carbon;
@@ -15,13 +16,14 @@ class BookingController extends Controller
     public function index()
     {
         $bookings = Booking::all();
-        return MessageStatusAPI::show($bookings);
+        return BookingResource::collection($bookings);
     }
 
     public function store(HttpRequest $request)
     {
         $user = auth()->user();
         $validated = $request->all();
+
         if ($user) {
             $guest_name = $user->name;
             $guest_email = $user->email;
@@ -34,10 +36,11 @@ class BookingController extends Controller
             $guest_phone =  $validated['guest_phone'];
             $user_id =  null;
         }
+
         $booking = new Booking([
-            'booking_date' =>  Carbon::now(),
-            'checkin_date' =>  $validated['checkin_date'],
-            'checkout_date' =>  $validated['checkout_date'],
+            'booking_date' =>  Carbon::now()->format('Y-m-d H:i:s.u'),
+            'checkin_date' =>  date('Y-m-d H:i:s.u', strtotime($validated['checkin_date'] . 'T12:00:00')),
+            'checkout_date' => date('Y-m-d H:i:s.u', strtotime($validated['checkout_date'] . 'T12:00:00')),
             'people_quantity' =>  $validated['people_quantity'],
             // 'coupon_id' =>  $validated['coupon_id'],
             'user_id' =>  $user_id,
@@ -49,9 +52,9 @@ class BookingController extends Controller
             'status' => 0,
             'booking_number' =>  '',
         ]);
+
         $booking->save();
-        $booking->update(['booking_number' => $booking->id . random_int('10000000', '99999999')]);
-        return $booking;
+        $booking->update(['booking_number' => 'HD' . $booking->id . '_' . random_int('10000000', '99999999')]);
         return MessageStatusAPI::store();
     }
 

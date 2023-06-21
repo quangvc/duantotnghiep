@@ -129,12 +129,12 @@ Route::group(['prefix' => 'admin'], function () {
         }
     );
     Route::group(
-        ['prefix' => 'booking'], // Thêm `prefix` để xác định endpoint chung của API
+        ['prefix' => 'booking', 'controller' => BookingController::class], // Thêm `prefix` để xác định endpoint chung của API
         function () {
-            Route::get('/', [BookingController::class, 'index']);
-            Route::post('/', [BookingController::class, 'store']);
-            Route::put('/{id}', [BookingController::class, 'update']);
-            Route::delete('/{id}', [BookingController::class, 'destroy']);
+            Route::get('/', 'index');
+            Route::post('/', 'store');
+            Route::put('/{id}', 'update');
+            Route::delete('/{id}', 'destroy');
         }
     );
 });
