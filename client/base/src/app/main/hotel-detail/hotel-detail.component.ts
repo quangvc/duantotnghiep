@@ -1,9 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { PhotoService } from './../../../services/photoservice.service';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { NgModel } from '@angular/forms';
-interface Type {
-  name: string;
-  code: string;
-}
+
 
 @Component({
   selector: 'app-hotel-detail',
@@ -11,16 +9,52 @@ interface Type {
   styleUrls: ['./hotel-detail.component.scss']
 })
 export class HotelDetailComponent implements OnInit {
-  checked: boolean = false;
-  types: Type[] = [];
+  @Output() valueChange = new EventEmitter<any>();
 
-  selectedType!: Type;
+  constructor(private photoService: PhotoService) { }
+  @Input() value : any[] = [];
+  images: any[] = [];
+
+  position: string = 'bottom';
+
+  positionOptions = [
+    {
+      label: 'Bottom',
+      value: 'bottom'
+    },
+    {
+      label: 'Top',
+      value: 'top'
+    },
+    {
+      label: 'Left',
+      value: 'left'
+    },
+    {
+      label: 'Right',
+      value: 'right'
+    }
+  ];
+
+  responsiveOptions: any[] = [
+    {
+      breakpoint: '1024px',
+      numVisible: 5
+    },
+    {
+      breakpoint: '768px',
+      numVisible: 3
+    },
+    {
+      breakpoint: '560px',
+      numVisible: 1
+    }
+  ];
 
   ngOnInit() {
-      this.types = [
-          { name: 'Hiển thị giá', code: 'NY' },
-          { name: 'Thành tiền', code: '1' },
-          { name: '1 Đêm', code: '2' }
-      ];
+    this.photoService.getImages().then((images) => (this.images = images));
+
   }
+
+  
 }

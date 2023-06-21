@@ -28,6 +28,10 @@ import { RegisterComponent } from './auth/register/view/register.component';
 import { SharedModule } from './_shared/shared/shared.module';
 import { MainComponent } from './main/main/main.component';
 import { MainModule } from './main/main.module';
+import { PhotoService } from 'src/services/photoservice.service';
+import { ReviewComponent } from './main/booking-form/review/review.component';
+import { BookingFormComponent } from './booking-form/booking-form.component';
+import { NotFoundComponent } from './not-found/not-found.component';
 
 registerLocaleData(en);
 
@@ -39,7 +43,9 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
   declarations: [
     AppComponent,
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
+    BookingFormComponent,
+    NotFoundComponent,
   ],
   imports: [
     BrowserModule,
@@ -50,7 +56,8 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     FormsModule
   ],
   providers: [
-    { provide: NZ_I18N, useValue: en_US }
+    { provide: NZ_I18N, useValue: en_US },
+    PhotoService
   ],
   bootstrap: [AppComponent]
 })
