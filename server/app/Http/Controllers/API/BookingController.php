@@ -39,8 +39,8 @@ class BookingController extends Controller
 
         $booking = new Booking([
             'booking_date' =>  Carbon::now()->format('Y-m-d H:i:s.u'),
-            'checkin_date' =>  date('Y-m-d H:i:s.u', strtotime($validated['checkin_date'] . 'T12:00:00')),
-            'checkout_date' => date('Y-m-d H:i:s.u', strtotime($validated['checkout_date'] . 'T12:00:00')),
+            'checkin_date' =>  Carbon::createFromFormat('d-m-Y', $validated['checkin_date'])->format('Y-m-d H:i:s.u'),
+            'checkout_date' => Carbon::createFromFormat('d-m-Y', $validated['checkout_date'])->format('Y-m-d H:i:s.u'),
             'people_quantity' =>  $validated['people_quantity'],
             // 'coupon_id' =>  $validated['coupon_id'],
             'user_id' =>  $user_id,
