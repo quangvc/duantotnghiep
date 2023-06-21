@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\API\BlogController;
+use App\Http\Controllers\API\BookingController;
 use App\Http\Controllers\Api\CommentController;
 use App\Http\Controllers\API\RegionController;
 use App\Http\Controllers\API\RoomController;
@@ -125,6 +126,15 @@ Route::group(['prefix' => 'admin'], function () {
             Route::post('/room-type/{id}', 'storeRoomType');
             Route::put('/{id}', 'update');
             Route::delete('/{id}', 'destroy');
+        }
+    );
+    Route::group(
+        ['prefix' => 'booking'], // Thêm `prefix` để xác định endpoint chung của API
+        function () {
+            Route::get('/', [BookingController::class, 'index']);
+            Route::post('/', [BookingController::class, 'store']);
+            Route::put('/{id}', [BookingController::class, 'update']);
+            Route::delete('/{id}', [BookingController::class, 'destroy']);
         }
     );
 });
