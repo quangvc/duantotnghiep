@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ROOMS } from '../model/url.class';
+import { ADMIN, ROOMS } from '../model/url.class';
 
 @Injectable({
   providedIn: 'root',
@@ -10,7 +10,7 @@ export class RoomsService {
   sessionUser: any = sessionStorage.getItem('user');
   user: any = JSON.parse(this.sessionUser);
 
-  private API_URL = 'http://127.0.0.1:8000/api';
+  private API_URL = `http://127.0.0.1:8000/api/${ADMIN}`;
 
   private httpOptions = {
     headers: new HttpHeaders({

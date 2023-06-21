@@ -28,7 +28,7 @@
       <td>{{ data.email }}</td>
       <td>{{ data.gender }}</td>
       <td>{{ data.phone_number }}</td>
-      <td>{{ data.active }}</td>
+      <td><nz-switch [(ngModel)]="data.active" (ngModelChange)="confirmChangeStatus($event,data)"></nz-switch></td>
       <td>
         <q-menu
           [model]="menus"
