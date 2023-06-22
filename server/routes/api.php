@@ -49,7 +49,7 @@ Route::group(['prefix' => 'admin'], function () {
         Route::get('/', 'index');
         Route::get('/{user}', 'show');
         Route::post('/', 'store');
-        Route::put('/{user}', 'update');
+        Route::post('/{user}', 'update');
         Route::delete('/{user}', 'destroy');
         Route::put('/{id}/change-status', 'changeStatus');
     });
@@ -135,6 +135,17 @@ Route::group(['prefix' => 'admin'], function () {
             Route::post('/', [BookingController::class, 'store']);
             Route::put('/{id}', [BookingController::class, 'update']);
             Route::delete('/{id}', [BookingController::class, 'destroy']);
+        }
+    );
+    
+    Route::group(
+        ['prefix' => 'blogs', 'controller' => BlogController::class],
+        function () {
+            Route::get('/', 'index');
+            Route::post('/', 'store');
+            Route::get('/{id}', 'show');
+            Route::put('/{id}', 'update');
+            Route::delete('/{id}', 'destroy');
         }
     );
 });
