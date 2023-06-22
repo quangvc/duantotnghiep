@@ -33,9 +33,20 @@ class UserController extends Controller
     {    
         $request->validated();
 
-        $user = User::create($request->safe()->all());
+        $user = new User(
+            array_merge(
+                $request->except(['password']),
+                ['password' => bcrypt($request->input('password'))]
+            ));
+        if ($request->hasFile('avatar')) {
+            $file = $request->avatar;
+            // $user->avatar = $file->getClientOriginalName();
+            $user->avatar = $file->hashName();
+            $file->move(base_path('public/Images/avatar'), $user->avatar);
+        }
+        $user->save();
 
-        if ($request->role == 'user') {
+        if ($request->role == 'client') {
             $this->assignRoleClient($user); // add role user
         } elseif ($request->role == 'manager') {
             $this->assignRoleManager($user);
@@ -72,13 +83,26 @@ class UserController extends Controller
     {
         $request->validate([
             'name' => 'string|min:6|max:50',
-            'email' => 'email|unique:tbl_users,email'. $request->id,
-            'phone_number' => 'numeric|digits_between:9,12|unique:tbl_users,phone_number'. $request->id,
+            'email' => 'email|unique:tbl_users,email,' . $user->id,
+            'phone_number' => 'numeric|digits_between:9,12|unique:tbl_users,phone_number,' . $user->id,
         ]);
 
-        $user->update($request->all());
+        if ($request->hasFile('avatar')) {
+            $file = $request->avatar;
+            $fileName = $file->hashName();
+            $file->move(base_path('public/Images/avatar'), $fileName);
+              
+            $user->update(
+                array_merge(
+                    $request->except(['avatar']),
+                    ['avatar' => $fileName]
+                )
+            );
+        } else {
+            $user->update($request->all());
+        }
 
-        if ($request->role == 'user') {
+        if ($request->role == 'client') {
             $this->assignRoleClient($user); // add role user
         } elseif ($request->role == 'manager') {
             $this->assignRoleManager($user);
@@ -121,18 +145,19 @@ class UserController extends Controller
     private function assignRoleClient($user)
     {
         $roleUserApi = Role::findByName('client', 'api');
-        $user->assignRole($roleUserApi);
+        $user->syncRoles($roleUserApi);
+        // $user->assignRole($roleUserApi);
     }
 
     private function assignRoleManager($user)
     {
         $roleUserApi = Role::findByName('manager', 'api');
-        $user->assignRole($roleUserApi);
+        $user->syncRoles($roleUserApi);
     }
 
     private function assignRoleAdmin($user)
     {
         $roleUserApi = Role::findByName('admin', 'api');
-        $user->assignRole($roleUserApi);
+        $user->syncRoles($roleUserApi);
     }
 }
