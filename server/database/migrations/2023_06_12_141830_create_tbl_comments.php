@@ -13,8 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('tbl_comment', function (Blueprint $table) {
-            $table->bigInteger('parent_id')->after('user_id')->nullable();
+        Schema::create('tbl_comments', function (Blueprint $table) {
+            $table->id();
+            $table->integer('user_id');
+            $table->integer('parent_id')->nullable();
+            $table->integer('blog_id');
+            $table->text('content');
+            $table->timestamps();
         });
     }
 
@@ -25,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('tbl_comments');
     }
 };

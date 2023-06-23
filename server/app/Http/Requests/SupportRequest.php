@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreateCommentRequest extends FormRequest
+class SupportRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,17 +24,21 @@ class CreateCommentRequest extends FormRequest
     public function rules()
     {
         return [
-        'content' => 'required',
-        'rating' => 'nullable|integer|min:0|max:5',
-        'blog_id' => 'nullable|integer|exists:tbl_blogs,id'
+            'name' => 'required|max:255',
+            'email' => 'required|email|max:255',
+            'phone' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/|min:10',
+            'content' => 'required|max:1000',
+            'status' => 'required|in:pending,approved,denied',
         ];
     }
     public function messages()
     {
        return [
-        'content.required' => 'vui lòng không boe trống ',
-        'rating.required' => 'vui lòng không boe trống ',
-        'blog_id.required' => 'vui lòng không boe trống ',
+        'name.required' => 'lỗi',
+        'email.required' => 'lỗi',
+        'phone.required' => 'lỗi',
+        'content.required' => 'lỗi',
+        'status.required' => 'lỗi',
        ];
     }
 }

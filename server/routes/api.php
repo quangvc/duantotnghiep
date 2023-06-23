@@ -13,10 +13,12 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\API\HotelController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\API\ImageController;
+use App\Http\Controllers\API\SupportController;
+
 use App\Http\Controllers\UserController;
 use App\Models\Hotel;
 use App\Http\Controllers\API\CouponController;
-
+use App\Http\Controllers\API\FeedbackController;
 
 /*
 |--------------------------------------------------------------------------
@@ -49,7 +51,7 @@ Route::group(['prefix' => 'admin'], function () {
         Route::get('/', 'index');
         Route::get('/{user}', 'show');
         Route::post('/', 'store');
-        Route::put('/{user}', 'update');
+        Route::post('/{user}', 'update');
         Route::delete('/{user}', 'destroy');
         Route::put('/{id}/change-status', 'changeStatus');
     });
@@ -109,7 +111,7 @@ Route::group(['prefix' => 'admin'], function () {
         }
     );
     Route::group(
-        ['prefix' => 'comment', 'controller' => CommentController::class],
+        ['prefix' => 'feedback', 'controller' => FeedbackController::class],
         function () {
             Route::get('/', 'index');
             Route::post('/', 'store');
@@ -133,6 +135,24 @@ Route::group(['prefix' => 'admin'], function () {
         function () {
             Route::get('/', 'index');
             Route::post('/', 'store');
+        }
+    );
+    Route::group(
+        ['prefix' => 'blogs', 'controller' => BlogController::class],
+        function () {
+            Route::get('/', 'index');
+            Route::post('/', 'store');
+            Route::get('/{slug}/{id}', 'show');
+            Route::put('/{id}', 'update');
+            Route::delete('/{id}', 'destroy');
+        }
+    );
+    Route::group(
+        ['prefix' => 'comments', 'controller' => CommentController::class],
+        function () {
+            Route::get('/', 'index');
+            Route::post('/', 'store');
+            Route::get('/{id}', 'show');
             Route::put('/{id}', 'update');
             Route::delete('/{id}', 'destroy');
         }

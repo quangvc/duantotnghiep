@@ -13,14 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        // sửa bảng booking
-        Schema::table('tbl_bookings', function (Blueprint $table) {
-            $table->dropColumn('comment_id');
-        });
-
-        // sửa bảng comment
-        Schema::table('tbl_blogs', function (Blueprint $table) {
-            $table->string('slug')->unique()->after('title');
+        Schema::create('tbl_feedbacks', function (Blueprint $table) {
+            $table->id();
+            $table->integer('booking_id');
+            $table->text('content');
+            $table->integer('rating');
+            $table->timestamps();
+        
         });
     }
 
@@ -31,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('tbl_feedbacks');
     }
 };

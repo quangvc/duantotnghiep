@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\CouponRequest;
 use App\Http\Resources\API\CouponsResource;
 use App\Traits\MessageStatusAPI;
+use Carbon\Carbon;
 
 class CouponController extends Controller
 {
@@ -24,7 +25,7 @@ class CouponController extends Controller
         $id_hotel = auth()->user()->hotel_id;
         if ($id_hotel != 0 && $role == 'manager') {
             $coupon = Coupon::where('hotel_id', '=', auth()->user()->hotel_id)
-            ->get();
+                ->get();
             return CouponsResource::collection($coupon);
         }
         return MessageStatusAPI::notFound();
@@ -32,26 +33,31 @@ class CouponController extends Controller
 
     public function store(CouponRequest $request)
     {
+
         $role = auth()->user()->getRoleNames()->first();
         $validated = $request->validated();
-        if($role == 'admin'){
+        if ($role == 'admin') {
             $id_hotel = $validated['hotel_id'];
         }
-        if($role == 'manager'){
+        if ($role == 'manager') {
             $id_hotel = auth()->user()->hotel_id;
         }
-            $coupon = Coupon::firstOrCreate([
-                'name' =>  "HOTEL".$id_hotel.'_'.$validated['name'],
-                'type' =>  $validated['type'],
-                'value' =>  $validated['value'],
-                'min' =>  $validated['min'],
-                'max' =>  $validated['max'],
-                'hotel_id' => $id_hotel,
-                'quantity' =>  $validated['quantity'],
-                'dateStart' =>  $validated['dateStart'],
-                'dateEnd'=>$validated['dateEnd']
-            ]);
-            $coupon->save();
+
+        $coupon = Coupon::firstOrCreate([
+            'name' =>  "HOTEL" . $id_hotel . '_' . $validated['name'],
+            'type' =>  $validated['type'],
+            'value' =>  $validated['value'],
+            'min' =>  $validated['min'],
+            'max' =>  $validated['max'],
+            'hotel_id' => $id_hotel,
+            'quantity' =>  $validated['quantity'],
+            'dateStart' =>  $validated['dateStart'],
+            'dateEnd' => $validated['dateEnd'],
+        ]);
+
+
+
+        $coupon->save();
         return MessageStatusAPI::store();
     }
 
@@ -59,19 +65,19 @@ class CouponController extends Controller
     {
         $role = auth()->user()->getRoleNames()->first();
         $coupon = Coupon::find($id);
-        if(!$coupon){
+        if (!$coupon) {
             return MessageStatusAPI::notFound();
         }
-        if($role == 'admin'){
+        if ($role == 'admin') {
             $coupon->delete();
             return MessageStatusAPI::destroy();
         }
-        if($role == 'manager'){
+        if ($role == 'manager') {
             $id_hotel = auth()->user()->hotel_id;
-            if($id_hotel == $coupon->hotel_id){
+            if ($id_hotel == $coupon->hotel_id) {
                 $coupon->delete();
-            return MessageStatusAPI::destroy();
-            }else{
+                return MessageStatusAPI::destroy();
+            } else {
                 return MessageStatusAPI::notFound();
             }
         }
@@ -82,37 +88,36 @@ class CouponController extends Controller
         $role = auth()->user()->getRoleNames()->first();
         $validated = $request->validated();
         $coupon = Coupon::find($id);
-        if(!$coupon){
+        if (!$coupon) {
             return MessageStatusAPI::notFound();
         }
-        if($role == 'admin'){
+        if ($role == 'admin') {
             $id_hotel = $validated['hotel_id'];
         }
-        if($role == 'manager'){
+        if ($role == 'manager') {
             $id_hotel = auth()->user()->hotel_id;
-        }  
+        }
         $coupon->update([
-                'name' =>  "HOTEL".$id_hotel.'_'.$validated['name'],
-                'type' =>  $validated['type'],
-                'value' =>  $validated['value'],
-                'min' =>  $validated['min'],
-                'max' =>  $validated['max'],
-                'hotel_id' => $id_hotel,
-                'quantity' =>  $validated['quantity'],
-                'dateStart' =>  $validated['dateStart'],
-                'dateEnd'=>$validated['dateEnd']
-            ]);
+            'name' =>  "HOTEL" . $id_hotel . '_' . $validated['name'],
+            'type' =>  $validated['type'],
+            'value' =>  $validated['value'],
+            'min' =>  $validated['min'],
+            'max' =>  $validated['max'],
+            'hotel_id' => $id_hotel,
+            'quantity' =>  $validated['quantity'],
+            'dateStart' =>  $validated['dateStart'],
+            'dateEnd' => $validated['dateEnd']
+        ]);
         return MessageStatusAPI::update();
     }
 
     public function show($id)
     {
         $couponDetail = Coupon::find($id);
-        return CouponsResource::collection($couponDetail);
 
         if (!$couponDetail) {
             return MessageStatusAPI::notFound();
         }
-        return MessageStatusAPI::show($couponDetail);
+        return MessageStatusAPI::show(new CouponsResource($couponDetail));
     }
 }
