@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { USERS } from '../model/url.class';
+import { ADMIN, USERS } from '../model/url.class';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +11,7 @@ export class UserService {
   sessionUser: any = sessionStorage.getItem('user');
   user: any = JSON.parse(this.sessionUser);
 
-  private API_URL = 'http://127.0.0.1:8000/api';
+  private API_URL = `http://127.0.0.1:8000/api/${ADMIN}`;
 
   private httpOptions = {
     headers: new HttpHeaders({
@@ -28,7 +28,7 @@ export class UserService {
   }
 
   changeStatus(id:any, data?:any): Observable<any>{
-    const url = `${this.API_URL}/${USERS}/changeStatus/${id}`;
+    const url = `${this.API_URL}/${USERS}/${id}/change-status`;
     return this.http.put(url,data,this.httpOptions)
   }
 

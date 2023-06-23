@@ -10,20 +10,6 @@ import { TeamComponent } from './team/team.component';
 
 @NgModule({
     imports: [
-        // RouterModule.forChild([
-        //     {
-        //         path: "main",
-        //         children: [
-        //             { path: "home", component: HomeComponent },
-        //             { path: 'booking', component: BookingComponent},
-        //             { path: 'about', component: AboutComponent},
-        //             { path: 'contract', component: ContractComponent},
-        //             { path: "room", component: RoomComponent },
-        //             { path: "service", component: ServiceComponent },
-        //             { path: "team", component: TeamComponent },
-        //         ],
-        //     },
-        // ]),
     ],
     exports: [RouterModule],
 })
