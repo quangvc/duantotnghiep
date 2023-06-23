@@ -137,4 +137,14 @@ Route::group(['prefix' => 'admin'], function () {
             Route::delete('/{id}', [BookingController::class, 'destroy']);
         }
     );
+    Route::group(
+        ['prefix' => 'banner', 'controller' => CommentController::class],
+        function () {
+            Route::get('/', 'index');
+            Route::post('/', 'store');
+            Route::get('/{id}', 'show');
+            Route::put('/{id}', 'update');
+            Route::delete('/{id}', 'destroy');
+        }
+    );
 });
