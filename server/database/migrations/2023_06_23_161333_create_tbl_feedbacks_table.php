@@ -13,13 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('tbl_comments', function (Blueprint $table) {
+        Schema::create('tbl_feedbacks', function (Blueprint $table) {
             $table->id();
-            $table->integer('user_id');
-            $table->integer('parent_id')->nullable();
-            $table->integer('blog_id');
+            $table->integer('booking_id');
             $table->text('content');
+            $table->integer('rating');
             $table->timestamps();
+        
         });
     }
 
@@ -30,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tbl_comments');
+        Schema::dropIfExists('tbl_feedbacks');
     }
 };

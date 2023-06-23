@@ -17,14 +17,7 @@ return new class extends Migration
         Schema::table('tbl_bookings', function (Blueprint $table) {
             $table->dropColumn('comment_id');
         });
-        // tạo bảng feedBacks
-        Schema::create('tbl_feedbacks', function (Blueprint $table) {
-            $table->id();
-            $table->integer('booking_id');
-            $table->text('content');
-            $table->integer('rating');
-            $table->timestamps();
-        });
+        
         //sửa bảng comment
         Schema::table('tbl_comment', function (Blueprint $table) {
             $table->integer('user_id')->after('id');
@@ -32,7 +25,7 @@ return new class extends Migration
         });
         //sửa bảng comment
         Schema::table('tbl_blogs', function (Blueprint $table) {
-            $table->string('slug')->unique()->after('user_id');
+            $table->string('slug')->unique()->after('title');
         });
     }
 
