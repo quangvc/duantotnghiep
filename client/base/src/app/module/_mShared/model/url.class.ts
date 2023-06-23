@@ -1,3 +1,4 @@
+export const ADMIN = "admin"
 
 export const USERS = "users"
 

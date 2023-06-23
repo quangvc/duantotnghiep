@@ -1,0 +1,360 @@
+<!-- Page Header Start -->
+<div class="container-fluid page-header mb-5 p-0" style="background-image: url(../../../assets/image/carousel-1.jpg);">
+  <div class="container-fluid page-header-inner py-5">
+    <div class="container text-center pb-5">
+      <h1 class="display-3 text-white mb-3 animated slideInDown">Hotels</h1>
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb justify-content-center text-uppercase">
+          <li class="breadcrumb-item"><a href="#">Home</a></li>
+          <li class="breadcrumb-item"><a href="#">Pages</a></li>
+          <li class="breadcrumb-item"><a href="hotel">Hotels</a></li>
+          <li class="breadcrumb-item" aria-current="page"><a href="detail" class="text-primary">Khách sạn Grand Vista
+              Hanoi</a></li>
+        </ol>
+      </nav>
+    </div>
+  </div>
+</div>
+<!-- Page Header End -->
+
+<!-- <nav id="navigation-bar" class="navbar navbar-expand-lg fixed-top d-flex flex-row justify-content-between py-2 px-lg-5 border border-bottom bg-black">
+  <div>
+    <ul class="navbar-nav">
+      <li class="nav-item"><a class="nav-link" href="#preview">Tổng quan</a></li>
+      <li class="nav-item"><a class="nav-link" href="#">Vị Trí</a></li>
+      <li class="nav-item"><a class="nav-link" href="#">Phòng</a></li>
+      <li class="nav-item"><a class="nav-link" href="#">Đánh giá</a></li>
+      <li class="nav-item"><a class="nav-link" href="#">Chính sách</a></li>
+      <li class="nav-item"><a class="nav-link" href="#">Tiện ích</a></li>
+    </ul>
+  </div>
+  <div class="d-flex flex-row text-primary">
+    <a class="my-auto me-3 text-primary" href="" >Lên đầu trang</a>
+    <i class="fa fa-arrow-up my-auto" aria-hidden="true"></i>
+  </div>
+</nav> -->
+
+
+
+<!-- Hotel Detail Start -->
+<div class="container-xxl">
+  <div class="container">
+    <div class="col-lg wow fadeInUp" data-wow-delay="0.3s">
+
+      <!-- Start Preview -->
+      <div id="preview" name="preview" class="room-item shadow rounded-4 overflow-hidden pb-4 mb-3">
+        <div class="row">
+          <div class="col">
+            <!-- Start Thông tin -->
+            <div class="p-5">
+              <h3><strong>Khách sạn Grand Vista Hanoi</strong></h3>
+              <h5><strong>Grand Vista Hanoi</strong></h5>
+              <div class="d-flex mb-2">
+                <small class="bg-primary text-white rounded-5 py-1 px-3"><strong>Hotel</strong>
+                </small>
+                <div class="ps-2">
+                  <small class="fa fa-star text-primary rating-star"></small>
+                  <small class="fa fa-star text-primary rating-star"></small>
+                  <small class="fa fa-star text-primary rating-star"></small>
+                  <small class="fa fa-star text-primary rating-star"></small>
+                  <small class="fa fa-star text-primary rating-star"></small>
+                </div>
+              </div>
+              <div class="mb-2">
+                <i class="fa fa-map-marker text-primary me-3"></i>
+                <span>146 Giang Vo Str, Ba Dinh, Hanoi City., Giảng Võ, Quận Ba Đình, Hà Nội, Việt Nam, 100000</span>
+              </div>
+            </div>
+            <!-- End Thông tin -->
+
+            <!-- Start Giá - Đặt -->
+            <div class="col p-4 mt-2 px-5">
+              <div class="d-flex justify-content-between mb-3">
+                <h6 class="mb-0"><strong>Giá phòng mỗi đêm từ</strong></h6>
+
+              </div>
+              <div class="d-flex mb-3">
+                <span class="fs-3 text-primary"><strong>1.861.061 VND</strong></span>
+              </div>
+              <div class="d-flex justify-content-between">
+                <a class="btn btn-md btn-dark rounded-3 bg-primary border-primary py-2 px-4" href="booking">Book Now</a>
+              </div>
+            </div>
+            <!-- End Giá - Đặt -->
+          </div>
+          <div class="card col">
+            <p-galleria [value]="images" [thumbnailsPosition]="position" [responsiveOptions]="responsiveOptions" [containerStyle]="{ 'max-width': '640px' }" [numVisible]="5">
+                <ng-template pTemplate="item" let-item>
+                    <img [src]="item.itemImageSrc" style="width: 100%; min-height: 420px; display: block;" />
+                </ng-template>
+                <ng-template pTemplate="thumbnail" let-item>
+                    <div class="grid grid-nogutter justify-content-center">
+                        <img [src]="item.thumbnailImageSrc" />
+                    </div>
+                </ng-template>
+            </p-galleria>
+        </div>
+        </div>
+        <hr>
+
+        <!-- Comment start -->
+        <div class="comment-section row">
+          <div class="col m-auto px-5">
+            <h5 style="font-weight: 700;">Xem đánh giá hữu ích từ khách hàng!</h5>
+            <h6>Mời bạn xem đánh giá hữu ích từ khách hàng về cơ sở lưu trú này</h6>
+          </div>
+          <div class="col-5 m-auto px-5">
+            <div class="comment-content mb-4">
+              <a class="" style="text-decoration: none;" href="">
+                <div class="w-100 h-75 bg-white p-4 rounded-4 border border-2">
+                  <p style="color: black; font-weight: 500;">Khách sạn ở vị trí rất trung tâm, dễ di chuyển đến các điểm
+                    tham quan, Rất sạch sẽ, từ không gian
+                    công cộng đến phòng ở. Nhân viên thân thiện, nhiệt tình.</p>
+                  <div>
+                    <i class="fa fa-map-marker me-3"></i>
+                    <span style="color: black; font-weight: 500;">Duong L.D</span>
+                  </div>
+                </div>
+              </a>
+            </div>
+            <div class="comment-interact d-flex flex-row justify-content-between">
+
+              <button class="comment-section-prev rounded-circle " type="button" data-bs-target="#header-carousel"
+                data-bs-slide="prev">
+                <i class="fa fa-arrow-circle-left" aria-hidden="true"></i>
+                <span class="visually-hidden">Previous</span>
+              </button>
+              <a href="" class="m-auto"><strong>Xem tất cả đánh giá</strong></a>
+              <button class="comment-section-next rounded-circle " type="button" data-bs-target="#header-carousel"
+                data-bs-slide="next">
+                <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+                <span class="visually-hidden">Next</span>
+              </button>
+
+            </div>
+          </div>
+          <div class="col m-auto"></div>
+        </div>
+        <!-- Comment end -->
+
+        <!-- Start Menu Tiện Ích -->
+        <div class="hotel-amenities mt-5 px-5">
+          <h3>Tiện nghi khách sạn</h3>
+          <div class="hotel-amenities-list d-flex flex-row">
+            <div class="hotel-amenities-item d-flex flex-column text-center m-md-4">
+              <img style="width: 55px;" class="mx-auto" src="../../../assets/image/pool.png" alt="">
+              <span style="font-size: 16px; font-weight: bold;">Bath</span>
+            </div>
+            <div class="hotel-amenities-item d-flex flex-column text-center m-md-4">
+              <img style="width: 55px;" class="mx-auto" src="../../../assets/image/wifi.png" alt="">
+              <span style="font-size: 16px; font-weight: bold;">Wifi</span>
+            </div>
+            <div class="hotel-amenities-item d-flex flex-column text-center m-md-4">
+              <img style="width: 55px;" class="mx-auto" src="../../../assets/image/restaurant.png" alt="">
+              <span style="font-size: 16px; font-weight: bold;">Restaurant</span>
+            </div>
+            <div class="hotel-amenities-item d-flex flex-column text-center m-md-4">
+              <img style="width: 55px;" class="mx-auto" src="../../../assets/image/stair.png" alt="">
+              <span style="font-size: 16px; font-weight: bold;">Stair</span>
+            </div>
+          </div>
+          <div class="text-center mt-2">
+            <a href="" class="fs-6"><strong>Xem tất cả các tiện ích</strong></a>
+          </div>
+        </div>
+        <!-- End Menu Tiện Ích -->
+      </div>
+      <!-- End Preview -->
+
+
+      <!-- Start Detail -->
+      <div class="room-item shadow rounded-4 overflow-hidden mb-3 p-5 ">
+
+        <!-- Start Thông tin -->
+        <h4><strong>Thông tin khu vực</strong></h4>
+        <div class="mb-2">
+          <i class="fa fa-map-marker text-primary me-3"></i>
+          <span>146 Giang Vo Str, Ba Dinh, Hanoi City., Giảng Võ, Quận Ba Đình, Hà Nội, Việt Nam, 100000</span>
+        </div>
+        <div>
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3723.8639811788466!2d105.74421217512949!3d21.03812778061352!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x313454b991d80fd5%3A0x53cefc99d6b0bf6f!2sFPT%20Polytechnic%20Hanoi!5e0!3m2!1sen!2s!4v1686471336760!5m2!1sen!2s"
+            width="100%" height="200" style="border:0;" allowfullscreen="" loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+        <!--  Location near -->
+        <div class="map row mt-5 w-100">
+
+          <!-- Left -->
+          <div class="col-5">
+            <h5 style="font-weight: bold;">Địa điểm lân cận</h5>
+            <div class="d-flex flex-row justify-content-between py-2">
+              <div class="d-flex flex-row">
+                <img importance="low" loading="lazy"
+                  src="https://ik.imagekit.io/tvlk/image/imageResource/2019/04/04/1554360782133-3dfe83e9b5f6686958161374ac9d86af.png?tr=h-24,q-75,w-24"
+                  srcset="https://ik.imagekit.io/tvlk/image/imageResource/2019/04/04/1554360782133-3dfe83e9b5f6686958161374ac9d86af.png?tr=h-24,q-75,w-24 1x, https://ik.imagekit.io/tvlk/image/imageResource/2019/04/04/1554360782133-3dfe83e9b5f6686958161374ac9d86af.png?tr=dpr-2,h-24,q-75,w-24 2x, https://ik.imagekit.io/tvlk/image/imageResource/2019/04/04/1554360782133-3dfe83e9b5f6686958161374ac9d86af.png?tr=dpr-3,h-24,q-75,w-24 3x"
+                  decoding="async" width="24" height="24" style="object-fit: fill; object-position: 50% 50%;">
+                <div style="margin-left: 12px;">
+                  <span style="font-weight: 700; font-size: 14px;">Circle K Trần Hưng Đạo</span>
+                  <br>
+                  <span style="font-weight: 500; font-size: 14px; color: #687176;">Mua sắm & Quà lưu niệm</span>
+                </div>
+              </div>
+              <span style="font-weight: 500; font-size: 14px;">214 m</span>
+            </div>
+            <div class="d-flex flex-row justify-content-between py-2">
+              <div class="d-flex flex-row">
+                <img importance="low" loading="lazy"
+                  src="https://ik.imagekit.io/tvlk/image/imageResource/2019/04/04/1554360743908-da1254fde1f0767c7ba2f4b9e972f4c2.png?tr=h-24,q-75,w-24"
+                  srcset="https://ik.imagekit.io/tvlk/image/imageResource/2019/04/04/1554360743908-da1254fde1f0767c7ba2f4b9e972f4c2.png?tr=h-24,q-75,w-24 1x, https://ik.imagekit.io/tvlk/image/imageResource/2019/04/04/1554360743908-da1254fde1f0767c7ba2f4b9e972f4c2.png?tr=dpr-2,h-24,q-75,w-24 2x, https://ik.imagekit.io/tvlk/image/imageResource/2019/04/04/1554360743908-da1254fde1f0767c7ba2f4b9e972f4c2.png?tr=dpr-3,h-24,q-75,w-24 3x"
+                  decoding="async" width="24" height="24" style="object-fit: fill; object-position: 50% 50%;">
+                <div style="margin-left: 12px;">
+                  <span style="font-weight: 700; font-size: 14px;">Bệnh Viện Phụ Sản Trung Ương Phòng Khám </span>
+                  <br>
+                  <span style="font-weight: 500; font-size: 14px; color: #687176;">Dịch vụ công
+                  </span>
+                </div>
+              </div>
+              <span style="font-weight: 500; font-size: 14px;">587 m</span>
+            </div>
+            <div class="d-flex flex-row justify-content-between py-2">
+              <div class="d-flex flex-row">
+                <img importance="low" loading="lazy"
+                  src="https://ik.imagekit.io/tvlk/image/imageResource/2019/04/04/1554360706660-18b7d8816fe7aa79adf37fc85f57999c.png?tr=h-24,q-75,w-24"
+                  srcset="https://ik.imagekit.io/tvlk/image/imageResource/2019/04/04/1554360706660-18b7d8816fe7aa79adf37fc85f57999c.png?tr=h-24,q-75,w-24 1x, https://ik.imagekit.io/tvlk/image/imageResource/2019/04/04/1554360706660-18b7d8816fe7aa79adf37fc85f57999c.png?tr=dpr-2,h-24,q-75,w-24 2x, https://ik.imagekit.io/tvlk/image/imageResource/2019/04/04/1554360706660-18b7d8816fe7aa79adf37fc85f57999c.png?tr=dpr-3,h-24,q-75,w-24 3x"
+                  decoding="async" width="24" height="24" style="object-fit: fill; object-position: 50% 50%;">
+                <div style="margin-left: 12px;">
+                  <span style="font-weight: 700; font-size: 14px;">Trung tâm Hội chợ Triển lãm quốc tế I.C.E Hà Nội
+                  </span>
+                  <br>
+                  <span style="font-weight: 500; font-size: 14px; color: #687176;">Doanh nghiệp
+
+                  </span>
+                </div>
+              </div>
+              <span style="font-weight: 500; font-size: 14px;">689 m</span>
+            </div>
+            <div class="d-flex flex-row justify-content-between py-2">
+              <div class="d-flex flex-row">
+                <img importance="low" loading="lazy"
+                  src="https://ik.imagekit.io/tvlk/image/imageResource/2019/04/04/1554360810981-9c87e83b3b5aa0807e3a823fbb9a107b.png?tr=h-24,q-75,w-24"
+                  srcset="https://ik.imagekit.io/tvlk/image/imageResource/2019/04/04/1554360810981-9c87e83b3b5aa0807e3a823fbb9a107b.png?tr=h-24,q-75,w-24 1x, https://ik.imagekit.io/tvlk/image/imageResource/2019/04/04/1554360810981-9c87e83b3b5aa0807e3a823fbb9a107b.png?tr=dpr-2,h-24,q-75,w-24 2x, https://ik.imagekit.io/tvlk/image/imageResource/2019/04/04/1554360810981-9c87e83b3b5aa0807e3a823fbb9a107b.png?tr=dpr-3,h-24,q-75,w-24 3x"
+                  decoding="async" width="24" height="24" style="object-fit: fill; object-position: 50% 50%;">
+                <div style="margin-left: 12px;">
+                  <span style="font-weight: 700; font-size: 14px;">Hanoi Railway Station
+                  </span>
+                  <br>
+                  <span style="font-weight: 500; font-size: 14px; color: #687176;">Điểm nút giao thông
+
+                  </span>
+                </div>
+              </div>
+              <span style="font-weight: 500; font-size: 14px;">771 m</span>
+            </div>
+          </div>
+
+          <!-- Mid -->
+          <div class="col-2">
+            <div class="m-auto h-auto" style="width: 1px; background-color: #cdd0d1;">
+            </div>
+          </div>
+
+          <!-- Right -->
+          <div class="col-5">
+            <h5 style="font-weight: bold;">Phổ biến trong khu vực</h5>
+            <div class="d-flex flex-row justify-content-between py-2 ">
+              <div class="d-flex flex-row">
+                <img importance="low" loading="lazy"
+                  src="https://ik.imagekit.io/tvlk/image/imageResource/2019/04/04/1554360805683-5899121c8828f597fdd407909d2d3d73.png?tr=h-24,q-75,w-24"
+                  srcset="https://ik.imagekit.io/tvlk/image/imageResource/2019/04/04/1554360805683-5899121c8828f597fdd407909d2d3d73.png?tr=h-24,q-75,w-24 1x, https://ik.imagekit.io/tvlk/image/imageResource/2019/04/04/1554360805683-5899121c8828f597fdd407909d2d3d73.png?tr=dpr-2,h-24,q-75,w-24 2x, https://ik.imagekit.io/tvlk/image/imageResource/2019/04/04/1554360805683-5899121c8828f597fdd407909d2d3d73.png?tr=dpr-3,h-24,q-75,w-24 3x"
+                  decoding="async" width="24" height="24" style="object-fit: fill; object-position: 50% 50%;">
+                <div style="margin-left: 12px;">
+                  <span style="font-weight: 700; font-size: 14px;">Nhà thờ Lớn Hà Nội
+                  </span>
+                  <br>
+                  <span style="font-weight: 500; font-size: 14px; color: #687176;">Nơi linh thiêng & Tôn giáo
+                  </span>
+                </div>
+              </div>
+              <span style="font-weight: 500; font-size: 14px;">515 m</span>
+            </div>
+            <div class="d-flex flex-row justify-content-between py-2 ">
+              <div class="d-flex flex-row">
+                <img importance="low" loading="lazy"
+                  src="https://ik.imagekit.io/tvlk/image/imageResource/2019/04/04/1554360805683-5899121c8828f597fdd407909d2d3d73.png?tr=h-24,q-75,w-24"
+                  srcset="https://ik.imagekit.io/tvlk/image/imageResource/2019/04/04/1554360805683-5899121c8828f597fdd407909d2d3d73.png?tr=h-24,q-75,w-24 1x, https://ik.imagekit.io/tvlk/image/imageResource/2019/04/04/1554360805683-5899121c8828f597fdd407909d2d3d73.png?tr=dpr-2,h-24,q-75,w-24 2x, https://ik.imagekit.io/tvlk/image/imageResource/2019/04/04/1554360805683-5899121c8828f597fdd407909d2d3d73.png?tr=dpr-3,h-24,q-75,w-24 3x"
+                  decoding="async" width="24" height="24" style="object-fit: fill; object-position: 50% 50%;">
+                <div style="margin-left: 12px;">
+                  <span style="font-weight: 700; font-size: 14px;">Thong Nhat Park
+
+                  </span>
+                  <br>
+                  <span style="font-weight: 500; font-size: 14px; color: #687176;">Công viên & Sở thú
+
+                  </span>
+                </div>
+              </div>
+              <span style="font-weight: 500; font-size: 14px;">892 m</span>
+            </div>
+            <div class="d-flex flex-row justify-content-between py-2 ">
+              <div class="d-flex flex-row">
+                <img importance="low" loading="lazy"
+                  src="https://ik.imagekit.io/tvlk/image/imageResource/2019/04/04/1554360805683-5899121c8828f597fdd407909d2d3d73.png?tr=h-24,q-75,w-24"
+                  srcset="https://ik.imagekit.io/tvlk/image/imageResource/2019/04/04/1554360805683-5899121c8828f597fdd407909d2d3d73.png?tr=h-24,q-75,w-24 1x, https://ik.imagekit.io/tvlk/image/imageResource/2019/04/04/1554360805683-5899121c8828f597fdd407909d2d3d73.png?tr=dpr-2,h-24,q-75,w-24 2x, https://ik.imagekit.io/tvlk/image/imageResource/2019/04/04/1554360805683-5899121c8828f597fdd407909d2d3d73.png?tr=dpr-3,h-24,q-75,w-24 3x"
+                  decoding="async" width="24" height="24" style="object-fit: fill; object-position: 50% 50%;">
+                <div style="margin-left: 12px;">
+                  <span style="font-weight: 700; font-size: 14px;">Hồ Hoàn Kiếm
+                  </span>
+                  <br>
+                  <span style="font-weight: 500; font-size: 14px; color: #687176;">Thiên nhiên
+                  </span>
+                </div>
+              </div>
+              <span style="font-weight: 500; font-size: 14px;">636 m</span>
+            </div>
+            <div class="d-flex flex-row justify-content-between py-2 ">
+              <div class="d-flex flex-row">
+                <img importance="low" loading="lazy"
+                  src="https://ik.imagekit.io/tvlk/image/imageResource/2019/04/04/1554360702518-27b5dfb9349b7a8f2062335314da5ef6.png?tr=h-24,q-75,w-24"
+                  srcset="https://ik.imagekit.io/tvlk/image/imageResource/2019/04/04/1554360702518-27b5dfb9349b7a8f2062335314da5ef6.png?tr=h-24,q-75,w-24 1x, https://ik.imagekit.io/tvlk/image/imageResource/2019/04/04/1554360702518-27b5dfb9349b7a8f2062335314da5ef6.png?tr=dpr-2,h-24,q-75,w-24 2x, https://ik.imagekit.io/tvlk/image/imageResource/2019/04/04/1554360702518-27b5dfb9349b7a8f2062335314da5ef6.png?tr=dpr-3,h-24,q-75,w-24 3x"
+                  decoding="async" width="24" height="24" style="object-fit: fill; object-position: 50% 50%;">
+                <div style="margin-left: 12px;">
+                  <span style="font-weight: 700; font-size: 14px;">Sân bay quốc tế Nội Bài (HAN)
+
+                  </span>
+                  <br>
+                  <span style="font-weight: 500; font-size: 14px; color: #687176;">Điểm nút giao thông
+
+                  </span>
+                </div>
+              </div>
+              <span style="font-weight: 500; font-size: 14px;">22.21 km</span>
+            </div>
+          </div>
+        </div>
+        <div class="text-center mt-5">
+          <span style="color: #687176; font-weight: 500;">Khoảng cách hiển thị dựa trên đường chim bay. Khoảng cách di
+            chuyển thực tế có thể khác. </span>
+        </div>
+        <!-- End Thông tin -->
+        <hr>
+
+
+      </div>
+      <!-- Start Detail -->
+
+      <!-- Book room start -->
+      <app-hotel-booking-room></app-hotel-booking-room>
+      <!-- Book room end -->
+
+      <!-- Start Policy -->
+      <app-hotel-policy></app-hotel-policy>
+      <!-- End Policy -->
+
+      <!-- Start Hotel Amenities -->
+      <app-hotel-detail-amenities></app-hotel-detail-amenities>
+      <!-- End Hotel Amenities -->
+    </div>
+  </div>
+</div>
+<!-- Hotel Detail End -->
