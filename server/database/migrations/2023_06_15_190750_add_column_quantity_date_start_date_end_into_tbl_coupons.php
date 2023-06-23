@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('tbl_coupons', function (Blueprint $table) {
-            $table->integer('quantity')->after('hotel_id');
+            $table->integer('quantity')->after('max');
             $table->date('start_date')->after('quantity');
             $table->date('end_date')->after('start_date');
         });

@@ -14,15 +14,15 @@ return new class extends Migration
     public function up()
     {
         // sửa bảng booking
-        Schema::table('tbl_bookings', function (Blueprint $table) {
-            $table->dropColumn('comment_id');
-        });
+        // Schema::table('tbl_bookings', function (Blueprint $table) {
+        //     $table->dropColumn('comment_id');
+        // });
         
         //sửa bảng comment
-        Schema::table('tbl_comment', function (Blueprint $table) {
-            $table->integer('user_id')->after('id');
-            $table->integer('blog_id')->after('user_id');
-        });
+        // Schema::table('tbl_comments', function (Blueprint $table) {
+        //     $table->integer('user_id')->after('id');
+        //     $table->integer('blog_id')->after('user_id');
+        // });
         //sửa bảng comment
         Schema::table('tbl_blogs', function (Blueprint $table) {
             $table->string('slug')->unique()->after('title');
