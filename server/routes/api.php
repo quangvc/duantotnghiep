@@ -129,6 +129,16 @@ Route::group(['prefix' => 'admin'], function () {
         }
     );
     Route::group(
+        ['prefix' => 'blogs', 'controller' => BlogController::class],
+        function () {
+            Route::get('/', 'index');
+            Route::post('/', 'store');
+            Route::get('/{id}', 'show');
+            Route::put('/{id}', 'update');
+            Route::delete('/{id}', 'destroy');
+        }
+    );
+    Route::group(
         ['prefix' => 'booking'], // Thêm `prefix` để xác định endpoint chung của API
         function () {
             Route::get('/', [BookingController::class, 'index']);

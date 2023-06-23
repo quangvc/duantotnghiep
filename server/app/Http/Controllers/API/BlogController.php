@@ -14,16 +14,18 @@ use Illuminate\Validation\Rule;
 
 class BlogController extends Controller
 {
-    public function index(){
+    public function index()
+    {
         $blog = Blog::all();
         return BlogResource::collection($blog);
     }
-    public function store(CreateBlogRequest $request){
+    public function store(CreateBlogRequest $request)
+    {
         $user_id = auth()->user()->id;
         $validated = $request->validated();
         $blog = new Blog([
             'title' => $validated['title'],
-            'slug' => Str::slug($validated['title']),
+            // 'slug' => Str::slug($validated['title']),
             'content' => $validated['content'],
             'image' => $validated['image'],
             'user_id' => $user_id,
@@ -40,17 +42,18 @@ class BlogController extends Controller
         $blog->save();
         return MessageStatusAPI::store();
     }
-    public function update(CreateBlogRequest $request, $id){
+    public function update(CreateBlogRequest $request, $id)
+    {
         $request->validate([
             // 'title' => [Rule::unique('tbl_blogs')->ignore($request->id),]
-            'title'     => 'required|unique:tbl_blogs,title,'.$request->id,
+            'title'     => 'required|unique:tbl_blogs,title,' . $request->id,
         ]);
         $blog = Blog::find($id);
         $user_id = auth()->user()->id;
-        if(!$user_id){
+        if (!$user_id) {
             return MessageStatusAPI::displayInvalidInput($blog);
         }
-        if($user_id !== $blog->user_id){
+        if ($user_id !== $blog->user_id) {
             return MessageStatusAPI::notFound();
         }
         if ($request->hasFile('image')) {
@@ -64,19 +67,21 @@ class BlogController extends Controller
         $blog->update($request->all());
         return MessageStatusAPI::update();
     }
-    public function destroy($id){
+    public function destroy($id)
+    {
         $blog = Blog::find($id);
         $user_id = auth()->user()->id;
-        if(!$user_id){
+        if (!$user_id) {
             return MessageStatusAPI::displayInvalidInput($blog);
         }
-        if($user_id !== $blog->user_id){
+        if ($user_id !== $blog->user_id) {
             return MessageStatusAPI::notFound();
         }
         $blog->delete();
         return MessageStatusAPI::destroy();
     }
-    public function show($id){
+    public function show($id)
+    {
         $blog = Blog::find($id);
         if ($blog) {
             return new BlogResource($blog);

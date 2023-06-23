@@ -44,5 +44,9 @@
     "name": "Tên loại phòng",
     "price_per_night": "Giá 1 đêm",
     "capacity": "Số lượng người ở"
+  },
+  "coupon": {
+    "name": "Tên mã giảm giá"
   }
+
 }

@@ -53,7 +53,7 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     BrowserAnimationsModule,
     NineModule,
     SharedModule,
-    FormsModule
+    FormsModule,
   ],
   providers: [
     { provide: NZ_I18N, useValue: en_US },
