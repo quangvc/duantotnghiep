@@ -24,8 +24,9 @@ class CreateCommentRequest extends FormRequest
     public function rules()
     {
         return [
-            'comment' => 'required|max:1000',
-            'rating' => 'required|integer|min:1|max:5',
+        'content' => 'required',
+        'rating' => 'nullable|integer|min:0|max:5',
+        'blog_id' => 'nullable|integer|exists:tbl_blogs,id'
         ];
     }
     public function messages()
@@ -33,6 +34,7 @@ class CreateCommentRequest extends FormRequest
        return [
         'content.required' => 'vui lòng không boe trống ',
         'rating.required' => 'vui lòng không boe trống ',
+        'blog_id.required' => 'vui lòng không boe trống ',
        ];
     }
 }

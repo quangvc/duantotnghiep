@@ -13,12 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('tbl_comment', function (Blueprint $table) {
-            $table->id();
-            $table->text('content');
-            $table->integer('rating');
-            $table->timestamps();
-        });
+        // Schema::table('tbl_blogs', function (Blueprint $table) {
+        //     $table->string('image')->after('content')->nullable();
+        // });
     }
 
     /**
@@ -28,6 +25,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tbl_comment');
+        //
     }
 };
