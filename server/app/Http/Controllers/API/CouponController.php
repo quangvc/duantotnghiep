@@ -33,6 +33,7 @@ class CouponController extends Controller
 
     public function store(CouponRequest $request)
     {
+
         $role = auth()->user()->getRoleNames()->first();
         $validated = $request->validated();
         if ($role == 'admin') {
@@ -41,6 +42,7 @@ class CouponController extends Controller
         if ($role == 'manager') {
             $id_hotel = auth()->user()->hotel_id;
         }
+
         $coupon = Coupon::firstOrCreate([
             'name' =>  "HOTEL" . $id_hotel . '_' . $validated['name'],
             'type' =>  $validated['type'],
@@ -49,9 +51,12 @@ class CouponController extends Controller
             'max' =>  $validated['max'],
             'hotel_id' => $id_hotel,
             'quantity' =>  $validated['quantity'],
-            'dateStart' =>  Carbon::createFromFormat('d-m-Y', $validated['dateStart'])->format('Y-m-d H:i:s.u'),
-            'dateEnd' => Carbon::createFromFormat('d-m-Y', $validated['dateEnd'])->format('Y-m-d H:i:s.u'),
+            'dateStart' =>  $validated['dateStart'],
+            'dateEnd' => $validated['dateEnd'],
         ]);
+
+
+
         $coupon->save();
         return MessageStatusAPI::store();
     }
@@ -109,11 +114,10 @@ class CouponController extends Controller
     public function show($id)
     {
         $couponDetail = Coupon::find($id);
-        return CouponsResource::collection($couponDetail);
 
         if (!$couponDetail) {
             return MessageStatusAPI::notFound();
         }
-        return MessageStatusAPI::show($couponDetail);
+        return MessageStatusAPI::show(new CouponsResource($couponDetail));
     }
 }
