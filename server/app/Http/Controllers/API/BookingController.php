@@ -7,6 +7,7 @@ use App\Http\Requests\BookingRequest;
 use App\Http\Resources\API\BookingResource;
 use App\Models\Booking;
 use App\Models\BookingDetail;
+use App\Models\Room;
 use App\Traits\MessageStatusAPI;
 use Carbon\Carbon;
 use Illuminate\Http\Request as HttpRequest;
@@ -22,9 +23,12 @@ class BookingController extends Controller
 
     public function store(HttpRequest $request)
     {
+        // return $request;
         $user = auth()->user();
         $validated = $request->all();
-
+        $checkin_date = Carbon::parse($validated['checkin_date']);
+        $checkout_date = Carbon::parse($validated['checkout_date']);
+        $date_diff = $checkin_date->diffInDays($checkout_date);
         if ($user) {
             $guest_name = $user->name;
             $guest_email = $user->email;
@@ -37,11 +41,25 @@ class BookingController extends Controller
             $guest_phone =  $validated['guest_phone'];
             $user_id =  null;
         }
-
+        $room = Room::whereIn('id', $validated['room_id'])
+            ->where('status', '=', '1')
+            // ->whereHas('booking_details', function ($query) use ($validated) {
+            //     $query->where('room_id', '=', $validated['room_id']);
+            // })   
+            ->first();
+        $check_booking = Booking::whereDate('checkin_date', $checkin_date)
+            ->whereDate('checkout_date', $checkout_date)
+            ->whereHas('booking_details', function ($query) use ($validated) {
+                $query->where('room_id', '=', $validated['room_id']);
+            })
+            ->first();
+        // if (empty($check_booking) && ) {
+        // }
+        return $room;
         $booking = new Booking([
             'booking_date' =>  Carbon::now()->format('Y-m-d H:i:s.u'),
-            'checkin_date' =>  Carbon::createFromFormat('d-m-Y', $validated['checkin_date'])->format('Y-m-d H:i:s.u'),
-            'checkout_date' => Carbon::createFromFormat('d-m-Y', $validated['checkout_date'])->format('Y-m-d H:i:s.u'),
+            'checkin_date' =>  Carbon::createFromFormat('d-m-Y', $validated['checkin_date'])->format('Y-m-d'),
+            'checkout_date' => Carbon::createFromFormat('d-m-Y', $validated['checkout_date'])->format('Y-m-d'),
             'people_quantity' =>  $validated['people_quantity'],
             // 'coupon_id' =>  $validated['coupon_id'],
             'user_id' =>  $user_id,
@@ -55,12 +73,10 @@ class BookingController extends Controller
         ]);
         $booking->save();
         $booking->update(['booking_number' => 'HD' . $booking->id . '_' . random_int('10000000', '99999999')]);
-        $booking_detail = new BookingDetail([
-            'booking_id' => $booking->id,
-            'room_id' => $validated['room_id'],
-        ]);
-        $booking_detail->save();
 
+        $booking->booking_detail()->sync(
+            $validated['room_id']
+        );
         return MessageStatusAPI::store();
     }
 

@@ -17,6 +17,9 @@ class ImageController extends Controller
     }
     public function storeHotel($id, Request $request)
     {
+        if (empty($request->hasFile('path'))) {
+            return MessageStatusAPI::notFound();
+        }
         $extension = $request->file('path')->getClientOriginalExtension();
         if ($extension == 'jpg' || $extension == 'png' || $extension == 'jpeg') {
             $timestamp = getdate(); // Get current Unix timestamp
