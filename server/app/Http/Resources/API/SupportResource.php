@@ -4,7 +4,7 @@ namespace App\Http\Resources\API;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class BlogResource extends JsonResource
+class SupportResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -15,12 +15,12 @@ class BlogResource extends JsonResource
     public function toArray($request)
     {
         return[
-            'id'=>$this->id,
-            'title'=>$this->title,
+            'id' => $this->id,
+            'name' =>$this->name,
+            'email'=>$this->email,
+            'phone'=>$this->phone,
             'content'=>$this->content,
-            'image'=>$this->image,
-            'user_name'=>$this->user->name,
-            'slug'=>$this->slug
+            'status'=>$this->status,
         ];
     }
 }

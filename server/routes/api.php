@@ -13,10 +13,12 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\API\HotelController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\API\ImageController;
+use App\Http\Controllers\API\SupportController;
+
 use App\Http\Controllers\UserController;
 use App\Models\Hotel;
 use App\Http\Controllers\API\CouponController;
-
+use App\Http\Controllers\API\FeedbackController;
 
 /*
 |--------------------------------------------------------------------------
@@ -109,7 +111,7 @@ Route::group(['prefix' => 'admin'], function () {
         }
     );
     Route::group(
-        ['prefix' => 'comment', 'controller' => CommentController::class],
+        ['prefix' => 'feedback', 'controller' => FeedbackController::class],
         function () {
             Route::get('/', 'index');
             Route::post('/', 'store');
@@ -133,23 +135,13 @@ Route::group(['prefix' => 'admin'], function () {
         function () {
             Route::get('/', 'index');
             Route::post('/', 'store');
-            Route::get('/{id}', 'show');
+            Route::get('/{slug}/{id}', 'show');
             Route::put('/{id}', 'update');
             Route::delete('/{id}', 'destroy');
         }
     );
     Route::group(
-        ['prefix' => 'booking'], // Thêm `prefix` để xác định endpoint chung của API
-        function () {
-            Route::get('/', [BookingController::class, 'index']);
-            Route::post('/', [BookingController::class, 'store']);
-            Route::put('/{id}', [BookingController::class, 'update']);
-            Route::delete('/{id}', [BookingController::class, 'destroy']);
-        }
-    );
-    
-    Route::group(
-        ['prefix' => 'blogs', 'controller' => BlogController::class],
+        ['prefix' => 'comments', 'controller' => CommentController::class],
         function () {
             Route::get('/', 'index');
             Route::post('/', 'store');

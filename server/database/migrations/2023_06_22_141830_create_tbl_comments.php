@@ -13,16 +13,17 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('tbl_blogs', function (Blueprint $table) {
+        Schema::create('tbl_comments', function (Blueprint $table) {
             $table->id();
-            $table->string('title')->unique();
-            $table->string('content');
-            $table->string('image')->nullable();
             $table->integer('user_id');
-            $table->string('slug')->unique()->after('id');
+            $table->integer('parent_id')->nullable();
+            $table->integer('blog_id');
+            $table->text('content');
+            $table->integer('rating')->nullable();
             $table->timestamps();
         });
     }
+
     /**
      * Reverse the migrations.
      *
@@ -30,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tbl_blogs');
+        Schema::dropIfExists('tbl_comments');
     }
 };

@@ -80,12 +80,11 @@ class BlogController extends Controller
         $blog->delete();
         return MessageStatusAPI::destroy();
     }
-    public function show($id)
-    {
+    public function show($slug, $id){
         $blog = Blog::find($id);
         if ($blog) {
             return new BlogResource($blog);
-        } else {
+        } else {    
             return MessageStatusAPI::notFound();
         }
     }
