@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('type');
             $table->integer('value');
             $table->integer('min');
-            $table->integer('max');
+            $table->integer('max')->nullable();
             $table->timestamps();
         });
     }

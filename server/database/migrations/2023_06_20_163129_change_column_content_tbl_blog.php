@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::table('tbl_blogs', function (Blueprint $table) {
             $table->text('content')->nullable()->change();
+            $table->tinyInteger('active')->default(0)->after('user_id');
         });
     }
 

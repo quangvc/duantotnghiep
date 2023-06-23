@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('tbl_comment', function (Blueprint $table) {
-            $table->bigInteger('parent_id')->after('user_id')->nullable();
+            $table->integer('parent_id')->nullable()->after('user_id');
         });
     }
 

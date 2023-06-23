@@ -13,13 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('tbl_blogs', function (Blueprint $table) {
+        Schema::create('tbl_feedbacks', function (Blueprint $table) {
             $table->id();
-            $table->string('title')->unique();
-            $table->string('content');
-            $table->string('image')->nullable();
-            $table->integer('user_id');
+            $table->integer('booking_id');
+            $table->text('content');
+            $table->integer('rating');
             $table->timestamps();
+        
         });
     }
 
@@ -30,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tbl_blogs');
+        Schema::dropIfExists('tbl_feedbacks');
     }
 };
