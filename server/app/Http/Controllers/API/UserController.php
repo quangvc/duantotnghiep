@@ -89,9 +89,12 @@ class UserController extends Controller
         ]);
 
         if ($request->hasFile('avatar')) {
+            if ($user->avatar != '' && file_exists(base_path('public/Images/avatars/' . $user->avatar))) {
+                unlink(base_path('public/Images/avatars/' . $user->avatar));
+            }
             $file = $request->avatar;
             $fileName = $file->hashName();
-            $file->move(base_path('public/Images/avatar'), $fileName);
+            $file->move(base_path('public/Images/avatars'), $fileName);
               
             $user->update(
                 array_merge(
