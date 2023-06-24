@@ -12,7 +12,7 @@ class RoomType extends Model
     protected $table = 'tbl_room_types';
 
     protected $fillable = [
-        'name', 'price_per_night', 'capacity', 'description'
+        'name', 'hotel_id', 'room_quantity', 'price_per_night', 'capacity', 'description'
     ];
 
     public function images(): HasMany

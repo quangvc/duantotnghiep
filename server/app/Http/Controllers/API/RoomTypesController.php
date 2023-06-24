@@ -14,7 +14,8 @@ use Illuminate\Http\Response;
 class RoomTypesController extends Controller
 {
     //
-    public function index(){
+    public function index()
+    {
         $role = auth()->user()->getRoleNames()->first();
         if ($role == 'admin') {
             $roomtype = RoomType::all();
@@ -42,8 +43,10 @@ class RoomTypesController extends Controller
         }
         if ($id_hotel) {
             $room_type = new RoomType([
-                'name' => "HOTEL" . $id_hotel . '_' . $validated['name'],
+                'name' => $validated['name'],
+                'hotel_id' => $id_hotel,
                 'price_per_night' => $validated['price_per_night'],
+                'room_quantity' => $validated['room_quantity'],
                 'capacity' => $validated['capacity'],
                 'description' => $validated['description']
             ]);
