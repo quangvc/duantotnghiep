@@ -8,6 +8,7 @@ use App\Http\Resources\API\BookingResource;
 use App\Models\Booking;
 use App\Models\BookingDetail;
 use App\Models\Room;
+use App\Models\RoomType;
 use App\Traits\MessageStatusAPI;
 use Carbon\Carbon;
 use Illuminate\Http\Request as HttpRequest;
@@ -41,21 +42,19 @@ class BookingController extends Controller
             $guest_phone =  $validated['guest_phone'];
             $user_id =  null;
         }
-        $room = Room::whereIn('id', $validated['room_id'])
-            ->where('status', '=', '1')
-            // ->whereHas('booking_details', function ($query) use ($validated) {
-            //     $query->where('room_id', '=', $validated['room_id']);
-            // })   
-            ->first();
-        $check_booking = Booking::whereDate('checkin_date', $checkin_date)
-            ->whereDate('checkout_date', $checkout_date)
-            ->whereHas('booking_details', function ($query) use ($validated) {
-                $query->where('room_id', '=', $validated['room_id']);
-            })
-            ->first();
+        return count($validated['room_type_id']);
+        $room_types = Room::whereIn('room_type_id', $validated['room_type_id'])
+            ->get();
+
+        // $check_booking = Booking::whereDate('checkin_date', $checkin_date)
+        //     ->whereDate('checkout_date', $checkout_date)
+        //     ->whereHas('booking_details', function ($query) use ($validated) {
+        //         $query->where('room_id', '=', $validated['room_id']);
+        //     })
+        //     ->first();
         // if (empty($check_booking) && ) {
         // }
-        return $room;
+        return $room_types;
         $booking = new Booking([
             'booking_date' =>  Carbon::now()->format('Y-m-d H:i:s.u'),
             'checkin_date' =>  Carbon::createFromFormat('d-m-Y', $validated['checkin_date'])->format('Y-m-d'),

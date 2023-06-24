@@ -5,16 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\Pivot;
 
-class BookingDetail extends Pivot
+class BookingDetail extends Model
 
 {
     use HasFactory;
     protected $table = 'tbl_booking_detail';
 
     protected $fillable = [
-        'booking_id', 'room_id'
+        'booking_id', 'room_type_id  ', 'booking_date', 'checkin_date',
+        'checkout_date'
     ];
 
     public function booking(): BelongsTo
@@ -22,8 +22,12 @@ class BookingDetail extends Pivot
         return $this->belongsTo(Booking::class);
     }
 
-    public function room(): BelongsTo
+    // public function room(): BelongsTo
+    // {
+    //     return $this->belongsTo(Room::class);
+    // }
+    public function room_type(): BelongsTo
     {
-        return $this->belongsTo(Room::class);
+        return $this->belongsTo(RoomType::class);
     }
 }
