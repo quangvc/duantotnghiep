@@ -13,8 +13,7 @@ class BookingDetail extends Model
     protected $table = 'tbl_booking_detail';
 
     protected $fillable = [
-        'booking_id', 'room_type_id  ', 'booking_date', 'checkin_date',
-        'checkout_date'
+        'booking_id', 'room_type_id',
     ];
 
     public function booking(): BelongsTo

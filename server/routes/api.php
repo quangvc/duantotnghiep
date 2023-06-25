@@ -158,3 +158,115 @@ Route::group(['prefix' => 'admin'], function () {
         }
     );
 });
+Route::group(['prefix' => 'client'], function () {
+    Route::group(['prefix' => 'users', 'controller' => UserController::class], function () {
+        Route::get('/', 'index');
+        Route::get('/{user}', 'show');
+        Route::post('/', 'store');
+        Route::post('/{user}', 'update');
+        Route::delete('/{user}', 'destroy');
+        Route::put('/{id}/change-status', 'changeStatus');
+    });
+
+    Route::group(
+        ['prefix' => 'hotels', 'controller' => HotelController::class],
+        function () {
+            Route::get('/', 'index')->middleware('permission:view_hotel');
+            Route::post('/', 'store')->middleware('permission:add_hotel');
+            Route::put('/changeStatus/{id}', 'changeStatus');
+            Route::put('/{id}', 'update')->middleware('permission:edit_hotel');
+            Route::get('/{id}', 'show')->middleware('permission:show_hotel');
+            Route::delete('/{id}', 'destroy')->middleware('permission:delete_hotel');
+        }
+    );
+
+    Route::group(
+        ['prefix' => 'rooms', 'controller' => RoomController::class],
+        function () {
+            Route::get('/', 'index')->middleware('permission:view_room');
+            Route::post('/', 'store')->middleware('permission:view_room');
+            Route::get('/{id}', 'show')->middleware('permission:show_room');
+            Route::put('/{id}', 'update')->middleware('permission:edit_room');
+            Route::delete('/{id}', 'destroy')->middleware('permission:delete_room');
+        }
+    );
+
+    Route::group(
+        ['prefix' => 'room-types', 'controller' => RoomTypesController::class],
+        function () {
+            Route::get('/', 'index');
+            Route::post('/', 'store');
+            Route::put('/{id}', 'update');
+            Route::get('/{id}', 'show');
+            Route::delete('/{id}', 'destroy');
+        }
+    );
+
+    Route::group(
+        ['prefix' => 'regions', 'controller' => RegionController::class],
+        function () {
+            Route::get('/', 'index');
+            Route::post('/', 'store');
+            Route::put('/{id}', 'update');
+            Route::get('/{id}', 'show');
+            Route::delete('/{id}', 'destroy');
+        }
+    );
+    Route::group(
+        ['prefix' => 'coupons', 'controller' => CouponController::class],
+        function () {
+            Route::get('/', 'index')->middleware('permission:view_coupon');;
+            Route::post('/', 'store')->middleware('permission:add_coupon');
+            Route::get('/{id}', 'show')->middleware('permission:show_coupon');;
+            Route::put('/{id}', 'update')->middleware('permission:edit_coupon');
+            Route::delete('/{id}', 'destroy')->middleware('permission:delete_coupon');
+        }
+    );
+    Route::group(
+        ['prefix' => 'feedback', 'controller' => FeedbackController::class],
+        function () {
+            Route::get('/', 'index');
+            Route::post('/', 'store');
+            Route::get('/{id}', 'show');
+            Route::put('/{id}', 'update');
+            Route::delete('/{id}', 'destroy');
+        }
+    );
+    Route::group(
+        ['prefix' => 'image', 'controller' => ImageController::class],
+        function () {
+            Route::get('/', 'index');
+            Route::post('/hotel/{id}', 'storeHotel');
+            Route::post('/room-type/{id}', 'storeRoomType');
+            Route::put('/{id}', 'update');
+            Route::delete('/{id}', 'destroy');
+        }
+    );
+    Route::group(
+        ['prefix' => 'booking', 'controller' => BookingController::class], // Thêm `prefix` để xác định endpoint chung của API
+        function () {
+            Route::get('/', 'index');
+            Route::post('/', 'store');
+        }
+    );
+    Route::group(
+        ['prefix' => 'blogs', 'controller' => BlogController::class],
+        function () {
+            Route::get('/', 'index');
+            Route::post('/', 'store');
+            Route::get('/{slug}/{id}', 'show');
+            Route::put('/{id}', 'update');
+            Route::delete('/{id}', 'destroy');
+        }
+    );
+    Route::group(
+        ['prefix' => 'comments', 'controller' => CommentController::class],
+        function () {
+            Route::get('/', 'index');
+            Route::post('/', 'store');
+            Route::get('/{id}', 'show');
+            Route::put('/{id}', 'update');
+            Route::delete('/{id}', 'destroy');
+        }
+    );
+});
