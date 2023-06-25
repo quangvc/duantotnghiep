@@ -28,7 +28,7 @@ class ImageController extends Controller
             $newFileName = $now . '_Hotel' . $id . '_' . $path;
             $folderHotel = $request->file('path')->move('Images/Hotel', $newFileName);
             $image = new Image([
-                'path' => 'Hotel/' . $path,
+                'path' => 'Hotel/' . $newFileName,
                 'hotel_id' => $id
             ]);
             $image->save();
