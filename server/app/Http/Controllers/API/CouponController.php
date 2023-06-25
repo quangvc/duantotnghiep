@@ -51,8 +51,8 @@ class CouponController extends Controller
             'max' =>  $validated['max'],
             'hotel_id' => $id_hotel,
             'quantity' =>  $validated['quantity'],
-            'dateStart' =>  $validated['dateStart'],
-            'dateEnd' => $validated['dateEnd'],
+            'start_date' =>  $validated['start_date'],
+            'end_date' => $validated['end_date'],
         ]);
 
 
@@ -105,8 +105,8 @@ class CouponController extends Controller
             'max' =>  $validated['max'],
             'hotel_id' => $id_hotel,
             'quantity' =>  $validated['quantity'],
-            'dateStart' =>  $validated['dateStart'],
-            'dateEnd' => $validated['dateEnd']
+            'start_date' =>  $validated['start_date'],
+            'end_date' => $validated['end_date']
         ]);
         return MessageStatusAPI::update();
     }

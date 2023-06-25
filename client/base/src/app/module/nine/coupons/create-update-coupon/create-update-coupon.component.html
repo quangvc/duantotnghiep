@@ -11,35 +11,42 @@
         <div class="col-6">
           <div class="mb-3">
             <label for="name" class="form-label">{{'coupon.name' | translate}}</label>
-            <input type="text" class="form-control" id="name" formControlName="coupon_name">
+            <input type="text" class="form-control" id="name" formControlName="name">
+          </div>
+        </div>
+
+        <div class="col-6">
+          <div class="mb-3">
+            <label for="quantity" class="form-label">{{'coupon.quantity' | translate}}</label>
+            <input type="number" class="form-control" id="quantity" formControlName="quantity">
           </div>
         </div>
 
         <div class="col-6">
           <div class="mb-3">
             <label for="type" class="form-label">{{'coupon.type' | translate}}</label>
-            <input type="text" class="form-control" id="type" formControlName="coupon_type">
+            <input type="text" class="form-control" id="type" formControlName="type">
           </div>
         </div>
 
         <div class="col-6">
           <div class="mb-3">
             <label for="value" class="form-label">{{'coupon.value' | translate}}</label>
-            <input type="number" class="form-control" id="value" formControlName="coupon_value">
+            <input type="number" class="form-control" id="value" formControlName="value">
           </div>
         </div>
 
         <div class="col-6">
           <div class="mb-3">
             <label for="min" class="form-label">{{'coupon.min' | translate}}</label>
-            <input type="number" class="form-control" id="min" formControlName="coupon_min">
+            <input type="number" class="form-control" id="min" formControlName="min">
           </div>
         </div>
 
         <div class="col-6">
           <div class="mb-3">
             <label for="max" class="form-label">{{'coupon.max' | translate}}</label>
-            <input type="number" class="form-control" id="max" formControlName="coupon_max">
+            <input type="number" class="form-control" id="max" formControlName="max">
           </div>
         </div>
 
@@ -57,11 +64,11 @@
 
         <div class="col-6">
           <div class="mb-3">
-            <label for="dateStart" class="form-label">{{'coupon.dateStart' | translate}}</label>
-            <input type="date" class="form-control" id="dateStart" formControlName="coupon_dateStart">
+            <label for="start_date" class="form-label">{{'coupon.start_date' | translate}}</label>
+            <input type="date" class="form-control" id="start_date" formControlName="start_date">
 
             <!-- <nz-date-picker
-              class="form-control" id="dateStart" formControlName="coupon_dateStart"
+              class="form-control" id="dateStart" formControlName="dateStart"
               [(ngModel)]="date" (ngModelChange)="onChange($event)">
             </nz-date-picker> -->
           </div>
@@ -69,10 +76,10 @@
 
         <div class="col-6">
           <div class="mb-3">
-            <label for="dateEnd" class="form-label">{{'coupon.dateEnd' | translate}}</label>
-            <input type="date" class="form-control" id="dateEnd" formControlName="coupon_dateEnd">
+            <label for="end_date" class="form-label">{{'coupon.end_date' | translate}}</label>
+            <input type="date" class="form-control" id="end_date" formControlName="end_date">
             <!-- <nz-date-picker
-              class="form-control" id="dateEnd" formControlName="coupon_dateEnd"
+              class="form-control" id="dateEnd" formControlName="dateEnd"
               [(ngModel)]="date" (ngModelChange)="onChange($event)">
             </nz-date-picker> -->
           </div>

@@ -11,8 +11,9 @@
       <th>{{'coupon.min' | translate}}</th>
       <th>{{'coupon.max' | translate}}</th>
       <th>{{'coupon.hotel_id' | translate}}</th>
-      <th>{{'coupon.dateStart' | translate}}</th>
-      <th>{{'coupon.dateEnd' | translate}}</th>
+      <th>{{'coupon.start_date' | translate}}</th>
+      <th>{{'coupon.end_date' | translate}}</th>
+      <th>{{'coupon.quantity' | translate}}</th>
       <!-- <th>{{'status' | translate}}</th> -->
       <th>{{'action' | translate}}</th>
     </tr>
@@ -25,9 +26,10 @@
       <td>{{ data.value }}</td>
       <td>{{ data.min }}</td>
       <td>{{ data.max }}</td>
-      <td>{{ data.hotel_id }}</td>
-      <td>{{ data.dateStart }}</td>
-      <td>{{ data.dateEnd }}</td>
+      <td>{{ data.hotel.name }}</td>
+      <td>{{ data.start_date }}</td>
+      <td>{{ data.end_date }}</td>
+      <td>{{ data.quantity }}</td>
       <!-- <td></td> -->
       <!-- <td><nz-switch [(ngModel)]="data.status" (ngModelChange)="confirmChangeStatus($event,data)"></nz-switch></td> -->
       <td>

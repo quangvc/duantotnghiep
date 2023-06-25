@@ -60,6 +60,10 @@ export class NineLayoutComponent implements OnInit {
         {
           label: "Quản lý mã giảm giá",
           routerLink: "coupons",
+        },
+        {
+          label: "Quản lý blog",
+          routerLink: "blogs",
         }
       ]
     },
