@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\API;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\BannerRequest;
 use App\Http\Resources\API\BannerResource;
 use App\Models\Banner;
@@ -10,14 +11,16 @@ use App\Traits\MessageStatusAPI;
 
 class BannerController extends Controller
 {
-    public function index(){
+    public function index()
+    {
         $banner = Banner::all();
         return BannerResource::collection($banner);
     }
-    public function store(BannerRequest $request){
+    public function store(BannerRequest $request)
+    {
         $role = auth()->user()->getRoleNames()->first();
         $validated = $request->validated();
-        if($role == 'admin'){
+        if ($role == 'admin') {
             $banner = Banner::firstOrCreate([
                 'image' =>  $validated['image']
             ]);
@@ -34,7 +37,8 @@ class BannerController extends Controller
         $banner->save();
         return MessageStatusAPI::store();
     }
-    public function update(BannerRequest $request, $id){
+    public function update(BannerRequest $request, $id)
+    {
         $banner = Banner::find($id);
         if ($request->hasFile('image')) {
             $image = $request->file('image');
@@ -47,7 +51,8 @@ class BannerController extends Controller
         $banner->update($request->all());
         return MessageStatusAPI::update();
     }
-    public function destroy($id){
+    public function destroy($id)
+    {
         $banner = Banner::find($id);
 
         if ($banner) {
@@ -57,7 +62,8 @@ class BannerController extends Controller
             return MessageStatusAPI::notFound();
         }
     }
-    public function show($id){
+    public function show($id)
+    {
         $banner = Banner::find($id);
         if ($banner) {
             return new BannerResource($banner);
