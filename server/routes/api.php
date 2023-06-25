@@ -15,7 +15,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\API\ImageController;
 use App\Http\Controllers\API\SupportController;
 
-use App\Http\Controllers\UserController;
+use App\Http\Controllers\API\UserController;
 use App\Models\Hotel;
 use App\Http\Controllers\API\CouponController;
 use App\Http\Controllers\API\FeedbackController;
