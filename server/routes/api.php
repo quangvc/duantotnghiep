@@ -59,12 +59,12 @@ Route::group(['prefix' => 'admin'], function () {
     Route::group(
         ['prefix' => 'hotels', 'controller' => HotelController::class],
         function () {
-            Route::get('/', 'index')->middleware('permission:view_hotel');
-            Route::post('/', 'store')->middleware('permission:add_hotel');
+            Route::get('/', 'index');
+            Route::post('/', 'store');
             Route::put('/changeStatus/{id}', 'changeStatus');
-            Route::put('/{id}', 'update')->middleware('permission:edit_hotel');
-            Route::get('/{id}', 'show')->middleware('permission:show_hotel');
-            Route::delete('/{id}', 'destroy')->middleware('permission:delete_hotel');
+            Route::put('/{id}', 'update');
+            Route::get('/{id}', 'show');
+            Route::delete('/{id}', 'destroy');
         }
     );
 
