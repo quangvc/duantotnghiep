@@ -17,7 +17,8 @@ import { SharedModule } from 'src/app/_shared/shared/shared.module';
     NineLayoutModule,
     SharedModule
   ],
-  declarations: [],
+  declarations: [
+  ],
   providers: [
     { provide: NZ_I18N, useValue: en_US }
   ],

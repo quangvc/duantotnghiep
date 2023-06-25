@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\BlogController;
 use App\Http\Controllers\AuthController;
 
 use Illuminate\Support\Facades\Auth;
@@ -28,5 +29,4 @@ Route::get('/admin', function () {
 Route::get('/admin/dashboard', function () {
     return view('admin.dashboard');
 })->name('admin.dashboard');
-
 

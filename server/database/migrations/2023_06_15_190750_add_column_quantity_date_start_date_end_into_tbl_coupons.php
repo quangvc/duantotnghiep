@@ -14,9 +14,9 @@ return new class extends Migration
     public function up()
     {
         Schema::table('tbl_coupons', function (Blueprint $table) {
-            $table->bigInteger('quantity')->after('hotel_id')->nullable();
-            $table->date('dateStart')->after('quantity')->nullable();
-            $table->date('dateEnd')->after('dateStart')->nullable();
+            $table->integer('quantity')->after('max');
+            $table->date('start_date')->after('quantity');
+            $table->date('end_date')->after('start_date');
         });
     }
 

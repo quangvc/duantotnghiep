@@ -4,7 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { NZ_I18N } from 'ng-zorro-antd/i18n';
 import { en_US } from 'ng-zorro-antd/i18n';
@@ -14,24 +14,11 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NineModule } from './module/nine/nine.module';
 
-
-
-import { I18nModule } from './i18n/i18n.module';
-
-import { NzInputModule } from 'ng-zorro-antd/input';
-import { NzButtonModule } from 'ng-zorro-antd/button';
-import { NzFormModule } from 'ng-zorro-antd/form';
-import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
-import { NzCardModule } from 'ng-zorro-antd/card';
 import { LoginComponent } from './auth/login/view/login.component';
 import { RegisterComponent } from './auth/register/view/register.component';
 import { SharedModule } from './_shared/shared/shared.module';
-import { MainComponent } from './main/main/main.component';
-import { MainModule } from './main/main.module';
-import { PhotoService } from 'src/services/photoservice.service';
-import { ReviewComponent } from './main/booking-form/review/review.component';
-import { BookingFormComponent } from './booking-form/booking-form.component';
-import { NotFoundComponent } from './not-found/not-found.component';
+import { MainGlobalModule } from './main/main-global.module';
+
 
 registerLocaleData(en);
 
@@ -44,20 +31,20 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     AppComponent,
     LoginComponent,
     RegisterComponent,
-    BookingFormComponent,
-    NotFoundComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+
     NineModule,
+    MainGlobalModule,
+
     SharedModule,
-    FormsModule
+    FormsModule,
   ],
   providers: [
     { provide: NZ_I18N, useValue: en_US },
-    PhotoService
   ],
   bootstrap: [AppComponent]
 })

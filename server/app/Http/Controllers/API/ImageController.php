@@ -17,6 +17,9 @@ class ImageController extends Controller
     }
     public function storeHotel($id, Request $request)
     {
+        if (empty($request->hasFile('path'))) {
+            return MessageStatusAPI::notFound();
+        }
         $extension = $request->file('path')->getClientOriginalExtension();
         if ($extension == 'jpg' || $extension == 'png' || $extension == 'jpeg') {
             $timestamp = getdate(); // Get current Unix timestamp
@@ -25,7 +28,7 @@ class ImageController extends Controller
             $newFileName = $now . '_Hotel' . $id . '_' . $path;
             $folderHotel = $request->file('path')->move('Images/Hotel', $newFileName);
             $image = new Image([
-                'path' => 'Hotel/' . $path,
+                'path' => 'Hotel/' . $newFileName,
                 'hotel_id' => $id
             ]);
             $image->save();

@@ -18,6 +18,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 import { NzSwitchModule } from 'ng-zorro-antd/switch';
+import { NzImageModule } from 'ng-zorro-antd/image';
 
 @NgModule({
   imports: [],
@@ -42,7 +43,8 @@ import { NzSwitchModule } from 'ng-zorro-antd/switch';
     NzTableModule,
     NzCheckboxModule,
     NzPopconfirmModule,
-    NzSwitchModule
+    NzSwitchModule,
+    NzImageModule
   ],
 })
 export class SharedModule {}
