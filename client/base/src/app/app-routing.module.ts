@@ -19,35 +19,8 @@ import { NotFoundComponent } from './not-found/not-found.component';
 import { FilterPageComponent } from './main/filter-page/filter-page.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/home', pathMatch: 'full' },
-  {
-    path: '', component: MainComponent,
-    children: [
-      { path: "home", component: HomeComponent },
-
-      { path: 'about', component: AboutComponent },
-      { path: 'contract', component: ContractComponent },
-      { path: "room", component: RoomComponent },
-      { path: "service", component: ServiceComponent },
-      { path: "team", component: TeamComponent },
-      { path: "hotel", component: HotelComponent },
-      { path: "detail", component: HotelDetailComponent },
-      { path: "filter", component: FilterPageComponent },
-
-    ],
-  },
-  { path: 'booking', redirectTo: '/booking/bookingform', pathMatch: 'full' },
-  {
-    path: 'booking', component: BookingFormComponent,
-    children: [
-      { path: 'review', component: ReviewComponent },
-      { path: 'bookingform', component: BookingComponent },
-    ],
-  },
-
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
-  // { path: '**', component: NotFoundComponent },
 ];
 
 @NgModule({
