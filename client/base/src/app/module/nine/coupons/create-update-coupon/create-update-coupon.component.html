@@ -25,7 +25,10 @@
         <div class="col-6">
           <div class="mb-3">
             <label for="type" class="form-label">{{'coupon.type' | translate}}</label>
-            <input type="text" class="form-control" id="type" formControlName="type">
+            <select class="form-select" formControlName="type" aria-label="Default select example" (change)="changeTypeCoupon($event)">
+                <option value="percent">Giảm theo phần trăm</option>
+                <option value="value">Giảm theo giá</option>
+            </select>
           </div>
         </div>
 

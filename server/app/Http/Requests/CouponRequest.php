@@ -14,44 +14,44 @@ class CouponRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'bail|required|string|max:10',
+            'name' => 'bail|required|string|max:50',
             'type' => 'bail|required|max:255',
             'value' => 'bail|required|',
-            'min' => 'bail|required|max:2|numeric',
-            'max' => 'bail|required|numeric|max:2',
+            'min' => 'bail|required|min:0|numeric',
+            'max' => 'bail|numeric',
             'hotel_id' => 'bail|required|alpha_num',
-            'quantity'=> 'bail|required|numeric|max:3',
-            'dateStart'=>'required|date',
-            'dateEnd'=>'required|date',
+            'quantity' => 'bail|required|numeric',
+            'start_date' => 'required|date',
+            'end_date' => 'required|date',
         ];
     }
-    
-    public function messages(){
-        return [
-            'name.required'   => 'Vui lòng nhập dữ liệu',
-            'name.max'   => 'Vui lòng nhập dưới 10 ký tự',
 
-            'type.required'   => 'Vui lòng nhập dữ liệu',
+    public function messages()
+    {
+        $required = 'Vui lòng nhập dữ liệu';
+        return [
+            'name.required'   => $required,
+            'name.max'   => 'Vui lòng nhập dưới 50 ký tự',
+
+            'type.required'   => $required,
             'type.max'   => 'Vui lòng nhập dưới 255 ký tự',
 
-            'value.required'   => 'Vui lòng nhập dữ liệu',
+            'value.required'   => $required,
 
-            'min.required'   => 'Vui lòng nhập dữ liệu',
+            'min.required'   => $required,
             'min.numeric'   => 'Vui lòng nhập số',
-            'min.max'   => 'Vui lòng nhập dưới 2 ký tự',
+            'min.min'   => 'Giá trị nhỏ nhất là 0',
 
-            'max.required'   => 'Vui lòng nhập dữ liệu',
+            'max.required'   => $required,
             'max.numeric'   => 'Vui lòng nhập số',
-            'max.max'   => 'Vui lòng nhập dưới 2 ký tự',
 
-            'hotel_id.required'   => 'Vui lòng nhập dữ liệu',
+            'hotel_id.required'   => $required,
 
-            'quantity.required'   => 'Vui lòng nhập dữ liệu',
+            'quantity.required'   => $required,
 
-            'dateStart.required'   => 'Vui lòng nhập dữ liệu',
+            'start_date.required'   => $required,
 
-            'dateEnd.required'   => 'Vui lòng nhập dữ liệu',
-           ];
+            'end_date.required'   => $required,
+        ];
     }
-
 }

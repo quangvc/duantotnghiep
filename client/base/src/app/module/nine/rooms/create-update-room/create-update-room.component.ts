@@ -32,6 +32,7 @@ export class CreateUpdateRoomComponent implements OnInit, OnDestroy {
   ) { }
 
   roomTypes: any[] = [];
+  roomTypesFilter: any[] = [...this.roomTypes];
   hotels: any[] = [];
 
   ngOnInit() {
@@ -62,7 +63,7 @@ export class CreateUpdateRoomComponent implements OnInit, OnDestroy {
           });
         },
         error: (err) => {
-
+          this.message.create(ERROR, err.error.message);
         }
       })
     }
@@ -72,7 +73,6 @@ export class CreateUpdateRoomComponent implements OnInit, OnDestroy {
     let obs = this.hotelsService.getHotels().subscribe({
       next: (hotel) => {
         this.hotels = hotel.data;
-        console.log(hotel)
       },
       error: (err) => {
         this.message.create(ERROR, err.error.message);
@@ -86,7 +86,6 @@ export class CreateUpdateRoomComponent implements OnInit, OnDestroy {
     let obs = this.roomTypeService.getRoomTypes().subscribe({
       next: (roomType) => {
         this.roomTypes = roomType.data;
-        console.log(roomType)
       },
       error: (err) => {
         this.message.create(ERROR, err.error.message);
@@ -98,7 +97,6 @@ export class CreateUpdateRoomComponent implements OnInit, OnDestroy {
   }
 
   handleOk(){
-    debugger;
     if(this.formRoom.valid){
       let id = this.roomId;
       let newData = {
@@ -121,6 +119,11 @@ export class CreateUpdateRoomComponent implements OnInit, OnDestroy {
         }
       })
     }
+  }
+
+  async changeHotel(event:any){
+    let hotelId = event.target.value;
+    this.roomTypesFilter = await this.roomTypes.filter(rt => rt.hotel.id == hotelId);
   }
 
   handleCancel(){
