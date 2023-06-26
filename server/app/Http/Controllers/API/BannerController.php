@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\API;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\BannerRequest;
 use App\Http\Resources\API\BannerResource;
 use App\Models\Banner;
@@ -15,13 +16,12 @@ class BannerController extends Controller
         return BannerResource::collection($banner);
     }
     public function store(BannerRequest $request){
-        $role = auth()->user()->getRoleNames()->first();
         $validated = $request->validated();
-        if($role == 'admin'){
-            $banner = Banner::firstOrCreate([
-                'image' =>  $validated['image']
+
+        $banner = new Banner([
+            'image' =>  $validated['image']
             ]);
-        }
+
         if ($request->hasFile('image')) {
             $image = $request->file('image');
             $filename = time() . '.' . $image->getClientOriginalExtension();
@@ -36,12 +36,19 @@ class BannerController extends Controller
     }
     public function update(BannerRequest $request, $id){
         $banner = Banner::find($id);
+        $validated = $request->validated();
+        if (!$banner) {
+            return MessageStatusAPI::displayInvalidInput($banner);
+        }
+        $banner->update([
+            'image' => $validated['image'],
+        ]);
         if ($request->hasFile('image')) {
             $image = $request->file('image');
             $filename = time() . '.' . $image->getClientOriginalExtension();
-            $path = public_path('Images/blog');
+            $path = public_path('Images/banner');
             $image->move($path, $filename);
-            $image = url('public/Images/blog' . $filename);
+            $image = url('public/Images/banner' . $filename);
             $banner->image = $filename;
         }
         $banner->update($request->all());
@@ -49,7 +56,6 @@ class BannerController extends Controller
     }
     public function destroy($id){
         $banner = Banner::find($id);
-
         if ($banner) {
             $banner->delete();
             return MessageStatusAPI::destroy();

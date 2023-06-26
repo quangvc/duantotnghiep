@@ -16,6 +16,7 @@ use App\Http\Controllers\API\ImageController;
 use App\Http\Controllers\UserController;
 use App\Models\Hotel;
 use App\Http\Controllers\API\CouponController;
+use App\Http\Controllers\API\BannerController;
 
 
 /*
@@ -140,6 +141,17 @@ Route::group(['prefix' => 'admin'], function () {
     
     Route::group(
         ['prefix' => 'blogs', 'controller' => BlogController::class],
+        function () {
+            Route::get('/', 'index');
+            Route::post('/', 'store');
+            Route::get('/{id}', 'show');
+            Route::put('/{id}', 'update');
+            Route::delete('/{id}', 'destroy');
+        }
+    );
+
+    Route::group(
+        ['prefix' => 'banners', 'controller' => BannerController::class],
         function () {
             Route::get('/', 'index');
             Route::post('/', 'store');

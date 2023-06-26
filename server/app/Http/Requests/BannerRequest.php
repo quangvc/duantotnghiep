@@ -13,7 +13,7 @@ class BannerRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -26,5 +26,11 @@ class BannerRequest extends FormRequest
         return [
             'image'=>'required'
         ];
+    }
+    
+    public function messages(){
+        return [
+            'image.required'   => 'Vui lòng nhập dữ liệu',
+           ];
     }
 }
