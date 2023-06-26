@@ -77,14 +77,11 @@ class BlogController extends Controller
         if ($user_id !== $blog->user_id) {
             return MessageStatusAPI::notFound();
         }
-        if ($blog->image != '' && file_exists(public_path('Images/blog/' . $blog->image))) {
-            unlink(public_path('Images/blog/' . $blog->image));
-        }
         $blog->delete();
         return MessageStatusAPI::destroy();
     }
-    public function show($slug){
-        $blog = Blog::where('slug', $slug)->first();
+    public function show($slug, $id){
+        $blog = Blog::find($id);
         if ($blog) {
             return new BlogResource($blog);
         } else {
