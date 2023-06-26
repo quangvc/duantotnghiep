@@ -1,7 +1,5 @@
 import { PhotoService } from './../../../services/photoservice.service';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { NgModel } from '@angular/forms';
-
+import { Component, EventEmitter, Input, OnInit, Output, Type } from '@angular/core';
 
 @Component({
   selector: 'app-hotel-detail',
@@ -10,6 +8,7 @@ import { NgModel } from '@angular/forms';
 })
 export class HotelDetailComponent implements OnInit {
   @Output() valueChange = new EventEmitter<any>();
+  static HotelBookingRoomComponent: any[] | Type<any>;
 
   constructor(private photoService: PhotoService) { }
   @Input() value : any[] = [];
@@ -56,5 +55,5 @@ export class HotelDetailComponent implements OnInit {
 
   }
 
-  
+
 }

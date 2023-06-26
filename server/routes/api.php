@@ -13,11 +13,13 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\API\HotelController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\API\ImageController;
-use App\Http\Controllers\UserController;
+use App\Http\Controllers\API\SupportController;
+
+use App\Http\Controllers\API\UserController;
 use App\Models\Hotel;
 use App\Http\Controllers\API\CouponController;
+use App\Http\Controllers\API\FeedbackController;
 use App\Http\Controllers\API\BannerController;
-
 
 /*
 |--------------------------------------------------------------------------
@@ -46,6 +48,128 @@ Route::prefix('profile')->controller(ProfileController::class)->group(function (
 
 
 Route::group(['prefix' => 'admin'], function () {
+    Route::group(['prefix' => 'users', 'controller' => UserController::class], function () {
+        Route::get('/', 'index');
+        Route::get('/{user}', 'show');
+        Route::post('/', 'store');
+        Route::post('/{user}', 'update');
+        Route::delete('/{user}', 'destroy');
+        Route::put('/{id}/change-status', 'changeStatus');
+    });
+
+    Route::group(
+        ['prefix' => 'hotels', 'controller' => HotelController::class],
+        function () {
+            Route::get('/', 'index');
+            Route::post('/', 'store');
+            Route::put('/changeStatus/{id}', 'changeStatus');
+            Route::put('/{id}', 'update');
+            Route::get('/{id}', 'show');
+            Route::delete('/{id}', 'destroy');
+        }
+    );
+
+    Route::group(
+        ['prefix' => 'rooms', 'controller' => RoomController::class],
+        function () {
+            Route::get('/', 'index')->middleware('permission:view_room');
+            Route::post('/', 'store')->middleware('permission:view_room');
+            Route::get('/{id}', 'show')->middleware('permission:show_room');
+            Route::put('/{id}', 'update')->middleware('permission:edit_room');
+            Route::delete('/{id}', 'destroy')->middleware('permission:delete_room');
+        }
+    );
+
+    Route::group(
+        ['prefix' => 'room-types', 'controller' => RoomTypesController::class],
+        function () {
+            Route::get('/', 'index');
+            Route::post('/', 'store');
+            Route::put('/{id}', 'update');
+            Route::get('/{id}', 'show');
+            Route::delete('/{id}', 'destroy');
+        }
+    );
+
+    Route::group(
+        ['prefix' => 'regions', 'controller' => RegionController::class],
+        function () {
+            Route::get('/', 'index');
+            Route::post('/', 'store');
+            Route::put('/{id}', 'update');
+            Route::get('/{id}', 'show');
+            Route::delete('/{id}', 'destroy');
+        }
+    );
+    Route::group(
+        ['prefix' => 'coupons', 'controller' => CouponController::class],
+        function () {
+            Route::get('/', 'index')->middleware('permission:view_coupon');;
+            Route::post('/', 'store')->middleware('permission:add_coupon');
+            Route::get('/{id}', 'show')->middleware('permission:show_coupon');;
+            Route::put('/{id}', 'update')->middleware('permission:edit_coupon');
+            Route::delete('/{id}', 'destroy')->middleware('permission:delete_coupon');
+        }
+    );
+    Route::group(
+        ['prefix' => 'feedback', 'controller' => FeedbackController::class],
+        function () {
+            Route::get('/', 'index');
+            Route::post('/', 'store');
+            Route::get('/{id}', 'show');
+            Route::put('/{id}', 'update');
+            Route::delete('/{id}', 'destroy');
+        }
+    );
+    Route::group(
+        ['prefix' => 'image', 'controller' => ImageController::class],
+        function () {
+            Route::get('/', 'index');
+            Route::post('/hotel/{id}', 'storeHotel');
+            Route::post('/room-type/{id}', 'storeRoomType');
+            Route::put('/{id}', 'update');
+            Route::delete('/{id}', 'destroy');
+        }
+    );
+    Route::group(
+        ['prefix' => 'booking', 'controller' => BookingController::class], // Thêm `prefix` để xác định endpoint chung của API
+        function () {
+            Route::get('/', 'index');
+            Route::post('/', 'store');
+        }
+    );
+    Route::group(
+        ['prefix' => 'blogs', 'controller' => BlogController::class],
+        function () {
+            Route::get('/', 'index');
+            Route::post('/', 'store');
+            Route::get('/{slug}/{id}', 'show');
+            Route::put('/{id}', 'update');
+            Route::delete('/{id}', 'destroy');
+        }
+    );
+    Route::group(
+        ['prefix' => 'comments', 'controller' => CommentController::class],
+        function () {
+            Route::get('/', 'index');
+            Route::post('/', 'store');
+            Route::get('/{id}', 'show');
+            Route::put('/{id}', 'update');
+            Route::delete('/{id}', 'destroy');
+        }
+    );
+    Route::group(
+        ['prefix' => 'banners', 'controller' => BannerController::class],
+        function () {
+            Route::get('/', 'index');
+            Route::post('/', 'store');
+            Route::get('/{id}', 'show');
+            Route::put('/{id}', 'update');
+            Route::delete('/{id}', 'destroy');
+        }
+    );
+});
+Route::group(['prefix' => 'client'], function () {
     Route::group(['prefix' => 'users', 'controller' => UserController::class], function () {
         Route::get('/', 'index');
         Route::get('/{user}', 'show');
@@ -110,7 +234,7 @@ Route::group(['prefix' => 'admin'], function () {
         }
     );
     Route::group(
-        ['prefix' => 'comment', 'controller' => CommentController::class],
+        ['prefix' => 'feedback', 'controller' => FeedbackController::class],
         function () {
             Route::get('/', 'index');
             Route::post('/', 'store');
@@ -130,17 +254,24 @@ Route::group(['prefix' => 'admin'], function () {
         }
     );
     Route::group(
-        ['prefix' => 'booking'], // Thêm `prefix` để xác định endpoint chung của API
+        ['prefix' => 'booking', 'controller' => BookingController::class], // Thêm `prefix` để xác định endpoint chung của API
         function () {
-            Route::get('/', [BookingController::class, 'index']);
-            Route::post('/', [BookingController::class, 'store']);
-            Route::put('/{id}', [BookingController::class, 'update']);
-            Route::delete('/{id}', [BookingController::class, 'destroy']);
+            Route::get('/', 'index');
+            Route::post('/', 'store');
         }
     );
-    
     Route::group(
         ['prefix' => 'blogs', 'controller' => BlogController::class],
+        function () {
+            Route::get('/', 'index');
+            Route::post('/', 'store');
+            Route::get('/{slug}/{id}', 'show');
+            Route::put('/{id}', 'update');
+            Route::delete('/{id}', 'destroy');
+        }
+    );
+    Route::group(
+        ['prefix' => 'comments', 'controller' => CommentController::class],
         function () {
             Route::get('/', 'index');
             Route::post('/', 'store');

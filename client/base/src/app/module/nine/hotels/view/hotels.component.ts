@@ -1,12 +1,14 @@
+import { async } from '@angular/core/testing';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
 import { Observable, Subscription, firstValueFrom } from 'rxjs';
 import { NineStatus } from 'src/app/module/_mShared/enum/enum';
 import { MenuItem } from 'src/app/module/_mShared/model/menuItem.class';
-import { ERROR, SUCCESS } from 'src/app/module/_mShared/model/url.class';
+import { ERROR, SUCCESS, URL_IMAGE } from 'src/app/module/_mShared/model/url.class';
 import { Enum } from 'src/app/module/_mShared/service/enum.service';
 import { HotelsService } from 'src/app/module/_mShared/service/hotels.service';
+import { ImagesService } from 'src/app/module/_mShared/service/images.service';
 import { RegionsService } from 'src/app/module/_mShared/service/regions.service';
 
 @Component({
@@ -22,7 +24,7 @@ export class HotelsComponent implements OnInit, OnDestroy {
 
   constructor(
     private hotelsService: HotelsService,
-    private regionsService: RegionsService,
+    private imagesService: ImagesService,
     private message: NzMessageService,
     private modal: NzModalService
     ) { }
@@ -47,13 +49,26 @@ export class HotelsComponent implements OnInit, OnDestroy {
     let obs = this.hotelsService.getHotels().subscribe({
       next: (res) => {
         this.hotels = res.data;
-        console.log(res)
+        this.getImage();
       },
       error: (err) => {{
         this.message.create(ERROR, err.message);
       }}
     })
     this.subscription.add(obs);
+  }
+
+  async getImage(){
+    let images:any[] = await firstValueFrom(this.imagesService.getImages());
+
+    for (const item of this.hotels) {
+      images.forEach(img => {
+        if(img.hotel_id == item.id){
+          item.image = `${URL_IMAGE}/hotel/${img.path}`;
+        }
+      });
+    }
+    console.log(images)
   }
 
   dropdownItemsButton(data:any){

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class RoomType extends Model
@@ -12,9 +13,13 @@ class RoomType extends Model
     protected $table = 'tbl_room_types';
 
     protected $fillable = [
-        'name', 'price_per_night', 'capacity', 'description'
+        'name', 'hotel_id', 'price_per_night', 'capacity', 'description'
     ];
 
+    public function hotel(): BelongsTo
+    {
+        return $this->belongsTo(Hotel::class);
+    }
     public function images(): HasMany
     {
         return $this->hasMany(Image::class);
@@ -23,5 +28,9 @@ class RoomType extends Model
     public function rooms(): HasMany
     {
         return $this->hasMany(Room::class);
+    }
+    public function booking_details(): HasMany
+    {
+        return $this->hasMany(BookingDetail::class);
     }
 }

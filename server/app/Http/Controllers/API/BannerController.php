@@ -11,7 +11,8 @@ use App\Traits\MessageStatusAPI;
 
 class BannerController extends Controller
 {
-    public function index(){
+    public function index()
+    {
         $banner = Banner::all();
         return BannerResource::collection($banner);
     }
@@ -34,7 +35,8 @@ class BannerController extends Controller
         $banner->save();
         return MessageStatusAPI::store();
     }
-    public function update(BannerRequest $request, $id){
+    public function update(BannerRequest $request, $id)
+    {
         $banner = Banner::find($id);
         $validated = $request->validated();
         if (!$banner) {
@@ -54,7 +56,8 @@ class BannerController extends Controller
         $banner->update($request->all());
         return MessageStatusAPI::update();
     }
-    public function destroy($id){
+    public function destroy($id)
+    {
         $banner = Banner::find($id);
         if ($banner) {
             $banner->delete();
@@ -63,7 +66,8 @@ class BannerController extends Controller
             return MessageStatusAPI::notFound();
         }
     }
-    public function show($id){
+    public function show($id)
+    {
         $banner = Banner::find($id);
         if ($banner) {
             return new BannerResource($banner);

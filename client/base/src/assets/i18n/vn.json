@@ -35,7 +35,9 @@
     "region": "Khu vực"
   },
   "region": {
-    "name": "Tên khu vực"
+    "name": "Tên khu vực",
+    "region": "Khu vực",
+    "image": "Ảnh"
   },
   "room": {
     "room_number": "Số phòng"
@@ -44,5 +46,9 @@
     "name": "Tên loại phòng",
     "price_per_night": "Giá 1 đêm",
     "capacity": "Số lượng người ở"
+  },
+  "coupon": {
+    "name": "Tên mã giảm giá"
   }
+
 }
