@@ -54,7 +54,6 @@ class BannerController extends Controller
     public function destroy($id)
     {
         $banner = Banner::find($id);
-
         if ($banner) {
             $banner->delete();
             return MessageStatusAPI::destroy();
