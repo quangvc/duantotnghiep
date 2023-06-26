@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\BookingRequest;
 use App\Http\Resources\API\BookingResource;
+use App\Http\Resources\API\RoomResource;
 use App\Models\Booking;
 use App\Models\BookingDetail;
 use App\Models\Room;
@@ -42,8 +43,12 @@ class BookingController extends Controller
             $guest_phone =  $validated['guest_phone'];
             $user_id =  null;
         }
-        return count($validated['room_type_id']);
-        $room_types = Room::whereIn('room_type_id', $validated['room_type_id'])
+        // Đếm số lượng room_type đã gửi lên để check
+        // $counted_array = array_count_values($validated['room_type_id']);
+        // foreach ($counted_array as $roomType) {
+        // }
+
+        $room_types = Room::where('hotel_id', '=', $validated['hotel_id'])->whereIn('room_type_id', $validated['room_type_id'])
             ->get();
 
         // $check_booking = Booking::whereDate('checkin_date', $checkin_date)
@@ -54,7 +59,7 @@ class BookingController extends Controller
         //     ->first();
         // if (empty($check_booking) && ) {
         // }
-        return $room_types;
+        // return RoomResource::collection($room_types);
         $booking = new Booking([
             'booking_date' =>  Carbon::now()->format('Y-m-d H:i:s.u'),
             'checkin_date' =>  Carbon::createFromFormat('d-m-Y', $validated['checkin_date'])->format('Y-m-d'),
@@ -74,7 +79,7 @@ class BookingController extends Controller
         $booking->update(['booking_number' => 'HD' . $booking->id . '_' . random_int('10000000', '99999999')]);
 
         $booking->booking_detail()->sync(
-            $validated['room_id']
+            $validated['room_type_id']
         );
         return MessageStatusAPI::store();
     }

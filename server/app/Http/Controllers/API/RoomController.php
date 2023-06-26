@@ -81,6 +81,24 @@ class RoomController extends Controller
 
     public function destroy($id)
     {
+        $role = auth()->user()->getRoleNames()->first();
+        $room = Room::find($id);
+        if (!$room) {
+            return MessageStatusAPI::notFound();
+        }
+        if ($role == 'admin') {
+            $room->delete();
+            return MessageStatusAPI::destroy();
+        }
+        $id_hotelRoom = auth()->user()->hotel_id;
+        if ($role == 'manager') {
+            if ($id_hotelRoom == $room->hotel_id) {
+                $room->delete();
+                return MessageStatusAPI::destroy();
+            } else {
+                return MessageStatusAPI::notFound();
+            }
+        }
         $room = Room::find($id);
         if ($room) {
             $room->delete();
