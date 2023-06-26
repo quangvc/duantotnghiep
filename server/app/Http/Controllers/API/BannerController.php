@@ -42,7 +42,6 @@ class BannerController extends Controller
     public function destroy($id)
     {
         $banner = Banner::find($id);
-
         if ($banner) {
             if ($banner->image != '' && file_exists(public_path('Images/banners/' . $banner->image))) {
                 unlink(public_path('Images/banners/' . $banner->image));
