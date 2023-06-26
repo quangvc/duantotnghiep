@@ -26,7 +26,7 @@ class Booking extends Model
     }
     public function booking_detail(): BelongsToMany
     {
-        return $this->belongsToMany(Room::class, 'tbl_booking_detail');
+        return $this->belongsToMany(RoomType::class, 'tbl_booking_detail');
     }
     public function user(): BelongsTo
     {
