@@ -57,6 +57,9 @@ class BlogController extends Controller
             return MessageStatusAPI::notFound();
         }
         if ($request->hasFile('image')) {
+            if ($blog->image != '' && file_exists(public_path('Images/blog/' . $blog->image))) {
+                unlink(public_path('Images/blog/' . $blog->image));
+            }
             $image = $request->file('image');
             $filename = time() . '.' . $image->getClientOriginalExtension();
             $path = public_path('Images/blog');
@@ -77,11 +80,14 @@ class BlogController extends Controller
         if ($user_id !== $blog->user_id) {
             return MessageStatusAPI::notFound();
         }
+        if ($blog->image != '' && file_exists(public_path('Images/blog/' . $blog->image))) {
+            unlink(public_path('Images/blog/' . $blog->image));
+        }
         $blog->delete();
         return MessageStatusAPI::destroy();
     }
-    public function show($slug, $id){
-        $blog = Blog::find($id);
+    public function show($slug){
+        $blog = Blog::where('slug', $slug)->first();
         if ($blog) {
             return new BlogResource($blog);
         } else {
