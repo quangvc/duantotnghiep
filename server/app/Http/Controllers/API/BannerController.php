@@ -18,17 +18,22 @@ class BannerController extends Controller
 
     public function store(Request $request)
     {
+        $request->validate([
+            'image.*' => 'bail|image|max:2048|mimes:jpeg,png,jpg|mimetypes:image/jpeg,image/png,image/jpg'
+        ]);
         $role = auth()->user()->getRoleNames()->first();
         if ($role == 'admin') {
             if ($request->hasFile('image')) {
-                $image = $request->file('image');
-                $filename = time() . '.' . $image->getClientOriginalExtension();
-                $path = public_path('Images/banners');
-                $image->move($path, $filename);
-                $image = url('public/Images/banners' . $filename);
-                Banner::firstOrCreate([
-                    'image' =>  $filename
-                ]);
+                foreach ($request->file('image') as $file) {
+                    // if (!in_array($file->extension(), array('jpg','jpeg','png'))) {
+                    //     return response(['error' => 'File upload không phải là ảnh']);
+                    // } elseif ($file->getSize() > 2048000) {
+                    //     return response(['error' => 'Dung lượng ảnh vượt quá 2Mb']);
+                    // }
+                    $name = time().rand(1,100).'.'.$file->extension();
+                    $file->move(public_path('Images/banners'), $name);  
+                    Banner::create(['image' =>  $name]);
+                }
 
                 return MessageStatusAPI::store();
             } else {
@@ -41,16 +46,17 @@ class BannerController extends Controller
 
     public function destroy($id)
     {
-        $banner = Banner::find($id);
-        if ($banner) {
-            if ($banner->image != '' && file_exists(public_path('Images/banners/' . $banner->image))) {
-                unlink(public_path('Images/banners/' . $banner->image));
+        $images = explode(",", $id);
+        foreach ($images as $img) {
+            $banner = Banner::find($img);
+            if ($banner) {
+                if ($banner->image != '' && file_exists(public_path('Images/banners/' . $banner->image))) {
+                    unlink(public_path('Images/banners/' . $banner->image));
+                }
+                $banner->delete();
             }
-            $banner->delete();
-            return MessageStatusAPI::destroy();
-        } else {
-            return MessageStatusAPI::notFound();
         }
+        return MessageStatusAPI::destroy();
     }
     
 }
