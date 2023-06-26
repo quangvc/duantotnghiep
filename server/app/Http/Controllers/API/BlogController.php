@@ -87,7 +87,7 @@ class BlogController extends Controller
         $blog = Blog::where('slug', $slug)->first();
         if ($blog) {
             return new BlogResource($blog);
-        } else {    
+        } else {
             return MessageStatusAPI::notFound();
         }
     }

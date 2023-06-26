@@ -35,9 +35,7 @@
     "region": "Khu vực"
   },
   "region": {
-    "name": "Tên khu vực",
-    "region": "Khu vực",
-    "image": "Ảnh"
+    "name": "Tên khu vực"
   },
   "room": {
     "room_number": "Số phòng"
@@ -48,7 +46,22 @@
     "capacity": "Số lượng người ở"
   },
   "coupon": {
-    "name": "Tên mã giảm giá"
+    "name": "Tên mã giảm giá",
+    "type": "Loại giảm giá",
+    "value": "Giá trị",
+    "min": "Giảm tối thiểu",
+    "max": "Giảm tối đa",
+    "hotel_id": "Khách sạn",
+    "start_date": "Ngày bắt đầu",
+    "end_date": "Ngày hết hạn",
+    "quantity": "Số lượng"
+  },
+  "blog": {
+    "title": "Tiêu đề",
+    "content": "Nội dung",
+    "image": "Hình ảnh",
+    "user_id": "người tạo",
+    "slug": "I don't know bruh"
   }
 
 }
