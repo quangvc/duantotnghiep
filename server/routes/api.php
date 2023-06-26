@@ -163,6 +163,8 @@ Route::group(['prefix' => 'admin'], function () {
         function () {
             Route::get('/', 'index');
             Route::post('/', 'store');
+            Route::get('/{id}', 'show');
+            Route::put('/{id}', 'update');
             Route::delete('/{id}', 'destroy');
         }
     );
@@ -263,7 +265,7 @@ Route::group(['prefix' => 'client'], function () {
         function () {
             Route::get('/', 'index');
             Route::post('/', 'store');
-            Route::get('/{slug}', 'show');
+            Route::get('/{slug}/{id}', 'show');
             Route::put('/{id}', 'update');
             Route::delete('/{id}', 'destroy');
         }

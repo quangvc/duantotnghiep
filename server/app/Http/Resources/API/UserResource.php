@@ -22,7 +22,7 @@ class UserResource extends JsonResource
             'phone_number' => $this->phone_number,
             'avatar' => $this->avatar,
             'active' => $this->active == 1 ? 'Active' : 'Disabled',
-            'hotel' => $this->hotel,
+            'hotel_id' => $this->hotel_id,
             'roles' => $this->roles,
         ];
     }
