@@ -49,19 +49,19 @@ class BookingController extends Controller
         // }
 
         foreach ($validated['items'] as $item) {
-            $room_type_id[] = $item['room_type_id'];
-            $counted_array = array_count_values($room_type_id);
-
-            $room_types[] = Room::where('hotel_id', '=', $validated['hotel_id'])
-                ->where('room_type_id', '=', $counted_array)
+            $rooms[] = Room::where('hotel_id', '=', $validated['hotel_id'])
+                ->where('room_type_id', '=', $item['room_type_id'])
+                ->distinct()
                 ->get();
         }
-        foreach ($validated['items'] as $item) {
-            $room_id[] = $item['room_id'];
+        $rooms = array_values(array_unique($rooms));
+        $result = [];
+        foreach ($rooms as $roomGroup) {
+            $result = array_merge($result, $roomGroup->toArray());
         }
-        // return $room_type_id;
+        return $result;
 
-        return $room_types;
+
         // $check_booking = Booking::whereDate('checkin_date', $checkin_date)
         //     ->whereDate('checkout_date', $checkout_date)
         //     ->whereHas('booking_details', function ($query) use ($validated) {
