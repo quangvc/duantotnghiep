@@ -13,9 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-
-        Schema::table('tbl_room_types', function (Blueprint $table) {
-            $table->integer('hotel_id')->after('id');
+        Schema::table('tbl_bookings', function (Blueprint $table) {
+            $table->integer('hotel_id')->after('booking_number');
         });
     }
 

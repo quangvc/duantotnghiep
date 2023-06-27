@@ -13,7 +13,7 @@ class BookingDetail extends Model
     protected $table = 'tbl_booking_detail';
 
     protected $fillable = [
-        'booking_id', 'room_type_id',
+        'booking_id', 'room_type_id', 'room_id'
     ];
 
     public function booking(): BelongsTo
@@ -21,10 +21,10 @@ class BookingDetail extends Model
         return $this->belongsTo(Booking::class);
     }
 
-    // public function room(): BelongsTo
-    // {
-    //     return $this->belongsTo(Room::class);
-    // }
+    public function room(): BelongsTo
+    {
+        return $this->belongsTo(Room::class);
+    }
     public function room_type(): BelongsTo
     {
         return $this->belongsTo(RoomType::class);

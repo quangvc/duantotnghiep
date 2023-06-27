@@ -9,6 +9,11 @@ class BookingRequest extends FormRequest
     public function rules()
     {
         return [
+            'items' => ['required_with', 'array'], // Validator Proposal Items
+            'items.*' => ['array:room_type_id,room_id'],
+            'items.*.room_type_id' => ['string', 'nullable'],
+            'items.*.room_id' => ['string', 'nullable'],
+
             // 'booking_date' => 'bail|required|date',
             // 'checkin_date'=> 'bail|required|date',
             // 'checkout_date'=> 'bail|required|date|',

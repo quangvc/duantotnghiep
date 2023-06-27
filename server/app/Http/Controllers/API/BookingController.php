@@ -23,7 +23,7 @@ class BookingController extends Controller
         return BookingResource::collection($bookings);
     }
 
-    public function store(HttpRequest $request)
+    public function store(BookingRequest $request)
     {
         // return $request;
         $user = auth()->user();
@@ -48,9 +48,20 @@ class BookingController extends Controller
         // foreach ($counted_array as $roomType) {
         // }
 
-        $room_types = Room::where('hotel_id', '=', $validated['hotel_id'])->whereIn('room_type_id', $validated['room_type_id'])
-            ->get();
+        foreach ($validated['items'] as $item) {
+            $room_type_id[] = $item['room_type_id'];
+            $counted_array = array_count_values($room_type_id);
 
+            $room_types[] = Room::where('hotel_id', '=', $validated['hotel_id'])
+                ->where('room_type_id', '=', $counted_array)
+                ->get();
+        }
+        foreach ($validated['items'] as $item) {
+            $room_id[] = $item['room_id'];
+        }
+        // return $room_type_id;
+
+        return $room_types;
         // $check_booking = Booking::whereDate('checkin_date', $checkin_date)
         //     ->whereDate('checkout_date', $checkout_date)
         //     ->whereHas('booking_details', function ($query) use ($validated) {
@@ -65,6 +76,7 @@ class BookingController extends Controller
             'checkin_date' =>  Carbon::createFromFormat('d-m-Y', $validated['checkin_date'])->format('Y-m-d'),
             'checkout_date' => Carbon::createFromFormat('d-m-Y', $validated['checkout_date'])->format('Y-m-d'),
             'people_quantity' =>  $validated['people_quantity'],
+            'hotel_id' => $validated['hotel_id'],
             // 'coupon_id' =>  $validated['coupon_id'],
             'user_id' =>  $user_id,
             'guest_name' =>  $guest_name,
@@ -77,11 +89,17 @@ class BookingController extends Controller
         ]);
         $booking->save();
         $booking->update(['booking_number' => 'HD' . $booking->id . '_' . random_int('10000000', '99999999')]);
+        foreach ($validated['items'] as $item) {
+            BookingDetail::create(
+                [
+                    'booking_id' => $booking->id,
+                    'room_type_id' => $item['room_type_id'],
+                    'room_id' => $item['room_id'],
+                ]
+            );
+        }
 
-        $booking->booking_detail()->sync(
-            $validated['room_type_id']
-        );
-        return MessageStatusAPI::store();
+        return new BookingResource($booking);
     }
 
     public function destroy($id)
