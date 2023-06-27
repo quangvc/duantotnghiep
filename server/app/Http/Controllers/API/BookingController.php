@@ -48,6 +48,7 @@ class BookingController extends Controller
         // foreach ($counted_array as $roomType) {
         // }
 
+        // Lấy ra room dựa trên hotel_id và room_id gửi lên 
         foreach ($validated['items'] as $item) {
             $rooms[] = Room::where('hotel_id', '=', $validated['hotel_id'])
                 ->where('room_type_id', '=', $item['room_type_id'])
