@@ -36,8 +36,10 @@ export class HotelsComponent implements OnInit, OnDestroy {
   hotelId: any;
   menus: MenuItem[] = [];
   statusOption: any;
-    role:any;
+  role:any;
   confirmModal?: NzModalRef;
+
+  displayImage: boolean = false;
 
   ngOnInit() {
     this.getHotels();
@@ -85,6 +87,12 @@ export class HotelsComponent implements OnInit, OnDestroy {
         label: "Chỉnh sửa",
         command: () => {
           this.editHotel(data);
+        },
+      },
+      {
+        label: "Cài đặt hình ảnh",
+        command: () => {
+          this.showModalImg();
         },
       },
       { separator: true},
@@ -135,8 +143,13 @@ export class HotelsComponent implements OnInit, OnDestroy {
     this.subscription.add(obs);
   }
 
+  showModalImg(){
+    this.displayImage = true;
+  }
+
   cancel(event:any){
     this.displayCreateUpdateHotel = false;
+    this.displayImage = false;
     this.getHotels();
   }
 

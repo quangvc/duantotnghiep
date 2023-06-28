@@ -27,7 +27,6 @@ export class CreateUpdateCouponComponent implements OnInit, OnDestroy {
     private couponsService: CouponsService,
     private hotelsService: HotelsService,
     private message: NzMessageService,
-    private i18n: NzI18nService
   ) { }
 
   hotels: any[] = [];
@@ -89,7 +88,9 @@ export class CreateUpdateCouponComponent implements OnInit, OnDestroy {
   }
 
   handleOk(){
+    let a = this.formCoupon.get('min')!;
     this.formCoupon.markAllAsTouched();
+    console.log(a)
     if (this.formCoupon.invalid) return;
 
       let id = this.couponId;

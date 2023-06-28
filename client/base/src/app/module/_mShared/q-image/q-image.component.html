@@ -1,0 +1,29 @@
+<div style="border-bottom: 1px solid rgb(233, 233, 233);">
+  <label
+    nz-checkbox
+    [ngModel]="allChecked"
+    [(ngModel)]="allChecked"
+    (ngModelChange)="updateAllChecked()"
+    [nzIndeterminate]="indeterminate"
+  >
+    Chọn tất cả
+  </label>
+</div>
+<br />
+<nz-checkbox-wrapper style="width: 100%;" (nzOnChange)="log($event)">
+  <div class="box">
+    <ng-container *ngFor="let item of checkOptionsOne">
+      <div class="item">
+        <label nz-checkbox nzValue="A" [ngModel]="item.checked"></label>
+        <img [src]="item.url" alt="">
+      </div>
+    </ng-container>
+    <div class="item">
+      <input #fileUploader type="file" class="upload" (change)="selectedFiles($event)" multiple placeholder="Upload"/>
+    </div>
+  </div>
+</nz-checkbox-wrapper>
+
+
+
+
