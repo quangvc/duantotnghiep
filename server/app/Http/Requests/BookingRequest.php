@@ -15,9 +15,9 @@ class BookingRequest extends FormRequest
             'items.*.room_id' => ['string', 'nullable'],
 
             // 'booking_date' => 'bail|required|date',
-            // 'checkin_date'=> 'bail|required|date',
-            // 'checkout_date'=> 'bail|required|date|',
-            // 'people_quantity'=> 'bail|required|alpha_num',
+            'checkin_date'=> 'bail|required|date|after:tomorrow',
+            'checkout_date'=> 'bail|required|date|after:checkin_date',
+            'people_quantity'=> 'bail|required|alpha_num',
             // 'coupon_id'=> 'bail|',
             // 'user_id'=> 'bail|required',
             // 'guest_name'=> 'bail|required|alpha|max:255',
