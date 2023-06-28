@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->integer('booking_id');
             $table->integer('room_type_id');
+            $table->integer('room_id')->nullable();
 
             $table->timestamps();
         });
