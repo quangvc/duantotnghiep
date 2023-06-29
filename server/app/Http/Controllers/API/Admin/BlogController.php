@@ -95,4 +95,17 @@ class BlogController extends Controller
             return MessageStatusAPI::notFound();
         }
     }
+    public function changeStatus($id)
+    {
+        $hotel = Blog::find($id);
+        if (!$hotel) {
+            return MessageStatusAPI::notFound();
+        }
+        if ($hotel->status == 1) {
+            $hotel->update(['active' => 0]);
+        } else {
+            $hotel->update(['active' => 1]);
+        }
+        return MessageStatusAPI::update();
+    }
 }
