@@ -31,4 +31,15 @@ $enable-negative-margins: true;
 
 @import "./scss/bootstrap/scss/bootstrap";
 
+input{
+  &.ng-invalid{
+    &.ng-touched{
+      border: solid 1px red !important;
+    }
+  }
+}
+.errMsg{
+  color: red !important;
+}
+
 

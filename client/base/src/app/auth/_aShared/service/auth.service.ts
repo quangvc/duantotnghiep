@@ -42,7 +42,7 @@ export class AuthService {
   }
 
   createLogout(){
-    return this.http.post(this.URL_LOGOUT, this.user.token, this.httpOptions)
+    return this.http.post(this.URL_LOGOUT, null, this.httpOptions)
   }
 
   isLogin(){

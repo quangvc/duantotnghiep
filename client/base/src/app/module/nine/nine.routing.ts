@@ -12,6 +12,7 @@ const routes: Routes = [
     { path: 'rooms', loadChildren: () => import('./rooms/rooms.module').then(m => m.RoomsModule)},
     { path: 'coupons', loadChildren: () => import('./coupons/coupons.module').then(m => m.CouponsModule)},
     { path: 'blogs', loadChildren: () => import('./blogs/blogs.module').then(m => m.BlogsModule)},
+    { path: 'banners', loadChildren: () => import('./banners/banners.module').then(m => m.BannersModule)},
   ]}
 ];
 

@@ -26,6 +26,11 @@ export class RoomTypeService {
     return this.http.get<any>(url, this.httpOptions);
   }
 
+  findOne(id:any): Observable<any>{
+    const url = `${this.API_URL}/${ROOM_TYPES}/${id}`;
+    return this.http.get<any>(url, this.httpOptions);
+  }
+
   createRoomType(data: any): Observable<any> {
     const url = `${this.API_URL}/${ROOM_TYPES}`;
     return this.http.post<any>(url, data, this.httpOptions);

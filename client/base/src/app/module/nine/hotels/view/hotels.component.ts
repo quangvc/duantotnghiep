@@ -22,6 +22,9 @@ export class HotelsComponent implements OnInit, OnDestroy {
 
   displayCreateUpdateHotel: boolean = false;
 
+  sessionUser:any = sessionStorage.getItem('user');
+  user:any = JSON.parse(this.sessionUser);
+
   constructor(
     private hotelsService: HotelsService,
     private imagesService: ImagesService,
@@ -33,12 +36,19 @@ export class HotelsComponent implements OnInit, OnDestroy {
   hotelId: any;
   menus: MenuItem[] = [];
   statusOption: any;
-
+  role:any;
   confirmModal?: NzModalRef;
+
+  displayImage: boolean = false;
 
   ngOnInit() {
     this.getHotels();
     this.getOptionEnum();
+    if(this.user.role[0] == 'admin'){
+      this.role = true;
+    }else{
+      this.role = false;
+    }
   }
 
   getOptionEnum(){
@@ -64,7 +74,7 @@ export class HotelsComponent implements OnInit, OnDestroy {
     for (const item of this.hotels) {
       images.forEach(img => {
         if(img.hotel_id == item.id){
-          item.image = `${URL_IMAGE}/hotel/${img.path}`;
+          item.image = `${URL_IMAGE}/${img.path}`;
         }
       });
     }
@@ -77,6 +87,12 @@ export class HotelsComponent implements OnInit, OnDestroy {
         label: "Chỉnh sửa",
         command: () => {
           this.editHotel(data);
+        },
+      },
+      {
+        label: "Cài đặt hình ảnh",
+        command: () => {
+          this.showModalImg(data);
         },
       },
       { separator: true},
@@ -127,8 +143,14 @@ export class HotelsComponent implements OnInit, OnDestroy {
     this.subscription.add(obs);
   }
 
+  showModalImg(hotel:any){
+    this.hotelId = hotel.id;
+    this.displayImage = true;
+  }
+
   cancel(event:any){
     this.displayCreateUpdateHotel = false;
+    this.displayImage = false;
     this.getHotels();
   }
 
