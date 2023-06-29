@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Coupon;
 use Illuminate\Http\Request;
 use App\Http\Requests\CouponRequest;
-use App\Http\Resources\API\CouponsResource;
+use App\Http\Resources\API\CouponResource;
 use App\Traits\MessageStatusAPI;
 use Carbon\Carbon;
 
@@ -19,14 +19,14 @@ class CouponController extends Controller
 
         if ($role == 'admin') {
             $coupon = Coupon::all();
-            return CouponsResource::collection($coupon);
+            return CouponResource::collection($coupon);
         }
 
         $id_hotel = auth()->user()->hotel_id;
         if ($id_hotel != 0 && $role == 'manager') {
             $coupon = Coupon::where('hotel_id', '=', auth()->user()->hotel_id)
                 ->get();
-            return CouponsResource::collection($coupon);
+            return CouponResource::collection($coupon);
         }
         return MessageStatusAPI::notFound();
     }
@@ -118,6 +118,6 @@ class CouponController extends Controller
         if (!$couponDetail) {
             return MessageStatusAPI::notFound();
         }
-        return MessageStatusAPI::show(new CouponsResource($couponDetail));
+        return MessageStatusAPI::show(new CouponResource($couponDetail));
     }
 }

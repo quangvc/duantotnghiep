@@ -15,25 +15,25 @@ class BookingResource extends JsonResource
      */
     public function toArray($request)
     {
-        $checkin_date = Carbon::parse($this->checkin_date);
-        $checkout_date = Carbon::parse($this->checkout_date);
-        $date_diff = $checkin_date->diffInDays($checkout_date);
         return [
-            'id' => $this->id,
+            // 'id' => $this->id,
+            'hotel_name' => $this->hotel_name,
             'booking_number' => $this->booking_number,
             'booking_date' =>  date('d-m-Y H:i:s.u', strtotime($this->booking_date)),
             'checkin_date' =>  date('d-m-Y', strtotime($this->checkin_date)),
             'checkout_date' =>  date('d-m-Y', strtotime($this->checkout_date)),
             'people_quantity' => $this->people_quantity,
-            'date_diff' => $date_diff,
-            'coupon_id' => $this->coupon_id,
-            'user_id' => $this->user_id,
+            'coupon' => $this->coupon_id ? CouponResource::collection($this->coupon_id) : 'Không áp dụng',
             'guest_name' => $this->guest_name,
             'guest_email' => $this->guest_email,
-            'guest_phone' => $this->guest_phone,
+            'guest_phone' => substr($this->guest_phone, 0, 2).str_repeat('x', strlen(substr($this->guest_phone, 2, -3))).substr($this->guest_phone, -3, 3),
             'note' => $this->note,
             'status' => $this->status,
-            'booking_detail' => BookingDetailResource::collection($this->booking_details),
+            'total_price' => $this->total_price,
+            'room_types' => [
+                'rt_name' => $this->name
+            ]
+            
         ];
     }
 }

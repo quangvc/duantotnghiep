@@ -4,7 +4,7 @@ namespace App\Http\Resources\API;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class CouponsResource extends JsonResource
+class CouponResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
