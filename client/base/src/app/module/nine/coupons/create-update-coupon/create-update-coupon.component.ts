@@ -6,6 +6,7 @@ import { ERROR, SUCCESS } from 'src/app/module/_mShared/model/url.class';
 import { HotelsService } from 'src/app/module/_mShared/service/hotels.service';
 import { CouponsService } from 'src/app/module/_mShared/service/coupons.service';
 import { NzI18nService } from 'ng-zorro-antd/i18n';
+import { Auth } from 'src/app/auth/_aShared/auth.class';
 
 @Component({
   selector: 'create-update-coupon',
@@ -26,7 +27,6 @@ export class CreateUpdateCouponComponent implements OnInit, OnDestroy {
     private couponsService: CouponsService,
     private hotelsService: HotelsService,
     private message: NzMessageService,
-    private i18n: NzI18nService
   ) { }
 
   hotels: any[] = [];
@@ -38,13 +38,16 @@ export class CreateUpdateCouponComponent implements OnInit, OnDestroy {
   }
 
   private createFormBuildCoupon(){
+
+    let hotelId = Auth.Hotel();
+
     this.formCoupon = this.fb.group({
       name: [null, Validators.required],
       type: [null, Validators.required],
       value: [null, Validators.required],
-      min: [null, Validators.required],
+      min: [0, [Validators.required, Validators.min(0)]],
       max: [null],
-      hotel_id: [null],
+      hotel_id: [hotelId],
       start_date: [null],
       end_date: [null],
       quantity: [null]
@@ -85,47 +88,47 @@ export class CreateUpdateCouponComponent implements OnInit, OnDestroy {
   }
 
   handleOk(){
-    if(this.formCoupon.valid){
+    let a = this.formCoupon.get('min')!;
+    this.formCoupon.markAllAsTouched();
+    console.log(a)
+    if (this.formCoupon.invalid) return;
+
       let id = this.couponId;
       let newData = {
         name: this.formCoupon.value.name,
         type: this.formCoupon.value.type,
         value: this.formCoupon.value.value,
-        min: this.formCoupon.value.min,
-        max: this.formCoupon.value.max,
+        min: +this.formCoupon.value.min,
+        max: +this.formCoupon.value.max,
         hotel_id: this.formCoupon.value.hotel_id,
         start_date: this.formCoupon.value.start_date,
         end_date: this.formCoupon.value.end_date,
-        quantity: this.formCoupon.value.quantity,
+        quantity: +this.formCoupon.value.quantity,
       }
-      let formData = new FormData();
 
-      formData.append('name', this.formCoupon.value.name);
-      formData.append('type', this.formCoupon.value.type);
-      formData.append('value', this.formCoupon.value.value);
-      formData.append('min', this.formCoupon.value.min);
-      formData.append('max', this.formCoupon.value.max);
-      formData.append('hotel_id', this.formCoupon.value.hotel_id);
-      formData.append('dateStart', this.formCoupon.value.start_date);
-      formData.append('dateEnd', this.formCoupon.value.end_date);
-      formData.append('quantity', this.formCoupon.value.quantity);
 
-      let createUpdate = this.couponsService.createCoupon(formData);
+      let createUpdate = this.couponsService.createCoupon(newData);
 
       if(id){
         createUpdate = this.couponsService.updateCoupon(id,newData);
       }
       createUpdate.subscribe({
         next: (cou:any) => {
-          console.log(cou);
           this.closeModal.emit();
           this.message.create(SUCCESS, `${id ? "Cập nhật" : "Thêm mới"} thành công`);
         },
         error: (err:any) => {
           this.message.create(ERROR, err.error.message);
-          console.log(err);
         }
       })
+  }
+
+  changeTypeCoupon(event:any){
+    let type:any = event.target.value;
+    if(type == "percent"){
+      this.formCoupon.get('value')?.setValidators([Validators.min(0),Validators.max(100)])
+    }else if(type == "value"){
+      this.formCoupon.get('value')?.setValidators([Validators.min(0),Validators.max(1000000000)])
     }
   }
 
