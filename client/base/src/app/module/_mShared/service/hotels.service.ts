@@ -35,20 +35,20 @@ export class HotelsService {
     return this.http.get<any>(url, this.httpOptions);
   }
 
-  // createHotel(data: any): Observable<any>{
-  //   const url = `${this.API_URL}/${HOTELS}`;
-  //   return this.http.post(url, data, this.httpOptions);
-  // }
+  createHotel(data: any): Observable<any>{
+    const url = `${this.API_URL}/${ADMIN}/${HOTELS}`;
+    return this.http.post(url, data, this.httpOptions);
+  }
 
   updateHotel(id:any, data:any): Observable<any>{
     const url = `${this.API_URL}/${ADMIN}/${HOTELS}/${id}`;
     return this.http.put(url, data, this.httpOptions)
   }
 
-  // deleteHotel(id:any, data:any): Observable<any>{
-  //   const url = `${this.API_URL}/${HOTELS}/${id}`;
-  //   return this.http.put(url, data, this.httpOptions)
-  // }
+  deleteHotel(id:any): Observable<any>{
+    const url = `${this.API_URL}/${ADMIN}/${HOTELS}/${id}`;
+    return this.http.delete(url, this.httpOptions)
+  }
 
   changeStatus(id:any, data?:any): Observable<any>{
     const url = `${this.API_URL}/${ADMIN}/${HOTELS}/changeStatus/${id}`;

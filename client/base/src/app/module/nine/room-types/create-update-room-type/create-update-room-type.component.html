@@ -10,6 +10,15 @@
 
         <div class="col-6">
           <div class="mb-3">
+            <label for="hotel" class="form-label">{{'hotel.name' | translate}}</label>
+            <select class="form-select" aria-label="Default select example" formControlName="hotel_id">
+              <option [value]="item.id" *ngFor="let item of hotels">{{item.hotel_name}}</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="col-6">
+          <div class="mb-3">
             <label for="roomType" class="form-label">{{'room_type.name' | translate}}</label>
             <input type="text" class="form-control" id="roomType" formControlName="name">
           </div>

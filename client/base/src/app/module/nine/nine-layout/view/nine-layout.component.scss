@@ -43,4 +43,14 @@ nz-footer {
   height: 100vh !important;
 }
 
+input{
+  border: solid 1px red;
+  // &.ng-invalid{
+  //   &.ng-touched{
+  //     border: solid 1px red;
+  //   }
+  // }
+
+}
+
 

@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NzMessageService } from 'ng-zorro-antd/message';
+import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
 import { Subscription, firstValueFrom } from 'rxjs';
 import { NineStatus } from 'src/app/module/_mShared/enum/enum';
 import { MenuItem } from 'src/app/module/_mShared/model/menuItem.class';
@@ -21,8 +22,11 @@ export class RoomsComponent implements OnInit, OnDestroy {
   constructor(
     private roomsService: RoomsService,
     private roomTypeService: RoomTypeService,
-    private message: NzMessageService
+    private message: NzMessageService,
+    private modal: NzModalService
     ) {}
+
+  confirmModal?: NzModalRef;
 
   rooms: any[] = [];
   menus: MenuItem[] = [];
@@ -51,7 +55,7 @@ export class RoomsComponent implements OnInit, OnDestroy {
       {
         label: "Xóa",
         command: () => {
-          this.deleteRoom(data);
+          this.confirmDelete(data);
         },
       },
     ]
@@ -92,8 +96,20 @@ export class RoomsComponent implements OnInit, OnDestroy {
     this.roomId = room.id;
   }
 
+  confirmDelete(room:any){
+    this.confirmModal = this.modal.confirm({
+      nzTitle: `Xác nhận xóa phòng ${room.room_number} ?`,
+      nzContent: 'Khi bấm nút OK, cửa sổ sẽ đóng lại sau 1 giây',
+      nzOnOk: () =>
+        new Promise((resolve, reject) => {
+          this.deleteRoom(room);
+          setTimeout(Math.random() > 0.5 ? resolve : reject, 1000);
+        }).catch(() => console.log('Oops errors!'))
+    });
+  }
+
   deleteRoom(room:any){
-    this.roomsService.deleteRoom(room.id).subscribe({
+    let obs = this.roomsService.deleteRoom(room.id).subscribe({
       next: (res) => {
         this.message.create(SUCCESS, "Xóa thành công !!");
         this.getRooms();
@@ -102,6 +118,7 @@ export class RoomsComponent implements OnInit, OnDestroy {
         this.message.create(ERROR, err.message);
       }
     })
+    this.subscription.add(obs);
   }
 
   cancel(event: any) {
