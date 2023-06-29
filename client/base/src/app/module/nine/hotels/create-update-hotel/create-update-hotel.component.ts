@@ -127,9 +127,10 @@ export class AddHotelComponent implements OnInit, OnDestroy {
         }else{
           if (file) {
             await this.imagesService.addImage(id, formData).subscribe({
-              next: (res) => {},
+              next: (res) => {console.log(res)},
               error: (err) => {
                 this.message.create(ERROR, err.error.message);
+                console.log(err)
               },
             });
           }
@@ -162,6 +163,7 @@ export class AddHotelComponent implements OnInit, OnDestroy {
             this.message.create(ERROR, err.error.message);
           }
         })
+
 
         // let hotels:any[] = await firstValueFrom(this.hotelsService.getHotels());
         // let hotel:any = hotels.find()

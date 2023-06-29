@@ -1,25 +1,36 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { BannersService } from '../service/banners.service';
+import { NzMessageService } from 'ng-zorro-antd/message';
+import { ERROR } from '../model/url.class';
+import { HttpClient } from '@angular/common/http';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
+declare let $: any;
 @Component({
   selector: 'q-image',
   templateUrl: './q-image.component.html',
   styleUrls: ['./q-image.component.scss']
 })
 export class QImageComponent implements OnInit {
+  @Input() displayAddBanner: boolean;
+  @Output() closeModal = new EventEmitter<any>();
 
-  constructor() { }
+  constructor( private bannersService: BannersService,private message: NzMessageService, private fb: FormBuilder) { }
 
   selectedOption:any[] = [];
 
-  checkOptionsOne = [
-    { url: 'https://cdn.baogiaothong.vn/upload/2-2022/images/2022-05-25/2-1653445668-926-width740height481.jpg', checked: false },
-    { url: 'https://vapa.vn/wp-content/uploads/2022/12/anh-3d-thien-nhien.jpeg', checked: false },
-  ];
+  checkOptionsOne: any[] = [];
 
-  listOfFiles: any[] = [];
+  selectedFiles: File[];
+
+  formBanner!: FormGroup
+
+  selectedFile: any;
 
   ngOnInit() {
-
+    this.formBanner = this.fb.group({
+      image: [[]]
+    })
   }
   allChecked = false;
   indeterminate = false;
@@ -53,26 +64,55 @@ export class QImageComponent implements OnInit {
     }
   }
 
-  @ViewChild('fileUploader') fileUploader:ElementRef;
+  // @ViewChild('fileUploader') fileUploader:ElementRef;
 
-  selectedFiles(event:any){
-    if(event.target.files){
-      this.listOfFiles.push(...event.target.files)
-      console.log(this.listOfFiles)
-      for (let i = 0; i < File.length; i++) {
-        const reader = new FileReader();
-        reader.readAsDataURL(event.target.files[i]);
-        reader.onload = (events: any) =>  {
-          let dataImage = {
-            url: events.target.result,
-            checked: false
-          }
-          this.checkOptionsOne.push(dataImage);
-          this.fileUploader.nativeElement.value = null;
-        }
+  onFileChange(event:any){
 
-      }
+    // this.selectedFiles = event.target.files;
+    // if(event.target.files){
+      const imageFiles: FileList = event.target.files;
+    //   const formData = new FormData();
+    //   this.closeModal.emit(imageFiles);
+
+      // for (let i = 0; i < File.length; i++) {
+      //   const reader = new FileReader();
+      //   reader.readAsDataURL(event.target.files[i]);
+      //   reader.onload = (events: any) =>  {
+      //     let dataImage = {
+      //       url: events.target.result,
+      //       checked: false
+      //     }
+      //     this.checkOptionsOne.push(dataImage);
+      //     this.fileUploader.nativeElement.value = null;
+      //   }
+
+    //   }
+    // }
+  }
+
+
+
+  handleOk(){
+    const formData = new FormData();
+    let newData:any[] = [];
+    let file = $('#file').prop('files');
+
+    const fileList: FileList = file;
+
+    for (let i = 0; i < fileList.length; i++) {
+      const file: File = fileList[i];
+      formData.append(`image[${i}]`, file);
     }
+
+    this.bannersService.createBanner(formData).subscribe({
+      next: (res) => {this.closeModal.emit()},
+      error: (err) => {this.message.create(ERROR, err.error.message);}
+    })
+
+  }
+
+  handleCancel(){
+
   }
 
 }

@@ -43,5 +43,6 @@
 <hotel-image
   *ngIf="displayImage"
   [displayImage]="displayImage"
+  [hotel_id]="hotelId"
   (closeModal)="cancel($event)">
 </hotel-image>

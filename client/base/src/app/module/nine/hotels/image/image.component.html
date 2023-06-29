@@ -6,12 +6,34 @@
   (nzOnOk)="handleOk()">
   <ng-container *nzModalContent>
 
-    <q-image></q-image>
-    <!-- <nz-checkbox-group [(ngModel)]="checkOptionsOne" (ngModelChange)="updateSingleChecked()">
-      <img src="https://cdn.sforum.vn/sforum/wp-content/uploads/2018/11/2-10.png" width="150" alt="">
-    </nz-checkbox-group> -->
-
-
+    <div class="mb-3">
+      <button nz-button [nzSize]="'large'" nzType="primary" >{{'button.add_new' | translate}}</button>
+    </div>
+    <nz-table #basicTable [nzData]="images">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Ảnh</th>
+          <th>{{'hotel.name' | translate}}</th>
+          <th>Room Type</th>
+          <th>{{ 'action' | translate }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of basicTable.data; let i = index">
+          <td>{{ i + 1 }}</td>
+          <td><img [src]="'http://127.0.0.1:8000/Images/'+data.path" width="100" alt=""></td>
+          <td>{{data.hotel.name}}</td>
+          <td></td>
+          <td>
+            <!-- <q-menu
+              [model]="menus"
+              (buttonItem)="dropdownItemsButton(data)">
+            </q-menu> -->
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
 
   </ng-container>
 </nz-modal>

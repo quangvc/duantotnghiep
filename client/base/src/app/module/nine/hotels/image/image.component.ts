@@ -1,4 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { NzMessageService } from 'ng-zorro-antd/message';
+import { ERROR } from 'src/app/module/_mShared/model/url.class';
+import { ImagesService } from 'src/app/module/_mShared/service/images.service';
 
 @Component({
   selector: 'hotel-image',
@@ -7,9 +10,14 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 export class ImageComponent implements OnInit {
 
   @Input() displayImage: boolean;
+  @Input() hotel_id:any;
   @Output() closeModal = new EventEmitter<any>();
 
-  constructor() { }
+  images: any[]=[];
+
+  constructor(private imageService: ImagesService,
+    private message: NzMessageService,
+    ) { }
 
   allChecked = false;
   indeterminate = true;
@@ -47,6 +55,17 @@ export class ImageComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.getImages();
+  }
+
+  getImages(){
+    this.imageService.getImages().subscribe({
+      next: (res) => {
+        this.images = res;
+        this.images = this.images.filter(img => img.hotel_id == this.hotel_id);
+      },
+      error: (err) => {this.message.create(ERROR, err.error.message);}
+    })
   }
 
   handleOk(){

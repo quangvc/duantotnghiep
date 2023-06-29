@@ -92,7 +92,7 @@ export class HotelsComponent implements OnInit, OnDestroy {
       {
         label: "Cài đặt hình ảnh",
         command: () => {
-          this.showModalImg();
+          this.showModalImg(data);
         },
       },
       { separator: true},
@@ -143,7 +143,8 @@ export class HotelsComponent implements OnInit, OnDestroy {
     this.subscription.add(obs);
   }
 
-  showModalImg(){
+  showModalImg(hotel:any){
+    this.hotelId = hotel.id;
     this.displayImage = true;
   }
 
