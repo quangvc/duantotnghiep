@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\API\Client;
+namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -11,7 +11,7 @@ use App\Http\Resources\API\HotelResource;
 use App\Models\Image;
 use App\Models\Room;
 
-class HotelClientController extends Controller
+class HotelController extends Controller
 {
     public function index()
     {
