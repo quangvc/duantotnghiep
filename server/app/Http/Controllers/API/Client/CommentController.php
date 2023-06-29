@@ -10,14 +10,16 @@ use Illuminate\Http\Request;
 use App\Traits\MessageStatusAPI;
 use Illuminate\Support\Facades\DB;
 
-class CommentController extends Controller
+class CommentClientController extends Controller
 {
     //
-    public function index(){
+    public function index()
+    {
         $comment = Comment::all();
         return CommentResource::collection($comment);
     }
-    public function store(CreateCommentRequest $request){
+    public function store(CreateCommentRequest $request)
+    {
 
         $validatedData = $request->validate([
             'content' => 'required',
@@ -35,19 +37,21 @@ class CommentController extends Controller
 
         return response()->json(['message' => 'Comment created successfully.']);
     }
-    public function update(CreateCommentRequest $request, $id){
+    public function update(CreateCommentRequest $request, $id)
+    {
         $cmt = Comment::find($id);
         $user_id = auth()->user()->id;
-        if($user_id !== $cmt->user_id){
+        if ($user_id !== $cmt->user_id) {
             return MessageStatusAPI::notFound();
         }
         $cmt->update($request->all());
         return MessageStatusAPI::update();
     }
-    public function destroy($id){
+    public function destroy($id)
+    {
         $cmt = Comment::find($id);
         $user_id = auth()->user()->name;
-        if($user_id !== 'Admin'){
+        if ($user_id !== 'Admin') {
             return MessageStatusAPI::notFound();
         }
         $cmt->delete();

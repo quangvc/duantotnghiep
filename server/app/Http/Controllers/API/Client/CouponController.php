@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\API;
+namespace App\Http\Controllers\API\Client;
 
 use App\Http\Controllers\Controller;
 use App\Models\Coupon;
@@ -10,7 +10,7 @@ use App\Http\Resources\API\CouponsResource;
 use App\Traits\MessageStatusAPI;
 use Carbon\Carbon;
 
-class CouponController extends Controller
+class CouponClientController extends Controller
 {
     public function index()
     {

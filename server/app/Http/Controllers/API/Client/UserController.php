@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\API;
+namespace App\Http\Controllers\API\Client;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\API\UserResource;
@@ -10,7 +10,7 @@ use App\Http\Requests\StoreUserRequest;
 use Spatie\Permission\Models\Role;
 use App\Traits\MessageStatusAPI;
 
-class UserController extends Controller
+class UserClientController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -31,14 +31,15 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(StoreUserRequest $request)
-    {    
+    {
         $request->validated();
 
         $user = new User(
             array_merge(
                 $request->except(['password']),
                 ['password' => bcrypt($request->input('password'))]
-            ));
+            )
+        );
         if ($request->hasFile('avatar')) {
             $file = $request->avatar;
             // $user->avatar = $file->getClientOriginalName();
@@ -95,7 +96,7 @@ class UserController extends Controller
             $file = $request->avatar;
             $fileName = $file->hashName();
             $file->move(base_path('public/Images/avatars'), $fileName);
-              
+
             $user->update(
                 array_merge(
                     $request->except(['avatar']),
@@ -117,7 +118,7 @@ class UserController extends Controller
         return response([
             'user' => $user,
             'message' => 'Updated successfully',
-        ], 200);   
+        ], 200);
     }
 
     /**
@@ -139,7 +140,7 @@ class UserController extends Controller
             $user->update(['active' => 1]);
         } else if ($user->active == 1) {
             $user->update(['active' => 0]);
-        }       
+        }
 
         return response([
             'message' => 'Changed status successfully',

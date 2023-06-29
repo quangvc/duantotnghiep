@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\API;
+namespace App\Http\Controllers\API\Client;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\API\BannerResource;
@@ -8,7 +8,7 @@ use App\Models\Banner;
 use Illuminate\Http\Request;
 use App\Traits\MessageStatusAPI;
 
-class BannerController extends Controller
+class BannerClientController extends Controller
 {
     public function index()
     {
@@ -30,15 +30,15 @@ class BannerController extends Controller
                     // } elseif ($file->getSize() > 2048000) {
                     //     return response(['error' => 'Dung lượng ảnh vượt quá 2Mb']);
                     // }
-                    $name = time().rand(1,100).'.'.$file->extension();
-                    $file->move(public_path('Images/banners'), $name);  
+                    $name = time() . rand(1, 100) . '.' . $file->extension();
+                    $file->move(public_path('Images/banners'), $name);
                     Banner::create(['image' =>  $name]);
                 }
 
                 return MessageStatusAPI::store();
             } else {
                 return MessageStatusAPI::notFound();
-            }            
+            }
         } else {
             return abort(403);
         }
@@ -58,5 +58,4 @@ class BannerController extends Controller
         }
         return MessageStatusAPI::destroy();
     }
-    
 }

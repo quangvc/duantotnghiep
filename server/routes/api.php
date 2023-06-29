@@ -1,25 +1,36 @@
 <?php
 
-use App\Http\Controllers\API\BlogController;
-use App\Http\Controllers\API\BookingController;
+use App\Http\Controllers\API\Admin\BlogController;
+use App\Http\Controllers\API\Admin\BookingController;
 use App\Http\Controllers\Api\CommentController;
-use App\Http\Controllers\API\RegionController;
-use App\Http\Controllers\API\RoomController;
-use App\Http\Controllers\API\RoomTypesController;
+use App\Http\Controllers\API\Admin\RegionController;
+use App\Http\Controllers\API\Admin\RoomController;
+use App\Http\Controllers\API\Admin\RoomTypesController;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\API\HotelController;
+use App\Http\Controllers\API\Admin\HotelController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\API\ImageController;
-use App\Http\Controllers\API\SupportController;
+use App\Http\Controllers\API\Admin\ImageController;
+use App\Http\Controllers\API\Admin\SupportController;
 
-use App\Http\Controllers\API\UserController;
+use App\Http\Controllers\API\Admin\UserController;
 use App\Models\Hotel;
-use App\Http\Controllers\API\CouponController;
-use App\Http\Controllers\API\FeedbackController;
-use App\Http\Controllers\API\BannerController;
+use App\Http\Controllers\API\Admin\CouponController;
+use App\Http\Controllers\API\Admin\FeedbackController;
+use App\Http\Controllers\API\Admin\BannerController;
+use App\Http\Controllers\API\Client\BlogClientController;
+use App\Http\Controllers\API\Client\BookingClientController;
+use App\Http\Controllers\API\Client\CouponClientController;
+use App\Http\Controllers\API\Client\FeedbackClientController;
+use App\Http\Controllers\API\Client\HotelClientController;
+use App\Http\Controllers\API\Client\ImageClientController;
+use App\Http\Controllers\API\Client\RegionClientController;
+use App\Http\Controllers\API\Client\RoomClientController;
+use App\Http\Controllers\API\Client\RoomTypesClientController;
+use App\Http\Controllers\API\Client\UserClientController;
+use App\Http\Controllers\Api\CommentClientController;
 
 /*
 |--------------------------------------------------------------------------
@@ -168,7 +179,7 @@ Route::group(['prefix' => 'admin'], function () {
     );
 });
 Route::group(['prefix' => 'client'], function () {
-    Route::group(['prefix' => 'users', 'controller' => UserController::class], function () {
+    Route::group(['prefix' => 'users', 'controller' => UserClientController::class], function () {
         Route::get('/', 'index');
         Route::get('/{user}', 'show');
         Route::post('/', 'store');
@@ -178,7 +189,7 @@ Route::group(['prefix' => 'client'], function () {
     });
 
     Route::group(
-        ['prefix' => 'hotels', 'controller' => HotelController::class],
+        ['prefix' => 'hotels', 'controller' => HotelClientController::class],
         function () {
             Route::get('/', 'index')->middleware('permission:view_hotel');
             Route::post('/', 'store')->middleware('permission:add_hotel');
@@ -190,7 +201,7 @@ Route::group(['prefix' => 'client'], function () {
     );
 
     Route::group(
-        ['prefix' => 'rooms', 'controller' => RoomController::class],
+        ['prefix' => 'rooms', 'controller' => RoomClientController::class],
         function () {
             Route::get('/', 'index')->middleware('permission:view_room');
             Route::post('/', 'store')->middleware('permission:view_room');
@@ -201,7 +212,7 @@ Route::group(['prefix' => 'client'], function () {
     );
 
     Route::group(
-        ['prefix' => 'room-types', 'controller' => RoomTypesController::class],
+        ['prefix' => 'room-types', 'controller' => RoomTypesClientController::class],
         function () {
             Route::get('/', 'index');
             Route::post('/', 'store');
@@ -212,7 +223,7 @@ Route::group(['prefix' => 'client'], function () {
     );
 
     Route::group(
-        ['prefix' => 'regions', 'controller' => RegionController::class],
+        ['prefix' => 'regions', 'controller' => RegionClientController::class],
         function () {
             Route::get('/', 'index');
             Route::post('/', 'store');
@@ -222,7 +233,7 @@ Route::group(['prefix' => 'client'], function () {
         }
     );
     Route::group(
-        ['prefix' => 'coupons', 'controller' => CouponController::class],
+        ['prefix' => 'coupons', 'controller' => CouponClientController::class],
         function () {
             Route::get('/', 'index')->middleware('permission:view_coupon');;
             Route::post('/', 'store')->middleware('permission:add_coupon');
@@ -232,7 +243,7 @@ Route::group(['prefix' => 'client'], function () {
         }
     );
     Route::group(
-        ['prefix' => 'feedback', 'controller' => FeedbackController::class],
+        ['prefix' => 'feedback', 'controller' => FeedbackClientController::class],
         function () {
             Route::get('/', 'index');
             Route::post('/', 'store');
@@ -242,7 +253,7 @@ Route::group(['prefix' => 'client'], function () {
         }
     );
     Route::group(
-        ['prefix' => 'image', 'controller' => ImageController::class],
+        ['prefix' => 'image', 'controller' => ImageClientController::class],
         function () {
             Route::get('/', 'index');
             Route::post('/hotel/{id}', 'storeHotel');
@@ -252,14 +263,14 @@ Route::group(['prefix' => 'client'], function () {
         }
     );
     Route::group(
-        ['prefix' => 'booking', 'controller' => BookingController::class], // Thêm `prefix` để xác định endpoint chung của API
+        ['prefix' => 'booking', 'controller' => BookingClientController::class], // Thêm `prefix` để xác định endpoint chung của API
         function () {
             Route::get('/', 'index');
             Route::post('/', 'store');
         }
     );
     Route::group(
-        ['prefix' => 'blogs', 'controller' => BlogController::class],
+        ['prefix' => 'blogs', 'controller' => BlogClientController::class],
         function () {
             Route::get('/', 'index');
             Route::post('/', 'store');
@@ -269,7 +280,7 @@ Route::group(['prefix' => 'client'], function () {
         }
     );
     Route::group(
-        ['prefix' => 'comments', 'controller' => CommentController::class],
+        ['prefix' => 'comments', 'controller' => CommentClientController::class],
         function () {
             Route::get('/', 'index');
             Route::post('/', 'store');

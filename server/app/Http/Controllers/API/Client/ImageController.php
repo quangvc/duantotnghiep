@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\API;
+namespace App\Http\Controllers\API\Client;
 
 use App\Http\Controllers\Controller;
 use App\Models\Image;
@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use App\Traits\MessageStatusAPI;
 use Illuminate\Http\File;
 
-class ImageController extends Controller
+class ImageClientController extends Controller
 {
     public function index()
     {

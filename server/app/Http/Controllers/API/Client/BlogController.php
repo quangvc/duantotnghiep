@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\API;
+namespace App\Http\Controllers\API\Client;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateBlogRequest;
@@ -12,7 +12,7 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Response;
 use Illuminate\Validation\Rule;
 
-class BlogController extends Controller
+class BlogClientController extends Controller
 {
     public function index()
     {
@@ -86,7 +86,8 @@ class BlogController extends Controller
         $blog->delete();
         return MessageStatusAPI::destroy();
     }
-    public function show($slug){
+    public function show($slug)
+    {
         $blog = Blog::where('slug', $slug)->first();
         if ($blog) {
             return new BlogResource($blog);

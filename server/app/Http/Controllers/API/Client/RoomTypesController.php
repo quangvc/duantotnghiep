@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\API;
+namespace App\Http\Controllers\API\Client;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateRoomTypeRequest;
@@ -11,7 +11,7 @@ use Illuminate\Http\Request;
 use App\Traits\MessageStatusAPI;
 use Illuminate\Http\Response;
 
-class RoomTypesController extends Controller
+class RoomTypesClientController extends Controller
 {
     //
     public function index()
