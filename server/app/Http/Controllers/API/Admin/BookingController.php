@@ -40,9 +40,11 @@ class BookingController extends Controller
 
     }
     
-    public function store(Request $request)
+    public function store(BookingRequest $request)
     {
+        $request->validated();
         $validated = $request->all();
+
         $user = auth()->user();
         if ($user) {
             $guest_name = $user->name;
@@ -60,85 +62,38 @@ class BookingController extends Controller
         $checkin_date = Carbon::parse($validated['checkin_date']);
         $checkout_date = Carbon::parse($validated['checkout_date']);
 
-        // đếm số phòng đã được đặt trong khoảng thời gian mà khách chọn vs room_type_id = 4
-        $room = BookingDetail::join('tbl_bookings', 'tbl_bookings.id', '=', 'booking_id')
-        ->where(function ($query) use ($checkin_date, $checkout_date) {
-            $query->where([
-                ['checkin_date', '>=', $checkin_date],
-                ['checkout_date', '<=', $checkout_date],
-                ['room_type_id', 4],
-            ])->orWhere([
-                ['checkin_date', '<=', $checkin_date],
-                ['checkout_date', '>=', $checkout_date],
-                ['room_type_id', 4],
-            ])->orWhere([
-                ['checkin_date', '>', $checkin_date],
-                ['checkin_date', '<', $checkout_date],
-                ['room_type_id', 4],
-            ])->orWhere([
-                ['checkout_date', '>', $checkin_date],
-                ['checkout_date', '<', $checkout_date],
-                ['room_type_id', 4],
-            ]);
-        })
-        // ->where([
-        //     ['checkin_date', '>=', $checkin_date],
-        //     ['checkout_date', '<=', $checkout_date],
-        //     ['room_type_id', 4],
-        // ])
-        // ->orWhere([
-        //     ['checkin_date', '<=', $checkin_date],
-        //     ['checkout_date', '>=', $checkout_date],
-        //     ['room_type_id', 4],
-        // ])
-        // ->orWhere([
-        //     ['checkin_date', '>', $checkin_date],
-        //     ['checkin_date', '<', $checkout_date],
-        //     ['room_type_id', 4],
-        // ])
-        // ->orWhere([
-        //     ['checkout_date', '>', $checkin_date],
-        //     ['checkout_date', '<', $checkout_date],
-        //     ['room_type_id', 4],
-        // ])
-
-        ->count();
-        // ->get();
-        return $room;
-
-
         foreach ($validated['items'] as $item) {
-            $rooms1 = Room:://whereDate('')
-            where('room_type_id', $item['room_type_id'])->count();
+
             // đếm tổng số room theo loại
-            $rooms = Room::where('room_type_id', $item['room_type_id'])->where('status', 1)->count();
-            if ($rooms < $item['quantity'] ) {
-                return 'Hết phòng';
+            $count_all_rooms = Room::where([
+                ['room_type_id', $item['room_type_id']],
+                ['status', 1]
+            ])->count();
+
+            // đếm số phòng đã được đặt trong khoảng thời gian mà khách chọn theo loại
+            $count_booked_rooms = BookingDetail::join('tbl_bookings', 'tbl_bookings.id', '=', 'booking_id')
+            ->where('room_type_id', $item['room_type_id'])
+            ->where(function ($query) use ($checkin_date, $checkout_date) {
+                $query->where([
+                    ['checkin_date', '>=', $checkin_date],
+                    ['checkout_date', '<=', $checkout_date],
+                ])->orWhere([
+                    ['checkin_date', '<=', $checkin_date],
+                    ['checkout_date', '>=', $checkout_date],
+                ])->orWhere([
+                    ['checkin_date', '>', $checkin_date],
+                    ['checkin_date', '<', $checkout_date],
+                ])->orWhere([
+                    ['checkout_date', '>', $checkin_date],
+                    ['checkout_date', '<', $checkout_date],
+                ]);
+            })
+            ->count();
+
+            if ($count_all_rooms - $count_booked_rooms < $item['quantity'] ) {
+                return 'room_type_id '.$item['room_type_id'].' hết phòng';
             }
         }
-        // return $rooms;
-        
-        
-
-        // Đếm số lượng room_type đã gửi lên để check
-        // $counted_array = array_count_values($validated['room_type_id']);
-        // foreach ($counted_array as $roomType) {
-        // }
-
-        // $room_types = Room::where('hotel_id', '=', $validated['hotel_id'])->whereIn('room_type_id', $validated['room_type_id'])
-        //     ->get();
-
-        // $check_booking = Booking::whereDate('checkin_date', $checkin_date)
-        //     ->whereDate('checkout_date', $checkout_date)
-        //     ->whereHas('booking_details', function ($query) use ($validated) {
-        //         $query->where('room_id', '=', $validated['room_id']);
-        //     })
-        //     ->first();
-        // if (empty($check_booking) && ) {
-        // }
-        // return RoomResource::collection($room_types);        
-
-        // Carbon::createFromFormat('d-m-Y', $validated['checkin_date'])->format('Y-m-d')
 
         $booking = new Booking([
             'checkin_date' =>  $checkin_date,
@@ -163,19 +118,6 @@ class BookingController extends Controller
 
         return MessageStatusAPI::store();
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     public function destroy($id)
     {

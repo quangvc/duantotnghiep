@@ -9,7 +9,6 @@ class BookingRequest extends FormRequest
     public function rules()
     {
         return [
-            // 'booking_date' => 'bail|required|date',
             'checkin_date'=> 'bail|required|date|after:tomorrow',
             'checkout_date'=> 'bail|required|date|after:checkin_date',
             'people_quantity'=> 'bail|required|alpha_num',
@@ -21,6 +20,13 @@ class BookingRequest extends FormRequest
             // 'note'=> 'bail|',
             // 'comment_id'=> 'bail|required|alpha_num|max:11',
             // 'status'=> 'bail|required|alpha_num|max:4',
+        ];
+    }
+    public function messages()
+    {
+        return [
+            'checkin_date.*' => 'ngay ko hop le',
+            'checkout_date.*' => 'ngay ko hop le',
         ];
     }
 }
