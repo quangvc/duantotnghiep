@@ -10,14 +10,14 @@ class BookingRequest extends FormRequest
     {
         return [
             'items' => ['required_with', 'array'], // Validator Proposal Items
-            'items.*' => ['array:room_type_id,room_id'],
+            'items.*' => ['array:room_type_id,quantity'],
             'items.*.room_type_id' => ['string', 'nullable'],
-            'items.*.room_id' => ['string', 'nullable'],
+            'items.*.quantity' => ['string', 'nullable'],
 
-            // 'booking_date' => 'bail|required|date',
-            'checkin_date'=> 'bail|required|date|after:tomorrow',
-            'checkout_date'=> 'bail|required|date|after:checkin_date',
-            'people_quantity'=> 'bail|required|alpha_num',
+            // // 'booking_date' => 'bail|required|date',
+            // 'checkin_date'=> 'bail|required|date|after:tomorrow',
+            // 'checkout_date'=> 'bail|required|date|after:checkin_date',
+            // 'people_quantity'=> 'bail|required|alpha_num',
             // 'coupon_id'=> 'bail|',
             // 'user_id'=> 'bail|required',
             // 'guest_name'=> 'bail|required|alpha|max:255',

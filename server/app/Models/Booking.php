@@ -16,7 +16,7 @@ class Booking extends Model
     protected $table = 'tbl_bookings';
 
     protected $fillable = [
-        'hotel_id', 'booking_number', 'people_quantity', 'coupon_id', 'user_id',
+        'checkout_date', 'checkin_date', 'hotel_id', 'booking_number', 'people_quantity', 'coupon_id', 'user_id',
         'guest_name', 'guest_email', 'guest_phone', 'note',
         'comment_id', 'status'
     ];

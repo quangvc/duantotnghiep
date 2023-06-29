@@ -24,6 +24,7 @@ class RoomResource extends JsonResource
                 'name' => $this->hotel->hotel_name
             ],
             'room_type' => $this->room_type
+
         ];
     }
 }

@@ -38,11 +38,14 @@ class BookingController extends Controller
             $user_id =  null;
         }
 
-        // $checkin_date = Carbon::parse($validated['checkin_date']);
-        // $checkout_date = Carbon::parse($validated['checkout_date']);
-        // $date_diff = $checkin_date->diffInDays($checkout_date);
-        // return $checkin_date;
+        $checkin_date = Carbon::parse($validated['checkin_date']);
+        $checkout_date = Carbon::parse($validated['checkout_date']);
+        $date_diff = $checkin_date->diffInDays($checkout_date);
 
+        $booking_detail = BookingDetail::whereHas('booking', function ($query) use ($validated) {
+            $query->where('checkin_date', '=', $validated['checkin_date']);
+        })->get();
+        return $booking_detail;
         // Đếm số lượng room_type đã gửi lên để check
         // $counted_array = array_count_values($validated['room_type_id']);
         // foreach ($counted_array as $roomType) {
@@ -50,17 +53,15 @@ class BookingController extends Controller
 
         // Lấy ra room dựa trên hotel_id và room_id gửi lên 
         foreach ($validated['items'] as $item) {
-            $rooms[] = Room::where('hotel_id', '=', $validated['hotel_id'])
+
+            $quantity[$item['room_type_id']] = $item['quantity'];
+            ////
+            // Lấy tất cả các loại phòng của khách sạn đó yêu cầu và đếm
+            $rooms[$item['room_type_id']] = Room::where('hotel_id', '=', $validated['hotel_id'])
                 ->where('room_type_id', '=', $item['room_type_id'])
                 ->distinct()
-                ->get();
+                ->count();
         }
-        $rooms = array_values(array_unique($rooms));
-        $result = [];
-        foreach ($rooms as $roomGroup) {
-            $result = array_merge($result, $roomGroup->toArray());
-        }
-        return $result;
 
         // $room_types = Room::where('hotel_id', '=', $validated['hotel_id'])->whereIn('room_type_id', $validated['room_type_id'])
         //     ->get();
@@ -77,25 +78,18 @@ class BookingController extends Controller
 
 
         $booking = new Booking([
-            'checkin_date' =>  Carbon::createFromFormat('d-m-Y', $validated['checkin_date'])->format('Y-m-d'),
-            'checkout_date' => Carbon::createFromFormat('d-m-Y', $validated['checkout_date'])->format('Y-m-d'),
+            'hotel_id' => $validated['hotel_id'],
+            'checkin_date' =>  $checkin_date,
+            'checkout_date' => $checkout_date,
             'people_quantity' =>  $validated['people_quantity'],
             'user_id' =>  $user_id,
             'guest_name' =>  $guest_name,
             'guest_email' =>  $guest_email,
             'guest_phone' =>  $guest_phone,
         ]);
+        // return $booking;
         $booking->save();
         $booking->update(['booking_number' => 'HD' . $booking->id . '_' . random_int('10000000', '99999999')]);
-        foreach ($validated['items'] as $item) {
-            BookingDetail::create(
-                [
-                    'booking_id' => $booking->id,
-                    'room_type_id' => $item['room_type_id'],
-                    'room_id' => $item['room_id'],
-                ]
-            );
-        }
 
         foreach ($validated['items'] as $item) {
             for ($i = 0; $i < $item['quantity']; $i++) {
