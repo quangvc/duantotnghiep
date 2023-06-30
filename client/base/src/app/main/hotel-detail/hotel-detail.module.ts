@@ -10,7 +10,7 @@ import { HotelDetailAmenitiesComponent } from './hotel-detail-amenities/hotel-de
 import { HotelPolicyComponent } from './hotel-policy/hotel-policy.component';
 import { CheckboxModule } from 'primeng/checkbox';
 import { DropdownModule } from 'primeng/dropdown';
-import { PhotoService } from 'src/services/photoservice.service';
+import { PhotoService } from 'src/app/services/photoservice.service';
 import { DynamicDialogModule } from 'primeng/dynamicdialog';
 import { ToastModule } from 'primeng/toast';
 import { DialogModule } from 'primeng/dialog';
