@@ -21,15 +21,15 @@ class HotelResource extends JsonResource
             'hotel_name' => $this->hotel_name,
             'hotel_phone' => $this->hotel_phone,
             'hotel_address' => $this->hotel_address,
-            'region' => [
+            'region' =>
+            [
                 'id' => $this->region->id,
                 'name' => $this->region->name,
             ],
             'star_rating' => $this->star_rating,
-            'region_id' => $this->region_id,
             'images' => $this->images,
-            'quantity_room' => count(RoomResource::collection($this->rooms)),
-            'room' => RoomResource::collection($this->rooms),
+            // 'quantity_room' => count(RoomResource::collection($this->rooms)),
+            // 'room' => RoomResource::collection($this->rooms),
             'status' => $this->status,
             'description' => $this->description,
         ];
