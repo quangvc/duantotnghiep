@@ -25,7 +25,7 @@ class CreateCommentRequest extends FormRequest
     {
         return [
         'content' => 'required',
-        'blog_id' => 'nullable|integer|exists:tbl_blogs,id'
+        'blog_id' => 'nullable|integer|exists:tbl_blogs,id',
         ];
     }
     public function messages()
