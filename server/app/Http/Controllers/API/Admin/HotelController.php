@@ -17,6 +17,8 @@ class HotelController extends Controller
         $hotels = Hotel::whereExists(function ($query) {
             if (auth()->user()->hasRole('manager')) {
                 $query->where('id', auth()->user()->hotel_id);
+            } else {
+                return MessageStatusAPI::notFound();
             }
         })->get();
         return HotelResource::collection($hotels);
