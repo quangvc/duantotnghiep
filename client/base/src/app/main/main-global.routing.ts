@@ -1,7 +1,7 @@
 import { RouterModule, Routes } from "@angular/router";
 import { NotFoundComponent } from "../not-found/not-found.component";
 import { MainComponent } from "./main/main.component";
-import { BookingComponent } from "./booking/booking.component";
+import { BookingFormComponent } from "./booking-form/booking-form.component";
 
 const routes: Routes = [
   {path: '', component: MainComponent, children: [
@@ -15,14 +15,16 @@ const routes: Routes = [
     { path: 'hotel', loadChildren: () => import('./hotel/hotel.module').then(m => m.HotelModule)},
     { path: 'detail', loadChildren: () => import('./hotel-detail/hotel-detail.module').then(m => m.HotelDetailModule)},
     { path: 'filter', loadChildren: () => import('./filter-page/filter-page.module').then(m => m.FilterPageModule)},
-    { path: '**', component: NotFoundComponent },
+    // {path: 'booking', component: BookingFormComponent, redirectTo: '/booking/bookingform', pathMatch: 'full', children: [
+    //   { path: 'review', loadChildren: () => import('./booking-form/review/review.module').then(m => m.ReviewModule)},
+    //   { path: 'bookingform', loadChildren: () => import('./booking-form/booking/booking.module').then(m => m.BookingModule)}
+    // ]},
+
   ]},
 
-  {path: 'booking', component: BookingComponent, children: [
-    { path: 'review', loadChildren: () => import('./booking-form/review/review.module').then(m => m.ReviewModule)},
-    { path: 'bookingform', loadChildren: () => import('./booking-form/booking/booking.module').then(m => m.BookingModule)},
-    { path: '**', component: NotFoundComponent },
-  ]}
+  { path: '**', component: NotFoundComponent },
+
+
 ]
 
 export const MainGlobalRoutes = RouterModule.forRoot(routes);

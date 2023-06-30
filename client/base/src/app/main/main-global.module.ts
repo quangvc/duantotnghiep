@@ -17,7 +17,6 @@ import { BookingFormModule } from './booking-form/booking-form.module';
 
     MainModule,
     BookingFormModule,
-
     MainGlobalRoutes
   ]
 })
