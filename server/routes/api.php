@@ -28,7 +28,7 @@ use App\Http\Controllers\API\Client\RegionClientController;
 use App\Http\Controllers\API\Client\RoomClientController;
 use App\Http\Controllers\API\Client\RoomTypesClientController;
 use App\Http\Controllers\API\Client\UserClientController;
-use App\Http\Controllers\Api\CommentClientController;
+use App\Http\Controllers\Api\Client\CommentClientController;
 
 /*
 |--------------------------------------------------------------------------
@@ -191,12 +191,8 @@ Route::group(['prefix' => 'client'], function () {
     Route::group(
         ['prefix' => 'hotels', 'controller' => HotelClientController::class],
         function () {
-            Route::get('/', 'index')->middleware('permission:view_hotel');
-            Route::post('/', 'store')->middleware('permission:add_hotel');
-            Route::put('/changeStatus/{id}', 'changeStatus');
-            Route::put('/{id}', 'update')->middleware('permission:edit_hotel');
-            Route::get('/{id}', 'show')->middleware('permission:show_hotel');
-            Route::delete('/{id}', 'destroy')->middleware('permission:delete_hotel');
+            Route::get('/', 'index');
+            Route::get('/{id}', 'show');
         }
     );
 
