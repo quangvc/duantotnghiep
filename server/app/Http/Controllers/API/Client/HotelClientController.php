@@ -15,7 +15,6 @@ class HotelClientController extends Controller
 {
     public function index()
     {
-        // auth('api')->user(); lấy thông tin người dùng đang login
         $hotels = Hotel::where('status', '=', '1')->get();
         return HotelResource::collection($hotels);
     }

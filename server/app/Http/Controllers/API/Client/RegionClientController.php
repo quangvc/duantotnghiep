@@ -14,44 +14,7 @@ class RegionClientController extends Controller
     public function index()
     {
         $regions = Region::all();
-
-
-        return response()->json(['data' => $regions, 'message' => 'Message'], 200);
-    }
-
-    public function store(RegionRequest $request)
-    {
-        $validated = $request->validated();
-        $region = new Region([
-            'name' =>  $validated['name'],
-        ]);
-        $region->save();
-        return MessageStatusAPI::store();
-    }
-
-    public function destroy($id)
-    {
-        $region = Region::find($id);
-
-        if ($region) {
-            $region->delete();
-            return MessageStatusAPI::destroy();
-        } else {
-            return MessageStatusAPI::notFound();
-        }
-    }
-
-    public function update(RegionRequest $request, $id)
-    {
-        $validated = $request->validated();
-        $region = Region::findOrFail($id);
-        if (!$region) {
-            return MessageStatusAPI::displayInvalidInput($region);
-        }
-        $region->update([
-            'name' => $validated['name'],
-        ]);
-        return MessageStatusAPI::update();
+        return MessageStatusAPI::show($regions);
     }
 
     public function show($id)
