@@ -267,7 +267,8 @@ Route::group(['prefix' => 'client'], function () {
         ['prefix' => 'comments', 'controller' => CommentClientController::class],
         function () {
             Route::get('/', 'index');
-            Route::post('/', 'store');  
+            Route::post('/', 'store');
+            Route::post('/{id}', 'reply');  
         }
     );
     Route::group(
