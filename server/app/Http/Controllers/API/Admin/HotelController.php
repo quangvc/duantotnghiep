@@ -8,8 +8,6 @@ use App\Models\Hotel;
 use App\Traits\MessageStatusAPI;
 use App\Http\Requests\HotelRequest;
 use App\Http\Resources\API\HotelResource;
-use App\Models\Image;
-use App\Models\Room;
 
 class HotelController extends Controller
 {
@@ -18,7 +16,7 @@ class HotelController extends Controller
         // auth('api')->user(); lấy thông tin người dùng đang login
         $hotels = Hotel::whereExists(function ($query) {
             if (auth()->user()->hasRole('manager')) {
-                $query->where('id', hotel()->id);
+                $query->where('id', auth()->user()->hotel_id);
             }
         })->get();
         return HotelResource::collection($hotels);
