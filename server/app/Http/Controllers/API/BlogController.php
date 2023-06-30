@@ -29,6 +29,7 @@ class BlogController extends Controller
             'content' => $validated['content'],
             'image' => $validated['image'],
             'user_id' => $user_id,
+            'status' => 0
         ]);
         if ($request->hasFile('image')) {
             $image = $request->file('image');
@@ -87,5 +88,18 @@ class BlogController extends Controller
         } else {    
             return MessageStatusAPI::notFound();
         }
+    }
+    public function changeActive($id)
+    {
+        $blog = Blog::find($id);
+        if (!$blog) {
+            return MessageStatusAPI::notFound();
+        }
+        if ($blog->active == 1) {
+            $blog->update(['status' => 0]);
+        } else {
+            $blog->update(['status' => 1]);
+        }
+        return MessageStatusAPI::update();
     }
 }

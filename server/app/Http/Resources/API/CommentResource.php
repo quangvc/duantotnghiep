@@ -20,7 +20,6 @@ class CommentResource extends JsonResource
             'parent_id' => $this->parent_id,
             'blog_id' => $this->blog_id,
             'content' => $this->content,
-            'rating' => $this->rating,
         ];
     }
 }

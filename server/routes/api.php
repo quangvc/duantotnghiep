@@ -138,6 +138,7 @@ Route::group(['prefix' => 'admin'], function () {
             Route::get('/{slug}/{id}', 'show');
             Route::put('/{id}', 'update');
             Route::delete('/{id}', 'destroy');
+            Route::put('/changeActive/{id}', 'changeActive');
         }
     );
     Route::group(

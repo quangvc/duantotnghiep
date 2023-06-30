@@ -39,11 +39,11 @@ class FeedbackController extends Controller
         $feedback->save();
         return response()->json(['message' => 'feedback created successfully.']);
     }
-    public function update(FeedbackRequest $request, $id){
-        $feedback = Feedback::find($id);
-        $feedback->update($request->all());
-        return MessageStatusAPI::update();
-    }
+    // public function update(FeedbackRequest $request, $id){
+    //     $feedback = Feedback::find($id);
+    //     $feedback->update($request->all());
+    //     return MessageStatusAPI::update();
+    // }
 
     public function destroy($id){
         $feedback = Feedback::find($id);
