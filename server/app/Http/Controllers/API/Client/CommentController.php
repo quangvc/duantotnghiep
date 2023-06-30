@@ -23,7 +23,6 @@ class CommentClientController extends Controller
 
         $validatedData = $request->validate([
             'content' => 'required',
-            'rating' => 'required|integer|min:1|max:5',
             'blog_id' => 'required|integer|exists:tbl_blogs,id'
         ]);
         $user_id = auth()->user()->id;
@@ -31,10 +30,8 @@ class CommentClientController extends Controller
         $comment = new Comment;
         $comment->user_id = $user_id;
         $comment->content = $validatedData['content'];
-        $comment->rating = $validatedData['rating'];
         $comment->blog_id = $validatedData['blog_id'];
         $comment->save();
-
         return response()->json(['message' => 'Comment created successfully.']);
     }
     public function update(CreateCommentRequest $request, $id)
