@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { MessageService } from 'primeng/api';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { PhotoService } from 'src/services/photoservice.service';
+import { PhotoService } from 'src/app/services/photoservice.service';
 
 interface Type {
   name: string;
