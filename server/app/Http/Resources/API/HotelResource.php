@@ -28,6 +28,7 @@ class HotelResource extends JsonResource
             'star_rating' => $this->star_rating,
             'region_id' => $this->region_id,
             'images' => $this->images,
+            'quantity_room' => count(RoomResource::collection($this->rooms)),
             'room' => RoomResource::collection($this->rooms),
             'status' => $this->status,
             'description' => $this->description,

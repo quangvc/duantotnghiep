@@ -16,10 +16,10 @@ class Room extends Model
         'hotel_id', 'room_type_id', 'room_number', 'status'
     ];
 
-    public function booking_details(): HasMany
-    {
-        return $this->hasMany(BookingDetail::class);
-    }
+    // public function booking_details(): HasMany
+    // {
+    //     return $this->hasMany(BookingDetail::class);
+    // }
 
     public function hotel(): BelongsTo
     {

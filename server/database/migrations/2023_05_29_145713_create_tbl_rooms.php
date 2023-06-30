@@ -15,7 +15,6 @@ return new class extends Migration
     {
         Schema::create('tbl_rooms', function (Blueprint $table) {
             $table->id();
-            $table->integer('hotel_id');
             $table->integer('room_type_id');
             $table->integer('room_number');
             $table->tinyInteger('status');

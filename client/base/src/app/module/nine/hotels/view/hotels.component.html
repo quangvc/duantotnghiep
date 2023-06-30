@@ -1,4 +1,4 @@
-<div class="mb-3">
+<div class="mb-3" *ngIf="role">
   <button nz-button [nzSize]="'large'" nzType="primary" (click)="addHotel()" >{{'button.add_new' | translate}}</button>
 </div>
 <nz-table #basicTable [nzData]="hotels">
@@ -20,7 +20,7 @@
       <td>{{ data.hotel_name }}</td>
       <td>{{ data.hotel_address }}</td>
       <td>{{ data.hotel_phone }}</td>
-      <td></td>
+      <td>{{ data.star_rating }}</td>
       <td>{{ data.region.name }}</td>
       <td><nz-switch [(ngModel)]="data.status" (ngModelChange)="confirmChangeStatus($event,data)"></nz-switch></td>
       <td>
@@ -39,3 +39,10 @@
   [hotelId]="hotelId"
   (closeModal)="cancel($event)">
 </create-update-hotel>
+
+<hotel-image
+  *ngIf="displayImage"
+  [displayImage]="displayImage"
+  [hotel_id]="hotelId"
+  (closeModal)="cancel($event)">
+</hotel-image>
