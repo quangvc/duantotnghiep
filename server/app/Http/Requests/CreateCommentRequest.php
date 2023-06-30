@@ -25,7 +25,6 @@ class CreateCommentRequest extends FormRequest
     {
         return [
         'content' => 'required',
-        'rating' => 'nullable|integer|min:0|max:5',
         'blog_id' => 'nullable|integer|exists:tbl_blogs,id'
         ];
     }
@@ -33,7 +32,6 @@ class CreateCommentRequest extends FormRequest
     {
        return [
         'content.required' => 'vui lòng không boe trống ',
-        'rating.required' => 'vui lòng không boe trống ',
         'blog_id.required' => 'vui lòng không boe trống ',
        ];
     }
