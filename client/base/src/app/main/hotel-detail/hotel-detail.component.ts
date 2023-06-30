@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output, Type } from '@angular/core';
-import { PhotoService } from 'src/services/photoservice.service';
+import { PhotoService } from 'src/app/services/photoservice.service';
 @Component({
   selector: 'app-hotel-detail',
   templateUrl: './hotel-detail.component.html',
