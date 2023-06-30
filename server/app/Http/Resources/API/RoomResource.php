@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\API;
 
+use App\Models\RoomType;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -19,11 +20,7 @@ class RoomResource extends JsonResource
             'id' => $this->id,
             'room_number' => $this->room_number,
             'status' => $this->status,
-            'hotel' => [
-                'idHotel' => $this->hotel->id,
-                'name' => $this->hotel->hotel_name
-            ],
-            'room_type' => $this->room_type
+            'room_type' => RoomTypeResource::make($this->room_type)
         ];
     }
 }
