@@ -32,7 +32,6 @@ class CommentController extends Controller
         $comment->content = $validatedData['content'];
         $comment->blog_id = $validatedData['blog_id'];
         $comment->save();
-
         return response()->json(['message' => 'Comment created successfully.']);
     }
     public function update(CreateCommentRequest $request, $id)

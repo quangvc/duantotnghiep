@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\API\Admin\BlogController;
 use App\Http\Controllers\API\Admin\BookingController;
-use App\Http\Controllers\Api\CommentController;
+use App\Http\Controllers\Api\Admin\CommentController;
 use App\Http\Controllers\API\Admin\RegionController;
 use App\Http\Controllers\API\Admin\RoomController;
 use App\Http\Controllers\API\Admin\RoomTypesController;
@@ -18,6 +18,7 @@ use App\Http\Controllers\API\Admin\UserController;
 use App\Http\Controllers\API\Admin\CouponController;
 use App\Http\Controllers\API\Admin\FeedbackController;
 use App\Http\Controllers\API\Admin\BannerController;
+use App\Http\Controllers\API\Client\BannerClientController;
 use App\Http\Controllers\API\Client\BlogClientController;
 use App\Http\Controllers\API\Client\BookingClientController;
 use App\Http\Controllers\API\Client\CouponClientController;
@@ -228,16 +229,7 @@ Route::group(['prefix' => 'client'], function () {
             Route::delete('/{id}', 'destroy');
         }
     );
-    Route::group(
-        ['prefix' => 'coupons', 'controller' => CouponClientController::class],
-        function () {
-            Route::get('/', 'index')->middleware('permission:view_coupon');;
-            Route::post('/', 'store')->middleware('permission:add_coupon');
-            Route::get('/{id}', 'show')->middleware('permission:show_coupon');;
-            Route::put('/{id}', 'update')->middleware('permission:edit_coupon');
-            Route::delete('/{id}', 'destroy')->middleware('permission:delete_coupon');
-        }
-    );
+  
     Route::group(
         ['prefix' => 'feedback', 'controller' => FeedbackClientController::class],
         function () {
@@ -268,7 +260,6 @@ Route::group(['prefix' => 'client'], function () {
         ['prefix' => 'blogs', 'controller' => BlogClientController::class],
         function () {
             Route::get('/', 'index');
-            Route::post('/', 'store');
             Route::get('/{slug}', 'show');
         }
     );
@@ -276,9 +267,20 @@ Route::group(['prefix' => 'client'], function () {
         ['prefix' => 'comments', 'controller' => CommentClientController::class],
         function () {
             Route::get('/', 'index');
-            Route::post('/', 'store');
-            Route::put('/{id}', 'update');
-           
+            Route::post('/', 'store');  
+        }
+    );
+    Route::group(
+        ['prefix' => 'banners', 'controller' => BannerClientController::class],
+        function () {
+            Route::get('/', 'index');
+        }
+    );
+    Route::group(
+        ['prefix' => 'coupons', 'controller' => CouponClientController::class],
+        function () {
+            Route::get('/', 'index');
+            Route::get('/{id}', 'show');
         }
     );
 });
