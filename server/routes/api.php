@@ -143,10 +143,11 @@ Route::group(['prefix' => 'admin'], function () {
         }
     );
     Route::group(
-        ['prefix' => 'booking', 'controller' => BookingController::class], // Thêm `prefix` để xác định endpoint chung của API
+        ['prefix' => 'bookings', 'controller' => BookingController::class], // Thêm `prefix` để xác định endpoint chung của API
         function () {
             Route::get('/', 'index');
             Route::post('/', 'store');
+            Route::get('/{id}', 'show');
         }
     );
     Route::group(
