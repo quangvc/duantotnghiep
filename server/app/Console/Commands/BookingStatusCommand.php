@@ -5,6 +5,8 @@ namespace App\Console\Commands;
 use App\Models\Booking;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\BookingStatusNotification;
 
 class BookingStatusCommand extends Command
 {
@@ -29,11 +31,12 @@ class BookingStatusCommand extends Command
      */
     public function handle()
     {
-        $querys = Booking::whereDate('checkout_date', '<=', Carbon::now())
+        $bookings = Booking::whereDate('checkout_date', '<=', Carbon::now())
             ->where('status', '=', '1')
             ->get();
-        foreach ($querys as $query) {
-            $query->update(['status' => '0']);
+        foreach ($bookings as $booking) {
+            $booking->update(['status' => '0']);
+            Mail::to($booking->guest_email)->send(new BookingStatusNotification($booking));
         }
     }
 }
