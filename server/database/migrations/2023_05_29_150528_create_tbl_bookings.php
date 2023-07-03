@@ -16,7 +16,6 @@ return new class extends Migration
         Schema::create('tbl_bookings', function (Blueprint $table) {
             $table->id();
             $table->integer('user_id');
-            $table->dateTime('booking_date');
             $table->dateTime('checkin_date');
             $table->dateTime('checkout_date');
             $table->integer('people_quantity');

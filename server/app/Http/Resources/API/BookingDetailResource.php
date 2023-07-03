@@ -15,7 +15,7 @@ class BookingDetailResource extends JsonResource
     public function toArray($request)
     {
         return [
-            // 'room' => RoomResource::collection($this->room)
+            // 'room' => RoomResource::collection($this->room),
             'room' => [
                 'id' => $this->room->id,
                 'room_number' => $this->room->room_number,
@@ -34,8 +34,10 @@ class BookingDetailResource extends JsonResource
                 ],
             ],
 
-
-
+            // 'id' => $this->id,
+            // 'booking_id' => $this->booking_id,
+            // 'room_type_id' => $this->room_type_id,
+            // 'room_id' => $this->room_id,
         ];
     }
 }

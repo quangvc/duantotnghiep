@@ -3,6 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\Enums\StatusEnum;
+use Illuminate\Validation\Rule;
 
 class CreateBlogRequest extends FormRequest
 {
@@ -27,6 +29,7 @@ class CreateBlogRequest extends FormRequest
             'title'     => 'required',
             'content'   => 'required|string',
             'image'=>'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'status' =>  ['required', Rule::in(StatusEnum::arrEnums())],
         ];
     }
     public function messages()
