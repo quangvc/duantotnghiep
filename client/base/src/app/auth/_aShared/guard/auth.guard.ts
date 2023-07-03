@@ -20,6 +20,7 @@ export class AuthGuard implements CanActivate {
 
       let b:any = sessionStorage.getItem('user');
       const myObj = JSON.parse(b)
+
       if(b){
         return true;
       }else{

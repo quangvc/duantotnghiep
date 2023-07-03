@@ -16,9 +16,8 @@ class Booking extends Model
     protected $table = 'tbl_bookings';
 
     protected $fillable = [
-        'booking_number', 'people_quantity', 'coupon_id', 'user_id',
-        'guest_name', 'guest_email', 'guest_phone', 'note',
-        'comment_id', 'status'
+        'booking_number', 'booking_date', 'checkin_date', 'checkout_date', 'people_quantity', 'coupon_id', 'user_id',
+        'guest_name', 'guest_email', 'guest_phone', 'note', 'status', 'total_price'
     ];
     public function booking_details(): HasMany
     {
@@ -26,7 +25,7 @@ class Booking extends Model
     }
     public function booking_detail(): BelongsToMany
     {
-        return $this->belongsToMany(Room::class, 'tbl_booking_detail');
+        return $this->belongsToMany(RoomType::class, 'tbl_booking_detail');
     }
     public function user(): BelongsTo
     {

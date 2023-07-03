@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { ADMIN, IMAGE } from '../model/url.class';
 
 @Injectable({
@@ -11,6 +11,8 @@ export class ImagesService {
 constructor(
   private http: HttpClient
 ) { }
+
+public $image = new BehaviorSubject<any>(null);
 
 sessionUser:any = sessionStorage.getItem('user');
 user:any = JSON.parse(this.sessionUser);
@@ -34,14 +36,19 @@ addImage(id:any, image:any): Observable<any>{
   return this.http.post(url, image, this.httpOptionImage);
 }
 
-updateImage(hotel_id:any, image:any): Observable<any>{
-  const url = `${this.API_URL}/${ADMIN}/${IMAGE}/${hotel_id}`;
+updateImage(imageId:any, image:any): Observable<any>{
+  const url = `${this.API_URL}/${ADMIN}/${IMAGE}/${imageId}`;
   return this.http.put(url, image, this.httpOptionImage);
 }
 
 addImageRoomType(id:any, image:any): Observable<any>{
   const url = `${this.API_URL}/${ADMIN}/${IMAGE}/room-type/${id}`;
   return this.http.post(url, image, this.httpOptionImage);
+}
+
+deleteImage(imageId:any): Observable<any>{
+  const url = `${this.API_URL}/${ADMIN}/${IMAGE}/${imageId}`;
+  return this.http.delete(url, this.httpOptionImage);
 }
 
 

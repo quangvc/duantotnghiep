@@ -9,43 +9,57 @@
       <div class="row">
 
         <div class="col-6">
-          <div class="mb-3">
+          <div class="">
             <label for="name" class="form-label">{{'coupon.name' | translate}}</label>
-            <input type="text" class="form-control" id="name" formControlName="coupon_name">
+            <input type="text" class="form-control" id="name" formControlName="name">
+          </div>
+          <error-msg [profileForm]="formCoupon" key="name" check="required" msg="Vui lòng không để trống."></error-msg>
+        </div>
+
+        <div class="col-6">
+          <div class="">
+            <label for="quantity" class="form-label">{{'coupon.quantity' | translate}}</label>
+            <input type="number" class="form-control" id="quantity" formControlName="quantity">
           </div>
         </div>
 
         <div class="col-6">
-          <div class="mb-3">
+          <div class="mt-3">
             <label for="type" class="form-label">{{'coupon.type' | translate}}</label>
-            <input type="text" class="form-control" id="type" formControlName="coupon_type">
+            <select class="form-select" formControlName="type" aria-label="Default select example" (change)="changeTypeCoupon($event)">
+                <option value="percent">Giảm theo phần trăm</option>
+                <option value="value">Giảm theo giá</option>
+            </select>
           </div>
+          <error-msg [profileForm]="formCoupon" key="type" check="required" msg="Vui lòng không để trống."></error-msg>
         </div>
 
         <div class="col-6">
-          <div class="mb-3">
+          <div class="mt-3">
             <label for="value" class="form-label">{{'coupon.value' | translate}}</label>
-            <input type="number" class="form-control" id="value" formControlName="coupon_value">
+            <input type="number" class="form-control" id="value" formControlName="value">
           </div>
+          <error-msg [profileForm]="formCoupon" key="value" check="required" msg="Vui lòng không để trống."></error-msg>
         </div>
 
         <div class="col-6">
-          <div class="mb-3">
+          <div class="mt-3">
             <label for="min" class="form-label">{{'coupon.min' | translate}}</label>
-            <input type="number" class="form-control" id="min" formControlName="coupon_min">
+            <input type="number" class="form-control" id="min" formControlName="min">
           </div>
+          <error-msg [profileForm]="formCoupon" key="min" check="required" msg="Vui lòng không để trống."></error-msg>
         </div>
 
         <div class="col-6">
-          <div class="mb-3">
+          <div class="mt-3">
             <label for="max" class="form-label">{{'coupon.max' | translate}}</label>
-            <input type="number" class="form-control" id="max" formControlName="coupon_max">
+            <input type="number" class="form-control" id="max" formControlName="max">
           </div>
         </div>
 
 
         <div class="col-6">
-          <div class="mb-3">
+          <div class="mt-3">
             <label for="hotel" class="form-label">{{'hotel.name' | translate}}</label>
             <select class="form-select" formControlName="hotel_id" aria-label="Default select example">
               <ng-container *ngFor="let hotel of hotels">
@@ -56,23 +70,23 @@
         </div>
 
         <div class="col-6">
-          <div class="mb-3">
-            <label for="dateStart" class="form-label">{{'coupon.dateStart' | translate}}</label>
-            <input type="date" class="form-control" id="dateStart" formControlName="coupon_dateStart">
+          <div class="mt-3">
+            <label for="start_date" class="form-label">{{'coupon.start_date' | translate}}</label>
+            <input type="date" class="form-control" id="start_date" formControlName="start_date">
 
             <!-- <nz-date-picker
-              class="form-control" id="dateStart" formControlName="coupon_dateStart"
+              class="form-control" id="dateStart" formControlName="dateStart"
               [(ngModel)]="date" (ngModelChange)="onChange($event)">
             </nz-date-picker> -->
           </div>
         </div>
 
         <div class="col-6">
-          <div class="mb-3">
-            <label for="dateEnd" class="form-label">{{'coupon.dateEnd' | translate}}</label>
-            <input type="date" class="form-control" id="dateEnd" formControlName="coupon_dateEnd">
+          <div class="mt-3">
+            <label for="end_date" class="form-label">{{'coupon.end_date' | translate}}</label>
+            <input type="date" class="form-control" id="end_date" formControlName="end_date">
             <!-- <nz-date-picker
-              class="form-control" id="dateEnd" formControlName="coupon_dateEnd"
+              class="form-control" id="dateEnd" formControlName="dateEnd"
               [(ngModel)]="date" (ngModelChange)="onChange($event)">
             </nz-date-picker> -->
           </div>

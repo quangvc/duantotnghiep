@@ -10,10 +10,14 @@ class BookingDetail extends Model
 
 {
     use HasFactory;
-    protected $table = 'tbl_booking_detail';
+    protected $table = 'tbl_booking_details';
+    protected $hidden = [
+        'created_at',
+        'updated_at',
+    ];
 
     protected $fillable = [
-        'booking_id', 'room_type_id',
+        'booking_id', 'room_type_id',  'room_id'
     ];
 
     public function booking(): BelongsTo

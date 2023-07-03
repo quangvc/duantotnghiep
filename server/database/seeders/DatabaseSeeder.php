@@ -57,15 +57,15 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $adminPermissions = [
-            'view_region', 'edit_region', 'add_region', 'delete_region',
+            'view_region', 'edit_region', 'add_region', 'delete_region', 'show_region',
             'view_user', 'edit_user', 'add_user', 'delete_user',
-            'view_hotel', 'add_hotel', 'edit_hotel', 'show_hotel', 'delete_hotel',
+            'view_hotel', 'add_hotel', 'changeStatus_hotel', 'edit_hotel', 'show_hotel', 'delete_hotel',
             'view_role', 'add_role', 'edit_role', 'delete_role',
             'view_booking', 'add_booking', 'edit_booking', 'delete_booking',
             'view_booking_detail', 'add_booking_detail', 'edit_booking_detail', 'delete_booking_detail',
-            'view_coupon', 'add_coupon', 'edit_coupon', 'delete_coupon','show_coupon',
-            'view_room', 'add_room', 'show_room', 'edit_room', 'delete_room',
-            'view_blog', 'add_blog', 'edit_blog', 'delete_blog',
+            'view_coupon', 'add_coupon', 'edit_coupon', 'delete_coupon', 'show_coupon',
+            'view_room', 'add_room', 'changeStatus_room', 'show_room', 'edit_room', 'delete_room',
+            'view_blog', 'add_blog', 'changeStatus_blog', 'edit_blog', 'delete_blog', 'show_blog',
             'view_image', 'add_image', 'edit_image', 'delete_image',
             'view_room_type', 'add_room_type', 'edit_room_type', 'delete_room_type',
             'view_support', 'edit_support', 'delete_support',
@@ -77,13 +77,13 @@ class DatabaseSeeder extends Seeder
             'view_hotel', 'edit_hotel',
             'view_booking', 'add_booking', 'edit_booking', 'delete_booking',
             'view_booking_detail', 'add_booking_detail', 'edit_booking_detail', 'delete_booking_detail',
-            'view_coupon','add_coupon','edit_coupon', 'delete_coupon','show_coupon',
+            'view_coupon', 'add_coupon', 'edit_coupon', 'delete_coupon', 'show_coupon',
             'view_room', 'add_room', 'show_room', 'edit_room', 'delete_room',
-            'view_blog', 'add_blog', 'edit_blog', 'delete_blog',
+            'view_blog', 'add_blog', 'changeStatus_blog', 'edit_blog', 'delete_blog',
             'view_image', 'add_image', 'edit_image', 'delete_image',
-            'view_room_type', 'add_room_type', 'edit_room_type', 'delete_room_type',
+            'view_room_type', 'add_room_type', 'edit_room_type', 'delete_room_type', 'show_room_type',
             'view_support', 'edit_support', 'delete_support',
-            'view_comment', 'delete_comment',
+            'view_comment', 'add_comment', 'delete_comment',
         ];
 
         $clientPermission = [
@@ -92,6 +92,7 @@ class DatabaseSeeder extends Seeder
             'view_booking_detail',
             'view_support',
             'view_comment', 'add_comment',
+            'view_support', 'edit_support', 'delete_support',
         ];
 
         // admin

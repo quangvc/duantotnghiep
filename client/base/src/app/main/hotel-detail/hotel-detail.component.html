@@ -83,7 +83,7 @@
             <!-- End Giá - Đặt -->
           </div>
           <div class="card col">
-            <p-galleria [value]="images" [thumbnailsPosition]="position" [responsiveOptions]="responsiveOptions" [containerStyle]="{ 'max-width': '640px' }" [numVisible]="5">
+            <!-- <p-galleria [value]="images" [thumbnailsPosition]="position" [responsiveOptions]="responsiveOptions" [containerStyle]="{ 'max-width': '640px' }" [numVisible]="5">
                 <ng-template pTemplate="item" let-item>
                     <img [src]="item.itemImageSrc" style="width: 100%; min-height: 420px; display: block;" />
                 </ng-template>
@@ -92,7 +92,12 @@
                         <img [src]="item.thumbnailImageSrc" />
                     </div>
                 </ng-template>
-            </p-galleria>
+            </p-galleria> -->
+            <p-galleria [value]="images" [numVisible]="5" [circular]="true" [showItemNavigators]="true" [showThumbnails]="false" [responsiveOptions]="responsiveOptions" [containerStyle]="{ 'max-width': '640px' }">
+              <ng-template pTemplate="item" let-item>
+                  <img [src]="item.itemImageSrc" style="width: 100%; display: block;" />
+              </ng-template>
+          </p-galleria>
         </div>
         </div>
         <hr>

@@ -10,7 +10,6 @@ use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
-use App\Http\Resources\API\UserResource;
 use Spatie\Permission\Models\Role;
 
 class AuthController extends Controller

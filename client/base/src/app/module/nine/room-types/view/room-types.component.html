@@ -5,6 +5,8 @@
   <thead>
     <tr>
       <th>#</th>
+      <th>{{'hotel.name' | translate}}</th>
+      <th>{{'region.name' | translate}}</th>
       <th>{{'room_type.name' | translate}}</th>
       <th>{{'room_type.price_per_night' | translate}}</th>
       <th>{{'room_type.capacity' | translate}}</th>
@@ -15,6 +17,8 @@
   <tbody>
     <tr *ngFor="let data of basicTable.data; let i = index">
       <td>{{ i + 1 }}</td>
+      <td>{{ data.hotel.name }}</td>
+      <td>{{ data.hotel.region }}</td>
       <td>{{ data.name }}</td>
       <td>{{ data.price_per_night | currency: 'VND' }}</td>
       <td>{{ data.capacity }}</td>
@@ -32,6 +36,6 @@
 <create-update-room-type
   *ngIf="displayCreateUpdateRoomType"
   [displayCreateUpdateRoomType]="displayCreateUpdateRoomType"
-  [roomType]="roomType"
+  [roomTypeId]="roomTypeId"
   (closeModal)="cancel($event)">
 </create-update-room-type>

@@ -1,10 +1,10 @@
-import { PhotoService } from './../../../services/photoservice.service';
 import { Component, EventEmitter, Input, OnInit, Output, Type } from '@angular/core';
-
+import { PhotoService } from 'src/app/services/photoservice.service';
 @Component({
   selector: 'app-hotel-detail',
   templateUrl: './hotel-detail.component.html',
-  styleUrls: ['./hotel-detail.component.scss']
+  styleUrls: ['./hotel-detail.component.scss'],
+  providers: [PhotoService]
 })
 export class HotelDetailComponent implements OnInit {
   @Output() valueChange = new EventEmitter<any>();

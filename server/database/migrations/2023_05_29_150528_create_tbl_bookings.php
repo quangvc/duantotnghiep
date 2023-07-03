@@ -15,18 +15,18 @@ return new class extends Migration
     {
         Schema::create('tbl_bookings', function (Blueprint $table) {
             $table->id();
-            $table->dateTime('booking_date');
+            $table->integer('user_id');
             $table->dateTime('checkin_date');
             $table->dateTime('checkout_date');
             $table->integer('people_quantity');
             $table->integer('coupon_id')->nullable();
-            $table->integer('user_id');
-            $table->string('guest_name');
-            $table->string('guest_email');
-            $table->string('guest_phone');
             $table->text('note')->nullable();
+            $table->string('guest_name');
+            $table->string('guest_email')->nullable();
+            $table->string('guest_phone')->nullable();
+            $table->integer('total_price')->nullable();
             $table->integer('comment_id');
-            $table->tinyInteger('status');
+            $table->tinyInteger('status')->default(1);
             $table->timestamps();
         });
     }
