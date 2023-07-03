@@ -1,11 +1,15 @@
 {
   "action": "Hành động",
+  "status": "Trạng thái",
+  "description": "Mô tả",
 
   "button": {
     "add_new": "Thêm mới",
     "update": "Cập nhật",
     "edit": "Chỉnh sửa",
-    "delete": "Xóa"
+    "delete": "Xóa",
+    "save": "Lưu",
+    "cancel": "Hủy"
   },
   "auth": {
     "login": "Đăng nhập",
@@ -22,5 +26,46 @@
     "role": "Phân quyền",
     "user_list": "Danh sách người dùng",
     "role_list": "Danh sách quyền"
+  },
+  "hotel": {
+    "name": "Khách sạn",
+    "address": "Địa chỉ",
+    "phone_number": "Số điện thoại",
+    "rate": "Đánh giá",
+    "region": "Khu vực",
+    "image": "Hình ảnh"
+  },
+  "region": {
+    "name": "Tên khu vực"
+  },
+  "room": {
+    "room_number": "Số phòng"
+  },
+  "room_type": {
+    "name": "Tên loại phòng",
+    "price_per_night": "Giá 1 đêm",
+    "capacity": "Số lượng người ở"
+  },
+  "coupon": {
+    "name": "Tên mã giảm giá",
+    "type": "Loại giảm giá",
+    "value": "Giá trị",
+    "min": "Đơn hàng tối thiểu",
+    "max": "Giảm tối đa",
+    "hotel_id": "Khách sạn",
+    "start_date": "Ngày bắt đầu",
+    "end_date": "Ngày hết hạn",
+    "quantity": "Số lượng"
+  },
+  "blog": {
+    "title": "Tiêu đề",
+    "content": "Nội dung",
+    "image": "Hình ảnh",
+    "user_id": "người tạo",
+    "slug": "I don't know bruh"
+  },
+  "banners": {
+    "image": "Hình ảnh"
   }
+
 }

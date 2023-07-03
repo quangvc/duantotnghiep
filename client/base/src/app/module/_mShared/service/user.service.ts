@@ -1,21 +1,37 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { UserDto } from '../model/userDto.class';
+import { ADMIN, USERS } from '../model/url.class';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
 
-constructor(
-  private http: HttpClient
-) { }
+  sessionUser: any = sessionStorage.getItem('user');
+  user: any = JSON.parse(this.sessionUser);
 
-URL = 'http://localhost:3000/users/';
+  private API_URL = `http://127.0.0.1:8000/api/${ADMIN}`;
 
-getUser(): Observable<UserDto>{
-  return this.http.get(this.URL)
-}
+  private httpOptions = {
+    headers: new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${this.user.token}`,
+    }),
+  };
+
+
+
+  constructor(private http: HttpClient) {}
+
+  getUsers(): Observable<any> {
+    const url = `${this.API_URL}/${USERS}`;
+    return this.http.get<any>(url, this.httpOptions);
+  }
+
+  changeStatus(id:any, data?:any): Observable<any>{
+    const url = `${this.API_URL}/${USERS}/${id}/change-status`;
+    return this.http.put(url,data,this.httpOptions)
+  }
 
 }

@@ -1,0 +1,37 @@
+<div class="mb-3">
+  <button nz-button [nzSize]="'large'" nzType="primary" (click)="addRoom()" >{{'button.add_new' | translate}}</button>
+</div>
+<nz-table #basicTable [nzData]="rooms">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>{{'hotel.name' | translate}}</th>
+      <th>{{'room.room_number' | translate}}</th>
+      <th>{{'room_type.name' | translate}}</th>
+      <th>{{'status' | translate}}</th>
+      <th>{{'action' | translate}}</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let data of basicTable.data; let i = index">
+      <td>{{ i + 1 }}</td>
+      <td>{{ data.hotel.name }}</td>
+      <td>{{ data.room_number }}</td>
+      <td>{{ data.room_type.name }}</td>
+      <td>{{ data.txtStatus }}</td>
+      <td>
+        <q-menu
+          [model]="menus"
+          (buttonItem)="dropdownItemsButton(data)">
+        </q-menu>
+      </td>
+    </tr>
+  </tbody>
+</nz-table>
+
+<create-update-room
+  *ngIf="displayCreateUpdateRoom"
+  [roomId]="roomId"
+  [displayCreateUpdateRoom]="displayCreateUpdateRoom"
+  (closeModal)="cancel($event)">
+</create-update-room>

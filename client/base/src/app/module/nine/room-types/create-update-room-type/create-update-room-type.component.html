@@ -1,0 +1,51 @@
+<nz-modal
+  [(nzVisible)]="displayCreateUpdateRoomType"
+  nzTitle="Thêm mới"
+  nzWidth="980px"
+  (nzOnCancel)="handleCancel()"
+  (nzOnOk)="handleOk()">
+  <ng-container *nzModalContent>
+    <form [formGroup]="formRoomType">
+      <div class="row">
+
+        <div class="col-6">
+          <div class="mb-3">
+            <label for="hotel" class="form-label">{{'hotel.name' | translate}}</label>
+            <select class="form-select" aria-label="Default select example" formControlName="hotel_id">
+              <option [value]="item.id" *ngFor="let item of hotels">{{item.hotel_name}}</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="col-6">
+          <div class="mb-3">
+            <label for="roomType" class="form-label">{{'room_type.name' | translate}}</label>
+            <input type="text" class="form-control" id="roomType" formControlName="name">
+          </div>
+        </div>
+
+        <div class="col-6">
+          <div class="mb-3">
+            <label for="price" class="form-label">{{'room_type.price_per_night' | translate}}</label>
+            <input type="number" class="form-control" id="price" formControlName="price_per_night">
+          </div>
+        </div>
+
+        <div class="col-6">
+          <div class="mb-3">
+            <label for="capacity" class="form-label">{{'room_type.capacity' | translate}}</label>
+            <input type="number" class="form-control" id="capacity" formControlName="capacity">
+          </div>
+        </div>
+
+        <div class="col-12">
+          <div class="mb-3">
+            <label for="description" class="form-label">{{'description' | translate}}</label>
+            <textarea class="form-control" id="description" rows="3" formControlName="description"></textarea>
+          </div>
+        </div>
+
+      </div>
+    </form>
+  </ng-container>
+</nz-modal>

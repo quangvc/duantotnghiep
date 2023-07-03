@@ -1,0 +1,50 @@
+<div class="mb-3">
+  <button nz-button [nzSize]="'large'" nzType="primary" (click)="addCoupon()" >{{'button.add_new' | translate}}</button>
+</div>
+<nz-table #basicTable [nzData]="coupons">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>{{'coupon.name' | translate}}</th>
+      <th>{{'coupon.type' | translate}}</th>
+      <th>{{'coupon.value' | translate}}</th>
+      <th>{{'coupon.min' | translate}}</th>
+      <th>{{'coupon.max' | translate}}</th>
+      <th>{{'coupon.hotel_id' | translate}}</th>
+      <th>{{'coupon.start_date' | translate}}</th>
+      <th>{{'coupon.end_date' | translate}}</th>
+      <th>{{'coupon.quantity' | translate}}</th>
+      <!-- <th>{{'status' | translate}}</th> -->
+      <th>{{'action' | translate}}</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let data of basicTable.data; let i = index">
+      <td>{{ i + 1 }}</td>
+      <td>{{ data.name }}</td>
+      <td>{{ data.type }}</td>
+      <td>{{ data.value }}</td>
+      <td>{{ data.min }}</td>
+      <td>{{ data.max }}</td>
+      <td>{{ data.hotel.name }}</td>
+      <td>{{ data.start_date | date:'dd/MM/yyyy' }}</td>
+      <td>{{ data.end_date | date:'dd/MM/yyyy' }}</td>
+      <td>{{ data.quantity }}</td>
+      <!-- <td></td> -->
+      <!-- <td><nz-switch [(ngModel)]="data.status" (ngModelChange)="confirmChangeStatus($event,data)"></nz-switch></td> -->
+      <td>
+        <q-menu
+          [model]="menus"
+          (buttonItem)="dropdownItemsButton(data)">
+        </q-menu>
+      </td>
+    </tr>
+  </tbody>
+</nz-table>
+
+<create-update-coupon
+  *ngIf="displayCreateUpdateCoupon"
+  [displayCreateUpdateCoupon]="displayCreateUpdateCoupon"
+  [couponId]="couponId"
+  (closeModal)="cancel($event)">
+</create-update-coupon>
