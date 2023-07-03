@@ -5,7 +5,6 @@ namespace App\Http\Controllers\API\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\BookingRequest;
 use App\Http\Resources\API\BookingResource;
-use App\Http\Resources\API\RoomResource;
 use App\Models\Booking;
 use App\Models\BookingDetail;
 use App\Models\Room;
@@ -31,7 +30,7 @@ class BookingController extends Controller
             })
             ->get();
 
-            return BookingResource::collection($bookings);
+            return MessageStatusAPI::show(BookingResource::collection($bookings));            
         }
 
     }
@@ -51,7 +50,6 @@ class BookingController extends Controller
 
             return MessageStatusAPI::show(BookingResource::collection($booking));
         }
-
     }
     
     public function store(BookingRequest $request)
@@ -75,8 +73,8 @@ class BookingController extends Controller
         // $hotel_id = $validated['hotel_id'];
         $checkin_date = Carbon::parse($validated['checkin_date']);
         $checkout_date = Carbon::parse($validated['checkout_date']);
-        $total_date = $checkout_date->diffInDays($checkin_date);
-        $total_price = 0;
+        // $total_date = $checkout_date->diffInDays($checkin_date);
+        // $total_price = 0;
 
         foreach ($validated['items'] as $item) {
 
@@ -110,8 +108,8 @@ class BookingController extends Controller
                 return 'room_type_id '.$item['room_type_id'].' hết phòng';
             }
             
-            $price = RoomType::where('id', $item['room_type_id'])->select('price_per_night')->get();
-            $total_price += $total_date * $price[0]->price_per_night * $item['quantity'];
+            // $price = RoomType::where('id', $item['room_type_id'])->select('price_per_night')->get();
+            // $total_price += $total_date * $price[0]->price_per_night * $item['quantity'];
         }        
 
         $booking = new Booking([
@@ -122,7 +120,7 @@ class BookingController extends Controller
             'guest_name' =>  $guest_name,
             'guest_email' =>  $guest_email,
             'guest_phone' =>  $guest_phone,
-            'total_price' => $total_price,
+            'total_price' => $validated['total_price'],
         ]);
         $booking->save();
         $booking->update(['booking_number' => 'HD' . $booking->id . '_' . random_int('10000000', '99999999')]);
@@ -141,26 +139,25 @@ class BookingController extends Controller
 
     
 
-    // public function confirmBooking(Booking $booking)
-    // {
-    //     $role = auth()->user()->getRoleNames()->first();
-    //     if ($role != 'client') {
-    //         return MessageStatusAPI::show(new BookingResource($booking));
-    //     }
+    public function confirmBooking(Request $request, $id)
+    {
+        $role = auth()->user()->getRoleNames()->first();
+        if ($role != 'client') {
+            // $validated = $request->all();
+            $rooms_id = $request->room_id;
+            
 
-    // }
+            $booking_details = BookingDetail::where('booking_id', $id)->get();
+            foreach ($booking_details as $booking_detail) {
+                $room = Room::find($request->room_id);
+                if ($booking_detail->room_type_id == $room->room_type) {
+                    $booking_detail->update(['room_id' => $room->room_id]); //sai
+                }
+                
+            }
 
-    // public function changeStatus($id)
-    // {
-    //     $user = User::find($id);
-    //     if ($user->active == 0) {
-    //         $user->update(['active' => 1]);
-    //     } else if ($user->active == 1) {
-    //         $user->update(['active' => 0]);
-    //     }
 
-    //     return response([
-    //         'message' => 'Changed status successfully',
-    //     ], 200);
-    // }
+        }
+    }
+
 }

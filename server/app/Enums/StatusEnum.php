@@ -2,7 +2,7 @@
 
 namespace App\Enums;
 
-abstract class StatusEnum
+final class StatusEnum
 {
     public const ACTIVE = 1;
     public const DEACTIVE = 0;

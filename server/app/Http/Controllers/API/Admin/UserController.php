@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Http\Requests\StoreUserRequest;
 use Spatie\Permission\Models\Role;
 use App\Traits\MessageStatusAPI;
+use App\Enums\StatusEnum;
 
 class UserController extends Controller
 {
@@ -136,10 +137,10 @@ class UserController extends Controller
     public function changeStatus($id)
     {
         $user = User::find($id);
-        if ($user->active == 0) {
-            $user->update(['active' => 1]);
-        } else if ($user->active == 1) {
-            $user->update(['active' => 0]);
+        if ($user->active == StatusEnum::DEACTIVE) {
+            $user->update(['active' => StatusEnum::ACTIVE]);
+        } else {
+            $user->update(['active' => StatusEnum::DEACTIVE]);
         }
 
         return response([
