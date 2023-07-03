@@ -22,7 +22,7 @@ class BannerController extends Controller
     {
         $request->validate([
             'image.*' => 'bail|image|max:2048|mimes:jpeg,png,jpg|mimetypes:image/jpeg,image/png,image/jpg',
-            'status' =>  [Rule::in(StatusEnum::arrEnums())],
+            'status' =>  ['required', Rule::in(StatusEnum::arrEnums())],
         ]);
 
         $role = auth()->user()->getRoleNames()->first();
@@ -68,7 +68,7 @@ class BannerController extends Controller
         $banner = Banner::find($id);
         if ($banner->status == StatusEnum::DEACTIVE) {
             $banner->update(['status' => StatusEnum::ACTIVE]);
-        } else if ($banner->status == StatusEnum::ACTIVE) {
+        } else {
             $banner->update(['status' => StatusEnum::DEACTIVE]);
         }
 

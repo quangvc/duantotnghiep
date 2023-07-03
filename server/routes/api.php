@@ -148,6 +148,7 @@ Route::group(['prefix' => 'admin'], function () {
             Route::get('/', 'index');
             Route::post('/', 'store');
             Route::get('/{id}', 'show');
+            Route::post('/{id}/confirm-booking', 'confirmBooking');
         }
     );
     Route::group(
@@ -251,7 +252,7 @@ Route::group(['prefix' => 'client'], function () {
         }
     );
     Route::group(
-        ['prefix' => 'booking', 'controller' => BookingClientController::class], // Thêm `prefix` để xác định endpoint chung của API
+        ['prefix' => 'bookings', 'controller' => BookingClientController::class], // Thêm `prefix` để xác định endpoint chung của API
         function () {
             Route::get('/', 'index');
             Route::post('/', 'store');

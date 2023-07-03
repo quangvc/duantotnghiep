@@ -11,6 +11,7 @@ use App\Traits\MessageStatusAPI;
 use Illuminate\Support\Str;
 use Illuminate\Http\Response;
 use Illuminate\Validation\Rule;
+use App\Enums\StatusEnum;
 
 class BlogController extends Controller
 {
@@ -95,17 +96,19 @@ class BlogController extends Controller
             return MessageStatusAPI::notFound();
         }
     }
+
     public function changeStatus($id)
     {
-        $hotel = Blog::find($id);
-        if (!$hotel) {
-            return MessageStatusAPI::notFound();
-        }
-        if ($hotel->status == 1) {
-            $hotel->update(['active' => 0]);
+        $blog = Blog::find($id);
+        if ($blog->status == StatusEnum::DEACTIVE) {
+            $blog->update(['status' => StatusEnum::ACTIVE]);
         } else {
-            $hotel->update(['active' => 1]);
+            $blog->update(['status' => StatusEnum::DEACTIVE]);
         }
-        return MessageStatusAPI::update();
+
+        return response([
+            'message' => 'Changed status successfully',
+        ], 200);
     }
 }
+
