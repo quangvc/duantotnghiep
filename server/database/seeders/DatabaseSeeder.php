@@ -70,6 +70,7 @@ class DatabaseSeeder extends Seeder
             'view_room_type', 'add_room_type', 'edit_room_type', 'delete_room_type',
             'view_support', 'edit_support', 'delete_support',
             'view_comment', 'add_comment', 'delete_comment',
+            // 'view_banner', 'add_banner', 'delete_banner',
         ];
         $managerPermissions = [
             'view_user', 'add_user',
