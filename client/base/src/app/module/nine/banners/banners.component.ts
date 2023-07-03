@@ -21,7 +21,7 @@ export class BannersComponent implements OnInit {
 
   banners: any[] = [];
 
-  displayAddBanner: boolean = false;
+  displayMultipleImage: boolean = false;
 
   // dataImage: any[] = [];
   formData = new FormData();
@@ -43,7 +43,7 @@ export class BannersComponent implements OnInit {
   }
 
   addBanner(){
-    this.displayAddBanner = true;
+    this.displayMultipleImage = true;
   }
 
   handleOk(){
@@ -76,7 +76,7 @@ export class BannersComponent implements OnInit {
     //   this.formData.append('images', imageFiles[i])
     //   console.log(this.formData)
     // }
-    this.displayAddBanner = false;
+    this.displayMultipleImage = false;
     this.getBanners();
   }
 

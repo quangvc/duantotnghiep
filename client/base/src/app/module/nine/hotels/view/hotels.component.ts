@@ -59,6 +59,7 @@ export class HotelsComponent implements OnInit, OnDestroy {
     let obs = this.hotelsService.getHotels().subscribe({
       next: (res) => {
         this.hotels = res.data;
+        console.log(res)
         this.getImage();
       },
       error: (err) => {{

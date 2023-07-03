@@ -75,7 +75,7 @@ export class NineLayoutComponent implements OnInit {
         ]
       },
       {
-        label: "Quản lý giao diện ",
+        label: "Quản lý Page ",
         icon: 'dribbble',
         items: [
           {
