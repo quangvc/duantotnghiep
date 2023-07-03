@@ -111,7 +111,6 @@ class BookingController extends Controller
             // $price = RoomType::where('id', $item['room_type_id'])->select('price_per_night')->get();
             // $total_price += $total_date * $price[0]->price_per_night * $item['quantity'];
         }        
-
         $booking = new Booking([
             'checkin_date' =>  $checkin_date,
             'checkout_date' => $checkout_date,
@@ -144,18 +143,36 @@ class BookingController extends Controller
         $role = auth()->user()->getRoleNames()->first();
         if ($role != 'client') {
             // $validated = $request->all();
-            $rooms_id = $request->room_id;
-            
+            // $rooms_id = $request->room_id;
+            $items = $request->items;
+            // return $rooms_details;
 
-            $booking_details = BookingDetail::where('booking_id', $id)->get();
-            foreach ($booking_details as $booking_detail) {
-                $room = Room::find($request->room_id);
-                if ($booking_detail->room_type_id == $room->room_type) {
-                    $booking_detail->update(['room_id' => $room->room_id]); //sai
-                }
-                
+            $booking_details = BookingDetail::where('booking_id', $id)->get();            
+
+            foreach ($items as $item) {
+                foreach ($item['room_id'] as $room) {
+                    // echo $room.'<br>';
+                    foreach ($booking_details as $booking_detail) {         
+                        if ($item['room_type_id'] == $booking_detail->room_type_id && $booking_detail->room_id == '') {
+                            $booking_detail->update([
+                                'room_id' => $room
+                            ]);
+                            break;
+                        }
+                    }
+                } 
             }
-
+            foreach ($booking_details as $booking_detail){
+                if ($booking_detail->room_id == '') {
+                    foreach ($booking_details as $booking_detail2){
+                        $booking_detail2->update([
+                            'room_id' => null
+                        ]);
+                    }
+                    return 'Lỗi. Xác nhận thất bại!';
+                }
+            }
+            return 'Xác nhận thành công!';
 
         }
     }
