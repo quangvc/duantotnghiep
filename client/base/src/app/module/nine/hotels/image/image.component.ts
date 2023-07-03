@@ -123,12 +123,6 @@ export class ImageComponent implements OnInit {
       })
     }
 
-
-
-    // for (let i = 0; i < fileList.length; i++) {
-    //   const file: File = fileList[i];
-    //   formData.append(`image[${i}]`, file);
-    // }
   }
 
   showConfirmDelete(id:any){

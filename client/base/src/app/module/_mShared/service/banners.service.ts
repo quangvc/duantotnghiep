@@ -31,4 +31,9 @@ export class BannersService {
     return this.http.post<any>(url, data, this.httpOptions);
   }
 
+  deleteBanner(id:any): Observable<any>{
+    const url = `http://127.0.0.1:8000/api/admin/banners/${id}`;
+    return this.http.delete<any>(url, this.httpOptions);
+  }
+
 }

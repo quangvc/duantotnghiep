@@ -16,18 +16,16 @@
       <td><img [src]="'http://127.0.0.1:8000/Images/banners/'+data.image" width="100" alt=""></td>
       <td></td>
       <td>
-        <!-- <q-menu
-          [model]="menus"
-          (buttonItem)="dropdownItemsButton(data)">
-        </q-menu> -->
+        <button nz-button nzType="primary" [nzSize]="'large'" nzShape="circle" (click)="showConfirmDelete(data.id)" nzDanger><span nz-icon nzType="delete" nzTheme="outline"></span></button>
       </td>
     </tr>
   </tbody>
 </nz-table>
 
-<!-- <q-image
+<q-image
   *ngIf="displayMultipleImage"
-  [displayAddBanner]="displayAddBanner"
+  [displayMultipleImage]="displayMultipleImage"
+  [banner]="banner"
   (closeModal)="submitForm($event)"
-></q-image> -->
+></q-image>
 
