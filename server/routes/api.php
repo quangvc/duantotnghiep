@@ -175,9 +175,9 @@ Route::group(['prefix' => 'admin'], function () {
     Route::group(
         ['prefix' => 'banners', 'controller' => BannerController::class],
         function () {
-            Route::get('/', 'index')->middleware('permission:view_banners');
-            Route::post('/', 'store')->middleware('permission:add_banners');
-            Route::delete('/{id}', 'destroy')->middleware('permission:delete_banners');
+            Route::get('/', 'index')->middleware('permission:view_banner');
+            Route::post('/', 'store')->middleware('permission:add_banner');
+            Route::delete('/{id}', 'destroy')->middleware('permission:delete_banner');
         }
     );
 });
