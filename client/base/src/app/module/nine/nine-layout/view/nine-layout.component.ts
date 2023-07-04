@@ -51,25 +51,47 @@ export class NineLayoutComponent implements OnInit {
         icon: 'home',
         items: [
           {
-            label: "Quản lý khách sạn",
-            routerLink: "hotels",
-          },
-          {
             label: "Quản lý khu vực",
             routerLink: "regions",
           },
           {
-            label: "Quản lý phòng",
-            routerLink: "rooms",
-          },
+            label: "Quản lý khách sạn",
+            routerLink: "hotels",
+          }
+        ]
+      },
+      {
+        label: "Quản lý đặt phòng ",
+        icon: 'form',
+        items: [
           {
             label: "Quản lý loại phòng",
             routerLink: "room-types",
           },
           {
+            label: "Danh sách phòng",
+            routerLink: "rooms",
+          },
+          {
+            label: "Đặt phòng",
+            routerLink: "bookings",
+          }
+        ]
+      },
+      {
+        label: "Quản lý Voucher ",
+        icon: 'gift',
+        items: [
+          {
             label: "Quản lý mã giảm giá",
             routerLink: "coupons",
           },
+        ]
+      },
+      {
+        label: "Quản lý bài đăng ",
+        icon: 'comment',
+        items: [
           {
             label: "Quản lý blog",
             routerLink: "blogs",
@@ -78,7 +100,7 @@ export class NineLayoutComponent implements OnInit {
       },
       {
         label: "Quản lý Page ",
-        icon: 'dribbble',
+        icon: 'setting',
         items: [
           {
             label: "Quản lý banner",

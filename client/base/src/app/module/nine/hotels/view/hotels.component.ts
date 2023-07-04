@@ -126,8 +126,8 @@ export class HotelsComponent implements OnInit, OnDestroy {
       nzOnOk: () =>
         new Promise((resolve, reject) => {
           this.changeStatus(data);
-          setTimeout(Math.random() > 0.5 ? resolve : reject, 1000);
-        }).catch(),
+          setTimeout(0.6 > 0.5 ? resolve : reject, 1000);
+        }),
       nzOnCancel: () => {
         this.getHotels();
       }

@@ -80,7 +80,7 @@ export class RoomTypesComponent implements OnInit, OnDestroy {
       nzOnOk: () =>
         new Promise((resolve, reject) => {
           this.deleteRoomType(roomType);
-          setTimeout(Math.random() > 0.5 ? resolve : reject, 1000);
+          setTimeout(0.6 > 0.5 ? resolve : reject, 1000);
         }).catch(() => console.log('Oops errors!'))
     });
   }

@@ -97,7 +97,7 @@ export class BlogsComponent implements OnInit {
       nzOnOk: () =>
         new Promise((resolve, reject) => {
           this.deleteBlog(data);
-          setTimeout(Math.random() > 0.5 ? resolve : reject, 1000);
+          setTimeout(0.6 > 0.5 ? resolve : reject, 1000);
         }).catch(() => console.log('Oops errors!'))
     });
   }

@@ -100,7 +100,7 @@ export class RegionsComponent implements OnInit, OnDestroy {
       nzOnOk: () =>
         new Promise((resolve, reject) => {
           this.deleteRegion(data);
-          setTimeout(Math.random() > 0.5 ? resolve : reject, 1000);
+          setTimeout(0.6 > 0.5 ? resolve : reject, 1000);
         }).catch(() => console.log('Oops errors!'))
     });
   }

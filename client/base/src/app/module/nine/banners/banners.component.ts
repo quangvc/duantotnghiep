@@ -84,7 +84,7 @@ export class BannersComponent implements OnInit,OnDestroy {
       nzOnOk: () =>
         new Promise((resolve, reject) => {
           this.deleteBanner(id);
-          setTimeout(Math.random() > 0.5 ? resolve : reject, 1000);
+          setTimeout(0.6 > 0.5 ? resolve : reject, 1000);
         }).catch()
     });
   }
