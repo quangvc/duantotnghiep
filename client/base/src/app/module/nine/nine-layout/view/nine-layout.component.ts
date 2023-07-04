@@ -1,7 +1,9 @@
+import { HttpHeaders } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { firstValueFrom } from 'rxjs';
+import { Auth } from 'src/app/auth/_aShared/auth.class';
 import { AuthService } from 'src/app/auth/_aShared/service/auth.service';
 import { MenuItem } from 'src/app/module/_mShared/model/menuItem.class';
 
@@ -88,8 +90,15 @@ export class NineLayoutComponent implements OnInit {
   }
 
   async logOut(){
-    await firstValueFrom(this.authService.createLogout());
-    sessionStorage.clear();
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${Auth.User().token}`
+      })
+    }
+    await firstValueFrom(this.authService.createLogout(httpOptions));
+    await sessionStorage.clear();
     this.router.navigate(['login'])
   }
 

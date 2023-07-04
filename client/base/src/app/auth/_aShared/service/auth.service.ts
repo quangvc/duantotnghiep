@@ -20,29 +20,28 @@ export class AuthService {
 
   constructor(private http: HttpClient) { }
 
-  URL = 'http://localhost:3000/user/';
   URL2 = 'http://127.0.0.1:8000/api/users';
   URL_LOGIN = 'http://127.0.0.1:8000/api/login';
   URL_LOGOUT = 'http://127.0.0.1:8000/api/logout';
 
-  getUser() {
-    return this.http.get(this.URL);
-  }
+  // getUser() {
+  //   return this.http.get(this.URL);
+  // }
 
-  register(data: any) {
-    return this.http.post(this.URL, data);
-  }
+  // register(data: any) {
+  //   return this.http.post(this.URL, data);d
+  // }
 
-  getLoginByUsername(username: any) {
-    return this.http.get(this.URL +'?username=' + username);
-  }
+  // getLoginByUsername(username: any) {
+  //   return this.http.get(this.URL +'?username=' + username);
+  // }
 
   createLogin(data:any){
     return this.http.post(this.URL_LOGIN,data);
   }
 
-  createLogout(){
-    return this.http.post(this.URL_LOGOUT, null, this.httpOptions)
+  createLogout(httpOptions:any){
+    return this.http.post(this.URL_LOGOUT, null, httpOptions)
   }
 
   isLogin(){
