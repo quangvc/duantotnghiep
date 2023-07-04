@@ -73,7 +73,7 @@ Route::group(['prefix' => 'admin'], function () {
             Route::get('/', 'index')->middleware('permission:view_hotel');
             Route::post('/', 'store')->middleware('permission:add_hotel');
             Route::put('/changeStatus/{id}', 'changeStatus')->middleware('permission:changeStatus_hotel');
-            Route::put('/{id}', 'update')->middleware('permission:changeStatus_hotel');
+            Route::put('/{id}', 'update')->middleware('permission:edit_hotel');
             Route::get('/{id}', 'show')->middleware('permission:show_hotel');
             Route::delete('/{id}', 'destroy')->middleware('permission:delete_hotel');
         }
@@ -231,14 +231,13 @@ Route::group(['prefix' => 'client'], function () {
             Route::delete('/{id}', 'destroy');
         }
     );
-  
+
     Route::group(
         ['prefix' => 'feedback', 'controller' => FeedbackClientController::class],
         function () {
             Route::get('/', 'index');
             Route::post('/', 'store');
             Route::put('/{id}', 'update');
-           
         }
     );
     Route::group(
@@ -270,7 +269,7 @@ Route::group(['prefix' => 'client'], function () {
         function () {
             Route::get('/', 'index');
             Route::post('/', 'store');
-            Route::post('/{id}', 'reply');  
+            Route::post('/{id}', 'reply');
         }
     );
     Route::group(
