@@ -26,8 +26,8 @@ export class BlogsService {
     return this.http.get<any>(url, this.httpOptions);
   }
 
-  findOne(id:any, slug:any): Observable<any>{
-    const url = `${this.API_URL}/${BLOGS}/${slug}/${id}`;
+  findOne(slug:any): Observable<any>{
+    const url = `${this.API_URL}/${BLOGS}/${slug}`;
     return this.http.get<any>(url, this.httpOptions);
   }
 

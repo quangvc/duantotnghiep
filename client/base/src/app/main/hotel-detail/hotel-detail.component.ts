@@ -1,5 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output, Type } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { PhotoService } from 'src/app/services/photoservice.service';
+import { HotelsService } from 'src/app/module/_mShared/service/hotels.service';
 @Component({
   selector: 'app-hotel-detail',
   templateUrl: './hotel-detail.component.html',
@@ -10,9 +12,14 @@ export class HotelDetailComponent implements OnInit {
   @Output() valueChange = new EventEmitter<any>();
   static HotelBookingRoomComponent: any[] | Type<any>;
 
-  constructor(private photoService: PhotoService) { }
-  @Input() value : any[] = [];
+  constructor(
+    private photoService: PhotoService,
+    private route: ActivatedRoute,
+    private hotelsService: HotelsService,
+  ) { }
+  @Input() value: any[] = [];
   images: any[] = [];
+  hotel: any;
 
   position: string = 'bottom';
 
@@ -52,7 +59,18 @@ export class HotelDetailComponent implements OnInit {
 
   ngOnInit() {
     this.photoService.getImages().then((images) => (this.images = images));
+    this.route.params.subscribe(params => {
+      const id = params['id']; // Lấy giá trị ID từ URL
+      this.hotelsService.findOne(id).subscribe({
 
+        next: (res) => {
+          this.hotel = res.data;
+        },
+        error: (err) => {{
+          console.log('Đã xảy ra lỗi khi gọi API:', err);
+        }}
+      });
+    });
   }
 
 

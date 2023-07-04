@@ -7,7 +7,7 @@
         <ol class="breadcrumb justify-content-center text-uppercase">
           <li class="breadcrumb-item"><a href="#">Home</a></li>
           <li class="breadcrumb-item"><a href="#">Pages</a></li>
-          <li class="breadcrumb-item"><a href="hotel">Hotels</a></li>
+          <li class="breadcrumb-item"><a href="hotels">Hotels</a></li>
           <li class="breadcrumb-item" aria-current="page"><a href="detail" class="text-primary">Khách sạn Grand Vista
               Hanoi</a></li>
         </ol>
@@ -46,9 +46,8 @@
         <div class="row">
           <div class="col">
             <!-- Start Thông tin -->
-            <div class="p-5">
-              <h3><strong>Khách sạn Grand Vista Hanoi</strong></h3>
-              <h5><strong>Grand Vista Hanoi</strong></h5>
+            <div class="p-5" *ngIf="hotel">
+              <h3><strong>{{ hotel.hotel_name }}</strong></h3>
               <div class="d-flex mb-2">
                 <small class="bg-primary text-white rounded-5 py-1 px-3"><strong>Hotel</strong>
                 </small>
@@ -62,7 +61,7 @@
               </div>
               <div class="mb-2">
                 <i class="fa fa-map-marker text-primary me-3"></i>
-                <span>146 Giang Vo Str, Ba Dinh, Hanoi City., Giảng Võ, Quận Ba Đình, Hà Nội, Việt Nam, 100000</span>
+                <span>{{ hotel.hotel_address }}</span>
               </div>
             </div>
             <!-- End Thông tin -->

@@ -80,7 +80,7 @@ export class CreateUpdateBlogComponent implements OnInit, OnDestroy {
   getValueFormUpdate(){
     debugger
     if( this.blogId ){
-      let obs = this.blogsService.findOne(this.blogId, this.slug).subscribe({
+      let obs = this.blogsService.findOne(this.slug).subscribe({
         next: (res) => {
           this.formBlog.patchValue(res.data);
           console.log("detail: " + res)

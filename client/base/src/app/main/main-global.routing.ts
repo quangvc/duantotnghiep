@@ -14,7 +14,7 @@ const routes: Routes = [
     { path: 'blogs', loadChildren: () => import('./blog/blog.module').then(m => m.BlogModule)},
     { path: 'blogs/:slug', loadChildren: () => import('./blog/blog-detail/blog-detail.module').then(m => m.BlogDetailModule)},
     { path: 'hotels', loadChildren: () => import('./hotel/hotel.module').then(m => m.HotelModule)},
-    { path: 'detail', loadChildren: () => import('./hotel-detail/hotel-detail.module').then(m => m.HotelDetailModule)},
+    { path: 'hotel/:id', loadChildren: () => import('./hotel-detail/hotel-detail.module').then(m => m.HotelDetailModule)},
     { path: 'filter', loadChildren: () => import('./filter-page/filter-page.module').then(m => m.FilterPageModule)},
     // {path: 'booking', component: BookingFormComponent, redirectTo: '/booking/bookingform', pathMatch: 'full', children: [
     //   { path: 'review', loadChildren: () => import('./booking-form/review/review.module').then(m => m.ReviewModule)},
