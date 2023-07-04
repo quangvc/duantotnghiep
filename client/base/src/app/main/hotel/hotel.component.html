@@ -81,20 +81,20 @@
               <h6><strong>Khách sạn ở các thành phố nổi tiếng</strong></h6>
             </div>
             <div class="hotel-district-item">
-              <a href="hotel" class=""><strong>Khách sạn Đà Lạt</strong> </a>
+              <a href="hotels" class=""><strong>Khách sạn Đà Lạt</strong> </a>
             </div>
             <div class="hotel-district-item">
-              <a href="hotel" class=""><strong>Khách sạn Thành phố Vũng Tàu</strong> </a>
+              <a href="hotels" class=""><strong>Khách sạn Thành phố Vũng Tàu</strong> </a>
 
             </div>
             <div class="hotel-district-item">
-              <a href="hotel" class=""><strong>Khách sạn Thành phố Quy Nhơn</strong> </a>
+              <a href="hotels" class=""><strong>Khách sạn Thành phố Quy Nhơn</strong> </a>
             </div>
             <div class="hotel-district-item">
-              <a href="hotel" class=""><strong>Khách sạn Phú Quốc</strong> </a>
+              <a href="hotels" class=""><strong>Khách sạn Phú Quốc</strong> </a>
             </div>
             <div class="hotel-district-item">
-              <a href="hotel" class=""><strong>Khách sạn Hà Nội</strong> </a>
+              <a href="hotels" class=""><strong>Khách sạn Hà Nội</strong> </a>
             </div>
           </div>
           <div class="hotel-district flex-column">
@@ -102,20 +102,20 @@
               <h6><strong>Khách sạn ở các quận nổi tiếng</strong></h6>
             </div>
             <div class="hotel-district-item">
-              <a href="hotel" class=""><strong>Khách sạn Đà Lạt</strong> </a>
+              <a href="hotels" class=""><strong>Khách sạn Đà Lạt</strong> </a>
             </div>
             <div class="hotel-district-item">
-              <a href="hotel" class=""><strong>Khách sạn Thành phố Vũng Tàu</strong> </a>
+              <a href="hotels" class=""><strong>Khách sạn Thành phố Vũng Tàu</strong> </a>
 
             </div>
             <div class="hotel-district-item">
-              <a href="hotel" class=""><strong>Khách sạn Thành phố Quy Nhơn</strong> </a>
+              <a href="hotels" class=""><strong>Khách sạn Thành phố Quy Nhơn</strong> </a>
             </div>
             <div class="hotel-district-item">
-              <a href="hotel" class=""><strong>Khách sạn Phú Quốc</strong> </a>
+              <a href="hotels" class=""><strong>Khách sạn Phú Quốc</strong> </a>
             </div>
             <div class="hotel-district-item">
-              <a href="hotel" class=""><strong>Khách sạn Hà Nội</strong> </a>
+              <a href="hotels" class=""><strong>Khách sạn Hà Nội</strong> </a>
             </div>
 
 
@@ -124,7 +124,7 @@
       </div>
       <div class="col-lg wow fadeInUp" data-wow-delay="0.3s">
         <h2><strong>Các khách sạn được yêu thích ở Hà Nội</strong></h2>
-        <div class="room-item shadow rounded-4 overflow-hidden mb-3">
+        <div class="room-item shadow rounded-4 overflow-hidden mb-3" *ngFor="let data of hotels;">
           <div class="position-relative">
             <img class="img-fluid" src="../../../assets/image/room-2.jpg" alt="">
             <small
@@ -132,7 +132,38 @@
           </div>
           <div class="p-4 mt-2">
             <div class="d-flex justify-content-between mb-3">
-              <h5 class="mb-0">Sofitel Legend Metropole Hanoi</h5>
+              <h5 class="mb-0">{{ data.hotel_name }}</h5>
+              <div class="ps-2">
+                <small class="fa fa-star text-primary"></small>
+                <small class="fa fa-star text-primary"></small>
+                <small class="fa fa-star text-primary"></small>
+                <small class="fa fa-star text-primary"></small>
+                <small class="fa fa-star text-primary"></small>
+              </div>
+            </div>
+            <div class="d-flex mb-3">
+              <i class="fa fa-map-marker text-primary mt-1 me-3"></i>
+              <p class="text-body mb-3">{{ data.hotel_address }}</p>
+            </div>
+            <p class="text-body mb-3">{{ data.description }}.</p>
+            <div class="d-flex justify-content-between">
+              <a class="btn btn-sm btn-primary rounded py-2 px-4" href="/hotel/{{ data.id }}">View Detail</a>
+            </div>
+          </div>
+        </div>
+
+
+
+
+        <!-- <div class="room-item shadow rounded-4 overflow-hidden mb-3">
+          <div class="position-relative">
+            <img class="img-fluid" src="../../../assets/image/room-2.jpg" alt="">
+            <small
+              class="position-absolute start-0 top-100 translate-middle-y bg-primary text-white rounded py-1 px-3 ms-4">Hotel</small>
+          </div>
+          <div class="p-4 mt-2">
+            <div class="d-flex justify-content-between mb-3">
+              <h5 class="mb-0">Executive Suite</h5>
               <div class="ps-2">
                 <small class="fa fa-star text-primary"></small>
                 <small class="fa fa-star text-primary"></small>
@@ -179,35 +210,7 @@
               <a class="btn btn-sm btn-primary rounded py-2 px-4" href="/detail">View Detail</a>
             </div>
           </div>
-        </div>
-        <div class="room-item shadow rounded-4 overflow-hidden mb-3">
-          <div class="position-relative">
-            <img class="img-fluid" src="../../../assets/image/room-2.jpg" alt="">
-            <small
-              class="position-absolute start-0 top-100 translate-middle-y bg-primary text-white rounded py-1 px-3 ms-4">Hotel</small>
-          </div>
-          <div class="p-4 mt-2">
-            <div class="d-flex justify-content-between mb-3">
-              <h5 class="mb-0">Executive Suite</h5>
-              <div class="ps-2">
-                <small class="fa fa-star text-primary"></small>
-                <small class="fa fa-star text-primary"></small>
-                <small class="fa fa-star text-primary"></small>
-                <small class="fa fa-star text-primary"></small>
-                <small class="fa fa-star text-primary"></small>
-              </div>
-            </div>
-            <div class="d-flex mb-3">
-              <i class="fa fa-map-marker text-primary mt-1 me-3"></i>
-              <p class="text-body mb-3">Phường Trung Hòa, Cau Giay District</p>
-            </div>
-            <p class="text-body mb-3">Erat ipsum justo amet duo et elitr dolor, est duo duo eos lorem sed diam stet diam
-              sed stet lorem.</p>
-            <div class="d-flex justify-content-between">
-              <a class="btn btn-sm btn-primary rounded py-2 px-4" href="/detail">View Detail</a>
-            </div>
-          </div>
-        </div>
+        </div> -->
       </div>
     </div>
   </div>

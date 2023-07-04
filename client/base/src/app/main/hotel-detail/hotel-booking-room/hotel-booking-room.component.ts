@@ -1,6 +1,8 @@
-import { Component, OnInit, OnDestroy, Input } from '@angular/core';
-import { MessageService } from 'primeng/api';
-import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { DynamicDialogRef } from 'primeng/dynamicdialog';
+import { Subscription } from 'rxjs';
+import { MenuItem } from 'src/app/module/_mShared/model/menuItem.class';
+import { RoomTypeService } from 'src/app/module/_mShared/service/room_type.service';
 import { PhotoService } from 'src/app/services/photoservice.service';
 
 interface Type {
@@ -15,37 +17,24 @@ interface Type {
   providers: [PhotoService]
 })
 export class HotelBookingRoomComponent implements OnInit, OnDestroy {
-  @Input()  value!: number | string;
-  constructor(private photoService: PhotoService) { }
+  constructor(private photoService: PhotoService, private roomTypeService: RoomTypeService,) { }
+  @Input() roomTypeId: any;
+  private subscription = new Subscription();
+
   ref: DynamicDialogRef | undefined;
-  visible: boolean = false;
-
+  displayRoomType: boolean = false;
   images: any[];
-
-    responsiveOptions: any[] = [
-        {
-            breakpoint: '1024px',
-            numVisible: 5
-        },
-        {
-            breakpoint: '768px',
-            numVisible: 3
-        },
-        {
-            breakpoint: '560px',
-            numVisible: 1
-        }
-    ];
-
 
   selectedType!: Type;
   types: Type[] = [];
   checked: boolean = false;
+  roomTypes: any[] = [];
+  menus: MenuItem[] = [];
+  roomType: any;
 
-
-  showDialog() {
-      this.visible = true;
-  }
+  // showDialog() {
+  //     this.visible = true;
+  // }
 
   ngOnInit() {
     this.types = [
@@ -55,30 +44,39 @@ export class HotelBookingRoomComponent implements OnInit, OnDestroy {
     this.photoService.getImages().then((images) => {
       this.images = images;
     });
+    this.getRoomTypes();
   }
-  // show() {
-  //     this.ref = this.dialogService.open(ProductListDemo, {
-  //         header: 'Select a Product',
-  //         width: '70%',
-  //         contentStyle: { overflow: 'auto' },
-  //         baseZIndex: 10000,
-  //         maximizable: true
-  //     });
 
-  //     this.ref.onClose.subscribe((product: Product) => {
-  //         if (product) {
-  //             this.messageService.add({ severity: 'info', summary: 'Product Selected', detail: product.name });
-  //         }
-  //     });
-
-  //     this.ref.onMaximize.subscribe((value) => {
-  //         this.messageService.add({ severity: 'info', summary: 'Maximized', detail: `maximized: ${value.maximized}` });
-  //     });
-  // }
-
-  ngOnDestroy() {
-      if (this.ref) {
-          this.ref.close();
+  getRoomTypes() {
+    let obs = this.roomTypeService.getRoomTypes().subscribe({
+      next: (res) => {
+        this.roomTypes = res.data;
+        // this.showRoomType(res.data);
+      },
+      error: (err) => {
+        console.log('Đã xảy ra lỗi khi gọi API:', err);
       }
+    })
+    this.subscription.add(obs);
+  }
+
+  showRoomType(roomTypeId: any) {
+    console.log(roomTypeId);
+    if (roomTypeId) {
+      this.displayRoomType = true;
+      this.roomTypeId = roomTypeId;
+    }
+
+  }
+
+  cancel(event: any) {
+    debugger
+    this.displayRoomType = false;
+    this.getRoomTypes();
+  }
+  ngOnDestroy() {
+    if (this.ref) {
+      this.ref.close();
+    }
   }
 }

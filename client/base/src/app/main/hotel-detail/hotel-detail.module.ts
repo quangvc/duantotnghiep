@@ -15,6 +15,7 @@ import { DynamicDialogModule } from 'primeng/dynamicdialog';
 import { ToastModule } from 'primeng/toast';
 import { DialogModule } from 'primeng/dialog';
 import { ButtonModule } from 'primeng/button';
+import { RoomTypeDetailComponent } from './hotel-booking-room/room-type-detail/room-type-detail.component';
 
 
 
@@ -36,7 +37,8 @@ import { ButtonModule } from 'primeng/button';
     HotelDetailComponent,
     HotelBookingRoomComponent,
     HotelDetailAmenitiesComponent,
-    HotelPolicyComponent
+    HotelPolicyComponent,
+    RoomTypeDetailComponent
   ],
 
 })

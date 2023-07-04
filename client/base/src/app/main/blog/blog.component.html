@@ -20,7 +20,7 @@
       <a href="blogs/{{ data.slug }}"><h3>{{ data.title }}</h3></a>
       <h6>Title description, {{ data.created_at }}</h6>
       <a href="blogs/{{ data.slug }}">
-        <div class="fakeimg" style="height:200px;">Image</div>
+        <img src="{{ data.image }}" class="fakeimg" style="height:200px;">
       </a>
       <p>{{ data.content }}.</p>
     </div>

@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { CLIENT, BLOGS, IMAGE } from '../module/_mShared/model/url.class';
+import { CLIENT, ROOM_TYPES, IMAGE } from '../module/_mShared/model/url.class';
 
 @Injectable({
   providedIn: 'root'
@@ -21,13 +21,14 @@ export class BlogClientService {
 
   constructor(private http: HttpClient){}
 
-  getBlogs(): Observable<any>{
-    const url = `${this.API_URL}/${BLOGS}`;
+  getRoomTypes(): Observable<any>{
+    const url = `${this.API_URL}/${ROOM_TYPES}`;
     return this.http.get<any>(url);
   }
 
-  findOne(id:any, slug:any): Observable<any>{
-    const url = `${this.API_URL}/${BLOGS}/${slug}`;
+  findOne(id:any): Observable<any>{
+    const url = `${this.API_URL}/${ROOM_TYPES}/${id}`;
     return this.http.get<any>(url);
   }
+
 }
