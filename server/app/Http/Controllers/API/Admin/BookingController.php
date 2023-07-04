@@ -19,20 +19,19 @@ class BookingController extends Controller
     {
         $role = auth()->user()->getRoleNames()->first();
         if ($role != 'client') {
-
             $bookings = Booking::with(['booking_details.room_type' => function ($query) {
                 $query->select('id', 'hotel_id' ,'name');
             }, 'booking_details.room_type.hotel' => function ($query) {
                 $query->select('id', 'hotel_name');
             }])
             ->whereHas('booking_details.room_type', function ($query) {
-                $query->where('tbl_room_types.hotel_id', auth()->user()->hotel_id);
+                if (auth()->user()->hotel_id) {                    
+                    $query->where('tbl_room_types.hotel_id', auth()->user()->hotel_id);
+                }
             })
             ->get();
-
-            return MessageStatusAPI::show(BookingResource::collection($bookings));            
-        }
-
+        } 
+            return MessageStatusAPI::show(BookingResource::collection($bookings));
     }
 
     public function show($id)
@@ -145,14 +144,11 @@ class BookingController extends Controller
             // $validated = $request->all();
             // $rooms_id = $request->room_id;
             $items = $request->items;
-            // return $rooms_details;
-
             $booking_details = BookingDetail::where('booking_id', $id)->get();            
 
             foreach ($items as $item) {
                 foreach ($item['room_id'] as $room) {
-                    // echo $room.'<br>';
-                    foreach ($booking_details as $booking_detail) {         
+                    foreach ($booking_details as $booking_detail) {
                         if ($item['room_type_id'] == $booking_detail->room_type_id && $booking_detail->room_id == '') {
                             $booking_detail->update([
                                 'room_id' => $room
