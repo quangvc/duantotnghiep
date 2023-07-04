@@ -5,6 +5,7 @@ import { ERROR } from '../model/url.class';
 import { HttpClient } from '@angular/common/http';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ImagesService } from '../service/images.service';
+import { NineStatus } from '../enum/enum';
 
 declare let $: any;
 @Component({
@@ -102,24 +103,25 @@ export class QImageComponent implements OnInit {
     const formData = new FormData();
     let file = $('#fileSingle').prop('files');
     let files = $('#file').prop('files');
+
     if(this.banner){
       const fileList: FileList = files;
 
       for (let i = 0; i < fileList.length; i++) {
         const file: File = fileList[i];
         formData.append(`image[${i}]`, file);
+        formData.append('status', String(NineStatus.Active));
       }
 
       this.bannersService.createBanner(formData).subscribe({
-        next: (res) => {this.closeModal.emit()},
+        next: (res) => {this.cancelModal.emit()},
         error: (err) => {this.message.create(ERROR, err.error.message);}
       })
     }
 
     if(this.hotel){
       if(file){
-        this.imageService.$image.next(file);
-        this.closeModal.emit(this.imageId)
+        this.closeModal.emit(file)
       }
     }
 

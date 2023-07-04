@@ -5,11 +5,12 @@ import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
 import { Observable, Subscription, firstValueFrom } from 'rxjs';
 import { NineStatus } from 'src/app/module/_mShared/enum/enum';
 import { MenuItem } from 'src/app/module/_mShared/model/menuItem.class';
-import { ERROR, SUCCESS, URL_IMAGE } from 'src/app/module/_mShared/model/url.class';
+import { ERROR, SUCCESS, URL_IMAGE, WARNING } from 'src/app/module/_mShared/model/url.class';
 import { Enum } from 'src/app/module/_mShared/service/enum.service';
 import { HotelsService } from 'src/app/module/_mShared/service/hotels.service';
 import { ImagesService } from 'src/app/module/_mShared/service/images.service';
 import { RegionsService } from 'src/app/module/_mShared/service/regions.service';
+import { Auth } from 'src/app/auth/_aShared/auth.class';
 
 @Component({
   selector: 'app-hotels',
@@ -21,9 +22,6 @@ export class HotelsComponent implements OnInit, OnDestroy {
   private subscription = new Subscription();
 
   displayCreateUpdateHotel: boolean = false;
-
-  sessionUser:any = sessionStorage.getItem('user');
-  user:any = JSON.parse(this.sessionUser);
 
   constructor(
     private hotelsService: HotelsService,
@@ -44,10 +42,17 @@ export class HotelsComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.getHotels();
     this.getOptionEnum();
-    if(this.user.role[0] == 'admin'){
-      this.role = true;
-    }else{
-      this.role = false;
+    this.checkRole();
+  }
+
+  checkRole(){
+    switch (Auth.User('role')) {
+      case 'admin':
+        return this.role = true;
+        break;
+      default:
+        return this.role = false;
+        break;
     }
   }
 
@@ -59,7 +64,6 @@ export class HotelsComponent implements OnInit, OnDestroy {
     let obs = this.hotelsService.getHotels().subscribe({
       next: (res) => {
         this.hotels = res.data;
-        console.log(res)
         this.getImage();
       },
       error: (err) => {{
@@ -79,7 +83,6 @@ export class HotelsComponent implements OnInit, OnDestroy {
         }
       });
     }
-    console.log(images)
   }
 
   dropdownItemsButton(data:any){
@@ -100,7 +103,6 @@ export class HotelsComponent implements OnInit, OnDestroy {
       {
         label: "Xóa",
         command: () => {
-          console.log(3);
         },
       },
     ]
@@ -117,6 +119,7 @@ export class HotelsComponent implements OnInit, OnDestroy {
 
   confirmChangeStatus(event:any, data:any){
 
+    if(Auth.User('role') == 'admin')
     this.confirmModal = this.modal.confirm({
       nzTitle: `Xác thực sự kiện !!`,
       nzContent: 'Xác nhận thay đổi trạng thái ?',
@@ -124,8 +127,13 @@ export class HotelsComponent implements OnInit, OnDestroy {
         new Promise((resolve, reject) => {
           this.changeStatus(data);
           setTimeout(Math.random() > 0.5 ? resolve : reject, 1000);
-        }).catch(() => console.log('Oops errors!'))
+        }).catch(),
+      nzOnCancel: () => {
+        this.getHotels();
+      }
     });
+
+    else this.message.create(WARNING, `Bạn không đủ quyền truy cập!`);
 
   }
 

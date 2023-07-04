@@ -1,18 +1,22 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { BannersService } from '../../_mShared/service/banners.service';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { ERROR, SUCCESS } from '../../_mShared/model/url.class';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ImagesService } from '../../_mShared/service/images.service';
 import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
+import { Enum } from '../../_mShared/service/enum.service';
+import { NineStatus } from '../../_mShared/enum/enum';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-banners',
   templateUrl: './banners.component.html',
   styleUrls: ['./banners.component.scss']
 })
-export class BannersComponent implements OnInit {
+export class BannersComponent implements OnInit,OnDestroy {
 
+  private subscription = new Subscription();
   // formBanner: FormGroup
 
   constructor(
@@ -34,48 +38,43 @@ export class BannersComponent implements OnInit {
   // dataImage: any[] = [];
   formData = new FormData();
 
+  statusOption: any[] = [];
+
   ngOnInit() {
     this.getBanners();
+    this.getOptionEnum();
   }
+
+  getOptionEnum(){
+    this.statusOption = Enum.convertEnum(NineStatus);
+  }
+
 
   getBanners(){
     let obs = this.bannersService.getBanners().subscribe({
       next: (res) => {
         this.banners = res.data;
-        console.log(res)
+
+        for (const banner of this.banners) {
+          this.statusOption.forEach((status: any) => {
+            if(status.value == banner.status){
+              banner.txtStatus = status.text;
+            }
+          })
+        }
+
       },
       error: (err) => {
         this.message.create(ERROR, err.error.message);
       }
     })
+
+    this.subscription.add(obs);
   }
 
   addBanner(){
     this.displayMultipleImage = true;
     this.banner = "banner"
-  }
-
-  handleOk(){
-
-    // const imageFiles: FileList = this.dataImage;
-    // const formData = new FormData();
-    // let imgFile: FileList = this.dataImage
-    // for (let i = 0; i < this.dataImage.length; i++) {
-    //   const element = this.dataImage[i];
-    //   formData.append('images', this.dataImage[i], this.dataImage[i].name);
-    //   console.log(element)
-    // }
-
-    // this.bannersService.createBanner(formData).subscribe({
-    //   next: (res) => {
-    //     console.log(res)
-    //     this.message.create(SUCCESS, `Thêm mới thành công.`)
-    //   },
-    //   error: (err) => {
-    //     this.message.create(ERROR, err.error.message);
-    //   }
-    // })
-    // console.log()
   }
 
   showConfirmDelete(id:any){
@@ -86,7 +85,7 @@ export class BannersComponent implements OnInit {
         new Promise((resolve, reject) => {
           this.deleteBanner(id);
           setTimeout(Math.random() > 0.5 ? resolve : reject, 1000);
-        }).catch(() => console.log('Oops errors!'))
+        }).catch()
     });
   }
 
@@ -103,23 +102,12 @@ export class BannersComponent implements OnInit {
   }
 
   submitForm(event:any){
-
-        // for (let i = 0; i < fileList.length; i++) {
-    //   const file: File = fileList[i];
-    //   formData.append(`image[${i}]`, file);
-    // }
-
-    // console.log(event)
-    // const imageFiles: FileList = event;
-    // for (let i = 0; i < event.length; i++) {
-    //   this.formData.append('images', imageFiles[i])
-    //   console.log(this.formData)
-    // }
     this.displayMultipleImage = false;
     this.getBanners();
   }
 
-  handleCancel(){
-
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
+
 }

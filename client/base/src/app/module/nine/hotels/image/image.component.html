@@ -24,7 +24,7 @@
           <td><img [src]="'http://127.0.0.1:8000/Images/'+data.path" width="100" alt=""></td>
           <td>{{data.hotel_id}}</td>
           <td>
-            <button nz-button nzType="primary" [nzSize]="'large'" nzShape="circle" (click)="editImage(data)"><span nz-icon nzType="edit" nzTheme="outline"></span></button>
+            <!-- <button nz-button nzType="primary" [nzSize]="'large'" nzShape="circle" (click)="editImage(data)"><span nz-icon nzType="edit" nzTheme="outline"></span></button> -->
             <button nz-button nzType="primary" [nzSize]="'large'" nzShape="circle" (click)="showConfirmDelete(data.id)" nzDanger><span nz-icon nzType="delete" nzTheme="outline"></span></button>
           </td>
         </tr>
