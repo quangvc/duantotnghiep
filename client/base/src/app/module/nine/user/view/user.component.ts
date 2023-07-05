@@ -125,7 +125,6 @@ export class UserComponent implements OnInit, OnDestroy {
   }
 
   changeRole(event: any,data:any){
-    debugger;
     let role = event.target.value;
     let rank;
     if(data.roles[0].name != "manager"){
@@ -150,7 +149,7 @@ export class UserComponent implements OnInit, OnDestroy {
   }
 
   changeRoleUser(data:any, role:any){
-    let obs = this.userService.changeRole(data.id, role).subscribe({
+    let obs = this.userService.changeRole(data.id, {role: role}).subscribe({
       next: (res) => {
         this.message.create(SUCCESS, `Cập nhật thành công.`)
       },

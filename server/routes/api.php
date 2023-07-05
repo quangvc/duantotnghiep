@@ -155,10 +155,12 @@ Route::group(['prefix' => 'admin'], function () {
         ['prefix' => 'blogs', 'controller' => BlogController::class],
         function () {
             Route::get('/', 'index')->middleware('permission:view_blog');
+            Route::get('/{id}', 'show')->middleware('permission:show_blog');
+
             Route::post('/', 'store')->middleware('permission:add_blog');
-            Route::put('/changeStatus/{id}', 'changeStatus')->middleware('permission:changeStatus_blog');
-            Route::get('/{slug}', 'show')->middleware('permission:show_blog');
             Route::put('/{id}', 'update')->middleware('permission:edit_blog');
+
+            Route::put('/changeStatus/{id}', 'changeStatus')->middleware('permission:changeStatus_blog');
             Route::delete('/{id}', 'destroy')->middleware('permission:delete_blog');
         }
     );

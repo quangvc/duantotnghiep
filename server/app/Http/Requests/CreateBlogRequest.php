@@ -3,8 +3,6 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use App\Enums\StatusEnum;
-use Illuminate\Validation\Rule;
 
 class CreateBlogRequest extends FormRequest
 {
@@ -23,21 +21,19 @@ class CreateBlogRequest extends FormRequest
      *
      * @return array<string, mixed>
      */
-    public function rules()
-    {
-        return [
-            'title'     => 'required',
-            'content'   => 'required|string',
-            'image'=>'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'status' =>  ['required', Rule::in(StatusEnum::arrEnums())],
-        ];
-    }
-    public function messages()
-    {
-       return [
-        'title.required'   => 'lỗi',
-        'content.required' => 'vui lòng không bỏ trống content và ghi đúng kiểu dữ liệu',
-        'image.required' => 'vui lòng không bỏ trống image',
-       ];
-    }
+    // public function rules()
+    // {
+    //     return [
+    //         'title'     => 'bail|required|',
+    //         'slug' => 'bail|required|',
+    //         'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
+    //     ];
+    // }
+    // public function messages()
+    // {
+    //     return [
+    //         'title.required'   => 'Title đang trống',
+    //         'slug.required'   => 'Slug đang trống',
+    //     ];
+    // }
 }

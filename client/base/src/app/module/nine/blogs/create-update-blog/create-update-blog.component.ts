@@ -8,6 +8,8 @@ import { UserService } from 'src/app/module/_mShared/service/user.service';
 import { BlogsService } from 'src/app/module/_mShared/service/blogs.service';
 import { NzI18nService } from 'ng-zorro-antd/i18n';
 import { ImagesService } from './../../../_mShared/service/images.service';
+import { Auth } from 'src/app/auth/_aShared/auth.class';
+import { Regex } from 'src/app/module/_mShared/service/static/regex.class';
 
 declare let $: any;
 
@@ -21,134 +23,176 @@ export class CreateUpdateBlogComponent implements OnInit, OnDestroy {
   private subscription = new Subscription();
 
   @Input() blogId: any;
-  // @Input() slug: any;
   @Input() displayCreateUpdateBlog: boolean = false;
   @Output() closeModal = new EventEmitter<any>();
+
   title: string;
+  slug: any;
   content: string
   image: string;
   user_id: number;
-  slug: string
+
 
   formBlog!: FormGroup;
+
+  auth = Auth.User('user');
 
   constructor(
     private fb: FormBuilder,
     private blogsService: BlogsService,
-    private usersService: UserService,
     private imagesService: ImagesService,
     private message: NzMessageService,
-    private i18n: NzI18nService
   ) { }
 
   users: any[] = [];
 
   ngOnInit() {
     this.createFormBuildBlog();
-    this.getUsers();
     this.getValueFormUpdate();
   }
 
   private createFormBuildBlog(){
     this.formBlog = this.fb.group({
+      user_id: [this.auth.id, Validators.required],
       title: [null, Validators.required],
-      content: [null, Validators.required],
-      image: [null],
-      user_id: [null],
-      slug: [null]
+      slug: [null],
+      content: [null, Validators.required]
     })
   }
 
-  getUsers(){
-    let obs = this.usersService.getUsers().subscribe({
-      next: (user) => {
-        this.users = user.data;
-        console.log(user)
-      },
-      error: (err) => {
-        this.message.create(ERROR, err.error.message);
-      }
-    })
-
-    this.subscription.add(obs);
-  }
-
-  onChange(result: Date): void {
-    console.log('onChange: ', result);
+  onKeyUp(event: any) {
+    this.slug = Regex.Slug(event.target.value);
+    this.formBlog.get('slug')?.setValue(Regex.Slug(event.target.value));
   }
 
   getValueFormUpdate(){
-    debugger
-    if( this.blogId ){
-      let obs = this.blogsService.findOne(this.slug).subscribe({
+    if(this.blogId) {
+      let obs = this.blogsService.findOne(this.blogId).subscribe({
         next: (res) => {
           this.formBlog.patchValue(res.data);
-          console.log("detail: " + res)
         },
         error: (err) => {
           this.message.create(ERROR, err.error.message);
         }
       })
+
       this.subscription.add(obs);
     }
+    // if( this.blogId ){
+    //   let obs = this.blogsService.findOne(this.slug).subscribe({
+    //     next: (res) => {
+    //       this.formBlog.patchValue(res.data);
+    //       console.log("detail: " + res)
+    //     },
+    //     error: (err) => {
+    //       this.message.create(ERROR, err.error.message);
+    //     }
+    //   })
+    //   this.subscription.add(obs);
+    // }
   }
 
-  async onSelectFile(event: any) {
+  onSelectFile(event: any) {
+
+  }
+
+  handleOk() {
     const formData = new FormData();
-    if (event.target.files.length > 0) {
-      let file: any = await event.target.files[0];
-    } else {
-    }
-  }
-
-  async handleOk() {
-
     if (this.formBlog.valid) {
-debugger
-      let id = this.blogId;
+      debugger;
+
       let file = $('#file').prop('files');
-      const formData = new FormData();
+      console.log(this.formBlog)
 
-      if (id) {
-        if (file) {
-          formData.append('path', file[0]);
-        }
-        let update = this.blogsService.updateBlog(id,this.formBlog.value);
-        let getImage:any[] = await firstValueFrom(this.blogsService.getImage());
-        let findImage = getImage.find(x => x.blog_id == id)
+      formData.append("user_id", this.formBlog.value.user_id);
+      formData.append("title", this.formBlog.value.title);
+      formData.append("slug", this.formBlog.value.slug);
+      formData.append("content", this.formBlog.value.content);
 
-        if(findImage){
-          if (file) {
-            await this.imagesService.updateImage(findImage.id,formData).subscribe({
-              next: (res) => {},
-              error: (err) => {
-                this.message.create(ERROR, err.error.message);
-              }
-            })
-          }
-        }else{
-          if (file) {
-            await this.imagesService.addImage(id, formData).subscribe({
-              next: (res) => {},
-              error: (err) => {
-                this.message.create(ERROR, err.error.message);
-              },
-            });
-          }
-        }
-
-        await update.subscribe({
-          next: (res) => {
-            this.closeModal.emit();
-            this.message.create(SUCCESS, `Cập nhật thành công!`);
-          },
-          error: (err) => {
-            this.message.create(ERROR, err.error.message);
-          }
-        })
+      if(file.length > 0){
+        formData.append("image", file[0]);
       }
+
+
+      let createUpdate;
+
+      if(this.blogId){
+        let newData = {
+          ...this.formBlog.value,
+        }
+
+        if(file.length > 0){
+          newData = {
+            ...this.formBlog.value,
+            image: {...file[0]},
+          }
+        }
+        createUpdate = this.blogsService.updateBlog(this.blogId, newData);
+      }else{
+        createUpdate = this.blogsService.createBlog(formData);
+      }
+
+      createUpdate.subscribe({
+        next: (res) => {
+          console.log(res)
+          // this.closeModal.emit();
+          // this.message.create(SUCCESS, `Thêm mới blog thành công.`)
+        },
+        error: (err) => {
+          this.message.create(ERROR, err.error.message);
+        }
+      })
+
     }
   }
+
+  // async handleOk() {
+
+  //   if (this.formBlog.valid) {
+  //     let id = this.blogId;
+  //     let file = $('#file').prop('files');
+  //     const formData = new FormData();
+
+  //     if (id) {
+  //       if (file) {
+  //         formData.append('path', file[0]);
+  //       }
+  //       let update = this.blogsService.updateBlog(id,this.formBlog.value);
+  //       let getImage:any[] = await firstValueFrom(this.blogsService.getImage());
+  //       let findImage = getImage.find(x => x.blog_id == id)
+
+  //       if(findImage){
+  //         if (file) {
+  //           await this.imagesService.updateImage(findImage.id,formData).subscribe({
+  //             next: (res) => {},
+  //             error: (err) => {
+  //               this.message.create(ERROR, err.error.message);
+  //             }
+  //           })
+  //         }
+  //       }else{
+  //         if (file) {
+  //           await this.imagesService.addImage(id, formData).subscribe({
+  //             next: (res) => {},
+  //             error: (err) => {
+  //               this.message.create(ERROR, err.error.message);
+  //             },
+  //           });
+  //         }
+  //       }
+
+  //       await update.subscribe({
+  //         next: (res) => {
+  //           this.closeModal.emit();
+  //           this.message.create(SUCCESS, `Cập nhật thành công!`);
+  //         },
+  //         error: (err) => {
+  //           this.message.create(ERROR, err.error.message);
+  //         }
+  //       })
+  //     }
+  //   }
+  // }
 
 
   // handleOk(){
@@ -199,12 +243,10 @@ debugger
 
   handleCancel(){
     this.closeModal.emit();
-    // this.resetForm()
   }
 
   ngOnDestroy(): void {
       this.subscription.unsubscribe();
-
   }
 }
 

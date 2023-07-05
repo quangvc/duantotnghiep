@@ -20,15 +20,17 @@ class BlogController extends Controller
         $blog = Blog::all();
         return BlogResource::collection($blog);
     }
+
     public function store(CreateBlogRequest $request)
     {
+        return $request;
         $user_id = auth()->user()->id;
         $validated = $request->validated();
         $blog = new Blog([
             'title' => $validated['title'],
-            // 'slug' => Str::slug($validated['title']),
+            'slug' => $request['slug'],
             'content' => $validated['content'],
-            'image' => $validated['image'],
+            'image' => $request['image'],
             'user_id' => $user_id,
         ]);
         if ($request->hasFile('image')) {
@@ -43,13 +45,17 @@ class BlogController extends Controller
         $blog->save();
         return MessageStatusAPI::store();
     }
-    public function update(CreateBlogRequest $request, $id)
+
+    public function update(Request $request, $id)
     {
-        $request->validate([
-            // 'title' => [Rule::unique('tbl_blogs')->ignore($request->id),]
-            'title'     => 'required|unique:tbl_blogs,title,' . $request->id,
-        ]);
+
+        // $validated = $request->validated();
         $blog = Blog::find($id);
+        // $request->validate([
+        //     // 'title' => [Rule::unique('tbl_blogs')->ignore($request->id),]
+        //     'title'     => 'required|unique:tbl_blogs,title,' . $request->id,
+        // ]);
+
         $user_id = auth()->user()->id;
         if (!$user_id) {
             return MessageStatusAPI::displayInvalidInput($blog);
@@ -87,9 +93,10 @@ class BlogController extends Controller
         $blog->delete();
         return MessageStatusAPI::destroy();
     }
-    public function show($slug)
+
+    public function show($id)
     {
-        $blog = Blog::where('slug', $slug)->first();
+        $blog = Blog::where('id', $id)->first();
         if ($blog) {
             return new BlogResource($blog);
         } else {

@@ -5,7 +5,7 @@ import { ERROR, SUCCESS } from '../../_mShared/model/url.class';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ImagesService } from '../../_mShared/service/images.service';
 import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
-import { Enum } from '../../_mShared/service/enum.service';
+import { Enum } from '../../_mShared/service/static/enum.service';
 import { NineStatus } from '../../_mShared/enum/enum';
 import { Subscription } from 'rxjs';
 

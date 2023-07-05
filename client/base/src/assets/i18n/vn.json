@@ -39,7 +39,8 @@
     "name": "Tên khu vực"
   },
   "room": {
-    "room_number": "Số phòng"
+    "room_number": "Số phòng",
+    "quantity": "Số lượng phòng"
   },
   "room_type": {
     "name": "Tên loại phòng",
@@ -62,7 +63,7 @@
     "content": "Nội dung",
     "image": "Hình ảnh",
     "user_id": "người tạo",
-    "slug": "I don't know bruh"
+    "slug": "Slug"
   },
   "banners": {
     "image": "Hình ảnh"

@@ -56,6 +56,7 @@ export class RoomTypesComponent implements OnInit, OnDestroy {
     let obs = this.roomTypeService.getRoomTypes().subscribe({
       next: (res) => {
         this.roomTypes = res.data;
+        console.log(this.roomTypes)
       },
       error: (err) => {
         this.message.create(ERROR, err.error.message)
