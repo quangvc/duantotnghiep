@@ -36,7 +36,6 @@ class CouponRequest extends FormRequest
             'name.max'   => 'Vui lòng nhập dưới 50 ký tự',
 
             'type.required'   => $required,
-            'type.max'   => 'Vui lòng nhập dưới 255 ký tự',
 
             'value.required'   => $required,
 
