@@ -23,7 +23,6 @@ class BlogController extends Controller
 
     public function store(CreateBlogRequest $request)
     {
-        return $request;
         $user_id = auth()->user()->id;
         $validated = $request->validated();
         $blog = new Blog([
@@ -58,6 +57,9 @@ class BlogController extends Controller
         }
         if ($user_id !== $blog->user_id) {
             return MessageStatusAPI::notFound();
+        }
+        if ($request->has('title')) {
+            $blog->slug = Str::slug($request->title);
         }
         if ($request->hasFile('image')) {
             if ($blog->image != '' && file_exists(public_path('Images/blog/' . $blog->image))) {
