@@ -25,14 +25,15 @@ class CreateCommentRequest extends FormRequest
     {
         return [
         'content' => 'required',
-        'blog_id' => 'nullable|integer|exists:tbl_blogs,id',
+        'blog_id' => 'required|integer|exists:tbl_blogs,id',
+        'cmt_id' => 'exists:tbl_comments,id',
         ];
     }
     public function messages()
     {
        return [
-        'content.required' => 'vui lòng không boe trống ',
-        'blog_id.required' => 'vui lòng không boe trống ',
+        'content.required' => 'Vui lòng nhập bình luận',
+        'blog_id.required' => 'Vui lòng không bỏ trống blog_id',
        ];
     }
 }

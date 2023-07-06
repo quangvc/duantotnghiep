@@ -68,8 +68,7 @@ class BookingController extends Controller
             $guest_phone =  $validated['guest_phone'];
             $user_id =  null;
         }
-               
-        // $hotel_id = $validated['hotel_id'];
+        return $request->query('people_quantity');
         $checkin_date = Carbon::parse($validated['checkin_date']);
         $checkout_date = Carbon::parse($validated['checkout_date']);
         // $total_date = $checkout_date->diffInDays($checkin_date);
@@ -143,7 +142,7 @@ class BookingController extends Controller
         if ($role != 'client') {
             // $validated = $request->all();
             // $rooms_id = $request->room_id;
-            $items = $request->items;
+            $items = $request->all();
             $booking_details = BookingDetail::where('booking_id', $id)->get();            
 
             foreach ($items as $item) {
