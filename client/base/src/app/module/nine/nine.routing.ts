@@ -13,6 +13,7 @@ const routes: Routes = [
     { path: 'coupons', loadChildren: () => import('./coupons/coupons.module').then(m => m.CouponsModule)},
     { path: 'blogs', loadChildren: () => import('./blogs/blogs.module').then(m => m.BlogsModule)},
     { path: 'banners', loadChildren: () => import('./banners/banners.module').then(m => m.BannersModule)},
+    { path: 'bookings', loadChildren: () => import('./nine-bookings/nine-bookings.module').then(m => m.NineBookingsModule)},
   ]}
 ];
 

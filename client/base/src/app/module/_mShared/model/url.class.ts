@@ -7,6 +7,8 @@ export const REGIONS = "regions"
 export const ROOM_TYPES = "room-types"
 export const ROOMS = "rooms"
 
+export const BOOKINGS = "bookings"
+
 export const URL_IMAGE = "http://127.0.0.1:8000/Images"
 export const IMAGE = "image"
 

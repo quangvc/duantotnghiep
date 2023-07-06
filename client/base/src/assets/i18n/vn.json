@@ -3,6 +3,9 @@
   "status": "Trạng thái",
   "description": "Mô tả",
 
+  "created_at": "Ngày tạo",
+  "updated_at": "Ngày cập nhật",
+
   "button": {
     "add_new": "Thêm mới",
     "update": "Cập nhật",
@@ -67,6 +70,19 @@
   },
   "banners": {
     "image": "Hình ảnh"
+  },
+  "bookings": {
+    "booking_number": "Đặt phòng",
+    "user": "Người dùng",
+    "checkin_date": "Ngày vào",
+    "checkout_date": "Ngày ra",
+    "people_quantity": "Số lượng người",
+    "coupon_id": "Phiếu giảm giá",
+    "note": "Ghi chú",
+    "guest_name": "Tên khách hàng",
+    "guest_email": "Email Khách hàng",
+    "guest_phone": "Số điện thoại",
+    "total_price": "Tổng giá"
   }
 
 }
