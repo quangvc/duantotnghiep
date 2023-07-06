@@ -26,7 +26,7 @@ export class BlogClientService {
     return this.http.get<any>(url);
   }
 
-  findOne(id:any, slug:any): Observable<any>{
+  findOne(slug:any): Observable<any>{
     const url = `${this.API_URL}/${BLOGS}/${slug}`;
     return this.http.get<any>(url);
   }

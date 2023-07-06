@@ -6,7 +6,7 @@ import { CLIENT, ROOM_TYPES, IMAGE } from '../module/_mShared/model/url.class';
 @Injectable({
   providedIn: 'root'
 })
-export class BlogClientService {
+export class roomTypeClientService {
 
   // sessionUser:any = sessionStorage.getItem('user');
   // user:any = JSON.parse(this.sessionUser);

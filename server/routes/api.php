@@ -231,14 +231,14 @@ Route::group(['prefix' => 'client'], function () {
             Route::delete('/{id}', 'destroy');
         }
     );
-  
+
     Route::group(
         ['prefix' => 'feedback', 'controller' => FeedbackClientController::class],
         function () {
             Route::get('/', 'index');
             Route::post('/', 'store');
             Route::put('/{id}', 'update');
-           
+
         }
     );
     Route::group(
@@ -270,7 +270,7 @@ Route::group(['prefix' => 'client'], function () {
         function () {
             Route::get('/', 'index');
             Route::post('/', 'store');
-            Route::post('/{id}', 'reply');  
+            Route::post('/{id}', 'reply');
         }
     );
     Route::group(

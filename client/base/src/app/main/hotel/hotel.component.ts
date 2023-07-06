@@ -1,10 +1,10 @@
+import { HotelClientService } from './../../services/hotelClient.service';
 import { Component, OnInit } from '@angular/core';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzModalRef } from 'ng-zorro-antd/modal';
 import { Subscription, firstValueFrom } from 'rxjs';
 import { MenuItem } from 'src/app/module/_mShared/model/menuItem.class';
 import { ERROR, URL_IMAGE } from 'src/app/module/_mShared/model/url.class';
-import { HotelsService } from 'src/app/module/_mShared/service/hotels.service';
 import { ImagesService } from 'src/app/module/_mShared/service/images.service';
 
 @Component({
@@ -20,8 +20,8 @@ export class HotelComponent implements OnInit {
   user:any = JSON.parse(this.sessionUser);
 
   constructor(
-    private hotelsService: HotelsService,
-    private imagesService: ImagesService,
+    private HotelClientService: HotelClientService,
+    // private imagesService: ImagesService,
     private message: NzMessageService,
     ) { }
 
@@ -36,19 +36,19 @@ export class HotelComponent implements OnInit {
 
   ngOnInit() {
     this.getHotels();
-    if(this.user.role[0] == 'admin'){
-      this.role = true;
-    }else{
-      this.role = false;
-    }
+    // if(this.user.role[0] == 'admin'){
+    //   this.role = true;
+    // }else{
+    //   this.role = false;
+    // }
   }
 
 
   getHotels(){
-    let obs = this.hotelsService.getHotels().subscribe({
+    let obs = this.HotelClientService.getHotels().subscribe({
       next: (res) => {
         this.hotels = res.data;
-        this.getImage();
+        // this.getImage();
       },
       error: (err) => {{
         this.message.create(ERROR, err.message);
@@ -57,18 +57,18 @@ export class HotelComponent implements OnInit {
     this.subscription.add(obs);
   }
 
-  async getImage(){
-    let images:any[] = await firstValueFrom(this.imagesService.getImages());
+  // async getImage(){
+  //   let images:any[] = await firstValueFrom(this.imagesService.getImages());
 
-    for (const item of this.hotels) {
-      images.forEach(img => {
-        if(img.hotel_id == item.id){
-          item.image = `${URL_IMAGE}/${img.path}`;
-        }
-      });
-    }
-    console.log(images)
+  //   for (const item of this.hotels) {
+  //     images.forEach(img => {
+  //       if(img.hotel_id == item.id){
+  //         item.image = `${URL_IMAGE}/${img.path}`;
+  //       }
+  //     });
+  //   }
+  //   console.log(images)
   }
 
 
-}
+
