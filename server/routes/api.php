@@ -73,7 +73,7 @@ Route::group(['prefix' => 'admin'], function () {
             Route::get('/', 'index')->middleware('permission:view_hotel');
             Route::post('/', 'store')->middleware('permission:add_hotel');
             Route::put('/changeStatus/{id}', 'changeStatus')->middleware('permission:changeStatus_hotel');
-            Route::put('/{id}', 'update')->middleware('permission:changeStatus_hotel');
+            Route::put('/{id}', 'update')->middleware('permission:edit_hotel');
             Route::get('/{id}', 'show')->middleware('permission:show_hotel');
             Route::delete('/{id}', 'destroy')->middleware('permission:delete_hotel');
         }
@@ -155,10 +155,10 @@ Route::group(['prefix' => 'admin'], function () {
         ['prefix' => 'blogs', 'controller' => BlogController::class],
         function () {
             Route::get('/', 'index')->middleware('permission:view_blog');
+            Route::get('/{id}', 'show')->middleware('permission:show_blog');
             Route::post('/', 'store')->middleware('permission:add_blog');
             Route::put('/changeStatus/{id}', 'changeStatus')->middleware('permission:changeStatus_blog');
-            Route::get('/{slug}', 'show')->middleware('permission:show_blog');
-            Route::put('/{id}', 'update')->middleware('permission:edit_blog');
+            Route::post('/{id}', 'update')->middleware('permission:edit_blog');
             Route::delete('/{id}', 'destroy')->middleware('permission:delete_blog');
         }
     );
@@ -166,7 +166,7 @@ Route::group(['prefix' => 'admin'], function () {
         ['prefix' => 'comments', 'controller' => CommentController::class],
         function () {
             Route::get('/', 'index')->middleware('permission:view_comment');
-            Route::post('/', 'store')->middleware('permission:add_comment');
+            Route::post('/', 'store')->middleware(['permission:add_comment', 'keywordCheck']);
             Route::get('/{id}', 'show')->middleware('permission:show_comment');
             Route::put('/{id}', 'update')->middleware('permission:edit_comment');
             Route::delete('/{id}', 'destroy')->middleware('permission:delete_comment');
@@ -175,9 +175,9 @@ Route::group(['prefix' => 'admin'], function () {
     Route::group(
         ['prefix' => 'banners', 'controller' => BannerController::class],
         function () {
-            Route::get('/', 'index')->middleware('permission:view_banners');
-            Route::post('/', 'store')->middleware('permission:add_banners');
-            Route::delete('/{id}', 'destroy')->middleware('permission:delete_banners');
+            Route::get('/', 'index')->middleware('permission:view_banner');
+            Route::post('/', 'store')->middleware('permission:add_banner');
+            Route::delete('/{id}', 'destroy')->middleware('permission:delete_banner');
         }
     );
 });
@@ -238,7 +238,6 @@ Route::group(['prefix' => 'client'], function () {
             Route::get('/', 'index');
             Route::post('/', 'store');
             Route::put('/{id}', 'update');
-
         }
     );
     Route::group(

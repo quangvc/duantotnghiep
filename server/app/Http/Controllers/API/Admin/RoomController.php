@@ -7,6 +7,7 @@ use App\Models\Room;
 use App\Traits\MessageStatusAPI;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\API\RoomResource;
+use App\Enums\StatusEnum;
 
 class RoomController extends Controller
 {
@@ -49,20 +50,20 @@ class RoomController extends Controller
             return MessageStatusAPI::notFound();
         }
         if ($role == 'admin') {
-            if ($room->status == 1) {
-                $room->update(['status' => 0]);
+            if ($room->status == StatusEnum::ACTIVE) {
+                $room->update(['status' => StatusEnum::DEACTIVE]);
             } else {
-                $room->update(['status' => 1]);
+                $room->update(['status' => StatusEnum::ACTIVE]);
             }
             return MessageStatusAPI::update();
         }
         $id_hotelRoom = auth()->user()->hotel_id;
         if ($role == 'manager') {
             if ($id_hotelRoom == $room->hotel_id) {
-                if ($room->status == 1) {
-                    $room->update(['status' => 0]);
+                if ($room->status == StatusEnum::ACTIVE) {
+                    $room->update(['status' => StatusEnum::DEACTIVE]);
                 } else {
-                    $room->update(['status' => 1]);
+                    $room->update(['status' => StatusEnum::ACTIVE]);
                 }
                 return $room->status;
             } else {

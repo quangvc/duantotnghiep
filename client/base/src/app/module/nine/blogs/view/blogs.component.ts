@@ -5,7 +5,7 @@ import { Observable, Subscription, firstValueFrom } from 'rxjs';
 import { NineStatus } from 'src/app/module/_mShared/enum/enum';
 import { MenuItem } from 'src/app/module/_mShared/model/menuItem.class';
 import { ERROR, SUCCESS } from 'src/app/module/_mShared/model/url.class';
-import { Enum } from 'src/app/module/_mShared/service/enum.service';
+import { Enum } from 'src/app/module/_mShared/service/static/enum.service';
 
 import { BlogsService } from 'src/app/module/_mShared/service/blogs.service';
 
@@ -28,7 +28,6 @@ export class BlogsComponent implements OnInit {
 
   blogs: any[] = [];
   blogId: any;
-  slug: any;
   menus: MenuItem[] = [];
   statusOption: any;
 
@@ -79,10 +78,8 @@ export class BlogsComponent implements OnInit {
   }
 
   editBlog(blog:any){
-    debugger
     this.displayCreateUpdateBlog = true;
     this.blogId = blog.id;
-    this.slug = blog.slug;
   };
 
   cancel(event:any){
@@ -97,7 +94,7 @@ export class BlogsComponent implements OnInit {
       nzOnOk: () =>
         new Promise((resolve, reject) => {
           this.deleteBlog(data);
-          setTimeout(Math.random() > 0.5 ? resolve : reject, 1000);
+          setTimeout(0.6 > 0.5 ? resolve : reject, 1000);
         }).catch(() => console.log('Oops errors!'))
     });
   }

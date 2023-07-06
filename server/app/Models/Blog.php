@@ -13,7 +13,7 @@ class Blog extends Model
     protected $table = 'tbl_blogs';
 
     protected $fillable = [
-        'title', 'content', 'user_id', 'slug'
+        'title', 'slug','content', 'user_id', 'image', 'active'
     ];
 
     public function user(): BelongsTo

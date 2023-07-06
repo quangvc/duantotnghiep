@@ -34,4 +34,9 @@ export class UserService {
     return this.http.put(url,data,this.httpOptions)
   }
 
+  changeRole(id:any, role:any): Observable<any>{
+    const url = `${this.API_URL}/${USERS}/${id}`;
+    return this.http.post(url, role, this.httpOptions);
+  }
+
 }

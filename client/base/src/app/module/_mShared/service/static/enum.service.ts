@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { NineStatus } from '../enum/enum';
+import { NineStatus } from '../../enum/enum';
 
 @Injectable({
   providedIn: 'root'

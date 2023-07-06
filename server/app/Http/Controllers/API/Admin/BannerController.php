@@ -22,7 +22,6 @@ class BannerController extends Controller
     {
         $request->validate([
             'image.*' => 'bail|image|max:2048|mimes:jpeg,png,jpg|mimetypes:image/jpeg,image/png,image/jpg',
-            'status' =>  ['required', Rule::in(StatusEnum::arrEnums())],
         ]);
 
         $role = auth()->user()->getRoleNames()->first();
