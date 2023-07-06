@@ -4,8 +4,8 @@ import { Subscription } from 'rxjs';
 import { MenuItem } from 'src/app/module/_mShared/model/menuItem.class';
 import { ERROR } from 'src/app/module/_mShared/model/url.class';
 
-// import { BlogClientService } from 'src/app/services/blogClient.service';
-import { BlogsService } from 'src/app/module/_mShared/service/blogs.service';
+import { BlogClientService } from 'src/app/services/blogClient.service';
+// import { BlogsService } from 'src/app/module/_mShared/service/blogs.service';
 
 @Component({
   templateUrl: './blog.component.html',
@@ -15,8 +15,8 @@ export class BlogComponent implements OnInit{
   private subscription = new Subscription();
 
   constructor(
-    // private BlogClientService: BlogClientService,
-    private BlogsService: BlogsService,
+    private BlogClientService: BlogClientService,
+    // private BlogsService: BlogsService,
     private message: NzMessageService,
     ) { }
   blogs: any[] = [];
@@ -31,7 +31,7 @@ export class BlogComponent implements OnInit{
 
   getBlogs(){
     // let obs = this.BlogClientService.getBlogs().subscribe({
-    let obs = this.BlogsService.getBlogs().subscribe({
+    let obs = this.BlogClientService.getBlogs().subscribe({
       next: (res) => {
         this.blogs = res.data;
         console.log(res)

@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output, Type } from '@angular/c
 import { ActivatedRoute } from '@angular/router';
 import { PhotoService } from 'src/app/services/photoservice.service';
 import { HotelsService } from 'src/app/module/_mShared/service/hotels.service';
+import { HotelClientService } from 'src/app/services/hotelClient.service';
 @Component({
   selector: 'app-hotel-detail',
   templateUrl: './hotel-detail.component.html',
@@ -15,7 +16,7 @@ export class HotelDetailComponent implements OnInit {
   constructor(
     private photoService: PhotoService,
     private route: ActivatedRoute,
-    private hotelsService: HotelsService,
+    private HotelClientService: HotelClientService,
   ) { }
   @Input() value: any[] = [];
   images: any[] = [];
@@ -61,7 +62,7 @@ export class HotelDetailComponent implements OnInit {
     this.photoService.getImages().then((images) => (this.images = images));
     this.route.params.subscribe(params => {
       const id = params['id']; // Lấy giá trị ID từ URL
-      this.hotelsService.findOne(id).subscribe({
+      this.HotelClientService.findOne(id).subscribe({
 
         next: (res) => {
           this.hotel = res.data;
