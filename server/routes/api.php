@@ -200,25 +200,12 @@ Route::group(['prefix' => 'client'], function () {
         }
     );
 
-    Route::group(
-        ['prefix' => 'rooms', 'controller' => RoomClientController::class],
-        function () {
-            Route::get('/', 'index')->middleware('permission:view_room');
-            Route::post('/', 'store')->middleware('permission:view_room');
-            Route::get('/{id}', 'show')->middleware('permission:show_room');
-            Route::put('/{id}', 'update')->middleware('permission:edit_room');
-            Route::delete('/{id}', 'destroy')->middleware('permission:delete_room');
-        }
-    );
 
     Route::group(
         ['prefix' => 'room-types', 'controller' => RoomTypesClientController::class],
         function () {
             Route::get('/', 'index');
-            Route::post('/', 'store');
-            Route::put('/{id}', 'update');
             Route::get('/{id}', 'show');
-            Route::delete('/{id}', 'destroy');
         }
     );
 
@@ -226,10 +213,7 @@ Route::group(['prefix' => 'client'], function () {
         ['prefix' => 'regions', 'controller' => RegionClientController::class],
         function () {
             Route::get('/', 'index');
-            Route::post('/', 'store');
-            Route::put('/{id}', 'update');
             Route::get('/{id}', 'show');
-            Route::delete('/{id}', 'destroy');
         }
     );
 
@@ -245,10 +229,6 @@ Route::group(['prefix' => 'client'], function () {
         ['prefix' => 'image', 'controller' => ImageClientController::class],
         function () {
             Route::get('/', 'index');
-            Route::post('/hotel/{id}', 'storeHotel');
-            Route::post('/room-type/{id}', 'storeRoomType');
-            Route::put('/{id}', 'update');
-            Route::delete('/{id}', 'destroy');
         }
     );
     Route::group(
@@ -284,17 +264,6 @@ Route::group(['prefix' => 'client'], function () {
         function () {
             Route::get('/', 'index');
             Route::get('/{id}', 'show');
-        }
-    );
-
-    Route::group(
-        ['prefix' => 'banners', 'controller' => BannerController::class],
-        function () {
-            Route::get('/', 'index');
-            Route::post('/', 'store');
-            Route::get('/{id}', 'show');
-            Route::put('/{id}', 'update');
-            Route::delete('/{id}', 'destroy');
         }
     );
 });
