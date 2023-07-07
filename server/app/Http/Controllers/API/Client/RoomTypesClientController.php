@@ -16,17 +16,8 @@ class RoomTypesClientController extends Controller
     //
     public function index()
     {
-        $role = auth()->user()->getRoleNames()->first();
-        if ($role == 'admin') {
-            $roomtype = RoomType::all();
-            return RoomTypeResource::collection($roomtype);
-        }
-        $id_hotelRoom = auth()->user()->hotel_id;
-        if ($id_hotelRoom != 0 && $role == 'manager') {
-            $roomType = RoomType::where('hotel_id', '=', $id_hotelRoom)->get();
-            return RoomTypeResource::collection($roomType);
-        }
-        return MessageStatusAPI::notFound();
+        $roomtype = RoomType::all();
+        return RoomTypeResource::collection($roomtype);
     }
 
     public function show($id)

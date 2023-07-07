@@ -195,6 +195,7 @@ Route::group(['prefix' => 'client'], function () {
         ['prefix' => 'hotels', 'controller' => HotelClientController::class],
         function () {
             Route::get('/', 'index');
+            Route::get('region/{region_id}', 'filterRegion');
             Route::get('/{id}', 'show');
         }
     );

@@ -6,10 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Hotel;
 use App\Traits\MessageStatusAPI;
-use App\Http\Requests\HotelRequest;
 use App\Http\Resources\API\HotelResource;
-use App\Models\Image;
-use App\Models\Room;
+
 
 class HotelClientController extends Controller
 {
@@ -18,12 +16,21 @@ class HotelClientController extends Controller
         $hotels = Hotel::where('status', '=', '1')->get();
         return HotelResource::collection($hotels);
     }
+    public function filterRegion($region_id)
+    {
+        if (!empty($region_id)) {
+            $hotels = Hotel::where('status', '=', '1')
+                ->where('region_id', '=', $region_id)
+                ->get();
+            return HotelResource::collection($hotels);
+        }
+        return MessageStatusAPI::notFound();
+    }
     public function show($id)
     {
-        $hotelDetail = Hotel::join('tbl_regions', 'tbl_hotels.region_id', '=', 'tbl_regions.id')
-            ->select('tbl_hotels.*', 'tbl_regions.name as region_name')
-            ->where('tbl_hotels.id', $id)
-            ->first();
+        $hotelDetail = Hotel::where('active', '=', '1')
+            ->where('id', '=', $id)
+            ->get();
         if (!$hotelDetail) {
             return MessageStatusAPI::notFound();
         }

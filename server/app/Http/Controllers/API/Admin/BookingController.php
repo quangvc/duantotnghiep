@@ -20,18 +20,18 @@ class BookingController extends Controller
         $role = auth()->user()->getRoleNames()->first();
         if ($role != 'client') {
             $bookings = Booking::with(['booking_details.room_type' => function ($query) {
-                $query->select('id', 'hotel_id' ,'name');
+                $query->select('id', 'hotel_id', 'name');
             }, 'booking_details.room_type.hotel' => function ($query) {
                 $query->select('id', 'hotel_name');
             }])
-            ->whereHas('booking_details.room_type', function ($query) {
-                if (auth()->user()->hotel_id) {                    
-                    $query->where('tbl_room_types.hotel_id', auth()->user()->hotel_id);
-                }
-            })
-            ->get();
-        } 
-            return MessageStatusAPI::show(BookingResource::collection($bookings));
+                ->whereHas('booking_details.room_type', function ($query) {
+                    if (auth()->user()->hotel_id) {
+                        $query->where('tbl_room_types.hotel_id', auth()->user()->hotel_id);
+                    }
+                })
+                ->get();
+        }
+        return MessageStatusAPI::show(BookingResource::collection($bookings));
     }
 
     public function show($id)
@@ -39,18 +39,18 @@ class BookingController extends Controller
         $role = auth()->user()->getRoleNames()->first();
         if ($role != 'client') {
 
-                $booking = Booking::with(['booking_details.room_type' => function ($query) {
-                    $query->select('id', 'hotel_id' ,'name');
-                }, 'booking_details.room_type.hotel' => function ($query) {
-                    $query->select('id', 'hotel_name');
-                }])
+            $booking = Booking::with(['booking_details.room_type' => function ($query) {
+                $query->select('id', 'hotel_id', 'name');
+            }, 'booking_details.room_type.hotel' => function ($query) {
+                $query->select('id', 'hotel_name');
+            }])
                 ->where('id', $id)
                 ->get();
 
             return MessageStatusAPI::show(BookingResource::collection($booking));
         }
     }
-    
+
     public function store(BookingRequest $request)
     {
         $request->validated();
@@ -84,31 +84,31 @@ class BookingController extends Controller
 
             // đếm số phòng đã được đặt trong khoảng thời gian mà khách chọn theo loại
             $count_booked_rooms = BookingDetail::join('tbl_bookings', 'tbl_bookings.id', '=', 'booking_id')
-            ->where('room_type_id', $item['room_type_id'])
-            ->where(function ($query) use ($checkin_date, $checkout_date) {
-                $query->where([
-                    ['checkin_date', '>=', $checkin_date],
-                    ['checkout_date', '<=', $checkout_date],
-                ])->orWhere([
-                    ['checkin_date', '<=', $checkin_date],
-                    ['checkout_date', '>=', $checkout_date],
-                ])->orWhere([
-                    ['checkin_date', '>', $checkin_date],
-                    ['checkin_date', '<', $checkout_date],
-                ])->orWhere([
-                    ['checkout_date', '>', $checkin_date],
-                    ['checkout_date', '<', $checkout_date],
-                ]);
-            })
-            ->count();
-            
-            if ($count_all_rooms - $count_booked_rooms < $item['quantity'] ) {
-                return 'room_type_id '.$item['room_type_id'].' hết phòng';
+                ->where('room_type_id', $item['room_type_id'])
+                ->where(function ($query) use ($checkin_date, $checkout_date) {
+                    $query->where([
+                        ['checkin_date', '>=', $checkin_date],
+                        ['checkout_date', '<=', $checkout_date],
+                    ])->orWhere([
+                        ['checkin_date', '<=', $checkin_date],
+                        ['checkout_date', '>=', $checkout_date],
+                    ])->orWhere([
+                        ['checkin_date', '>', $checkin_date],
+                        ['checkin_date', '<', $checkout_date],
+                    ])->orWhere([
+                        ['checkout_date', '>', $checkin_date],
+                        ['checkout_date', '<', $checkout_date],
+                    ]);
+                })
+                ->count();
+
+            if ($count_all_rooms - $count_booked_rooms < $item['quantity']) {
+                return 'room_type_id ' . $item['room_type_id'] . ' hết phòng';
             }
-            
+
             // $price = RoomType::where('id', $item['room_type_id'])->select('price_per_night')->get();
             // $total_price += $total_date * $price[0]->price_per_night * $item['quantity'];
-        }        
+        }
         $booking = new Booking([
             'checkin_date' =>  $checkin_date,
             'checkout_date' => $checkout_date,
@@ -123,18 +123,18 @@ class BookingController extends Controller
         $booking->update(['booking_number' => 'HD' . $booking->id . '_' . random_int('10000000', '99999999')]);
 
         foreach ($validated['items'] as $item) {
-            for ($i=0; $i < $item['quantity']; $i++) { 
+            for ($i = 0; $i < $item['quantity']; $i++) {
                 BookingDetail::create([
                     'booking_id' => $booking->id,
                     'room_type_id' => $item['room_type_id'],
-                ]);   
-            }   
+                ]);
+            }
         }
 
         return MessageStatusAPI::store();
     }
 
-    
+
 
     public function confirmBooking(Request $request, $id)
     {
@@ -143,7 +143,7 @@ class BookingController extends Controller
             // $validated = $request->all();
             // $rooms_id = $request->room_id;
             $items = $request->all();
-            $booking_details = BookingDetail::where('booking_id', $id)->get();            
+            $booking_details = BookingDetail::where('booking_id', $id)->get();
 
             foreach ($items as $item) {
                 foreach ($item['room_id'] as $room) {
@@ -155,11 +155,11 @@ class BookingController extends Controller
                             break;
                         }
                     }
-                } 
+                }
             }
-            foreach ($booking_details as $booking_detail){
+            foreach ($booking_details as $booking_detail) {
                 if ($booking_detail->room_id == '') {
-                    foreach ($booking_details as $booking_detail2){
+                    foreach ($booking_details as $booking_detail2) {
                         $booking_detail2->update([
                             'room_id' => null
                         ]);
@@ -168,8 +168,6 @@ class BookingController extends Controller
                 }
             }
             return 'Xác nhận thành công!';
-
         }
     }
-
 }

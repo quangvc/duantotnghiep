@@ -16,7 +16,7 @@ class KeywordCheckMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        $keywords = ['bad', 'inappropriate', 'sex', 'http', 'shope']; // Các từ khóa cần kiểm tra
+        $keywords = ['bad', 'inappropriate', 'sex', 'http', 'shope', 'địt mẹ']; // Các từ khóa cần kiểm tra
 
         $content = $request->input('content'); // Giả sử nội dung cần kiểm tra là trường 'content'
 

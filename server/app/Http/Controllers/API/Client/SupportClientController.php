@@ -29,10 +29,4 @@ class SupportClientController extends Controller
         $Support->update($request->all());
         return MessageStatusAPI::update();
     }
-    public function destroy($id)
-    {
-        $Support = Support::findOrFail($id);
-        $Support->delete();
-        return MessageStatusAPI::destroy();
-    }
 }
