@@ -228,7 +228,8 @@ Route::group(['prefix' => 'client'], function () {
     Route::group(
         ['prefix' => 'image', 'controller' => ImageClientController::class],
         function () {
-            Route::get('/', 'index');
+            Route::get('/hotel/{id}', 'indexHotel');
+            Route::get('/room-type/{id}', 'indexRoomType');
         }
     );
     Route::group(
