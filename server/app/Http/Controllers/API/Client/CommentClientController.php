@@ -14,14 +14,14 @@ use Illuminate\Support\Facades\DB;
 class CommentClientController extends Controller
 {
     //
-    public function index()
+    public function index($blog_id)
     {
-        $comment = Comment::all();
+        $comment = Comment::where('blog_id', '=', $blog_id)->get();
         return CommentResource::collection($comment);
     }
     public function store(CreateCommentRequest $request)
     {
-        if(Auth::check()){
+        if (Auth::check()) {
             $userId = auth()->user()->id;
             // Lưu bình luận vào cơ sở dữ liệu
             $comment = new Comment;
@@ -29,18 +29,26 @@ class CommentClientController extends Controller
             $comment->blog_id = $request->input('blog_id');
             $comment->user_id = $userId;
             $comment->save();
-            
+
             // Trả về phản hồi thành công
             return response()->json(['message' => 'Bình luận đã được thêm thành công'], 201);
-        }else{
+        } else {
             return response()->json(['message' => 'Bạn cần đăng nhập để thêm bình luận'], 401);
         }
-    
     }
-    public function reply(Request $request, $id){
-        if(Auth::check()){
+    public function listReply($parent_id)
+    {
+        if ($parent_id) {
+            $reply = Comment::where('parent_id', '=', $parent_id)->get();
+            return CommentResource::collection($reply);
+        }
+        return MessageStatusAPI::notFound();
+    }
+    public function reply(Request $request, $id)
+    {
+        if (Auth::check()) {
             $parentComment = Comment::find($id);
-             // Lấy ID của người dùng hiện tại
+            // Lấy ID của người dùng hiện tại
             $userId = auth()->user()->id;
 
             // Lưu bình luận trả lời vào cơ sở dữ liệu
@@ -56,9 +64,9 @@ class CommentClientController extends Controller
 
             // Trả về phản hồi thành công
             return response()->json(['message' => 'Trả lời bình luận thành công'], 201);
-    } else {
-        // Trả về phản hồi lỗi nếu người dùng chưa đăng nhập
-        return response()->json(['message' => 'Bạn cần đăng nhập để trả lời bình luận'], 401);
-    }
+        } else {
+            // Trả về phản hồi lỗi nếu người dùng chưa đăng nhập
+            return response()->json(['message' => 'Bạn cần đăng nhập để trả lời bình luận'], 401);
+        }
     }
 }

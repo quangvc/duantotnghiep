@@ -21,7 +21,10 @@ class BlogClientController extends Controller
     }
     public function show($slug)
     {
-        $blog = Blog::where('active', '=', '1')->where('slug', $slug)->first();
+        $blog = Blog::where('active', '=', '1')
+            ->where('slug', $slug)
+            ->orderBy('created_at', 'desc')
+            ->first();
         if ($blog) {
             return new BlogResource($blog);
         } else {
