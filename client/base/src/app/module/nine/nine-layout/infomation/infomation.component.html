@@ -1,0 +1,52 @@
+<nz-modal
+  [(nzVisible)]="displayInf"
+  nzTitle="Thông tin cá nhân"
+  nzWidth="600px"
+  (nzOnCancel)="handleCancel()"
+  (nzOnOk)="handleOk()">
+  <ng-container *nzModalContent>
+    <div class="row">
+
+      <div class="col-6">
+        <img nz-image width="200px" height="200px"
+            nzSrc="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
+            alt=""
+        />
+      </div>
+
+      <div class="col-6">
+        <p>
+          <b>Email: </b>
+          <span>{{auth.email}}</span>
+        </p>
+
+        <p>
+          <b>Tên người dùng: </b>
+          <span>{{auth.name}}</span>
+        </p>
+
+        <p>
+          <b>Giới tính: </b>
+          <span>{{auth.gender}}</span>
+        </p>
+
+        <p>
+          <b>Số điện thoại: </b>
+          <span>{{auth.phone_number}}</span>
+        </p>
+
+        <p>
+          <b>Kích hoạt: </b>
+          <span>{{auth.active}}</span>
+        </p>
+
+        <p>
+          <b>Khách sạn: </b>
+          <span>{{auth.hotel_id}}</span>
+        </p>
+
+      </div>
+
+    </div>
+  </ng-container>
+</nz-modal>

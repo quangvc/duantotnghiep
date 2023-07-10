@@ -20,6 +20,7 @@ import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 import { NzSwitchModule } from 'ng-zorro-antd/switch';
 import { NzImageModule } from 'ng-zorro-antd/image';
 import { NzDividerModule } from 'ng-zorro-antd/divider';
+import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 
 @NgModule({
   imports: [],
@@ -46,7 +47,8 @@ import { NzDividerModule } from 'ng-zorro-antd/divider';
     NzPopconfirmModule,
     NzSwitchModule,
     NzImageModule,
-    NzDividerModule
+    NzDividerModule,
+    NzDropDownModule
   ],
 })
 export class SharedModule {}

@@ -22,6 +22,10 @@ export class NineLayoutComponent implements OnInit {
 
   menus: MenuItem[] = []
 
+  username = Auth.User('user').name;
+
+  displayInf: boolean = false;
+
   ngOnInit() {
     this.getMenus();
   }
@@ -134,6 +138,14 @@ export class NineLayoutComponent implements OnInit {
 
   confirm(): void {
     this.logOut();
+  }
+
+  viewInf(){
+    this.displayInf = true;
+  }
+
+  eventSubmit(event:any){
+    this.displayInf = false;
   }
 
   cancel(): void {
