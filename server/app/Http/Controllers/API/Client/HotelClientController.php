@@ -34,6 +34,6 @@ class HotelClientController extends Controller
         if (!$hotelDetail) {
             return MessageStatusAPI::notFound();
         }
-        return HotelResource::collection($hotels);
+        return HotelResource::collection($hotelDetail);
     }
 }
