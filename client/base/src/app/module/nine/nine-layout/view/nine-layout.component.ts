@@ -95,6 +95,14 @@ export class NineLayoutComponent implements OnInit {
           {
             label: "Quản lý blog",
             routerLink: "blogs",
+          },
+          {
+            label: "Quản lý bình luận",
+            routerLink: "comments",
+          },
+          {
+            label: "Quản lý Feedback",
+            routerLink: "feedbacks",
           }
         ]
       },
