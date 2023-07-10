@@ -15,6 +15,7 @@ export const IMAGE = "image"
 export const COUPONS = "coupons"
 export const BLOGS = "blogs"
 export const COMMENTS = "comments"
+export const FEEDBACK = "feedback"
 export const BANNERS = "banners"
 
 export const SUCCESS = "success"

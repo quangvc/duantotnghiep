@@ -2,6 +2,7 @@
   "action": "Hành động",
   "status": "Trạng thái",
   "description": "Mô tả",
+  "rate": "Đánh giá",
 
   "created_at": "Ngày tạo",
   "updated_at": "Ngày cập nhật",
@@ -62,6 +63,7 @@
     "quantity": "Số lượng"
   },
   "blog": {
+    "name": "Bài viết",
     "title": "Tiêu đề",
     "content": "Nội dung",
     "image": "Hình ảnh",
@@ -83,6 +85,10 @@
     "guest_email": "Email Khách hàng",
     "guest_phone": "Số điện thoại",
     "total_price": "Tổng giá"
+  },
+  "comments": {
+    "user_name": "Tên người dùng",
+    "content": "Nội dung"
   }
 
 }

@@ -2,21 +2,21 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ADMIN, REGIONS } from '../model/url.class';
+import { Auth } from 'src/app/auth/_aShared/auth.class';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RegionsService {
 
-  sessionUser:any = sessionStorage.getItem('user');
-  user:any = JSON.parse(this.sessionUser);
+  token = Auth.User('token');
 
   private API_URL = `http://127.0.0.1:8000/api/${ADMIN}`;
 
   private httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${this.user.token}`
+      'Authorization': `Bearer ${this.token}`
     })
   }
 

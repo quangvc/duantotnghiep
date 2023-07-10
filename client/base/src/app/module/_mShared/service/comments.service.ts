@@ -1,13 +1,13 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ADMIN, BANNERS } from '../model/url.class';
-import { Observable } from 'rxjs';
 import { Auth } from 'src/app/auth/_aShared/auth.class';
+import { ADMIN, COMMENTS } from '../model/url.class';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
-export class BannersService {
+export class CommentsService {
 
   token = Auth.User('token');
 
@@ -21,18 +21,18 @@ export class BannersService {
 
   constructor(private http: HttpClient){}
 
-  getBanners(): Observable<any>{
-    const url = `${this.API_URL}/${BANNERS}`;
+  getComments(): Observable<any>{
+    const url = `${this.API_URL}/${COMMENTS}`;
     return this.http.get<any>(url, this.httpOptions);
   }
 
-  createBanner(data: any): Observable<any>{
-    const url = `http://127.0.0.1:8000/api/admin/banners/`;
-    return this.http.post<any>(url, data, this.httpOptions);
+  findOne(id:any): Observable<any>{
+    const url = `${this.API_URL}/${COMMENTS}/${id}`;
+    return this.http.get<any>(url, this.httpOptions);
   }
 
-  deleteBanner(id:any): Observable<any>{
-    const url = `http://127.0.0.1:8000/api/admin/banners/${id}`;
+  delComment(id: any): Observable<any>{
+    const url = `${this.API_URL}/${COMMENTS}/${id}`;
     return this.http.delete<any>(url, this.httpOptions);
   }
 
