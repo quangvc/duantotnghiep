@@ -15,6 +15,8 @@ export class NineBookingsComponent implements OnInit {
     private bookingService: BookingsService
   ) { }
 
+  displayBookingForm: boolean = false;
+
   bookings: any[] = [];
 
   bookingFilters: any[] = [...this.bookings]
@@ -23,7 +25,9 @@ export class NineBookingsComponent implements OnInit {
 
   tabs = [1, 2, 3];
 
-  statusOptions: any[] = [{text: "Tất cả", value: ""}];
+  statusOptions: any[] = [{text: "Tất cả", value: 0}];
+
+  bookingId: any;
 
   ngOnInit() {
     this.checkRole();
@@ -46,34 +50,51 @@ export class NineBookingsComponent implements OnInit {
     this.statusOptions.push(...Enum.convertEnum(StatusBookings));
   }
 
+  convertTextStatus(){
+    for (const booking of this.bookingFilters) {
+      if(booking.status == StatusBookings.Unconfirmed){
+        booking.txtStatus = "Đang chờ duyệt"
+      }
+      if(booking.status == StatusBookings.Confirmed){
+        booking.txtStatus = "Đã duyệt"
+      }
+      if(booking.status == StatusBookings.Using){
+        booking.txtStatus = "Đang sử dụng"
+      }
+      if(booking.status == StatusBookings.Clean){
+        booking.txtStatus = "Đang dọn dẹp"
+      }
+      if(booking.status == StatusBookings.Cancel){
+        booking.txtStatus = "Đã hủy"
+      }
+    }
+  }
+
   getBookings(){
     let obs = this.bookingService.getBookings().subscribe({
       next: (res) => {
-        this.bookings = res.data;
+        this.bookingFilters = res.data;
+
+        this.convertTextStatus();
 
         for (const statusOption of this.statusOptions) {
-          if(statusOption.value == ""){
-            this.bookingFilters = res.data;
+          if(statusOption.value == 0){
+            statusOption.text = "Tất cả"
           }
           if(statusOption.value == StatusBookings.Unconfirmed){
             statusOption.text = "Đang chờ duyệt"
-            this.bookingFilters =  this.bookings.filter(bk => bk.status == StatusBookings.Unconfirmed);
           }
           if(statusOption.value == StatusBookings.Confirmed){
             statusOption.text = "Đã duyệt"
-            this.bookingFilters =  this.bookings.filter(bk => bk.status == StatusBookings.Confirmed);
           }
           if(statusOption.value == StatusBookings.Using){
             statusOption.text = "Đang sử dụng"
-            this.bookingFilters =  this.bookings.filter(bk => bk.status == StatusBookings.Using);
           }
           if(statusOption.value == StatusBookings.Clean){
             statusOption.text = "Đang dọn dẹp"
-            this.bookingFilters =  this.bookings.filter(bk => bk.status == StatusBookings.Clean);
           }
           if(statusOption.value == StatusBookings.Cancel){
             statusOption.text = "Đã hủy"
-            this.bookingFilters =  this.bookings.filter(bk => bk.status == StatusBookings.Cancel);
           }
         }
 
@@ -83,24 +104,45 @@ export class NineBookingsComponent implements OnInit {
   }
 
   valueFilter(value:any){
-    if(value.value == ""){
-      this.bookingFilters = this.bookings;
-    }
-    if(value.value == StatusBookings.Unconfirmed){
-      this.bookingFilters =  this.bookings.filter(bk => bk.status == StatusBookings.Unconfirmed);
-    }
-    if(value.value == StatusBookings.Confirmed){
-      this.bookingFilters =  this.bookings.filter(bk => bk.status == StatusBookings.Confirmed);
-    }
-    if(value.value == StatusBookings.Using){
-      this.bookingFilters =  this.bookings.filter(bk => bk.status == StatusBookings.Using);
-    }
-    if(value.value == StatusBookings.Clean){
-      this.bookingFilters =  this.bookings.filter(bk => bk.status == StatusBookings.Clean);
-    }
-    if(value.value == StatusBookings.Cancel){
-      this.bookingFilters =  this.bookings.filter(bk => bk.status == StatusBookings.Cancel);
-    }
+    let obs = this.bookingService.getBookings().subscribe((res) => {
+      let bookings:any[] = res.data;
+      console.log(value)
+      let status:number = 0;
+
+      if(value == StatusBookings.Unconfirmed){
+        status = StatusBookings.Unconfirmed;
+      }
+      if(value == StatusBookings.Confirmed){
+        status = StatusBookings.Confirmed;
+      }
+      if(value == StatusBookings.Using){
+        status = StatusBookings.Using;
+      }
+      if(value == StatusBookings.Clean){
+        status = StatusBookings.Clean;
+      }
+      if(value == StatusBookings.Cancel){
+        status = StatusBookings.Cancel;
+      }
+
+      this.bookingFilters = bookings.filter(bk => bk.status == status);
+
+      if(value == 0){
+        this.bookingFilters = bookings.filter(bk => bk);
+      }
+
+      this.convertTextStatus();
+    })
+
   }
 
+  updateStatus(value:any){
+    this.displayBookingForm = true;
+    this.bookingId = value;
+  }
+
+  eventSubmit(event:any){
+    this.displayBookingForm = false;
+    this.getBookings();
+  }
 }

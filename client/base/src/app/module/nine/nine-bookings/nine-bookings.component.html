@@ -6,6 +6,7 @@
         <thead>
           <tr>
             <th>#</th>
+            <th>{{'bookings.booking_number' | translate}}</th>
             <th>{{'bookings.user' | translate}}</th>
             <th>{{'bookings.checkin_date' | translate}}</th>
             <th>{{'bookings.checkout_date' | translate}}</th>
@@ -18,14 +19,17 @@
         <tbody>
           <tr *ngFor="let data of basicTable.data; let i = index">
             <td>{{ i + 1 }}</td>
+            <td>{{ data.booking_number }}</td>
             <td>{{ data.guest_name }}</td>
             <td>{{ data.checkin_date }}</td>
             <td>{{ data.checkout_date }}</td>
             <td>{{ data.coupon }}</td>
             <td>{{ data.note }}</td>
-            <td><nz-switch [(ngModel)]="data.status" [disabled]="!role"></nz-switch></td>
+            <td><nz-tag [nzColor]="'#f50'">{{data.txtStatus}}</nz-tag></td>
             <td *ngIf="role">
-
+              <button nz-button nzType="primary" [nzSize]="'large'" nzShape="circle" (click)="updateStatus(data.id)">
+                <span nz-icon nzType="edit" nzTheme="outline"></span>
+              </button>
             </td>
           </tr>
         </tbody>
@@ -34,3 +38,11 @@
     </nz-tab>
   </nz-tabset>
 </div>
+
+<booking-form
+  *ngIf="displayBookingForm"
+  [displayBookingForm]="displayBookingForm"
+  [bookingId]="bookingId"
+  (closeModal)="eventSubmit($event)"
+>
+</booking-form>

@@ -72,7 +72,7 @@
     "image": "Hình ảnh"
   },
   "bookings": {
-    "booking_number": "Đặt phòng",
+    "booking_number": "Mã phòng",
     "user": "Người dùng",
     "checkin_date": "Ngày vào",
     "checkout_date": "Ngày ra",
