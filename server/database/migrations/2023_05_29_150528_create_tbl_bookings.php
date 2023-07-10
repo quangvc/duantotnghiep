@@ -26,7 +26,7 @@ return new class extends Migration
             $table->string('guest_phone')->nullable();
             $table->integer('total_price')->nullable();
             $table->integer('comment_id');
-            $table->tinyInteger('status')->default(1);
+            $table->tinyInteger('status')->default(0);
             $table->timestamps();
         });
     }

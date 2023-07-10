@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PaymentController;
 
 
 /*
@@ -17,6 +18,11 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('/test', function () {
+    return view('payment');
+});
+Route::get('/payment-return', [PaymentController::class, 'paymentReturn']);
+Route::post('/vnpay-payment', [PaymentController::class, 'vnpay_payment'])->name('payment');
 
 Route::get('/', function () {
     return view('welcome');

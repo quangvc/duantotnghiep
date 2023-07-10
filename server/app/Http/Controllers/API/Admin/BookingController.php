@@ -12,6 +12,7 @@ use App\Models\RoomType;
 use App\Traits\MessageStatusAPI;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use App\Http\Controllers\PaymentController;
 
 class BookingController extends Controller
 {
@@ -71,8 +72,6 @@ class BookingController extends Controller
         return $request->query('people_quantity');
         $checkin_date = Carbon::parse($validated['checkin_date']);
         $checkout_date = Carbon::parse($validated['checkout_date']);
-        // $total_date = $checkout_date->diffInDays($checkin_date);
-        // $total_price = 0;
 
         foreach ($validated['items'] as $item) {
 
@@ -105,10 +104,8 @@ class BookingController extends Controller
             if ($count_all_rooms - $count_booked_rooms < $item['quantity']) {
                 return 'room_type_id ' . $item['room_type_id'] . ' hết phòng';
             }
-
-            // $price = RoomType::where('id', $item['room_type_id'])->select('price_per_night')->get();
-            // $total_price += $total_date * $price[0]->price_per_night * $item['quantity'];
-        }
+            
+        }        
         $booking = new Booking([
             'checkin_date' =>  $checkin_date,
             'checkout_date' => $checkout_date,
@@ -164,10 +161,11 @@ class BookingController extends Controller
                             'room_id' => null
                         ]);
                     }
-                    return 'Lỗi. Xác nhận thất bại!';
+                    return 'Lỗi. Xếp phòng thất bại!';
                 }
             }
-            return 'Xác nhận thành công!';
+            return 'Xếp phòng thành công!';
+
         }
     }
 }

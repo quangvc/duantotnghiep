@@ -30,6 +30,8 @@ use App\Http\Controllers\API\Client\RoomClientController;
 use App\Http\Controllers\API\Client\RoomTypesClientController;
 use App\Http\Controllers\API\Client\UserClientController;
 use App\Http\Controllers\Api\Client\CommentClientController;
+use App\Http\Controllers\PaymentController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -55,6 +57,8 @@ Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logo
 Route::prefix('profile')->controller(ProfileController::class)->group(function () {
     Route::put('/change-password', 'changePassword');
 });
+
+Route::post('/vnpay-payment', [PaymentController::class, 'vnpay_payment']);
 
 
 Route::group(['prefix' => 'admin'], function () {

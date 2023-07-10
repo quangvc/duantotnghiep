@@ -19,23 +19,32 @@ class CommentClientController extends Controller
         $comment = Comment::where('blog_id', '=', $blog_id)->get();
         return CommentResource::collection($comment);
     }
+    
     public function store(CreateCommentRequest $request)
     {
-        if (Auth::check()) {
-            $userId = auth()->user()->id;
-            // Lưu bình luận vào cơ sở dữ liệu
+        if(Auth::check()){
+            $request->validated();
+            $validated = request()->all();
+
             $comment = new Comment;
-            $comment->content = $request->input('content');
-            $comment->blog_id = $request->input('blog_id');
-            $comment->user_id = $userId;
+            $comment->user_id = auth()->user()->id;
+            $comment->content = $validated['content'];
+            $comment->blog_id = $validated['blog_id'];
+            if ($request->has('cmt_id')) {
+                $comment->parent_id = $request->cmt_id;
+            }
             $comment->save();
 
             // Trả về phản hồi thành công
-            return response()->json(['message' => 'Bình luận đã được thêm thành công'], 201);
+
+            return MessageStatusAPI::store();
         } else {
-            return response()->json(['message' => 'Bạn cần đăng nhập để thêm bình luận'], 401);
+            return abort(401, 'Unauthorized. User is not logged in');
         }
+            
     }
+
+
     public function listReply($parent_id)
     {
         if ($parent_id) {
@@ -69,4 +78,29 @@ class CommentClientController extends Controller
             return response()->json(['message' => 'Bạn cần đăng nhập để trả lời bình luận'], 401);
         }
     }
+
+    
+
+    // public function update(CreateCommentRequest $request, $id)
+    // {
+    //     $cmt = Comment::find($id);
+    //     $user_id = auth()->user()->id;
+    //     if ($user_id !== $cmt->user_id) {
+    //         $cmt->update($request->content);
+    //         return MessageStatusAPI::update();
+    //     }
+    //     return abort(403, 'Forbidden: You don’t have permission');
+    // }
+
+            
+    // public function destroy($id)
+    // {
+    //     $cmt = Comment::find($id);
+    //     $role = auth()->user()->getRoleNames()->first();
+    //     if ($role == 'Admin' || auth()->user()->id == $cmt->blog->user_id || auth()->user()->id == $cmt->user_id) { 
+    //         $cmt->delete();
+    //         return MessageStatusAPI::destroy();
+    //     }
+    //     return abort(403, 'Forbidden: You don’t have permission');
+    // }
 }

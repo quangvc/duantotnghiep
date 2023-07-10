@@ -12,7 +12,6 @@ use Illuminate\Support\Facades\DB;
 
 class CommentController extends Controller
 {
-    //
     public function index()
     {
         $comment = Comment::all();
@@ -36,16 +35,7 @@ class CommentController extends Controller
         $comment->save();
         return MessageStatusAPI::store();
     }
-    // public function update(CreateCommentRequest $request, $id)
-    // {
-    //     $cmt = Comment::find($id);
-    //     $user_id = auth()->user()->id;
-    //     if ($user_id !== $cmt->user_id) {
-    //         return MessageStatusAPI::notFound();
-    //     }
-    //     $cmt->update($request->all());
-    //     return MessageStatusAPI::update();
-    // }
+    
     public function destroy($id)
     {
         $cmt = Comment::find($id);
