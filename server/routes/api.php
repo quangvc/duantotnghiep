@@ -210,6 +210,7 @@ Route::group(['prefix' => 'client'], function () {
         function () {
             Route::get('/', 'index');
             Route::get('/{id}', 'show');
+            Route::get('/{hotel_id}/count', 'countRoom');
         }
     );
 

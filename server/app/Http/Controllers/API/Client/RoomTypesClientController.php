@@ -28,4 +28,21 @@ class RoomTypesClientController extends Controller
         }
         return MessageStatusAPI::notFound();
     }
+
+    public function countRoom($hotel_id)
+    {
+        $roomtypes = RoomType::where('hotel_id', $hotel_id)->get();
+        foreach ($roomtypes as $roomtype) {
+            $count = Room::where('room_type_id', $roomtype->id)->count();
+            $data[] = [
+                'room_type' => $roomtype->name,
+                'quantity' => $count
+            ];
+        }
+
+        return $data;
+    }
+
+
+
 }
