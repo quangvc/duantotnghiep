@@ -69,7 +69,7 @@ class BookingController extends Controller
             $guest_phone =  $validated['guest_phone'];
             $user_id =  null;
         }
-        return $request->query('people_quantity');
+        // return $request->query('people_quantity');
         $checkin_date = Carbon::parse($validated['checkin_date']);
         $checkout_date = Carbon::parse($validated['checkout_date']);
 
@@ -83,7 +83,10 @@ class BookingController extends Controller
 
             // đếm số phòng đã được đặt trong khoảng thời gian mà khách chọn theo loại
             $count_booked_rooms = BookingDetail::join('tbl_bookings', 'tbl_bookings.id', '=', 'booking_id')
-                ->where('room_type_id', $item['room_type_id'])
+                ->where([
+                    ['room_type_id', $item['room_type_id']],
+                    ['tbl_bookings.status' => 1],
+                ])
                 ->where(function ($query) use ($checkin_date, $checkout_date) {
                     $query->where([
                         ['checkin_date', '>=', $checkin_date],
