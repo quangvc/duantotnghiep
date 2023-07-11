@@ -44,7 +44,6 @@ class CommentClientController extends Controller
             
     }
 
-
     public function listReply($parent_id)
     {
         if ($parent_id) {
@@ -52,34 +51,7 @@ class CommentClientController extends Controller
             return CommentResource::collection($reply);
         }
         return MessageStatusAPI::notFound();
-    }
-    public function reply(Request $request, $id)
-    {
-        if (Auth::check()) {
-            $parentComment = Comment::find($id);
-            // Lấy ID của người dùng hiện tại
-            $userId = auth()->user()->id;
-
-            // Lưu bình luận trả lời vào cơ sở dữ liệu
-            $reply = new Comment;
-            $reply->content = $request->input('content');
-            $reply->blog_id = $request->input('blog_id');
-            $reply->user_id = $userId;
-
-            // Lưu ID của bình luận cha
-            $reply->parent_id = $parentComment->id;
-
-            $reply->save();
-
-            // Trả về phản hồi thành công
-            return response()->json(['message' => 'Trả lời bình luận thành công'], 201);
-        } else {
-            // Trả về phản hồi lỗi nếu người dùng chưa đăng nhập
-            return response()->json(['message' => 'Bạn cần đăng nhập để trả lời bình luận'], 401);
-        }
-    }
-
-    
+    }    
 
     // public function update(CreateCommentRequest $request, $id)
     // {
