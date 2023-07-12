@@ -14,7 +14,7 @@ class BannerController extends Controller
 {
     public function index()
     {
-        $banner = Banner::all();
+        $banner = Banner::orderBy('status', 'DESC')->get();
         return BannerResource::collection($banner);
     }
 
