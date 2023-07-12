@@ -4,6 +4,7 @@ export const USERS = "users"
 
 export const HOTELS = "hotels"
 export const REGIONS = "regions"
+export const REGION = "region"
 export const ROOM_TYPES = "room-types"
 export const ROOMS = "rooms"
 
