@@ -1,6 +1,7 @@
 import { RouterModule, Routes } from "@angular/router";
 import { NotFoundComponent } from "../not-found/not-found.component";
 import { MainComponent } from "./main/main.component";
+import { BookingFormComponent } from "./pages/booking-form/booking-form.component";
 
 const routes: Routes = [
   {path: '', component: MainComponent, children: [
@@ -13,10 +14,15 @@ const routes: Routes = [
     { path: 'hotels/region/:region_id', loadChildren: () => import('./pages/hotel/hotel.module').then(m => m.HotelModule)},
     { path: 'hotel/:id', loadChildren: () => import('./pages/hotel-detail/hotel-detail.module').then(m => m.HotelDetailModule)},
     { path: 'filter', loadChildren: () => import('./pages/filter-page/filter-page.module').then(m => m.FilterPageModule)},
-    // {path: 'booking', component: BookingFormComponent, redirectTo: '/booking/bookingform', pathMatch: 'full', children: [
-    //   { path: 'review', loadChildren: () => import('./pages/booking-form/review/review.module').then(m => m.ReviewModule)},
-    //   { path: 'bookingform', loadChildren: () => import('./pages/booking-form/booking/booking.module').then(m => m.BookingModule)}
-    // ]},
+    {
+      path: 'booking',
+      redirectTo: 'booking/bookingform', // Chuyển hướng đến 'booking/review' khi người dùng truy cập '/booking'
+      pathMatch: 'full',
+    },
+    {path: 'booking', component: BookingFormComponent, children: [
+      { path: 'review', loadChildren: () => import('./pages/booking-form/review/review.module').then(m => m.ReviewModule)},
+      { path: 'bookingform', loadChildren: () => import('./pages/booking-form/booking/booking.module').then(m => m.BookingModule)}
+    ]},
 
   ]},
 

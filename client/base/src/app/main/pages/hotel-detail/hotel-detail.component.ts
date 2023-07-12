@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { HotelsService } from 'src/app/module/_mShared/service/hotels.service';
 import { HotelClientService } from '../../services/hotelClient.service';
 import { ImagesService } from 'src/app/module/_mShared/service/images.service';
+import { ImagesClientService } from '../../services/images-client.service';
 @Component({
   selector: 'app-hotel-detail',
   templateUrl: './hotel-detail.component.html',
@@ -15,7 +16,7 @@ export class HotelDetailComponent implements OnInit {
   static HotelBookingRoomComponent: any[] | Type<any>;
 
   constructor(
-    private imageService: ImagesService,
+    private ImagesClientService: ImagesClientService,
     private route: ActivatedRoute,
     private HotelClientService: HotelClientService,
 
@@ -24,6 +25,7 @@ export class HotelDetailComponent implements OnInit {
   images: any[] = [];
 
   hotels: any[] = [];
+  hotelRoomTypeData: any[] = [];
   hotel: any;
   hotel_id: any;
 
@@ -73,27 +75,28 @@ export class HotelDetailComponent implements OnInit {
         next: (res) => {
           this.hotels = res.data;
           this.hotel_id = res.data[0].id;
+          this.hotelRoomTypeData = res.data[0].room_type;
           console.log(this.hotel_id);
-
+          console.log(this.hotelRoomTypeData);
         },
         error: (err) => {{
           console.log('Đã xảy ra lỗi khi gọi API:', err);
         }}
       });
     });
-    this.getImages();
+    // this.getImages();
   }
-  getImages(){
-    this.imageService.getImages().subscribe({
-      next: (res) => {
-        this.images = res;
-        this.images = this.images.filter(img => img.hotel_id == this.hotel_id);
-        console.log(this.images)
-      },
-      error: (err) => {{
-        console.log('Đã xảy ra lỗi khi gọi API:', err);
-      }}
-    })
-  }
+  // getImages(){
+  //   this.ImagesClientService.getImagesRoomType().subscribe({
+  //     next: (res) => {
+  //       this.images = res;
+  //       this.images = this.images.filter(img => img.hotel_id == this.hotel_id);
+  //       console.log(this.images)
+  //     },
+  //     error: (err) => {{
+  //       console.log('Đã xảy ra lỗi khi gọi API:', err);
+  //     }}
+  //   })
+  // }
 
 }

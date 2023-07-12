@@ -92,7 +92,7 @@ export class BlogDetailComponent implements OnInit{
 
 
   getComment() {
-    let obs = this.CommentService.getComments().subscribe({
+    let obs = this.CommentService.getCommentByBlog(this.blogId).subscribe({
       next: (res) => {
         console.log(res.data);
 

@@ -39,14 +39,14 @@
 <!-- Hotel Detail Start -->
 <div class="container-xxl">
   <div class="container">
-    <div class="col-lg wow fadeInUp" data-wow-delay="0.3s">
+    <div class="col-lg wow fadeInUp" data-wow-delay="0.3s" *ngFor="let hotel of hotels">
 
       <!-- Start Preview -->
       <div id="preview" name="preview" class="room-item shadow rounded-4 overflow-hidden pb-4 mb-3">
         <div class="row">
           <div class="col">
             <!-- Start Thông tin -->
-            <div class="p-5" *ngFor="let hotel of hotels">
+            <div class="p-5" >
               <h3><strong>{{ hotel.hotel_name }}</strong></h3>
               <div class="d-flex mb-2">
                 <small class="bg-primary text-white rounded-5 py-1 px-3"><strong>Hotel</strong>
@@ -92,7 +92,7 @@
                     </div>
                 </ng-template>
             </p-galleria> -->
-            <p-galleria [value]="images" [numVisible]="5" [circular]="true" [showItemNavigators]="true" [showThumbnails]="false" [responsiveOptions]="responsiveOptions" [containerStyle]="{ 'max-width': '640px' }">
+            <p-galleria [value]="hotel.images" [numVisible]="5" [circular]="true" [showItemNavigators]="true" [showThumbnails]="false" [responsiveOptions]="responsiveOptions" [containerStyle]="{ 'max-width': '640px' }">
               <ng-template pTemplate="item" let-item>
                   <img [src]="'http://127.0.0.1:8000/Images/'+ item.path" style="width: 100%; display: block;" />
               </ng-template>
@@ -172,10 +172,9 @@
 
 
       <!-- Start Detail -->
-      <div class="room-item shadow rounded-4 overflow-hidden mb-3 p-5 ">
-
-        <!-- Start Thông tin -->
-        <h4><strong>Thông tin khu vực</strong></h4>
+      <!-- <div class="room-item shadow rounded-4 overflow-hidden mb-3 p-5 "> -->
+        <!-- Start Thông tin khu vực -->
+        <!-- <h4><strong>Thông tin khu vực</strong></h4>
         <div class="mb-2">
           <i class="fa fa-map-marker text-primary me-3"></i>
           <span>146 Giang Vo Str, Ba Dinh, Hanoi City., Giảng Võ, Quận Ba Đình, Hà Nội, Việt Nam, 100000</span>
@@ -185,11 +184,11 @@
             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3723.8639811788466!2d105.74421217512949!3d21.03812778061352!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x313454b991d80fd5%3A0x53cefc99d6b0bf6f!2sFPT%20Polytechnic%20Hanoi!5e0!3m2!1sen!2s!4v1686471336760!5m2!1sen!2s"
             width="100%" height="200" style="border:0;" allowfullscreen="" loading="lazy"
             referrerpolicy="no-referrer-when-downgrade"></iframe>
-        </div>
-        <!--  Location near -->
-        <div class="map row mt-5 w-100">
+        </div> -->
 
-          <!-- Left -->
+
+        <!--  Location near -->
+        <!-- <div class="map row mt-5 w-100">
           <div class="col-5">
             <h5 style="font-weight: bold;">Địa điểm lân cận</h5>
             <div class="d-flex flex-row justify-content-between py-2">
@@ -257,13 +256,11 @@
             </div>
           </div>
 
-          <!-- Mid -->
           <div class="col-2">
             <div class="m-auto h-auto" style="width: 1px; background-color: #cdd0d1;">
             </div>
           </div>
 
-          <!-- Right -->
           <div class="col-5">
             <h5 style="font-weight: bold;">Phổ biến trong khu vực</h5>
             <div class="d-flex flex-row justify-content-between py-2 ">
@@ -339,16 +336,15 @@
         <div class="text-center mt-5">
           <span style="color: #687176; font-weight: 500;">Khoảng cách hiển thị dựa trên đường chim bay. Khoảng cách di
             chuyển thực tế có thể khác. </span>
-        </div>
+        </div> -->
         <!-- End Thông tin -->
-        <hr>
+        <!-- <hr> -->
+      <!-- </div> -->
+      <!-- End Detail -->
 
-
-      </div>
-      <!-- Start Detail -->
 
       <!-- Book room start -->
-      <app-hotel-booking-room></app-hotel-booking-room>
+      <app-hotel-booking-room [hotelRoomTypeData]=hotelRoomTypeData></app-hotel-booking-room>
       <!-- Book room end -->
 
       <!-- Start Policy -->

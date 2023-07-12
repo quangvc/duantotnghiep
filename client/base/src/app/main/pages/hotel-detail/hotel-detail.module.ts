@@ -15,6 +15,9 @@ import { ToastModule } from 'primeng/toast';
 import { DialogModule } from 'primeng/dialog';
 import { ButtonModule } from 'primeng/button';
 import { RoomTypeDetailComponent } from './hotel-booking-room/room-type-detail/room-type-detail.component';
+import { CalendarModule } from 'primeng/calendar';
+import { HotelBookingRoomModule } from './hotel-booking-room/hotel-booking-room.module';
+import { FormsModule } from '@angular/forms';
 
 
 
@@ -30,7 +33,10 @@ import { RoomTypeDetailComponent } from './hotel-booking-room/room-type-detail/r
     DynamicDialogModule,
     ToastModule,
     DialogModule,
-    ButtonModule
+    ButtonModule,
+    CalendarModule,
+    FormsModule,
+    HotelBookingRoomModule
   ],
   declarations: [
     HotelDetailComponent,
@@ -39,6 +45,13 @@ import { RoomTypeDetailComponent } from './hotel-booking-room/room-type-detail/r
     HotelPolicyComponent,
     RoomTypeDetailComponent
   ],
+  exports: [
+    HotelDetailComponent,
+    HotelBookingRoomComponent,
+    HotelDetailAmenitiesComponent,
+    HotelPolicyComponent,
+    RoomTypeDetailComponent
+  ]
 
 })
 export class HotelDetailModule {}

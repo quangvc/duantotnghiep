@@ -4,7 +4,6 @@ import { MainComponent } from './main.component';
 import { MainRoutes } from './main.routing';
 import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
-import { LineClampComponent } from '../share/line-clamp/line-clamp.component';
 
 @NgModule({
   imports: [
@@ -15,7 +14,6 @@ import { LineClampComponent } from '../share/line-clamp/line-clamp.component';
     MainComponent,
     HeaderComponent,
     FooterComponent,
-    LineClampComponent,
   ]
 })
 export class MainModule { }

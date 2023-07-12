@@ -7,6 +7,8 @@ import { MainModule } from './main/main.module';
 import { MainGlobalRoutes } from './main-global.routing';
 import { BookingFormModule } from './pages/booking-form/booking-form.module';
 
+
+
 @NgModule({
   declarations: [
   ],
@@ -17,7 +19,7 @@ import { BookingFormModule } from './pages/booking-form/booking-form.module';
     BrowserAnimationsModule,
     MainModule,
     BookingFormModule,
-    MainGlobalRoutes
+    MainGlobalRoutes,
   ]
 })
 export class MainGlobalModule { }

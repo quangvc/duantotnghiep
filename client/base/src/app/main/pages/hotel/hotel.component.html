@@ -91,8 +91,13 @@
       <div class="col-lg wow fadeInUp" data-wow-delay="0.3s">
         <h2><strong>Các khách sạn được yêu thích ở Hà Nội</strong></h2>
         <div class="room-item shadow rounded-4 overflow-hidden mb-3" *ngFor="let data of hotels;">
-          <div class="position-relative">
-            <img class="img-fluid" src="../../../assets/image/room-2.jpg" alt="">
+          <div class="position-relative w-100" >
+            <div class="row">
+              <div class="col p-0" *ngFor="let image of data.images; let i=index">
+                <img style="width: 100%;" [src]="'http://127.0.0.1:8000/Images/'+image.path" alt="" *ngIf="i<3">
+              </div>
+
+            </div>
             <small
               class="position-absolute start-0 top-100 translate-middle-y bg-primary text-white rounded py-1 px-3 ms-4">Hotel</small>
           </div>
@@ -111,7 +116,11 @@
               <i class="fa fa-map-marker text-primary mt-1 me-3"></i>
               <p class="text-body mb-3">{{ data.hotel_address }}</p>
             </div>
-            <p class="text-body mb-3">{{ data.description }}.</p>
+            <!-- <line-clamp [row]="3">
+              <div #content>
+                <p class="text-body mb-3">{{ data.description }}.</p>
+              </div>
+            </line-clamp> -->
             <div class="d-flex justify-content-between">
               <a class="btn btn-sm btn-primary rounded py-2 px-4" href="/hotel/{{ data.id }}">View Detail</a>
             </div>

@@ -12,6 +12,7 @@ import { BlogClientService } from 'src/app/main/services/blogClient.service';
 @NgModule({
   declarations: [
     BlogDetailComponent,
+
   ],
   imports: [
     CommonModule,
