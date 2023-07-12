@@ -104,10 +104,10 @@ class BlogController extends Controller
     public function changeStatus($id)
     {
         $blog = Blog::find($id);
-        if ($blog->status == StatusEnum::DEACTIVE) {
-            $blog->update(['status' => StatusEnum::ACTIVE]);
+        if ($blog->active == StatusEnum::DEACTIVE) {
+            $blog->update(['active' => StatusEnum::ACTIVE]);
         } else {
-            $blog->update(['status' => StatusEnum::DEACTIVE]);
+            $blog->update(['active' => StatusEnum::DEACTIVE]);
         }
 
         return response([
