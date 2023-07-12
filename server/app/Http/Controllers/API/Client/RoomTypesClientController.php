@@ -66,11 +66,13 @@ class RoomTypesClientController extends Controller
                     ]);
                 })
                 ->count();
-
-            $data[] = [
-                'room_type' => $roomtype->name,
-                'quantity' => $count_all_rooms - $count_booked_rooms
-            ];
+                if ($count_all_rooms - $count_booked_rooms > 0) {
+                    $data[] = [
+                        'room_type' => $roomtype,
+                        'rooms_count' => $count_all_rooms - $count_booked_rooms
+                    ];
+                }
+            
         }
 
         return $data;

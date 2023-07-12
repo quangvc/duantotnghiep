@@ -25,6 +25,13 @@ class RegionController extends Controller
         $region = new Region([
             'name' =>  $validated['name'],
         ]);
+
+        if ($request->hasFile('image')) {
+            $file = $request->avatar;
+            $region->image = $file->hashName();
+            $file->move(base_path('public/Images/avatar'), $region->image);
+        }
+
         $region->save();
         return MessageStatusAPI::store();
     }
@@ -34,6 +41,9 @@ class RegionController extends Controller
         $region = Region::find($id);
 
         if ($region) {
+            if ($region->image != '' && file_exists(public_path('Images/regions/' . $region->image))) {
+                unlink(public_path('Images/regions/' . $region->image));
+            }
             $region->delete();
             return MessageStatusAPI::destroy();
         } else {
@@ -48,8 +58,20 @@ class RegionController extends Controller
         if (!$region) {
             return MessageStatusAPI::displayInvalidInput($region);
         }
+
+
+        if ($request->hasFile('image')) {
+            if ($region->image != '' && file_exists(public_path('Images/regions/' . $region->image))) {
+                unlink(public_path('Images/regions/' . $region->image));
+            }
+            $file = $request->avatar;
+            $region->image = $file->hashName();
+            $file->move(base_path('public/Images/avatar'), $region->image);
+        }
+
         $region->update([
             'name' => $validated['name'],
+            'image' => $validated['image']
         ]);
         return MessageStatusAPI::update();
     }
