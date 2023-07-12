@@ -48,7 +48,7 @@ use App\Http\Controllers\PaymentController;
 //     return $request->user();
 // });
 
-Route::post('/login', [AuthController::class, 'login']);
+Route::post('/login', [AuthController::class, 'login'])->middleware('throttle:5,2');
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/send-reset-link', [AuthController::class, 'sentResetLink'])->name('password.reset');
 
