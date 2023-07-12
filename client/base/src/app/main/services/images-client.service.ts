@@ -27,8 +27,8 @@ private API_URL = `http://127.0.0.1:8000/api`;
 //   }),
 // }
 
-getImages(): Observable<any>{
-  const url = `${this.API_URL}/${CLIENT}/${IMAGE}`;
+getImagesRoomType(id: any): Observable<any>{
+  const url = `${this.API_URL}/${CLIENT}/${IMAGE}/room-type/${id}`;
   return this.http.get<any>(url);
 }
 

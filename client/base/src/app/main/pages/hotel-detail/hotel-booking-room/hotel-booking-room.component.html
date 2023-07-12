@@ -24,24 +24,64 @@
       </div>
     </div>
     <hr>
-    <div class="d-flex flex-row justify-content-between">
-      <p class="highlight-text my-auto">Kết quả cho <strong>1</strong> phòng, <strong>1</strong> khách, ở từ <strong>11
-          Jun 2023</strong> trong <strong>2</strong> đêm. Có <strong>24</strong> lựa chọn phòng trống.</p>
-      <button class="highlight-button d-flex flex-row">
-        <i class="fa fa-search me-3 my-auto" aria-hidden="true"></i>
-        <p class="my-auto">Thay đổi tìm kiếm</p>
-      </button>
+    <div class="">
+      <div class="d-flex flex-row justify-content-between">
+        <p class="highlight-text my-auto">Kết quả cho <strong>1</strong> phòng, <strong>1</strong> khách, ở từ <strong>11
+            Jun 2023</strong> trong <strong>2</strong> đêm. Có <strong>24</strong> lựa chọn phòng trống.</p>
+        <button (click)="onclick()" type="button" class="highlight-button d-flex flex-row">
+          <i class="fa fa-search me-3 my-auto" aria-hidden="true"></i>
+          <p class="my-auto">{{ReadMore?"Thay đổi tìm kiếm":"Thôi"}}</p>
+        </button>
+      </div>
+
+      <!-- <button (click)="onclick()" type="button" class="btn  btn-danger">
+
+      </button> -->
+
+      <!--will create if condition my default it will
+        b hide on click it will toggle--->
+      <ng-container *ngIf="visible" >
+        <div class="container-fluid my-4">
+          <div class="container-fluid">
+            <div class="bg-white shadow" style="padding: 5px;">
+              <div class="row">
+                <div class="col-md-10">
+                  <div class="row">
+                    <div class="col">
+                      <p-calendar [(ngModel)]="rangeDates" selectionMode="range" dateFormat="dd-mm-yy" [touchUI]="true" [showIcon]="true" style="width: 100%;"></p-calendar>
+                    </div>
+                    <div class="col my-auto">
+                      <select class="form-select">
+                        <option selected>Adult</option>
+                        <option value="1">Adult 1</option>
+                        <option value="2">Adult 2</option>
+                        <option value="3">Adult 3</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-2  my-auto">
+                  <a href="filter" class="btn btn-primary w-100">Submit</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-container>
     </div>
   </div>
   <!-- Filter end -->
 
   <!-- Room start -->
-  <div class="room-section rounded-3 px-4 py-2" *ngFor="let item of roomTypes">
+  <div class="room-section rounded-3 px-4 py-4" style="height: fit-content;" *ngFor="let item of RoomTypeData">
     <h5><strong>{{ item.name }}</strong></h5>
     <div class="row">
       <!-- LEFT COL -->
-      <div class="room-preview col-4 d-flex flex-column bg-white p-3 me-3">
-        <img class="room-img" src="../../../assets/image/ks1.jpg" alt="">
+      <div class="room-preview col-4 d-flex flex-column bg-white p-3 me-3" style="height: fit-content;">
+        <div *ngFor="let image of images; let i=index">
+          <img  class="room-img" [src]="'http://127.0.0.1:8000/Images/'+image.path" *ngIf="i<1" alt="">
+        </div>
+
         <div class="p-2">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
             data-id="IcHotelRoomMeasure">
@@ -70,7 +110,9 @@
           </svg>
           <span class="ms-2">{{ item.capacity }} khách</span>
         </div>
-        <div class="mb-2">
+
+        <!-- Dịch vụ -->
+        <!-- <div class="mb-2">
           <span class="room-services">Bồn Tắm</span>
         </div>
         <div class="mb-2">
@@ -78,7 +120,8 @@
         </div>
         <div class="mb-2">
           <span class="room-services">Máy Lạnh</span>
-        </div>
+        </div> -->
+
         <button name="btn-view-detail" class="btn-view-detail" label="" (click)="showRoomType(item.id)">
           <label for="btn-view-detail">Xem chi tiết phòng</label>
         </button>
@@ -98,8 +141,8 @@
 
       <!-- RIGHT COL -->
       <p-scrollPanel class="room-detail col d-flex flex-column overflow-auto" styleClass="custombar2">
-        <div class="room-detail-item p-3">
-          <h6><strong>Deluxe Room Only - Prepayment Short - 01 Occ</strong></h6>
+        <div class="room-detail-item p-3" *ngFor="let room of item.room">
+          <h6><strong>Số phòng {{ room.room_number }}</strong></h6>
           <div class="room-stuff d-flex flex-row">
             <div class="d-flex flex-row me-4">
               <img class="my-auto me-3" src="../../../../assets/image/bed.svg" alt="">
@@ -112,8 +155,13 @@
           </div>
           <hr>
           <div class="room-content d-flex flex-row justify-content-between">
+
+            <div>
+
+            </div>
+
             <!-- Yes -->
-            <div class="room-convenient d-flex flex-column">
+            <!-- <div class="room-convenient d-flex flex-column">
               <div class="room-convenient-item d-flex flex-row me-4">
                 <img class="my-auto me-3" src="../../../../assets/image/cook.svg" alt="">
                 <p class="my-auto">Miễn phí bữa sáng</p>
@@ -126,9 +174,9 @@
                 <img class="my-auto me-3" src="../../../../assets/image/cook.svg" alt="">
                 <p class="my-auto">Miễn phí bú Thuốc</p>
               </div>
-            </div>
+            </div> -->
             <!-- No -->
-            <div class="room-rule d-flex flex-column me-4">
+            <!-- <div class="room-rule d-flex flex-column me-4">
               <div class="room-rule-item d-flex flex-row me-4">
                 <img class="my-auto me-3" src="../../../../assets/image/no-refund.svg" alt="">
                 <p class="my-auto">Không hoàn tiền</p>
@@ -137,67 +185,16 @@
                 <img class="my-auto me-3" src="../../../../assets/image/no-refund.svg" alt="">
                 <p class="my-auto">Không đổi lịch</p>
               </div>
-            </div>
+            </div> -->
             <!-- Booking -->
-            <div class="room-price d-flex flex-column me-4">
+            <!-- <div class="room-price d-flex flex-column me-4">
               <p><del>6.252.555 VND</del></p>
               <h5 class="text-primary">4.689.416 VND</h5>
               <p>/ phòng / đêm</p>
               <a href="/booking" class="bg-primary text-white rounded-3 px-2 py-1 border border-0 fw-bold text-center">
                 Đặt ngay
               </a>
-            </div>
-          </div>
-        </div>
-        <div class="room-detail-item p-3">
-          <h6><strong>Deluxe Room Only - Prepayment Short - 01 Occ</strong></h6>
-          <div class="room-stuff d-flex flex-row">
-            <div class="d-flex flex-row me-4">
-              <img class="my-auto me-3" src="../../../../assets/image/bed.svg" alt="">
-              <p class="my-auto" style="font-weight: 500;">1 Giường Đôi Hoặc 2 Giường Đơn</p>
-            </div>
-            <div class="d-flex flex-row">
-              <img class="my-auto me-3" src="../../../../assets/image/guest.svg" alt="">
-              <p class="my-auto" style="font-weight: 500;">1 Khách</p>
-            </div>
-          </div>
-          <hr>
-          <div class="room-content d-flex flex-row justify-content-between">
-            <!-- Yes -->
-            <div class="room-convenient d-flex flex-column">
-              <div class="room-convenient-item d-flex flex-row me-4">
-                <img class="my-auto me-3" src="../../../../assets/image/cook.svg" alt="">
-                <p class="my-auto">Miễn phí bữa sáng</p>
-              </div>
-              <div class="room-convenient-item d-flex flex-row me-4">
-                <img class="my-auto me-3" src="../../../../assets/image/wifi.svg" alt="">
-                <p class="my-auto">Miễn phí wifi</p>
-              </div>
-              <div class="room-convenient-item d-flex flex-row me-4">
-                <img class="my-auto me-3" src="../../../../assets/image/cook.svg" alt="">
-                <p class="my-auto">Miễn phí bú Thuốc</p>
-              </div>
-            </div>
-            <!-- No -->
-            <div class="room-rule d-flex flex-column me-4">
-              <div class="room-rule-item d-flex flex-row me-4">
-                <img class="my-auto me-3" src="../../../../assets/image/no-refund.svg" alt="">
-                <p class="my-auto">Không hoàn tiền</p>
-              </div>
-              <div class="room-rule-item d-flex flex-row me-4">
-                <img class="my-auto me-3" src="../../../../assets/image/no-refund.svg" alt="">
-                <p class="my-auto">Không đổi lịch</p>
-              </div>
-            </div>
-            <!-- Booking -->
-            <div class="room-price d-flex flex-column me-4">
-              <p><del>6.252.555 VND</del></p>
-              <h5 class="text-primary">4.689.416 VND</h5>
-              <p>/ phòng / đêm</p>
-              <a href="/booking" class="bg-primary text-white rounded-3 px-2 py-1 border border-0 fw-bold text-center">
-                Đặt ngay
-              </a>
-            </div>
+            </div> -->
           </div>
         </div>
       </p-scrollPanel>

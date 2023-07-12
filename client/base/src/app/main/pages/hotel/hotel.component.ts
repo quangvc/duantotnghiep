@@ -30,6 +30,7 @@ export class HotelComponent implements OnInit {
 
   hotels: any[] = [];
   hotelId: any;
+  images: any[] = [];
   regions: any[] = [];
   regionId: any;
 
@@ -60,7 +61,7 @@ export class HotelComponent implements OnInit {
         next: (res) => {
           console.log(res.data);
           this.hotels = res.data;
-
+          this.images = res.data
 
         },
         error: (err) => {{

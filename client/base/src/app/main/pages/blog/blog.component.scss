@@ -14,9 +14,11 @@
 
 /* Fake image */
 .fakeimg {
-  background-color: #aaa;
   width: 100%;
-  padding: 20px;
+}
+
+.link:hover {
+  color: blue;
 }
 
 /* Add a card effect for articles */

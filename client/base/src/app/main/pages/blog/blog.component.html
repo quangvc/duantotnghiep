@@ -17,12 +17,17 @@
 <div class="row">
   <div class="leftcolumn">
     <div class="card" *ngFor="let data of blogs;">
-      <a href="blogs/{{ data.slug }}"><h3>{{ data.title }}</h3></a>
-      <h6>{{ data.user_name }}, {{ data.created_at }}</h6>
+      <a href="blogs/{{ data.slug }}" ><h3 class="link">{{ data.title }}</h3></a>
+      <h6>{{ data.user_name }}, {{ data.created_at | date: 'dd/MM/yyyy' }}</h6>
       <a href="blogs/{{ data.slug }}">
-        <img [src]="'http://127.0.0.1:8000/Images/blogs/'+ data.image" class="fakeimg" style="height:200px;">
+        <img [src]="'http://127.0.0.1:8000/Images/blog/'+ data.image" class="fakeimg" style="height:300px;">
       </a>
-      <p style="white-space: nowrap; height: 50px; overflow: hidden; text-overflow: ellipsis;">{{ data.content }}.</p>
+      <line-clamp [row]="3">
+        <div #content>
+          <p>{{ data.content }}.</p>
+        </div>
+      </line-clamp>
+
     </div>
     <!-- <div class="card">
       <a href="blog-detail"><h3>TITLE HEADING</h3></a>
@@ -42,9 +47,11 @@
     </div>
     <div class="card">
       <h3>Popular Post</h3>
-      <div class="fakeimg">Image</div><br>
-      <div class="fakeimg">Image</div><br>
-      <div class="fakeimg">Image</div>
+      <div class="fakeimg" *ngFor="let data of blogs;">
+        <img [src]="'http://127.0.0.1:8000/Images/blog/'+ data.image" class="fakeimg">
+        <a href="blogs/{{ data.slug }}"><h6 class="link">{{ data.title }}</h6></a>
+        <hr>
+      </div>
     </div>
     <!-- <div class="card">
       <h3>Follow Me</h3>

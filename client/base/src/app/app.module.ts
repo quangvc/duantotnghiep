@@ -18,6 +18,7 @@ import { LoginComponent } from './auth/login/view/login.component';
 import { RegisterComponent } from './auth/register/view/register.component';
 import { SharedModule } from './_shared/shared/shared.module';
 import { MainGlobalModule } from './main/main-global.module';
+import { LineClampComponent } from './main/share/line-clamp/line-clamp.component';
 
 
 registerLocaleData(en);
