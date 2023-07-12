@@ -17,6 +17,11 @@ class RoomTypeResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'price_per_night' => $this->price_per_night,
+            'capacity' => $this->capacity,
+            'description' => $this->description,
+            'quantity_room' => count($this->rooms),
+            'room' => $this->rooms,
             'hotel' => [
                 'id' => $this->hotel->id,
                 'name' => $this->hotel->hotel_name,
@@ -24,9 +29,7 @@ class RoomTypeResource extends JsonResource
                 'hotel_phone' => $this->hotel->hotel_phone,
                 'hotel_address' => $this->hotel->hotel_address,
             ],
-            'price_per_night' => $this->price_per_night,
-            'capacity' => $this->capacity,
-            'description' => $this->description,
+
         ];
 
         // return parent::toArray($request);

@@ -8,7 +8,7 @@
     <form [formGroup]="formRoom">
       <div class="row">
 
-        <div class="col-12">
+        <!-- <div class="col-12">
           <div class="mb-3">
             <label for="hotel" class="form-label">{{'hotel.name' | translate}}</label>
             <select class="form-select" formControlName="hotel_id" aria-label="Default select example" (change)="changeHotel($event)">
@@ -17,14 +17,14 @@
               </ng-container>
             </select>
           </div>
-        </div>
+        </div> -->
 
         <div class="col-12">
           <div class="mb-3">
             <label for="room_type" class="form-label">{{'room_type.name' | translate}}</label>
             <select class="form-select" formControlName="room_type_id" aria-label="Default select example">
               <ng-container *ngFor="let roomType of roomTypesFilter">
-                <option [value]="roomType.id">{{roomType.name}}</option>
+                <option [value]="roomType.id">{{roomType.name}} - {{roomType.hotel.name}}</option>
               </ng-container>
             </select>
           </div>

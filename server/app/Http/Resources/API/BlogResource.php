@@ -20,7 +20,10 @@ class BlogResource extends JsonResource
             'content'=>$this->content,
             'image'=>$this->image,
             'user_name'=>$this->user->name,
-            'slug'=>$this->slug
+            'active' =>$this->active,
+            'slug'=>$this->slug,
+            'created_at'=>$this->created_at,
+            'updated_at'=>$this->updated_at,
         ];
     }
 }

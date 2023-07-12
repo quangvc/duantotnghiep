@@ -39,12 +39,12 @@ export class RegisterComponent implements OnInit {
 
   save(){
 
-    if(this.formRegister.valid){
-      this.authService.register(this.formRegister.value).subscribe(res => {
-        alert('thanh cong!');
-        this.router.navigate(['login']);
-      })
-    }
+    // if(this.formRegister.valid){
+    //   this.authService.register(this.formRegister.value).subscribe(res => {
+    //     alert('thanh cong!');
+    //     this.router.navigate(['login']);
+    //   })
+    // }
   }
 
 }

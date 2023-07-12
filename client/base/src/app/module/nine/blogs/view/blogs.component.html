@@ -10,7 +10,7 @@
       <th>{{'blog.image' | translate}}</th>
       <th>{{'blog.user_id' | translate}}</th>
       <th>{{'blog.slug' | translate}}</th>
-      <!-- <th>{{'status' | translate}}</th> -->
+      <th>{{'status' | translate}}</th>
       <th>{{'action' | translate}}</th>
     </tr>
   </thead>
@@ -21,14 +21,13 @@
       <td>{{ data.content }}</td>
       <td>
         <img nz-image width="100px" height="100px"
-          [nzSrc]="data.image"
+          [nzSrc]="'http://127.0.0.1:8000/Images/blog/'+data.image"
           alt=""
         />
       </td>
       <td>{{ data.user_name }}</td>
       <td>{{ data.slug }}</td>
-      <!-- <td></td> -->
-      <!-- <td><nz-switch [(ngModel)]="data.status" (ngModelChange)="confirmChangeStatus($event,data)"></nz-switch></td> -->
+      <td><nz-switch [(ngModel)]="data.status"></nz-switch></td>
       <td>
         <q-menu
           [model]="menus"

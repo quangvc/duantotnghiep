@@ -5,50 +5,49 @@
   (nzOnCancel)="handleCancel()"
   (nzOnOk)="handleOk()">
   <ng-container *nzModalContent>
+
     <form [formGroup]="formBlog" >
       <div class="row">
 
-        <div class="col-6">
-          <div class="mb-3">
-            <label for="title" class="form-label">{{'blog.title' | translate}}</label>
-            <input type="text" class="form-control" id="title" formControlName="title">
-          </div>
-        </div>
-
-        <div class="col-6">
-          <div class="mb-3">
-            <label for="file" class="form-label">Ảnh khách sạn</label>
-            <input class="form-control" type="file" (change)="onSelectFile($event)" id="file">
-          </div>
-        </div>
-
-
-        <div class="col-6">
+        <div class="col-12">
           <div class="mb-3">
             <label for="user" class="form-label">{{'user.name' | translate}}</label>
             <select class="form-select" formControlName="user_id" aria-label="Default select example">
-              <ng-container *ngFor="let user of users">
-                <option [value]="user.id">{{user.name}}</option>
-              </ng-container>
+                <option [value]="auth.id" [selected]="auth.id">{{auth.name}}</option>
             </select>
           </div>
         </div>
 
-        <div class="col-6">
+        <div class="col-12">
+          <div class="mb-3">
+            <label for="title" class="form-label">{{'blog.title' | translate}}</label>
+            <input type="text" [(ngModel)]="title" class="form-control" (keyup)="onKeyUp($event)" id="title" formControlName="title">
+          </div>
+        </div>
+
+        <div class="col-12">
           <div class="mb-3">
             <label for="slug" class="form-label">{{'blog.slug' | translate}}</label>
-            <input type="text" class="form-control" id="slug" formControlName="slug">
+            <input type="text" [value]="slug" class="form-control" id="slug" formControlName="slug">
+          </div>
+        </div>
+
+        <div class="col-12">
+          <div class="mb-3">
+            <label for="file" class="form-label">{{'blog.image' | translate}}</label>
+            <input class="form-control" type="file" (change)="onSelectFile($event)" id="file">
           </div>
         </div>
 
         <div class="col-12">
           <div class="mb-3">
             <label for="content" class="form-label">{{'blog.content' | translate}}</label>
-            <textarea class="form-control" id="content" formControlName="content"></textarea>
+            <textarea class="form-control" id="content" formControlName="content" rows="8"></textarea>
           </div>
         </div>
 
       </div>
     </form>
+
   </ng-container>
 </nz-modal>

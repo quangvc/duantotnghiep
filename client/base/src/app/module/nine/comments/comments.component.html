@@ -1,0 +1,22 @@
+<nz-table #basicTable [nzData]="comments">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>{{'comments.user_name' | translate}}</th>
+      <th>{{'blog.name' | translate}}</th>
+      <th>{{'comments.content' | translate}}</th>
+      <th>{{'created_at' | translate}}</th>
+      <th>{{'action' | translate}}</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let data of basicTable.data; let i = index">
+      <td>{{ i + 1 }}</td>
+      <td>{{ data.user }}</td>
+      <td>{{ data.blog }}</td>
+      <td>{{ data.content }}</td>
+      <td>{{ data.created_at | date: 'dd/MM/yyyy'}}</td>
+      <td></td>
+    </tr>
+  </tbody>
+</nz-table>

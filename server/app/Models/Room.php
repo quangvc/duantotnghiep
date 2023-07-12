@@ -21,10 +21,10 @@ class Room extends Model
     //     return $this->hasMany(BookingDetail::class);
     // }
 
-    public function hotel(): BelongsTo
-    {
-        return $this->belongsTo(Hotel::class);
-    }
+    // public function hotel(): BelongsTo
+    // {
+    //     return $this->belongsTo(Hotel::class);
+    // }
 
     public function room_type(): BelongsTo
     {

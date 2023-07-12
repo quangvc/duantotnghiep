@@ -20,7 +20,7 @@ return new class extends Migration
 
         // sửa bảng comment
         Schema::table('tbl_blogs', function (Blueprint $table) {
-            $table->string('slug')->unique()->after('title');
+            $table->string('slug')->after('user_id')->unique();
         });
     }
 

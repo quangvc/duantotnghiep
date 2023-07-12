@@ -17,9 +17,9 @@ class Hotel extends Model
         'hotel_name', 'hotel_phone', 'hotel_address', 'description', 'star_rating', 'region_id', 'status'
     ];
 
-    public function rooms(): HasMany
+    public function room_type(): HasMany
     {
-        return $this->hasMany(Room::class);
+        return $this->hasMany(RoomType::class);
     }
 
     public function images(): HasMany

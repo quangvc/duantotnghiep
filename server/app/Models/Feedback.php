@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 class Feedback extends Model
 {
     use HasFactory;
-    protected $table = 'tbl_feedback';
+    protected $table = 'tbl_feedbacks';
 
     protected $fillable = [
         'content', 'rating', 'booking_id'

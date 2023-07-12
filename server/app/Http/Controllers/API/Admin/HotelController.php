@@ -8,8 +8,7 @@ use App\Models\Hotel;
 use App\Traits\MessageStatusAPI;
 use App\Http\Requests\HotelRequest;
 use App\Http\Resources\API\HotelResource;
-use App\Models\Image;
-use App\Models\Room;
+use App\Enums\StatusEnum;
 
 class HotelController extends Controller
 {
@@ -18,7 +17,7 @@ class HotelController extends Controller
         // auth('api')->user(); lấy thông tin người dùng đang login
         $hotels = Hotel::whereExists(function ($query) {
             if (auth()->user()->hasRole('manager')) {
-                $query->where('id', hotel()->id);
+                $query->where('id', auth()->user()->hotel_id);
             }
         })->get();
         return HotelResource::collection($hotels);
@@ -34,17 +33,19 @@ class HotelController extends Controller
         }
         return MessageStatusAPI::show($hotelDetail);
     }
+
     public function changeStatus($id)
     {
         $hotel = Hotel::find($id);
         if (!$hotel) {
             return MessageStatusAPI::notFound();
         }
-        if ($hotel->status == 1) {
-            $hotel->update(['status' => 0]);
+        if ($hotel->status == StatusEnum::DEACTIVE) {
+            $hotel->update(['status' => StatusEnum::ACTIVE]);
         } else {
-            $hotel->update(['status' => 1]);
+            $hotel->update(['status' => StatusEnum::DEACTIVE]);
         }
+
         return MessageStatusAPI::update();
     }
 
@@ -60,7 +61,7 @@ class HotelController extends Controller
             'description' => $validated['description'],
             'star_rating' => $validated['star_rating'],
             'region_id' => $validated['region_id'],
-            'status' => 1
+            'status' => StatusEnum::ACTIVE
         ]);
 
         $hotel->save();

@@ -14,7 +14,6 @@ class RoomRequest extends FormRequest
     {
         return [
             'room_number' => 'required|string',
-            'hotel_id' => 'required|exists:tbl_hotels,id',
             'room_type_id' => 'required|exists:tbl_room_types,id',
             'status' => 'required|boolean',
         ];
@@ -24,11 +23,7 @@ class RoomRequest extends FormRequest
         return [
             'room_number.required' => 'Vui lòng không được bỏ trống !',
             'room_number.string' => 'Nhập không đúng kiểu dữ liệu !',
-
-            'hotel_id.required' => 'Vui lòng không được bỏ trống !',
-
             'room_type_id.required' => 'Vui lòng không được bỏ trống !',
-
             'status.required' => 'Vui lòng không được bỏ trống !',
             'status.boolean' => 'Nhập không đúng kiểu dữ liệu !',
         ];

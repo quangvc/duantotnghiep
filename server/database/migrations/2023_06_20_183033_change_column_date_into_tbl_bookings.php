@@ -14,7 +14,6 @@ return new class extends Migration
     public function up()
     {
         Schema::table('tbl_bookings', function (Blueprint $table) {
-            $table->dateTime('booking_date')->default(date('Y-m-d'))->change();
             $table->dateTime('checkin_date')->default(date('Y-m-d'))->change();
             $table->dateTime('checkout_date')->default(date('Y-m-d'))->change();
         });

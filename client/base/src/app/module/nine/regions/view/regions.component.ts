@@ -5,7 +5,7 @@ import { Subscription } from 'rxjs';
 import { NineStatus } from 'src/app/module/_mShared/enum/enum';
 import { MenuItem } from 'src/app/module/_mShared/model/menuItem.class';
 import { ERROR, SUCCESS } from 'src/app/module/_mShared/model/url.class';
-import { Enum } from 'src/app/module/_mShared/service/enum.service';
+import { Enum } from 'src/app/module/_mShared/service/static/enum.service';
 import { RegionsService } from 'src/app/module/_mShared/service/regions.service';
 
 @Component({
@@ -100,7 +100,7 @@ export class RegionsComponent implements OnInit, OnDestroy {
       nzOnOk: () =>
         new Promise((resolve, reject) => {
           this.deleteRegion(data);
-          setTimeout(Math.random() > 0.5 ? resolve : reject, 1000);
+          setTimeout(0.6 > 0.5 ? resolve : reject, 1000);
         }).catch(() => console.log('Oops errors!'))
     });
   }

@@ -49,27 +49,31 @@
           (click)="isCollapsed = !isCollapsed"
         ></span>
 
-        <button
-          nz-button
-          nzType="text"
-          [nzSize]="'large'"
-          nzShape="round"
-          style="margin: 12px"
-          nz-popconfirm
-          nzPopconfirmTitle="Xác nhận đăng xuất !!"
-          nzPopconfirmPlacement="bottom"
-          (nzOnConfirm)="confirm()"
-          (nzOnCancel)="cancel()"
-        >
-          <span
-            span
-            nz-icon
-            nzType="logout"
-            nzTheme="outline"
-            style="position: absolute; left: 5px; top: 8px; font-size: 18px"
-          ></span>
-          Logout
-        </button>
+        <div class="user" style="display: flex; align-items: center; padding: 0 20px">
+          <nz-avatar nzSize="large" nzText="USER"></nz-avatar>
+          <div class="dropdownItem">
+            <a nz-dropdown nzTrigger="click" [nzDropdownMenu]="menu" [nzClickHide]="false" style="padding-left: 5px;">
+              {{username}}
+              <span nz-icon nzType="down"></span>
+            </a>
+            <nz-dropdown-menu #menu="nzDropdownMenu" >
+              <ul nz-menu>
+                <li nz-menu-item (click)="viewInf()">Thông tin cá nhân</li>
+                <li nz-menu-divider></li>
+                <li nz-menu-item
+                    nz-popconfirm
+                    nzPopconfirmTitle="Xác nhận đăng xuất !!"
+                    nzPopconfirmPlacement="bottom"
+                    (nzOnConfirm)="confirm()"
+                    (nzOnCancel)="cancel()"
+                >
+                  Đăng xuất
+                </li>
+              </ul>
+            </nz-dropdown-menu>
+          </div>
+        </div>
+
       </div>
     </nz-header>
     <nz-content>
@@ -84,3 +88,9 @@
     <nz-footer>Ant Design ©2020 Implement By Angular</nz-footer>
   </nz-layout>
 </nz-layout>
+
+<infomation
+  *ngIf="displayInf"
+  [displayInf]="displayInf"
+  (closeModal)="eventSubmit($event)"
+></infomation>

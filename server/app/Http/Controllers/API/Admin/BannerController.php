@@ -7,6 +7,8 @@ use App\Http\Resources\API\BannerResource;
 use App\Models\Banner;
 use Illuminate\Http\Request;
 use App\Traits\MessageStatusAPI;
+use App\Enums\StatusEnum;
+use Illuminate\Validation\Rule;
 
 class BannerController extends Controller
 {
@@ -19,8 +21,9 @@ class BannerController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'image.*' => 'bail|image|max:2048|mimes:jpeg,png,jpg|mimetypes:image/jpeg,image/png,image/jpg'
+            'image.*' => 'bail|image|max:2048|mimes:jpeg,png,jpg|mimetypes:image/jpeg,image/png,image/jpg',
         ]);
+
         $role = auth()->user()->getRoleNames()->first();
         if ($role == 'admin') {
             if ($request->hasFile('image')) {
@@ -57,5 +60,19 @@ class BannerController extends Controller
             }
         }
         return MessageStatusAPI::destroy();
+    }
+
+    public function changeStatus($id)
+    {
+        $banner = Banner::find($id);
+        if ($banner->status == StatusEnum::DEACTIVE) {
+            $banner->update(['status' => StatusEnum::ACTIVE]);
+        } else {
+            $banner->update(['status' => StatusEnum::DEACTIVE]);
+        }
+
+        return response([
+            'message' => 'Changed status successfully',
+        ], 200);
     }
 }

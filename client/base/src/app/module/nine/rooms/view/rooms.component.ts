@@ -5,7 +5,7 @@ import { Subscription, firstValueFrom } from 'rxjs';
 import { NineStatus } from 'src/app/module/_mShared/enum/enum';
 import { MenuItem } from 'src/app/module/_mShared/model/menuItem.class';
 import { ERROR, SUCCESS } from 'src/app/module/_mShared/model/url.class';
-import { Enum } from 'src/app/module/_mShared/service/enum.service';
+import { Enum } from 'src/app/module/_mShared/service/static/enum.service';
 import { RoomTypeService } from 'src/app/module/_mShared/service/room_type.service';
 import { RoomsService } from 'src/app/module/_mShared/service/rooms.service';
 
