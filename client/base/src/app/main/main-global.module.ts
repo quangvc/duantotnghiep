@@ -5,7 +5,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MainModule } from './main/main.module';
 import { MainGlobalRoutes } from './main-global.routing';
-import { BookingFormModule } from './booking-form/booking-form.module';
+import { BookingFormModule } from './pages/booking-form/booking-form.module';
 
 @NgModule({
   declarations: [
@@ -15,7 +15,6 @@ import { BookingFormModule } from './booking-form/booking-form.module';
     BrowserModule,
     HttpClientModule,
     BrowserAnimationsModule,
-
     MainModule,
     BookingFormModule,
     MainGlobalRoutes

@@ -28,7 +28,7 @@ class HotelClientController extends Controller
     }
     public function show($id)
     {
-        $hotelDetail = Hotel::where('active', '=', '1')
+        $hotelDetail = Hotel::where('status', '=', '1')
             ->where('id', '=', $id)
             ->get();
         if (!$hotelDetail) {
