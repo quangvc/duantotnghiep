@@ -17,9 +17,11 @@ use Illuminate\Support\Facades\Hash;
 
 class BookingClientController extends Controller
 {
-    public function index()
+    public function index($number_booking)
     {
-        $bookings = Booking::where('status', '=', '1')->get();
+        $bookings = Booking::where('status', '=', '1')
+            ->where('booking_number', '=', $number_booking)
+            ->get();
         return BookingResource::collection($bookings);
     }
 
