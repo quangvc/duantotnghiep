@@ -1,14 +1,25 @@
-import { PhotoService } from './../../../services/photoservice.service';
-import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { DynamicDialogRef } from 'primeng/dynamicdialog';
-import { Subscription } from 'rxjs';
-import { ImagesClientService } from 'src/app/main/services/images-client.service';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { MenuItem } from 'src/app/module/_mShared/model/menuItem.class';
-import { RoomTypeService } from 'src/app/module/_mShared/service/room_type.service';
+import { PhotoService } from './../../../services/photoservice.service';
+import { RoomTypeDetailComponent } from './room-type-detail/room-type-detail.component';
 
 interface Type {
   name: string;
   code: string;
+}
+
+interface Room {
+  name: string;
+  price: number;
+}
+
+interface roomType {
+  hotel_id: number;
+  name: string;
+  price_per_night: number;
+  capacity: number;
+  description: string;
+  selectedRoom: Room | null;
 }
 
 @Component({
@@ -17,95 +28,85 @@ interface Type {
   styleUrls: ['./hotel-booking-room.component.scss'],
   providers: [PhotoService]
 })
-export class HotelBookingRoomComponent implements OnInit, OnDestroy {
-  constructor(
-    // private PhotoService: PhotoService,
-    private ImagesClientService: ImagesClientService
-  ) { }
-  @Input() roomTypeId: any;
+export class HotelBookingRoomComponent implements OnInit {
   @Input('hotelRoomTypeData') RoomTypeData: any[] = [];
-  private subscription = new Subscription();
-
-  ref: DynamicDialogRef | undefined;
-  displayRoomType: boolean = false;
-  images: any[];
+  @ViewChild('dialog') dialog: RoomTypeDetailComponent;
   rangeDates: Date[] | undefined;
 
-  selectedType!: Type;
-  types: Type[] = [];
-  checked: boolean = false;
-  roomTypes: any[] = [];
-  menus: MenuItem[] = [];
   roomType: any;
-
-  ReadMore:boolean = true
-
+  selectedType!: Type;
+  selectedImage: string;
   //hiding info box
-  visible:boolean = false
+  visible: boolean = false
+  ReadMore: boolean = true
+  checked: boolean = false;
+  displayRoomType: boolean = false;
+  selectedRoomType!: roomType;
+  types: Type[] = [];
+  menus: MenuItem[] = [];
+  roomTypeDisplay: boolean[] = [];
+  roomTypes: roomType[];
+  responsiveOptions: any[] = [
+    {
+      breakpoint: '1024px',
+      numVisible: 5
+    },
+    {
+      breakpoint: '768px',
+      numVisible: 3
+    },
+    {
+      breakpoint: '560px',
+      numVisible: 1
+    }
+  ];
 
-
-
-
+  constructor(
+  ) {
+  }
   ngOnInit() {
     this.types = [
       { name: 'Thành tiền', code: '1' },
       { name: '1 Đêm', code: '2' }
     ];
-    this.getRoomTypeImg()
+
   }
-
-  getRoomTypeImg() {
-    this.ImagesClientService.getImagesRoomType(this.roomTypeId).subscribe({
-
-      next: (res) => {
-        this.images = res.data;
-
-      },
-      error: (err) => {{
-        console.log('Đã xảy ra lỗi khi gọi API:', err);
-      }}
-    });
-  }
-
 
   //onclick toggling both
-  onclick()
-  {
+  onclick() {
     this.ReadMore = !this.ReadMore; //not equal to condition
     this.visible = !this.visible
   }
 
-
-  // getRoomTypes() {
-  //   let obs = this.roomTypeService.getRoomTypes().subscribe({
-  //     next: (res) => {
-  //       this.roomTypes = res.data;
-  //       // this.showRoomType(res.data);
-  //     },
-  //     error: (err) => {
-  //       console.log('Đã xảy ra lỗi khi gọi API:', err);
-  //     }
-  //   })
-  //   this.subscription.add(obs);
-  // }
-
-  showRoomType(roomTypeId: any) {
-    console.log(roomTypeId);
-    if (roomTypeId) {
-      this.displayRoomType = true;
-      this.roomTypeId = roomTypeId;
-    }
-
+  openDialog(roomType: any) {
+    this.dialog.open(roomType);
   }
 
-  cancel(event: any) {
-    debugger
-    this.displayRoomType = false;
-    // this.getRoomTypes();
+
+  // Table
+  getCapacitysArray(capacityCount: any): number[] {
+    return Array(capacityCount);
   }
-  ngOnDestroy() {
-    if (this.ref) {
-      this.ref.close();
+  calculateRowTotal(room: roomType): number {
+    if (room.selectedRoom) {
+      return room.selectedRoom.price;
+    } else {
+      return 0;
     }
   }
+  calculateTotal(): number {
+    let total = 0;
+    for (let room of this.roomTypes) {
+      if (room.selectedRoom) {
+        total += room.selectedRoom.price;
+      }
+    }
+    return total;
+  }
+  onRowSelect(event: any) {
+    // Lấy dữ liệu của hàng được chọn
+    const selectedRowData = event.data;
+    console.log(selectedRowData); // In ra dữ liệu của hàng được chọn
+  }
+
 }

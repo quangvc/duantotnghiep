@@ -4,6 +4,7 @@ import { RegionsClientService } from '../../services/regions-client.service';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { ERROR } from 'src/app/module/_mShared/model/url.class';
 import { Subscription } from 'rxjs';
+import { BlogClientService } from '../../services/blogClient.service';
 
 @Component({
   selector: 'main-home',
@@ -21,12 +22,16 @@ export class HomeComponent implements OnInit {
     // private HotelClientService: HotelClientService,
     private RegionsClientService: RegionsClientService,
     private message: NzMessageService,
+    private BlogClientService: BlogClientService,
     ) { }
 
   hotels: any[] = [];
   hotelId: any;
   regions: any[] = [];
   regionId: any;
+  blogs: any[] = [];
+  blogId: any;
+  slug: any;
 
   statusOption: any;
   role:any;
@@ -35,11 +40,7 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
     this.getRegions();
-    // if(this.user.role[0] == 'admin'){
-    //   this.role = true;
-    // }else{
-    //   this.role = false;
-    // }
+    this.getBlogs();
   }
 
   getRegions(){
@@ -57,16 +58,17 @@ export class HomeComponent implements OnInit {
     })
     this.subscription.add(obs);
   }
-
-  // async getImage(){
-  //   let images:any[] = await firstValueFrom(this.imagesService.getImages());
-
-  //   for (const item of this.hotels) {
-  //     images.forEach(img => {
-  //       if(img.hotel_id == item.id){
-  //         item.image = `${URL_IMAGE}/${img.path}`;
-  //       }
-  //     });
-  //   }
-  //   console.log(images)
+  getBlogs(){
+    // let obs = this.BlogClientService.getBlogs().subscribe({
+    let obs = this.BlogClientService.getBlogs().subscribe({
+      next: (res) => {
+        this.blogs = res.data;
+        console.log(res)
+      },
+      error: (err) => {{
+        this.message.create(ERROR, err.message);
+      }}
+    })
+    this.subscription.add(obs);
   }
+}

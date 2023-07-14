@@ -18,8 +18,9 @@ import { RoomTypeDetailComponent } from './hotel-booking-room/room-type-detail/r
 import { CalendarModule } from 'primeng/calendar';
 import { HotelBookingRoomModule } from './hotel-booking-room/hotel-booking-room.module';
 import { FormsModule } from '@angular/forms';
-
-
+import { TableModule } from 'primeng/table';
+import { RatingModule } from 'primeng/rating';
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -36,7 +37,10 @@ import { FormsModule } from '@angular/forms';
     ButtonModule,
     CalendarModule,
     FormsModule,
-    HotelBookingRoomModule
+    HotelBookingRoomModule,
+    TableModule,
+    RatingModule,
+    ReactiveFormsModule
   ],
   declarations: [
     HotelDetailComponent,

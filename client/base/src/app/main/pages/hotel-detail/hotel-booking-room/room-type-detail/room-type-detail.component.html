@@ -1,4 +1,4 @@
-<p-dialog *ngIf="roomType" header="{{ roomType.name }}" [(visible)]="displayRoomType" (onHide)="handleCancel()" [modal]="true" [style]="{ width: '75vw' }" [draggable]="false"
+<p-dialog class="dialog" *ngIf="roomType" header="{{ roomType.name }}" [(visible)]="visible" (onHide)="ngOnDestroy()" [modal]="true" [style]="{ width: '75vw' }" [draggable]="false"
   [resizable]="false">
   <div class="row">
     <div class="col-6">

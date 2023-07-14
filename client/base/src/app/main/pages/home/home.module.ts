@@ -5,6 +5,7 @@ import { HomeRoutes } from './home.routing';
 import { CarouselComponent } from './carousel/carousel.component';
 import { HotelClientService } from '../../services/hotelClient.service';
 import { RegionsClientService } from '../../services/regions-client.service';
+import { BlogClientService } from '../../services/blogClient.service';
 
 @NgModule({
   imports: [
@@ -12,6 +13,6 @@ import { RegionsClientService } from '../../services/regions-client.service';
     HomeRoutes
   ],
   declarations: [HomeComponent, CarouselComponent],
-  providers: [HotelClientService, RegionsClientService,],
+  providers: [HotelClientService, RegionsClientService, BlogClientService],
 })
 export class HomeModule { }

@@ -5,6 +5,7 @@ import { HotelsService } from 'src/app/module/_mShared/service/hotels.service';
 import { HotelClientService } from '../../services/hotelClient.service';
 import { ImagesService } from 'src/app/module/_mShared/service/images.service';
 import { ImagesClientService } from '../../services/images-client.service';
+import { FormControl, FormGroup } from '@angular/forms';
 @Component({
   selector: 'app-hotel-detail',
   templateUrl: './hotel-detail.component.html',
@@ -28,6 +29,9 @@ export class HotelDetailComponent implements OnInit {
   hotelRoomTypeData: any[] = [];
   hotel: any;
   hotel_id: any;
+
+  starRating: number;
+  formStar!: FormGroup;
 
   position: string = 'bottom';
 
@@ -66,7 +70,9 @@ export class HotelDetailComponent implements OnInit {
   ];
 
   ngOnInit() {
-
+    this.formStar = new FormGroup({
+      value: new FormControl(this.starRating)
+    });
     // this.PhotoService.getImages().then((images) => (this.images = images));
     this.route.params.subscribe(params => {
       const id = params['id']; // Lấy giá trị ID từ URL
@@ -76,27 +82,13 @@ export class HotelDetailComponent implements OnInit {
           this.hotels = res.data;
           this.hotel_id = res.data[0].id;
           this.hotelRoomTypeData = res.data[0].room_type;
-          console.log(this.hotel_id);
-          console.log(this.hotelRoomTypeData);
+          this.formStar.controls['value'].setValue(res.data[0].star_rating);
         },
         error: (err) => {{
           console.log('Đã xảy ra lỗi khi gọi API:', err);
         }}
       });
     });
-    // this.getImages();
   }
-  // getImages(){
-  //   this.ImagesClientService.getImagesRoomType().subscribe({
-  //     next: (res) => {
-  //       this.images = res;
-  //       this.images = this.images.filter(img => img.hotel_id == this.hotel_id);
-  //       console.log(this.images)
-  //     },
-  //     error: (err) => {{
-  //       console.log('Đã xảy ra lỗi khi gọi API:', err);
-  //     }}
-  //   })
-  // }
 
 }

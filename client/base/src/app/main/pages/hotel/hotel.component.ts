@@ -1,5 +1,5 @@
 import { HotelClientService } from './../../services/hotelClient.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzModalRef } from 'ng-zorro-antd/modal';
 import { Subscription, firstValueFrom } from 'rxjs';
@@ -8,6 +8,7 @@ import { ERROR, URL_IMAGE } from 'src/app/module/_mShared/model/url.class';
 import { ImagesService } from 'src/app/module/_mShared/service/images.service';
 import { RegionsClientService } from '../../services/regions-client.service';
 import { ActivatedRoute } from '@angular/router';
+import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-hotel',
@@ -18,32 +19,41 @@ export class HotelComponent implements OnInit {
 
   private subscription = new Subscription();
 
-  sessionUser:any = sessionStorage.getItem('user');
-  user:any = JSON.parse(this.sessionUser);
+  sessionUser: any = sessionStorage.getItem('user');
+  user: any = JSON.parse(this.sessionUser);
 
   constructor(
     private HotelClientService: HotelClientService,
     private RegionsClientService: RegionsClientService,
     private route: ActivatedRoute,
     private message: NzMessageService,
-    ) { }
+  ) { }
 
   hotels: any[] = [];
   hotelId: any;
   images: any[] = [];
   regions: any[] = [];
   regionId: any;
+  regionName: any;
 
   menus: MenuItem[] = [];
   statusOption: any;
-  role:any;
+  role: any;
   confirmModal?: NzModalRef;
 
   displayImage: boolean = false;
+  starRating: number;
+  formStar!: FormGroup;
+
+
 
   ngOnInit() {
-    this.getHotelsByRegion();
     this.getRegions();
+    this.getHotelsByRegion();
+    this.formStar = new FormGroup({
+      value: new FormControl(this.starRating)
+    });
+
     // if(this.user.role[0] == 'admin'){
     //   this.role = true;
     // }else{
@@ -54,7 +64,7 @@ export class HotelComponent implements OnInit {
 
 
 
-  getHotelsByRegion(){
+  getHotelsByRegion() {
     this.route.params.subscribe(params => {
       const id = params['region_id']; // Lấy giá trị ID từ URL
       this.HotelClientService.getHotelsByRegion(id).subscribe({
@@ -62,39 +72,33 @@ export class HotelComponent implements OnInit {
           console.log(res.data);
           this.hotels = res.data;
           this.images = res.data
-
+          this.regionName = res.data[0].region.name;
+          this.formStar.controls['value'].setValue(res.data[0].star_rating);
         },
-        error: (err) => {{
-          console.log('Đã xảy ra lỗi khi gọi API:', err);
-        }}
+        error: (err) => {
+          {
+            console.log('Đã xảy ra lỗi khi gọi API:', err);
+          }
+        }
       });
     });
   }
-  getRegions(){
+
+  getRegions() {
     let obs = this.RegionsClientService.getRegions().subscribe({
       next: (res) => {
         this.regions = res.data;
         // this.getImage();
       },
-      error: (err) => {{
-        this.message.create(ERROR, err.message);
-      }}
+      error: (err) => {
+        {
+          this.message.create(ERROR, err.message);
+        }
+      }
     })
     this.subscription.add(obs);
   }
-
-  // async getImage(){
-  //   let images:any[] = await firstValueFrom(this.imagesService.getImages());
-
-  //   for (const item of this.hotels) {
-  //     images.forEach(img => {
-  //       if(img.hotel_id == item.id){
-  //         item.image = `${URL_IMAGE}/${img.path}`;
-  //       }
-  //     });
-  //   }
-  //   console.log(images)
-  }
+}
 
 
 

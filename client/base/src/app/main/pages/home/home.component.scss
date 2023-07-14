@@ -1,0 +1,9 @@
+.link:hover {
+  color: #FEA116;
+}
+.overflow-text {
+  white-space: nowrap;
+  overflow: hidden;
+  width: 350px;
+  text-overflow: ellipsis;
+}

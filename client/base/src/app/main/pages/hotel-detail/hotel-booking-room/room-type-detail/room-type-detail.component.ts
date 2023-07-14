@@ -2,7 +2,12 @@ import { PhotoService } from './../../../../services/photoservice.service';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { DynamicDialogRef } from 'primeng/dynamicdialog';
 import { Subscription } from 'rxjs';
-import { RoomTypeService } from 'src/app/module/_mShared/service/room_type.service';
+
+interface RoomTypeDetailData {
+  name: string;
+  capacity: number;
+  price_per_night: number;
+}
 
 @Component({
   selector: 'room-type-detail',
@@ -10,10 +15,10 @@ import { RoomTypeService } from 'src/app/module/_mShared/service/room_type.servi
   styleUrls: ['./room-type-detail.component.scss']
 })
 export class RoomTypeDetailComponent implements OnInit {
-  constructor(private PhotoService: PhotoService, private roomTypeService: RoomTypeService,) { }
-  @Input() roomTypeId: any;
+  constructor(private PhotoService: PhotoService) { }
   @Input() displayRoomType: boolean = false;
   @Output() closeModal = new EventEmitter<any>();
+  @Input() roomTypeDetailData: RoomTypeDetailData;
 
   ref: DynamicDialogRef | undefined;
   images: any[];
@@ -35,33 +40,22 @@ export class RoomTypeDetailComponent implements OnInit {
   ];
 
   ngOnInit() {
-    this.showModal()
+    // this.showModal()
+  }
+  visible: boolean = false;
+
+  open(roomType: any) {
+    this.roomType = roomType;
+    this.visible = true;
   }
 
-  showModal() {
-    if (this.roomTypeId) {
-      this.roomTypeService.findOne(this.roomTypeId).subscribe({
-
-        next: (res) => {
-          console.log(res);
-
-          this.roomType = res.data;
-        },
-        error: (err) => {
-          {
-            console.log('Đã xảy ra lỗi khi gọi API:', err);
-          }
-        }
-      });
-    } else {
-      alert("Địt mẹ ảo thật đấy")
-    }
+  close() {
+    this.visible = false;
   }
 
-  handleCancel() {
-    if (!this.displayRoomType) {
-      console.log('closing');
-      this.closeModal.emit();
+  ngOnDestroy() {
+    if (this.ref) {
+      this.ref.close();
     }
   }
 
