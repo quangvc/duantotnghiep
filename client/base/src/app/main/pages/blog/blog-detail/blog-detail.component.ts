@@ -1,7 +1,7 @@
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CommentServiceService } from './../../../services/comment-service.service';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { BlogClientService } from 'src/app/main/services/blogClient.service';
@@ -24,6 +24,9 @@ export class BlogDetailComponent implements OnInit{
   blogId: Number;
   blog: any;
   comments: any;
+  isCommentsArrayEmpty: boolean
+  commentForm: any;
+  note: any;
 
   onPageChange(event: PageEvent) {
       this.first = event.first;
@@ -35,14 +38,16 @@ export class BlogDetailComponent implements OnInit{
     private BlogClientService: BlogClientService,
     private CommentService: CommentServiceService,
     private fb: FormBuilder,
-    private http: HttpClient
+    private http: HttpClient,
+    private router: Router
   ) { }
   private subscription = new Subscription();
 
   ngOnInit() {
     this.getBlog();
-    this.getComment();
     this.formBuilderComment();
+    this.checkComment();
+
   }
 
 
@@ -54,7 +59,9 @@ export class BlogDetailComponent implements OnInit{
         next: (res) => {
           console.log(res.data);
           this.formComment.controls['blog_id'].setValue(res.data.id);
+          this.getComment(res.data.id);
           this.blog = res.data;
+          this.checkLogin();
         },
         error: (err) => {{
           console.log('Đã xảy ra lỗi khi gọi API:', err);
@@ -74,7 +81,6 @@ export class BlogDetailComponent implements OnInit{
 
 
   addComment() {
-    debugger
     if(this.formComment.valid){
       let create = this.CommentService.createComment(this.formComment.value);
       // let update = this.regionService.updateRegion(this.region.id, this.formRegion.value);
@@ -91,12 +97,15 @@ export class BlogDetailComponent implements OnInit{
   }
 
 
-  getComment() {
-    let obs = this.CommentService.getCommentByBlog(this.blogId).subscribe({
+  getComment(blog_id: any) {
+    let obs = this.CommentService.getCommentByBlog(blog_id).subscribe({
       next: (res) => {
         console.log(res.data);
 
-        this.comments = res.data;
+        this.comments = res.data.map((comment: any) => ({
+          ...comment,
+          isReplying: false
+        }));
         console.log(res)
       },
       error: (err) => {{
@@ -104,6 +113,22 @@ export class BlogDetailComponent implements OnInit{
       }}
     })
     this.subscription.add(obs);
+  }
+
+  checkComment() {
+    this.isCommentsArrayEmpty = this.comments.length === 0 ? false : true;
+  }
+
+  checkLogin(){
+    let user:any = sessionStorage.getItem('user');
+    if(user){
+      this.commentForm = true;
+      this.note = false;
+    }else{
+
+      this.commentForm = false;
+      this.note = true;
+    }
   }
 
 }

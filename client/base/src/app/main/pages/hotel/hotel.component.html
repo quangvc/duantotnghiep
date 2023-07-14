@@ -89,7 +89,7 @@
         </div>
       </div>
       <div class="col-lg wow fadeInUp" data-wow-delay="0.3s">
-        <h2><strong>Các khách sạn được yêu thích ở Hà Nội</strong></h2>
+        <h2><strong>Các khách sạn được yêu thích ở  {{ regionName ? regionName : 'Khu vực' }}</strong></h2>
         <div class="room-item shadow rounded-4 overflow-hidden mb-3" *ngFor="let data of hotels;">
           <div class="position-relative w-100" >
             <div class="row">
@@ -104,12 +104,10 @@
           <div class="p-4 mt-2">
             <div class="d-flex justify-content-between mb-3">
               <h5 class="mb-0">{{ data.hotel_name }}</h5>
-              <div class="ps-2">
-                <small class="fa fa-star text-primary"></small>
-                <small class="fa fa-star text-primary"></small>
-                <small class="fa fa-star text-primary"></small>
-                <small class="fa fa-star text-primary"></small>
-                <small class="fa fa-star text-primary"></small>
+              <div class="flex justify-content-center">
+                <form [formGroup]="formStar">
+                    <p-rating formControlName="value" [cancel]="false" [readonly]="true"></p-rating>
+                </form>
               </div>
             </div>
             <div class="d-flex mb-3">

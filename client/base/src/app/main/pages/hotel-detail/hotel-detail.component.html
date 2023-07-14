@@ -49,14 +49,12 @@
             <div class="p-5" >
               <h3><strong>{{ hotel.hotel_name }}</strong></h3>
               <div class="d-flex mb-2">
-                <small class="bg-primary text-white rounded-5 py-1 px-3"><strong>Hotel</strong>
+                <small class="bg-primary text-white rounded-5 py-1 px-3 me-3"><strong>Hotel</strong>
                 </small>
-                <div class="ps-2">
-                  <small class="fa fa-star text-primary rating-star"></small>
-                  <small class="fa fa-star text-primary rating-star"></small>
-                  <small class="fa fa-star text-primary rating-star"></small>
-                  <small class="fa fa-star text-primary rating-star"></small>
-                  <small class="fa fa-star text-primary rating-star"></small>
+                <div class="flex justify-content-center">
+                  <form [formGroup]="formStar" >
+                      <p-rating class="my-auto" formControlName="value" [cancel]="false" [readonly]="true"></p-rating>
+                  </form>
                 </div>
               </div>
               <div class="mb-2">
