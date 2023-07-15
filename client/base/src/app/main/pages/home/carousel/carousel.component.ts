@@ -4,6 +4,9 @@ import { Subscription } from 'rxjs';
 import { BannersClientService } from 'src/app/main/services/banners-client.service';
 import { ERROR } from 'src/app/module/_mShared/model/url.class';
 
+interface Banner {
+  image?:string;
+}
 @Component({
   selector: 'app-carousel',
   templateUrl: './carousel.component.html',
@@ -12,20 +15,36 @@ import { ERROR } from 'src/app/module/_mShared/model/url.class';
 export class CarouselComponent implements OnInit {
 
   private subscription = new Subscription();
-  // formBanner: FormGroup
-
-  constructor(
-    private BannersClientService: BannersClientService,
-    private message: NzMessageService,
-    ) { }
-
-
-  banners: any[] = [];
   banner:any
 
   ngOnInit() {
     this.getBanners();
   }
+
+
+  banners: Banner[];
+
+	responsiveOptions;
+
+	constructor(private BannersClientService: BannersClientService,private message: NzMessageService,) {
+		this.responsiveOptions = [
+            {
+                breakpoint: '1024px',
+                numVisible: 3,
+                numScroll: 3
+            },
+            {
+                breakpoint: '768px',
+                numVisible: 2,
+                numScroll: 2
+            },
+            {
+                breakpoint: '560px',
+                numVisible: 1,
+                numScroll: 1
+            }
+        ];
+	}
   getBanners(){
     let obs = this.BannersClientService.getBanners().subscribe({
       next: (res) => {
@@ -39,5 +58,4 @@ export class CarouselComponent implements OnInit {
 
     this.subscription.add(obs);
   }
-
 }

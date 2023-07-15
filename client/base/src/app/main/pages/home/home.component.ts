@@ -47,7 +47,7 @@ export class HomeComponent implements OnInit {
     let obs = this.RegionsClientService.getRegions().subscribe({
       next: (res) => {
         console.log(res.data)
-        this.regions = res.data.slice(2);
+        this.regions = res.data.slice(0, 3);
         // const limitedData = res.data.property.slice(0, 2);
         // this.regions = limitedData
         // this.getImage();

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'main-header',
@@ -10,19 +11,29 @@ export class HeaderComponent implements OnInit{
   notLogin: any
   userData:any = sessionStorage.getItem('user');
   user = JSON.parse(this.userData);
+  path: any
+
+
+  constructor(
+    private router: Router,
+  ) {}
+
   ngOnInit() {
-    // this.checkLogin();
+    this.checkLogin();
     console.log(this.user);
 
   }
-  // checkLogin(){
-  //   if(this.user){
-  //     console.log(this.user);
-  //     this.notLogin =false;
-  //   }else{
-  //     this.notLogin = true;
-  //   }
-  // }
+  checkLogin(){
+    let userLogged:any = sessionStorage.getItem('user');
+    let user = JSON.parse(userLogged);
+    console.log(user);
+
+    if(user.user.name === "Admin"){
+      this.path = 'nine'
+    }else{
+      this.path = 'profile'
+    }
+  }
 
 
 }

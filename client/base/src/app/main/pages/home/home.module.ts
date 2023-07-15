@@ -6,11 +6,16 @@ import { CarouselComponent } from './carousel/carousel.component';
 import { HotelClientService } from '../../services/hotelClient.service';
 import { RegionsClientService } from '../../services/regions-client.service';
 import { BlogClientService } from '../../services/blogClient.service';
+import { ButtonModule } from 'primeng/button';
+import { CarouselModule } from 'primeng/carousel';
+
 
 @NgModule({
   imports: [
     CommonModule,
-    HomeRoutes
+    HomeRoutes,
+    ButtonModule,
+    CarouselModule
   ],
   declarations: [HomeComponent, CarouselComponent],
   providers: [HotelClientService, RegionsClientService, BlogClientService],
