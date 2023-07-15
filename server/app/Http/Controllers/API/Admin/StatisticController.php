@@ -42,6 +42,20 @@ class StatisticController extends Controller
         return $revenue;
     }
 
+    // thống kê số phòng đã cho thuê hàng tháng
+    public function monthly_rooms() {
+        $countBookingRevenue = [];
+        for ($i = 11; $i >= 0; $i--) {
+            $month = now()->subMonths($i)->format('M');
+            $countBookingRevenue[$month] = BookingDetail::whereHas('booking', function ($query) use ($i) {
+                $query->where('created_at', '>', now()->subMonth())
+                ->whereMonth('checkin_date', now()->subMonths($i)->month);
+            })                
+            ->count();
+        }
+        return $countBookingRevenue;
+    }
+
     // đếm số user mới
     public function countUsers() {
         $countUsers = User::where('created_at', '>', now()->subMonth())
@@ -57,12 +71,12 @@ class StatisticController extends Controller
         return $lmRevenue;
     }
 
-    // doanh thu trong 1 tháng gần nhất
+    // số booking trong 1 tháng gần nhất
     public function lmCountBooking() {
-        $lmRevenue = Booking::whereIn('status', [1,3])
+        $lmCountBooking = Booking::whereIn('status', [1,3])
         ->where('created_at', '>', now()->subMonth())
-        ->sum('total_price');
-        return $lmRevenue;
+        ->count();
+        return $lmCountBooking;
     }
 
     // số phòng cho thuê trong 1 tháng gần nhất

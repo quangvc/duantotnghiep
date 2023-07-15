@@ -192,6 +192,7 @@ Route::group(['prefix' => 'admin'], function () {
             Route::get('/filter-by-date/{date_from}/{date_to}', 'filter_by_date');
             Route::get('/monthly-revenue', 'monthly_revenue');
             Route::get('/count-users', 'countUsers');
+            Route::get('/monthly-room', 'monthly_rooms');
             Route::get('/last-month-revenue', 'lastMonthRevenue');
             Route::get('/lm-count-room', 'lastMonthCountRooms');
 
