@@ -6,13 +6,17 @@
         <nz-input-group nzPrefixIcon="user">
           <input type="text" nz-input formControlName="login" placeholder="{{'auth.username' | translate}}" />
         </nz-input-group>
+        <error-msg [profileForm]="formLogin" key="login" check="required" msg="Vui lòng không để trống."></error-msg>
       </nz-form-control>
     </nz-form-item>
+
+
     <nz-form-item>
       <nz-form-control nzErrorTip="Please input your Password!">
         <nz-input-group nzPrefixIcon="lock">
           <input type="password" nz-input formControlName="password" placeholder="{{'auth.password' | translate}}" />
         </nz-input-group>
+        <error-msg [profileForm]="formLogin" key="password" check="required" msg="Vui lòng không để trống."></error-msg>
       </nz-form-control>
     </nz-form-item>
     <div nz-row class="login-form-margin">

@@ -62,7 +62,8 @@ export class CreateUpdateRoomComponent implements OnInit, OnDestroy {
           });
         },
         error: (err) => {
-          this.message.create(ERROR, err.error.message);
+          this.message.create(ERROR, `${err.error.message}`)
+          this.message.create(ERROR, `${err.message}`)
         }
       })
     }
@@ -81,7 +82,8 @@ export class CreateUpdateRoomComponent implements OnInit, OnDestroy {
         }
       },
       error: (err) => {
-        this.message.create(ERROR, err.error.message);
+        this.message.create(ERROR, `${err.error.message}`)
+        this.message.create(ERROR, `${err.message}`)
       }
     })
 
@@ -108,7 +110,8 @@ export class CreateUpdateRoomComponent implements OnInit, OnDestroy {
           this.message.create(SUCCESS, `${id ? "Cập nhật" : "Thêm mới"} thành công`);
         },
         error: (err:any) => {
-          this.message.create(ERROR, err.error.message);
+          this.message.create(ERROR, `${err.error.message}`)
+          this.message.create(ERROR, `${err.message}`)
         }
       })
     }

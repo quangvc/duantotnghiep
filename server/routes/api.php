@@ -183,6 +183,7 @@ Route::group(['prefix' => 'admin'], function () {
             Route::get('/', 'index')->middleware('permission:view_banner');
             Route::post('/', 'store')->middleware('permission:add_banner');
             Route::delete('/{id}', 'destroy')->middleware('permission:delete_banner');
+            Route::put('/{id}/changeStatus', 'changeStatus');
         }
     );
     Route::group(
@@ -193,7 +194,7 @@ Route::group(['prefix' => 'admin'], function () {
             Route::get('/count-users', 'countUsers');
             Route::get('/last-month-revenue', 'lastMonthRevenue');
             Route::get('/lm-count-room', 'lastMonthCountRooms');
-            
+
         }
     );
 });

@@ -1,4 +1,7 @@
 <div class="mb-3" *ngIf="role">
+  <button nz-button [nzSize]="'large'" nzType="primary" (click)="createBooking()" >Tạo đơn đặt phòng</button>
+</div>
+<div class="mb-3" *ngIf="role">
   <nz-tabset nzType="card">
     <nz-tab *ngFor="let tab of statusOptions" [nzTitle]="tab.text" (nzClick)="valueFilter(tab.value)">
 
@@ -46,3 +49,10 @@
   (closeModal)="eventSubmit($event)"
 >
 </booking-form>
+
+<create-booking
+  *ngIf="displayCreateBooking"
+  [displayCreateBooking]="displayCreateBooking"
+  (closeModal)="emitEvent($event)"
+>
+</create-booking>

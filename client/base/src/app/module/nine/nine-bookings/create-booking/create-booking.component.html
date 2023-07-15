@@ -1,0 +1,35 @@
+<nz-modal
+  [(nzVisible)]="displayCreateBooking"
+  nzTitle="Tạo đơn"
+  nzWidth="980px"
+  (nzOnCancel)="handleCancel()"
+  (nzOnOk)="handleOk()">
+  <ng-container *nzModalContent>
+    <form >
+      <div class="row">
+
+        <div class="col-6">
+          <div class="mb-3">
+            <label for="checkin_date" class="form-label">{{'bookings.checkin_date' | translate}}</label>
+            <input type="datetime-local" class="form-control" id="checkin_date" formControlName="checkin_date">
+          </div>
+        </div>
+
+        <div class="col-6">
+          <div class="mb-3">
+            <label for="checkout_date" class="form-label">{{'bookings.checkout_date' | translate}}</label>
+            <input type="datetime-local" class="form-control" id="checkout_date" formControlName="checkout_date">
+          </div>
+        </div>
+
+        <div class="col-6">
+          <div class="mb-3">
+            <label for="people_quantity" class="form-label">{{'bookings.people_quantity' | translate}}</label>
+            <input type="number" class="form-control" id="people_quantity" formControlName="people_quantity">
+          </div>
+        </div>
+
+      </div>
+    </form>
+  </ng-container>
+</nz-modal>

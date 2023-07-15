@@ -41,7 +41,8 @@ export class CreateUpdateRegionComponent implements OnInit {
           console.log(res);
         },
         error: (err) => {
-          this.message.create(ERROR, err.message);
+          this.message.create(ERROR, `${err.error.message}`)
+          this.message.create(ERROR, `${err.message}`)
         }
       })
     }
@@ -59,7 +60,8 @@ export class CreateUpdateRegionComponent implements OnInit {
           this.message.create(SUCCESS, `This is a message of ${SUCCESS}`);
         },
         error: (err) => {
-          this.message.create(ERROR, err.message);
+          this.message.create(ERROR, `${err.error.message}`)
+          this.message.create(ERROR, `${err.message}`)
         }
       })
     }

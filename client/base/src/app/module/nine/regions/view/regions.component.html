@@ -1,7 +1,7 @@
-<div class="mb-3">
+<div class="mb-3" *ngIf="role">
   <button nz-button [nzSize]="'large'" nzType="primary" (click)="addRegion()" >{{'button.add_new' | translate}}</button>
 </div>
-<nz-table #basicTable [nzData]="regions">
+<nz-table #basicTable [nzData]="regions" *ngIf="role">
   <thead>
     <tr>
       <th>#</th>

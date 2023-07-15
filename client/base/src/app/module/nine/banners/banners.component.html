@@ -14,7 +14,7 @@
     <tr *ngFor="let data of basicTable.data; let i = index">
       <td>{{ i + 1 }}</td>
       <td><img [src]="'http://127.0.0.1:8000/Images/banners/'+data.image" width="100" alt=""></td>
-      <td>{{data.txtStatus}}</td>
+      <td><nz-switch [(ngModel)]="data.status" (ngModelChange)="confirmChangeStatus($event,data)"></nz-switch></td>
       <td>
         <button nz-button nzType="primary" [nzSize]="'large'" nzShape="circle" (click)="showConfirmDelete(data.id)" nzDanger><span nz-icon nzType="delete" nzTheme="outline"></span></button>
       </td>

@@ -3,6 +3,8 @@ import { Auth } from 'src/app/auth/_aShared/auth.class';
 import { BookingsService } from '../../_mShared/service/bookings.service';
 import { Enum } from '../../_mShared/service/static/enum.service';
 import { StatusBookings } from '../../_mShared/enum/enum';
+import { NzMessageService } from 'ng-zorro-antd/message';
+import { ERROR } from '../../_mShared/model/url.class';
 
 @Component({
   selector: 'app-nine-bookings',
@@ -12,10 +14,12 @@ import { StatusBookings } from '../../_mShared/enum/enum';
 export class NineBookingsComponent implements OnInit {
 
   constructor(
-    private bookingService: BookingsService
+    private bookingService: BookingsService,
+    private message: NzMessageService,
   ) { }
 
   displayBookingForm: boolean = false;
+  displayCreateBooking: boolean = false;
 
   bookings: any[] = [];
 
@@ -38,6 +42,9 @@ export class NineBookingsComponent implements OnInit {
   checkRole(){
     switch (Auth.User('role')) {
       case 'admin':
+        return this.role = true;
+        break;
+      case 'manager':
         return this.role = true;
         break;
       default:
@@ -99,7 +106,10 @@ export class NineBookingsComponent implements OnInit {
         }
 
       },
-      error: (err) => {}
+      error: (err) => {
+        this.message.create(ERROR, `${err.error.message}`)
+        this.message.create(ERROR, `${err.message}`)
+      }
     })
   }
 
@@ -143,6 +153,15 @@ export class NineBookingsComponent implements OnInit {
 
   eventSubmit(event:any){
     this.displayBookingForm = false;
+    this.getBookings();
+  }
+
+  createBooking(){
+    this.displayCreateBooking = true;
+  }
+
+  emitEvent(event:any){
+    this.displayCreateBooking = false;
     this.getBookings();
   }
 }

@@ -19,6 +19,7 @@ import { RegisterComponent } from './auth/register/view/register.component';
 import { SharedModule } from './_shared/shared/shared.module';
 import { MainGlobalModule } from './main/main-global.module';
 import { LineClampComponent } from './main/share/line-clamp/line-clamp.component';
+import { ErrorMsgModule } from './module/_mShared/error-msg/error-msg.module';
 
 
 registerLocaleData(en);
@@ -43,6 +44,8 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
 
     SharedModule,
     FormsModule,
+
+    ErrorMsgModule
   ],
   providers: [
     { provide: NZ_I18N, useValue: en_US },

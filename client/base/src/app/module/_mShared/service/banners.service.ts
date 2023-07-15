@@ -27,13 +27,18 @@ export class BannersService {
   }
 
   createBanner(data: any): Observable<any>{
-    const url = `http://127.0.0.1:8000/api/admin/banners/`;
+    const url = `${this.API_URL}/${BANNERS}`;
     return this.http.post<any>(url, data, this.httpOptions);
   }
 
   deleteBanner(id:any): Observable<any>{
-    const url = `http://127.0.0.1:8000/api/admin/banners/${id}`;
+    const url = `${this.API_URL}/${BANNERS}/${id}`;
     return this.http.delete<any>(url, this.httpOptions);
+  }
+
+  changeStatus(id:any): Observable<any>{
+    const url = `${this.API_URL}/${BANNERS}/${id}/changeStatus`;
+    return this.http.put<any>(url, this.httpOptions);
   }
 
 }

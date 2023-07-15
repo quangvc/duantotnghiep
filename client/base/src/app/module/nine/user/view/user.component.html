@@ -44,7 +44,7 @@
       <td>{{ data.email }}</td>
       <td>{{ data.gender }}</td>
       <td>{{ data.phone_number }}</td>
-      <td><nz-switch [(ngModel)]="data.active" (ngModelChange)="confirmChangeStatus($event,data)" [disabled]="!role"></nz-switch></td>
+      <td><nz-switch [(ngModel)]="data.active" (ngModelChange)="confirmChangeStatus($event,data)" [disabled]="!role" *ngIf="data.name != 'Admin'"></nz-switch></td>
       <td *ngIf="role">
         <q-menu
           *ngIf="data.name != 'Admin'"

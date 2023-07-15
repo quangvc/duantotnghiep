@@ -11,6 +11,6 @@ class Banner extends Model
     protected $table = 'tbl_banners';
 
     protected $fillable = [
-        'image', 'created_at', 'updated_at'
+        'image', 'created_at', 'updated_at', 'status'
     ];
 }

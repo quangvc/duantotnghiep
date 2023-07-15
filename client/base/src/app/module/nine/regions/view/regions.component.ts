@@ -7,6 +7,7 @@ import { MenuItem } from 'src/app/module/_mShared/model/menuItem.class';
 import { ERROR, SUCCESS } from 'src/app/module/_mShared/model/url.class';
 import { Enum } from 'src/app/module/_mShared/service/static/enum.service';
 import { RegionsService } from 'src/app/module/_mShared/service/regions.service';
+import { Auth } from 'src/app/auth/_aShared/auth.class';
 
 @Component({
   selector: 'app-regions',
@@ -33,10 +34,24 @@ export class RegionsComponent implements OnInit, OnDestroy {
 
   statusOption: any;
 
+  role: boolean;
+
   ngOnInit() {
     this.getRegion();
     this.getOptionEnum();
   }
+
+  checkRole(){
+    switch (Auth.User('role')) {
+      case 'admin':
+        return this.role = true;
+        break;
+      default:
+        return this.role = false;
+        break;
+    }
+  }
+
 
   getOptionEnum(){
     this.statusOption = Enum.convertEnum(NineStatus);
@@ -58,6 +73,7 @@ export class RegionsComponent implements OnInit, OnDestroy {
         this.regions = res.data;
       },
       error: (err) => {
+        this.message.create(ERROR, `${err.error.message}`)
         this.message.create(ERROR, `${err.message}`)
       }
     })
@@ -112,6 +128,7 @@ export class RegionsComponent implements OnInit, OnDestroy {
         this.getRegion();
       },
       error: (err) => {
+        this.message.create(ERROR, `${err.error.message}`)
         this.message.create(ERROR, `${err.message}`)
       }
     })

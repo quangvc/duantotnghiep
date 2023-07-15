@@ -65,10 +65,12 @@ class BannerController extends Controller
     public function changeStatus($id)
     {
         $banner = Banner::find($id);
+
         if ($banner->status == StatusEnum::DEACTIVE) {
             $banner->update(['status' => StatusEnum::ACTIVE]);
-        } else {
-            $banner->update(['status' => StatusEnum::DEACTIVE]);
+        }
+        if ($banner->status == StatusEnum::ACTIVE) {
+            $banner->update(['status' => StatusEnum::ACTIVE]);
         }
 
         return response([

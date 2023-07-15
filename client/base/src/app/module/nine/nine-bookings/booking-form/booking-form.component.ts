@@ -1,5 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
+import { ERROR } from 'src/app/module/_mShared/model/url.class';
 import { BookingsService } from 'src/app/module/_mShared/service/bookings.service';
 
 @Component({
@@ -14,7 +16,8 @@ export class BookingFormComponent implements OnInit {
 
   constructor(
     private bookingsService: BookingsService,
-    private modal: NzModalService
+    private modal: NzModalService,
+    private message: NzMessageService,
   ) { }
 
 
@@ -32,6 +35,10 @@ export class BookingFormComponent implements OnInit {
       next: (res) => {
         this.booking = res.data;
         console.log(this.booking)
+      },
+      error: (err) => {
+        this.message.create(ERROR, err.error.message);
+        this.message.create(ERROR, err.message);
       }
     })
   }

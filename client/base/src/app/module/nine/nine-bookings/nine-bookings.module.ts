@@ -6,6 +6,7 @@ import { NineBookingsRoutes } from './nine-bookings.routing';
 import { BookingFormComponent } from './booking-form/booking-form.component';
 import { NzTabsModule } from 'ng-zorro-antd/tabs';
 import { NzTagModule } from 'ng-zorro-antd/tag';
+import { CreateBookingComponent } from './create-booking/create-booking.component';
 
 @NgModule({
   imports: [
@@ -14,6 +15,6 @@ import { NzTagModule } from 'ng-zorro-antd/tag';
     NzTagModule,
     NineBookingsRoutes
   ],
-  declarations: [NineBookingsComponent, BookingFormComponent]
+  declarations: [NineBookingsComponent, BookingFormComponent,CreateBookingComponent]
 })
 export class NineBookingsModule { }

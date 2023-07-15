@@ -67,6 +67,7 @@ export class HotelsComponent implements OnInit, OnDestroy {
         this.getImage();
       },
       error: (err) => {{
+        this.message.create(ERROR, err.error.message);
         this.message.create(ERROR, err.message);
       }}
     })
@@ -147,6 +148,7 @@ export class HotelsComponent implements OnInit, OnDestroy {
       error: (err) => {
         this.getHotels();
         this.message.create(ERROR, err.error.message);
+        this.message.create(ERROR, err.message);
       }
     })
     this.subscription.add(obs);

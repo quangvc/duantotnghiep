@@ -59,7 +59,8 @@ export class RoomTypesComponent implements OnInit, OnDestroy {
         console.log(this.roomTypes)
       },
       error: (err) => {
-        this.message.create(ERROR, err.error.message)
+        this.message.create(ERROR, `${err.error.message}`)
+        this.message.create(ERROR, `${err.message}`)
       }
     })
     this.subscription.add(obs);
@@ -93,7 +94,8 @@ export class RoomTypesComponent implements OnInit, OnDestroy {
         this.getRoomTypes();
       },
       error: (err) => {
-        this.message.create(ERROR, err.error.message)
+        this.message.create(ERROR, `${err.error.message}`)
+        this.message.create(ERROR, `${err.message}`)
       }
     })
 
