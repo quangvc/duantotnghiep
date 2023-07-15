@@ -42,7 +42,8 @@
         <div class="col-12">
           <div class="mb-3">
             <label for="content" class="form-label">{{'blog.content' | translate}}</label>
-            <textarea class="form-control" id="content" formControlName="content" rows="8"></textarea>
+            <editor [(ngModel)]="content"></editor>
+            <!-- <textarea class="form-control" id="content" formControlName="content" rows="8"></textarea> -->
           </div>
         </div>
 
