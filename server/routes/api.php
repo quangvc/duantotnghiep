@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\Admin\CommentController;
 use App\Http\Controllers\API\Admin\RegionController;
 use App\Http\Controllers\API\Admin\RoomController;
 use App\Http\Controllers\API\Admin\RoomTypesController;
+use App\Http\Controllers\API\Admin\StatisticController;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -182,6 +183,17 @@ Route::group(['prefix' => 'admin'], function () {
             Route::get('/', 'index')->middleware('permission:view_banner');
             Route::post('/', 'store')->middleware('permission:add_banner');
             Route::delete('/{id}', 'destroy')->middleware('permission:delete_banner');
+        }
+    );
+    Route::group(
+        ['prefix' => 'statistics', 'controller' => StatisticController::class],
+        function () {
+            Route::get('/filter-by-date/{date_from}/{date_to}', 'filter_by_date');
+            Route::get('/monthly-revenue', 'monthly_revenue');
+            Route::get('/count-users', 'countUsers');
+            Route::get('/last-month-revenue', 'lastMonthRevenue');
+            Route::get('/lm-count-room', 'lastMonthCountRooms');
+            
         }
     );
 });

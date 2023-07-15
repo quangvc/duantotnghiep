@@ -27,9 +27,9 @@ class RegionController extends Controller
         ]);
 
         if ($request->hasFile('image')) {
-            $file = $request->avatar;
+            $file = $request->image;
             $region->image = $file->hashName();
-            $file->move(base_path('public/Images/avatar'), $region->image);
+            $file->move(base_path('public/Images/regions'), $region->image);
         }
 
         $region->save();
@@ -64,9 +64,9 @@ class RegionController extends Controller
             if ($region->image != '' && file_exists(public_path('Images/regions/' . $region->image))) {
                 unlink(public_path('Images/regions/' . $region->image));
             }
-            $file = $request->avatar;
+            $file = $request->region;
             $region->image = $file->hashName();
-            $file->move(base_path('public/Images/avatar'), $region->image);
+            $file->move(base_path('public/Images/regions'), $region->image);
         }
 
         $region->update([
