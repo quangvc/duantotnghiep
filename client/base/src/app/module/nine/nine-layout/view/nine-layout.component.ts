@@ -14,7 +14,11 @@ import { MenuItem } from 'src/app/module/_mShared/model/menuItem.class';
 })
 export class NineLayoutComponent implements OnInit {
 
-  constructor(private authService: AuthService,private router: Router,private nzMessageService: NzMessageService) { }
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private message: NzMessageService,
+  ) { }
   isCollapsed = true;
 
   flexWidth80: string = 'flex: 0 0 80px; max-width: 80px; min-width: 80px; width: 80px;';
@@ -28,6 +32,20 @@ export class NineLayoutComponent implements OnInit {
 
   ngOnInit() {
     this.getMenus();
+    this.checkLogin()
+  }
+
+  checkLogin(){
+    let userLogged:any = sessionStorage.getItem('user');
+    let user = JSON.parse(userLogged);
+    console.log(user);
+
+    if(user.user.name === "Admin"){
+      this.router.navigate(['nine'])
+    }else{
+      this.message.warning('Đừng nghịch em ơi!!!');
+      this.router.navigate(['home'])
+    }
   }
 
   getMenus(){

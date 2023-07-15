@@ -134,9 +134,9 @@
     </div>
     <div class="row g-4">
       <div class="col-lg-4 col-md-6" *ngFor="let item of regions; let i=index">
-        <div class="room-item shadow rounded-4 overflow-hidden mb-3" *ngIf="i < 3">
+        <div class="room-item shadow rounded-4 overflow-hidden mb-3">
           <div class="position-relative">
-            <img class="img-fluid" src="../../../assets/image/room-2.jpg" alt="">
+            <img style="width: 100%; max-height: 200px;" [src]="'http://127.0.0.1:8000/Images/regions/'+item.image" alt="">
             <small
               class="position-absolute start-0 top-100 translate-middle-y bg-primary text-white rounded py-1 px-3 ms-4">Khu
               vực</small>
