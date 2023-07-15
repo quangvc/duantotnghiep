@@ -8,6 +8,7 @@ import { ERROR, SUCCESS } from 'src/app/module/_mShared/model/url.class';
 import { Enum } from 'src/app/module/_mShared/service/static/enum.service';
 
 import { BlogsService } from 'src/app/module/_mShared/service/blogs.service';
+import { Auth } from 'src/app/auth/_aShared/auth.class';
 
 @Component({
   selector: 'app-blogs',
@@ -33,9 +34,12 @@ export class BlogsComponent implements OnInit {
 
   confirmModal?: NzModalRef;
 
+  displayViewPost: boolean = false;
+
   ngOnInit() {
     this.getBlogs();
     this.getOptionEnum();
+    console.log(Auth.User())
   }
 
   getOptionEnum(){
@@ -63,6 +67,12 @@ export class BlogsComponent implements OnInit {
           this.editBlog(data);
         },
       },
+      {
+        label: "Xem bài viết",
+        command: () => {
+          this.viewPost(data);
+        },
+      },
       { separator: true},
       {
         label: "Xóa",
@@ -84,6 +94,7 @@ export class BlogsComponent implements OnInit {
 
   cancel(event:any){
     this.displayCreateUpdateBlog = false;
+    this.displayViewPost = false;
     this.getBlogs();
   }
 
@@ -109,6 +120,11 @@ export class BlogsComponent implements OnInit {
         this.message.create(ERROR, `${err.message}`)
       }
     })
+  }
+
+  viewPost(data:any){
+    this.displayViewPost = true;
+    this.blogId = data.id
   }
 
   }

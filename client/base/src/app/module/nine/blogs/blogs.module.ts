@@ -6,6 +6,7 @@ import { BlogsService } from '../../_mShared/service/blogs.service';
 import { QMenuModule } from '../../_mShared/q-menu/q-menu.module';
 import { SharedModule } from 'src/app/_shared/shared/shared.module';
 import { EditorModule, TINYMCE_SCRIPT_SRC } from '@tinymce/tinymce-angular';
+import { ViewPostComponent } from './view-post/view-post.component';
 
 
 @NgModule({
@@ -15,7 +16,7 @@ import { EditorModule, TINYMCE_SCRIPT_SRC } from '@tinymce/tinymce-angular';
     EditorModule,
     BlogsRoutes
   ],
-  declarations: [BlogsComponent, CreateUpdateBlogComponent],
+  declarations: [BlogsComponent, CreateUpdateBlogComponent, ViewPostComponent],
   providers: [
     BlogsService,
     { provide: TINYMCE_SCRIPT_SRC, useValue: 'tinymce/tinymce.min.js' }

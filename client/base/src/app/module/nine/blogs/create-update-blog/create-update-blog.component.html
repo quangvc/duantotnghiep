@@ -38,17 +38,19 @@
             <input class="form-control" type="file" (change)="onSelectFile($event)" id="file">
           </div>
         </div>
-
-        <div class="col-12">
-          <div class="mb-3">
-            <label for="content" class="form-label">{{'blog.content' | translate}}</label>
-            <editor [(ngModel)]="content"></editor>
-            <!-- <textarea class="form-control" id="content" formControlName="content" rows="8"></textarea> -->
-          </div>
-        </div>
-
       </div>
     </form>
+
+    <div class="row">
+
+      <div class="col-12">
+        <div class="mb-3">
+          <label for="content" class="form-label">{{'blog.content' | translate}}</label>
+          <editor [(ngModel)]="content"></editor>
+        </div>
+      </div>
+
+    </div>
 
   </ng-container>
 </nz-modal>

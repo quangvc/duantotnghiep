@@ -55,7 +55,7 @@ export class CreateUpdateBlogComponent implements OnInit, OnDestroy {
       user_id: [this.auth.id, Validators.required],
       title: [null, Validators.required],
       slug: [null],
-      content: [null, Validators.required]
+      content: [null]
     })
   }
 
@@ -98,7 +98,6 @@ export class CreateUpdateBlogComponent implements OnInit, OnDestroy {
   handleOk() {
     const formData = new FormData();
     if (this.formBlog.valid) {
-      debugger;
 
       let file = $('#file').prop('files');
       console.log(this.formBlog)
@@ -106,7 +105,7 @@ export class CreateUpdateBlogComponent implements OnInit, OnDestroy {
       formData.append("user_id", this.formBlog.value.user_id);
       formData.append("title", this.formBlog.value.title);
       formData.append("slug", this.formBlog.value.slug);
-      formData.append("content", this.formBlog.value.content);
+      formData.append("content", this.content);
 
       if(file.length > 0){
         formData.append("image", file[0]);
@@ -135,7 +134,7 @@ export class CreateUpdateBlogComponent implements OnInit, OnDestroy {
         next: (res) => {
           console.log(res)
           // this.closeModal.emit();
-          // this.message.create(SUCCESS, `Thêm mới blog thành công.`)
+          this.message.create(SUCCESS, `Thêm mới blog thành công.`)
         },
         error: (err) => {
           this.message.create(ERROR, err.error.message);

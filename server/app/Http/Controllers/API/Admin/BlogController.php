@@ -23,6 +23,7 @@ class BlogController extends Controller
 
     public function store(CreateBlogRequest $request)
     {
+        $request;
         $user_id = auth()->user()->id;
         $validated = $request->validated();
         $blog = new Blog([
@@ -49,7 +50,7 @@ class BlogController extends Controller
             'content'   =>  'string',
             'image'     =>  'bail|image|max:2048|mimes:jpeg,png,jpg|mimetypes:image/jpeg,image/png,image/jpg',
         ]);
-        
+
         $blog = Blog::find($id);
         $user_id = auth()->user()->id;
         if (!$user_id) {
