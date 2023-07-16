@@ -52,4 +52,9 @@ export class BlogsService {
     const url = `${this.API_URL}/${ADMIN}/${IMAGE}`;
     return this.http.get<any>(url, this.httpOptions);
   }
+
+  changeStatus(id:any, data?:any): Observable<any>{
+    const url = `${this.API_URL}/${BLOGS}/changeStatus/${id}`;
+    return this.http.put(url,data,this.httpOptions)
+  }
 }

@@ -133,8 +133,7 @@ export class CreateUpdateBlogComponent implements OnInit, OnDestroy {
 
       createUpdate.subscribe({
         next: (res) => {
-          console.log(res)
-          // this.closeModal.emit();
+          this.closeModal.emit();
           this.message.create(SUCCESS, `${res.message}`)
         },
         error: (err) => {

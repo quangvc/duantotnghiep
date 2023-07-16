@@ -25,7 +25,7 @@
       </td>
       <td>{{ data.user_name }}</td>
       <td>{{ data.slug }}</td>
-      <td><nz-switch [(ngModel)]="data.status"></nz-switch></td>
+      <td><nz-switch [(ngModel)]="data.status" (ngModelChange)="confirmChangeStatus($event,data)"></nz-switch></td>
       <td>
         <q-menu
           [model]="menus"

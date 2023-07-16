@@ -1,3 +1,4 @@
+import { async } from '@angular/core/testing';
 import { HttpHeaders } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
@@ -35,17 +36,15 @@ export class NineLayoutComponent implements OnInit {
     this.checkLogin()
   }
 
-  checkLogin(){
-    let userLogged:any = sessionStorage.getItem('user');
-    let user = JSON.parse(userLogged);
-    console.log(user);
-
-    if(user.user.name === "Admin"){
-      this.router.navigate(['nine'])
-    }else{
-      this.message.warning('Đừng nghịch em ơi!!!');
+  async checkLogin(){
+    let role = await Auth.User('role');
+    if(role === "admin"){}
+    else if(role === "manager"){}
+    else{
+      this.message.warning('Bạn không đủ quyền truy cập !!');
       this.router.navigate(['home'])
     }
+
   }
 
   getMenus(){
