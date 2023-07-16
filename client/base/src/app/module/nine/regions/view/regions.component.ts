@@ -34,21 +34,19 @@ export class RegionsComponent implements OnInit, OnDestroy {
 
   statusOption: any;
 
-  role: boolean;
+  role: boolean = false;
 
   ngOnInit() {
     this.getRegion();
     this.getOptionEnum();
+    this.checkRole();
   }
 
   checkRole(){
-    switch (Auth.User('role')) {
-      case 'admin':
-        return this.role = true;
-        break;
-      default:
-        return this.role = false;
-        break;
+    if(Auth.Admin()){
+      this.role = true;
+    }else{
+      this.role = false;
     }
   }
 
