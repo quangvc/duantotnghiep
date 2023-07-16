@@ -72,7 +72,7 @@ class RoomTypesClientController extends Controller
                         'rooms_count' => $count_all_rooms - $count_booked_rooms
                     ];
                 }
-            
+
         }
 
         return $data;

@@ -61,7 +61,7 @@
                   </div>
                 </div>
                 <div class="col-md-2  my-auto">
-                  <a href="filter" class="btn btn-primary w-100">Submit</a>
+                  <button class="btn btn-primary w-100" (click)="getRoomType()">Submit</button>
                 </div>
               </div>
             </div>
@@ -75,7 +75,7 @@
   <!-- Table start -->
   <div class="row">
     <p-table class="col-9"
-    [value]="RoomTypeData"
+    [value]="roomTypes"
      (onRowSelect)="onRowSelect($event)"
      selectionMode="multiple"
      [(selection)]="selectedRoomType"
@@ -93,24 +93,24 @@
       <ng-template pTemplate="body" let-roomType let-i="index">
         <tr>
           <td>
-            <a (click)="openDialog(roomType)">{{ roomType.name }}</a>
+            <a (click)="openDialog(roomType.room_type)">{{ roomType.room_type.name }}</a>
             <room-type-detail #dialog>
             </room-type-detail>
           </td>
           <td class="d-flex flex-row">
-            <div *ngFor="let user of getCapacitysArray(roomType.capacity)">
+            <div *ngFor="let user of getCapacitysArray(roomType.room_type.capacity)">
               <i class="pi pi-user"></i>
             </div>
           </td>
           <td>
-            {{ roomType.price_per_night | currency: 'VND'  }}
+            {{ roomType.room_type.price_per_night | currency: 'VND'  }}
           </td>
           <td>
             <select >
               <option
-                *ngFor="let item of roomType.room; let i=index"
+                *ngFor="let room of getCapacitysArray(roomType.rooms_count); let i=index"
                 value="{{ i + 1 }}">
-                {{ i + 1 }} phòng - Giá: {{ roomType.price_per_night * (i + 1) | currency: 'VND' }}
+                {{ i + 1 }} phòng - Giá: {{ roomType.room_type.price_per_night * (i + 1) | currency: 'VND' }}
               </option>
             </select>
           </td>
