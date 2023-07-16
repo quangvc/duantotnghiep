@@ -2,6 +2,11 @@ import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { MenuItem } from 'src/app/module/_mShared/model/menuItem.class';
 import { PhotoService } from './../../../services/photoservice.service';
 import { RoomTypeDetailComponent } from './room-type-detail/room-type-detail.component';
+import { roomTypeClientService } from 'src/app/main/services/room-type-client.service';
+import * as moment from 'moment';
+import { NzMessageService } from 'ng-zorro-antd/message';
+import { ERROR } from 'src/app/module/_mShared/model/url.class';
+import { Subscription } from 'rxjs';
 
 interface Type {
   name: string;
@@ -29,13 +34,23 @@ interface roomType {
   providers: [PhotoService]
 })
 export class HotelBookingRoomComponent implements OnInit {
+  constructor(
+    private roomTypeClientService: roomTypeClientService,
+    private message: NzMessageService,
+  ) { }
+  private subscription = new Subscription();
+
   @Input('hotelRoomTypeData') RoomTypeData: any[] = [];
+  @Input() hotel_id: any;
   @ViewChild('dialog') dialog: RoomTypeDetailComponent;
-  rangeDates: Date[] | undefined;
+  rangeDates: Date[] = [];
 
   roomType: any;
   selectedType!: Type;
   selectedImage: string;
+  hotelId: any;
+  date_in: string = ''; // Ngày check-in
+  date_out: string = ''; // Ngày check-out
   //hiding info box
   visible: boolean = false
   ReadMore: boolean = true
@@ -61,9 +76,6 @@ export class HotelBookingRoomComponent implements OnInit {
     }
   ];
 
-  constructor(
-  ) {
-  }
   ngOnInit() {
     this.types = [
       { name: 'Thành tiền', code: '1' },
@@ -82,11 +94,36 @@ export class HotelBookingRoomComponent implements OnInit {
     this.dialog.open(roomType);
   }
 
+  getRoomType() {
+    // Gán giá trị date_in và date_out dựa trên rangeDates
+    this.date_in = moment(this.rangeDates[0])?.format('DD-MM-YYYY') || '';
+    this.date_out = moment(this.rangeDates[this.rangeDates.length - 1])?.format('DD-MM-YYYY') || '';
+    const obs = this.roomTypeClientService.findRoomType(this.hotel_id, this.date_in, this.date_out).subscribe({
+      next: (res) => {
+        console.log(res);
+        this.roomTypes = res;
+
+
+        // this.getImage();
+      },
+      error: (err) => {
+        this.message.create(ERROR, err.message);
+      }
+    });
+
+    this.subscription.add(obs);
+  }
+
 
   // Table
   getCapacitysArray(capacityCount: any): number[] {
     return Array(capacityCount);
   }
+
+  getRoomsArray(RoomCount: any): number[] {
+    return Array(RoomCount);
+  }
+
   calculateRowTotal(room: roomType): number {
     if (room.selectedRoom) {
       return room.selectedRoom.price;
