@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'forgot-password',
@@ -8,6 +8,7 @@ import { Component, Input, OnInit } from '@angular/core';
 export class ForgotPasswordComponent implements OnInit {
 
   @Input() displayForgotPassword: boolean;
+  @Output() closeModal = new EventEmitter<any>();
 
   constructor() { }
 
@@ -33,7 +34,7 @@ export class ForgotPasswordComponent implements OnInit {
   }
 
   handleCancel(){
-
+    this.closeModal.emit();
   }
 
 }

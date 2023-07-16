@@ -54,7 +54,9 @@ export class LoginComponent implements OnInit {
     let hasAccount:any = JSON.parse(sessionRemember);
     let accounts: any[] = hasAccount.remember;
 
-    this.formLogin.patchValue(accounts[0])
+    if(accounts){
+      this.formLogin.patchValue(accounts[0])
+    }
   }
 
   async save(){
@@ -119,7 +121,7 @@ export class LoginComponent implements OnInit {
   }
 
   emitEvent(event:any){
-
+    this.displayForgotPassword = false;
   }
 
 

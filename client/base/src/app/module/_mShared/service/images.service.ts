@@ -41,6 +41,7 @@ updateImage(imageId:any, image:any): Observable<any>{
   return this.http.put(url, image, this.httpOptionImage);
 }
 
+//Add image roomType
 addImageRoomType(id:any, image:any): Observable<any>{
   const url = `${this.API_URL}/${ADMIN}/${IMAGE}/room-type/${id}`;
   return this.http.post(url, image, this.httpOptionImage);

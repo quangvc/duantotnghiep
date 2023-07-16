@@ -5,63 +5,27 @@ import { ERROR, SUCCESS } from 'src/app/module/_mShared/model/url.class';
 import { ImagesService } from 'src/app/module/_mShared/service/images.service';
 
 @Component({
-  selector: 'hotel-image',
-  templateUrl: './image.component.html'
+  selector: 'room-type-img',
+  templateUrl: './room-type-img.component.html',
+  styleUrls: ['./room-type-img.component.scss']
 })
-export class ImageComponent implements OnInit {
+export class RoomTypeImgComponent implements OnInit {
 
   @Input() displayImage: boolean;
-  @Input() hotel_id:any;
+  @Input() roomTypeId:any;
   @Output() closeModal = new EventEmitter<any>();
 
-  images: any[]=[];
-
   constructor(
-    private imageService: ImagesService,
     private message: NzMessageService,
+    private imageService: ImagesService,
     private modal: NzModalService
     ) { }
 
-
-  confirmModal?: NzModalRef;
-
+    confirmModal?: NzModalRef;
 
   displayMultipleImage: boolean = false;
 
-  allChecked = false;
-  indeterminate = true;
-  checkOptionsOne = [
-    { label: 'Apple', value: 'Apple', checked: true },
-    { label: 'Pear', value: 'Pear', checked: false },
-    { label: 'Orange', value: 'Orange', checked: false }
-  ];
-
-  updateAllChecked(): void {
-    this.indeterminate = false;
-    if (this.allChecked) {
-      this.checkOptionsOne = this.checkOptionsOne.map(item => ({
-        ...item,
-        checked: true
-      }));
-    } else {
-      this.checkOptionsOne = this.checkOptionsOne.map(item => ({
-        ...item,
-        checked: false
-      }));
-    }
-  }
-
-  updateSingleChecked(): void {
-    if (this.checkOptionsOne.every(item => !item.checked)) {
-      this.allChecked = false;
-      this.indeterminate = false;
-    } else if (this.checkOptionsOne.every(item => item.checked)) {
-      this.allChecked = true;
-      this.indeterminate = false;
-    } else {
-      this.indeterminate = true;
-    }
-  }
+  images:any[] = [];
 
   ngOnInit() {
     this.getImages();
@@ -71,20 +35,19 @@ export class ImageComponent implements OnInit {
     this.imageService.getImages().subscribe({
       next: (res) => {
         this.images = res;
-        this.images = this.images.filter(img => img.hotel_id == this.hotel_id);
-        console.log(this.images)
+        this.images = this.images.filter(img => img.room_type_id == this.roomTypeId);
+        console.log(res)
       },
       error: (err) => {this.message.create(ERROR, err.error.message);}
     })
   }
 
+  handleOk(){
+
+  }
+
   addImage(){
     this.displayMultipleImage = true;
-  }
-  imageId: any;
-  editImage(data:any){
-    this.displayMultipleImage = true;
-    this.imageId = data.id
   }
 
   saveImage(file:any){
@@ -92,8 +55,9 @@ export class ImageComponent implements OnInit {
 
     if(file){
       formData.append('path', file[0])
-      this.imageService.addImage(this.hotel_id,formData).subscribe({
+      this.imageService.addImageRoomType(this.roomTypeId,formData).subscribe({
         next: (res) => {
+          this.message.create(SUCCESS, "Thêm mới thành công!!");
           this.displayMultipleImage = false;
           this.getImages();
         },
@@ -105,6 +69,14 @@ export class ImageComponent implements OnInit {
 
   }
 
+  cancelModal(event:any){
+    this.displayMultipleImage = false;
+  }
+
+  handleCancel(){
+    this.closeModal.emit();
+  }
+
   showConfirmDelete(id:any){
     this.confirmModal = this.modal.confirm({
       nzTitle: `Do you Want to delete ?`,
@@ -112,8 +84,8 @@ export class ImageComponent implements OnInit {
       nzOnOk: () =>
         new Promise((resolve, reject) => {
           this.deleteImage(id);
-          setTimeout(Math.random() > 0.5 ? resolve : reject, 1000);
-        }).catch(() => console.log('Oops errors!'))
+          setTimeout(0.6 > 0.5 ? resolve : reject, 1000);
+        }).catch()
     });
   }
 
@@ -127,18 +99,6 @@ export class ImageComponent implements OnInit {
         this.message.create(ERROR, err.error.message);
       }
     })
-  }
-
-  handleOk(){
-
-  }
-
-  cancelModal(event:any){
-    this.displayMultipleImage = false;
-  }
-
-  handleCancel(){
-    this.closeModal.emit();
   }
 
 }

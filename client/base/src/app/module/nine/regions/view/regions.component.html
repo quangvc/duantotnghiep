@@ -6,6 +6,7 @@
     <tr>
       <th>#</th>
       <th>{{'region.name' | translate}}</th>
+      <th>Ảnh</th>
       <th>{{'action' | translate}}</th>
     </tr>
   </thead>
@@ -13,6 +14,12 @@
     <tr *ngFor="let data of basicTable.data; let i = index">
       <td>{{ i + 1 }}</td>
       <td>{{ data.name }}</td>
+      <td>
+        <img nz-image width="100px" height="100px"
+          [nzSrc]="'http://127.0.0.1:8000/Images/regions/'+data.image"
+          alt=""
+        />
+      </td>
       <td>
         <q-menu
           [model]="menus"

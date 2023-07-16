@@ -18,6 +18,8 @@ export class QImageComponent implements OnInit {
   @Input() hotel: any;
   @Input() imageId: any;
   @Input() banner: any
+
+  @Input() roomType: any;
   @Output() closeModal = new EventEmitter<any>();
   @Output() cancelModal = new EventEmitter<any>();
 
@@ -120,6 +122,12 @@ export class QImageComponent implements OnInit {
     }
 
     if(this.hotel){
+      if(file){
+        this.closeModal.emit(file)
+      }
+    }
+
+    if(this.roomType){
       if(file){
         this.closeModal.emit(file)
       }

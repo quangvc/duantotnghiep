@@ -30,6 +30,8 @@ export class RoomTypesComponent implements OnInit, OnDestroy {
 
   roomTypeId: any;
 
+  displayImage: boolean = false;
+
   ngOnInit() {
     this.getRoomTypes();
   }
@@ -40,6 +42,12 @@ export class RoomTypesComponent implements OnInit, OnDestroy {
         label: "Chỉnh sửa",
         command: () => {
           this.editRoomType(data);
+        },
+      },
+      {
+        label: "Cài đặt hình ảnh",
+        command: () => {
+          this.showSettingImage(data);
         },
       },
       { separator: true},
@@ -68,6 +76,11 @@ export class RoomTypesComponent implements OnInit, OnDestroy {
 
   addRoomType(){
     this.displayCreateUpdateRoomType = true;
+  }
+
+  showSettingImage(data:any){
+    this.displayImage = true;
+    this.roomTypeId = data.id
   }
 
   editRoomType(roomType:any){
@@ -104,6 +117,7 @@ export class RoomTypesComponent implements OnInit, OnDestroy {
 
   cancel(event:any){
     this.displayCreateUpdateRoomType = false;
+    this.displayImage = false;
     this.getRoomTypes();
   }
 
