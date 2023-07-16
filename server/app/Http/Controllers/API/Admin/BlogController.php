@@ -73,7 +73,12 @@ class BlogController extends Controller
             $image = url('public/Images/blog' . $filename);
             $blog->image = $filename;
         }
-        $blog->update($request->all());
+
+        $blog->update([
+            'content' =>  $request['content'],
+            'slug' =>  $request['slug'],
+            'title' =>  $request['title'],
+        ]);
         return MessageStatusAPI::update();
     }
     public function destroy($id)

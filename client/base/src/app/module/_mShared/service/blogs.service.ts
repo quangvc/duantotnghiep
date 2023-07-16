@@ -40,7 +40,7 @@ export class BlogsService {
 
   updateBlog(id:any, data:any): Observable<any>{
     const url = `${this.API_URL}/${BLOGS}/${id}`;
-    return this.http.put<any>(url, data, this.httpOptions)
+    return this.http.post<any>(url, data, this.httpOptions)
   }
 
   deleteBlog(id:any): Observable<any>{

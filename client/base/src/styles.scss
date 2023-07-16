@@ -42,4 +42,9 @@ input{
   color: red !important;
 }
 
+:host ::ng-deep .ant-modal-body{
+  padding: 50px !important;
+}
+
+
 
