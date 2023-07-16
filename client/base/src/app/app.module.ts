@@ -23,7 +23,6 @@ import { ErrorMsgModule } from './module/_mShared/error-msg/error-msg.module';
 import { MessagesModule } from 'primeng/messages';
 import { MessageModule } from 'primeng/message';
 import { MessageService } from 'primeng/api';
-import { ProfileComponent } from './profile/profile.component';
 
 registerLocaleData(en);
 
@@ -36,7 +35,6 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     AppComponent,
     LoginComponent,
     RegisterComponent,
-    ProfileComponent,
   ],
   imports: [
     BrowserModule,

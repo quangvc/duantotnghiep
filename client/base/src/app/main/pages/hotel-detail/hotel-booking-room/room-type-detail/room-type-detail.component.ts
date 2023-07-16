@@ -1,5 +1,5 @@
 import { NzMessageService } from 'ng-zorro-antd/message';
-import { PhotoService } from './../../../../services/photoservice.service';
+import { PhotoService } from '../../../../services/photoservice.service';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { DynamicDialogRef } from 'primeng/dynamicdialog';
 import { Subscription } from 'rxjs';

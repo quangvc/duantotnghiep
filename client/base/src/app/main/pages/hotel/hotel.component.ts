@@ -1,4 +1,4 @@
-import { HotelClientService } from './../../services/hotelClient.service';
+import { HotelClientService } from '../../services/hotelClient.service';
 import { Component, Input, OnInit } from '@angular/core';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzModalRef } from 'ng-zorro-antd/modal';

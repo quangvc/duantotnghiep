@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-hotel-detail-amenities',
@@ -6,5 +6,5 @@ import { Component } from '@angular/core';
   styleUrls: ['./hotel-detail-amenities.component.scss']
 })
 export class HotelDetailAmenitiesComponent {
-
+  @Input() hotel_name: any;
 }

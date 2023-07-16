@@ -1,4 +1,4 @@
-import { PhotoService } from './../../services/photoservice.service';
+import { PhotoService } from '../../services/photoservice.service';
 import { Component, EventEmitter, Input, OnInit, Output, Type } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { HotelsService } from 'src/app/module/_mShared/service/hotels.service';
@@ -29,6 +29,9 @@ export class HotelDetailComponent implements OnInit {
   hotelRoomTypeData: any[] = [];
   hotel: any;
   hotel_id: any;
+  hotel_name: any;
+
+  minPrice: number;
 
   starRating: number;
   formStar!: FormGroup;
@@ -79,9 +82,22 @@ export class HotelDetailComponent implements OnInit {
       this.HotelClientService.findOne(id).subscribe({
 
         next: (res) => {
+          console.log(res);
+
           this.hotels = res.data;
           this.hotel_id = res.data[0].id;
+          this.hotel_name = res.data[0].hotel_name;
+
+
           this.hotelRoomTypeData = res.data[0].room_type;
+          let minNumber = Infinity;
+
+          for (let i = 0; i < this.hotelRoomTypeData.length; i++) {
+            if (this.hotelRoomTypeData[i].price_per_night < minNumber) {
+              minNumber = this.hotelRoomTypeData[i].price_per_night;
+              this.minPrice = minNumber;
+            }
+          }
           this.formStar.controls['value'].setValue(res.data[0].star_rating);
         },
         error: (err) => {{
@@ -90,5 +106,10 @@ export class HotelDetailComponent implements OnInit {
       });
     });
   }
-
+  scrollToSection(sectionId: string) {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  }
 }
