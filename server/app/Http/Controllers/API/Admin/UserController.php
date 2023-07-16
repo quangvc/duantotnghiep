@@ -85,7 +85,7 @@ class UserController extends Controller
     public function update(Request $request, User $user)
     {
         $request->validate([
-            'name' => 'string|min:6|max:50',
+            'name' => 'string|min:5|max:50',
             'email' => 'email|unique:tbl_users,email,' . $user->id,
             'phone_number' => 'numeric|digits_between:9,12|unique:tbl_users,phone_number,' . $user->id,
         ]);

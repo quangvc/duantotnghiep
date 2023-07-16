@@ -23,6 +23,12 @@ import { ErrorMsgModule } from './module/_mShared/error-msg/error-msg.module';
 import { MessagesModule } from 'primeng/messages';
 import { MessageModule } from 'primeng/message';
 import { MessageService } from 'primeng/api';
+import { ProfileComponent } from './profile/profile.component';
+import { ForgotPasswordComponent } from './auth/login/forgot-password/forgot-password.component';
+import { NzStepsModule } from 'ng-zorro-antd/steps';
+import { StepEmailComponent } from './auth/login/component-step/step-email.component';
+import { StepCodeComponent } from './auth/login/component-step/step-code.component';
+import { StepPasswordComponent } from './auth/login/component-step/step-password.component';
 
 registerLocaleData(en);
 
@@ -35,6 +41,12 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     AppComponent,
     LoginComponent,
     RegisterComponent,
+    ProfileComponent,
+    ForgotPasswordComponent,
+    //step
+    StepEmailComponent,
+    StepCodeComponent,
+    StepPasswordComponent
   ],
   imports: [
     BrowserModule,
@@ -46,6 +58,7 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     MessageModule,
     SharedModule,
     FormsModule,
+    NzStepsModule,
 
     ErrorMsgModule
   ],

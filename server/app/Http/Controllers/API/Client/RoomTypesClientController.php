@@ -37,7 +37,7 @@ class RoomTypesClientController extends Controller
 
         $checkin_date = Carbon::parse($checkin_date);
         $checkout_date = Carbon::parse($checkout_date);
-
+        $data = [];
         foreach ($roomtypes as $roomtype) {
             $count_all_rooms = Room::where([
                 ['room_type_id', $roomtype->id],
@@ -71,8 +71,7 @@ class RoomTypesClientController extends Controller
                         'room_type' => $roomtype,
                         'rooms_count' => $count_all_rooms - $count_booked_rooms
                     ];
-                }
-
+                }            
         }
 
         return $data;

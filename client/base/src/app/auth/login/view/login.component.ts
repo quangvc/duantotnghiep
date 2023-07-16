@@ -6,6 +6,7 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 import { ERROR } from 'src/app/module/_mShared/model/url.class';
 import { MessageService } from 'primeng/api';
 import { Auth } from '../../_aShared/auth.class';
+import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
 
 
 @Component({
@@ -21,14 +22,19 @@ export class LoginComponent implements OnInit {
     private authService: AuthService,
     private router: Router,
     private message: NzMessageService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private modal: NzModalService
   ) {
 
   }
 
+  confirmModal?: NzModalRef;
+
   formLogin!: FormGroup;
   userData:any;
   user: any
+
+  displayForgotPassword: boolean = false;
 
   ngOnInit() {
     this.formBuildLogin();
@@ -48,7 +54,9 @@ export class LoginComponent implements OnInit {
     let hasAccount:any = JSON.parse(sessionRemember);
     let accounts: any[] = hasAccount.remember;
 
-    this.formLogin.patchValue(accounts[0])
+    if(accounts){
+      this.formLogin.patchValue(accounts[0])
+    }
   }
 
   async save(){
@@ -106,6 +114,14 @@ export class LoginComponent implements OnInit {
         this.router.navigate(['home'])
       }
     }
+  }
+
+  showForgotPassword(){
+    this.displayForgotPassword = true;
+  }
+
+  emitEvent(event:any){
+    this.displayForgotPassword = false;
   }
 
 

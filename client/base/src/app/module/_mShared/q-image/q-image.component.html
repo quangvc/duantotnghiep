@@ -26,8 +26,8 @@
             </div>
           </ng-container>
           <div class="item">
-            <input #fileUploader id="file" type="file" class="upload" multiple placeholder="Upload" *ngIf="!hotel"/>
-            <input id="fileSingle" type="file" class="upload" placeholder="Upload" *ngIf="hotel"/>
+            <input #fileUploader id="file" type="file" class="upload" multiple placeholder="Upload" *ngIf="banner"/>
+            <input id="fileSingle" type="file" class="upload" placeholder="Upload" *ngIf="hotel || roomType"/>
           </div>
         </div>
       </nz-checkbox-wrapper>

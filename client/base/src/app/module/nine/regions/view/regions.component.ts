@@ -104,7 +104,6 @@ export class RegionsComponent implements OnInit, OnDestroy {
   editRegion(region:any){
     this.regionId = region.id;
     this.displayCreateUpdateRegion = true;
-    console.log(region);
   }
 
   showConfirm(data:any){

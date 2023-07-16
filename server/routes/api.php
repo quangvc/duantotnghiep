@@ -52,12 +52,9 @@ use App\Http\Controllers\PaymentController;
 Route::post('/login', [AuthController::class, 'login'])->middleware('throttle:5,2');
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/send-reset-link', [AuthController::class, 'sentResetLink'])->name('password.reset');
-
 Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logout']);
+Route::middleware('auth:sanctum')->put('/change-password', [AuthController::class, 'changePassword']);
 
-Route::prefix('profile')->controller(ProfileController::class)->group(function () {
-    Route::put('/change-password', 'changePassword');
-});
 
 Route::post('/vnpay-payment', [PaymentController::class, 'vnpay_payment']);
 

@@ -41,3 +41,11 @@
   [roomTypeId]="roomTypeId"
   (closeModal)="cancel($event)">
 </create-update-room-type>
+
+<room-type-img
+  *ngIf="displayImage"
+  [displayImage]="displayImage"
+  [roomTypeId]="roomTypeId"
+  (closeModal)="cancel($event)"
+></room-type-img>
+
