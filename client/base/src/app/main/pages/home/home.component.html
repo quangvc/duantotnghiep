@@ -18,34 +18,18 @@
     <div class="bg-white shadow" style="padding: 35px;">
       <div class="row g-2">
         <div class="col-md-10">
-          <div class="row g-2">
-            <div class="col-md-3">
-              <div class="date" id="date1" data-target-input="nearest">
-                <input type="text" class="form-control datetimepicker-input" placeholder="Check in" data-target="#date1"
-                  data-toggle="datetimepicker" />
-              </div>
+          <div class="row">
+            <div class="col">
+              <label for="date_in">Ngày nhập phòng</label>
+              <p-calendar class="w-100" [(ngModel)]="date_in" dateFormat="dd-mm-yy"></p-calendar>
             </div>
-            <div class="col-md-3">
-              <div class="date" id="date2" data-target-input="nearest">
-                <input type="text" class="form-control datetimepicker-input" placeholder="Check out"
-                  data-target="#date2" data-toggle="datetimepicker" />
-              </div>
+            <div class="col">
+              <label for="date_out">Ngày trả phòng</label>
+              <p-calendar class="w-100" [(ngModel)]="date_out" dateFormat="dd-mm-yy"></p-calendar>
             </div>
-            <div class="col-md-3">
-              <select class="form-select">
-                <option selected>Adult</option>
-                <option value="1">Adult 1</option>
-                <option value="2">Adult 2</option>
-                <option value="3">Adult 3</option>
-              </select>
-            </div>
-            <div class="col-md-3">
-              <select class="form-select">
-                <option selected>Child</option>
-                <option value="1">Child 1</option>
-                <option value="2">Child 2</option>
-                <option value="3">Child 3</option>
-              </select>
+            <div class="col">
+              <label for="selectedRegion">Khu vực</label>
+              <p-dropdown [(ngModel)]="selectedRegion" [options]="lstRegions" optionLabel="name" placeholder="Chọn khu vực"></p-dropdown>
             </div>
           </div>
         </div>
@@ -125,7 +109,7 @@
 <!-- About End -->
 
 
-<!-- Room Start -->
+<!-- Region Start -->
 <div class="container-xxl py-5">
   <div class="container">
     <div class="text-center wow fadeInUp">
@@ -153,7 +137,50 @@
     </div>
   </div>
 </div>
-<!-- Room End -->
+<!-- Region End -->
+
+<!-- Hotel start -->
+<div class="container-xxl py-5">
+  <div class="container">
+    <div class="text-center wow fadeInUp">
+      <!-- <h6 class="section-title text-center text-primary text-uppercase">Our Hotel</h6> -->
+      <h1 class="mb-5">Các khách sạn <span class="text-primary text-uppercase">nổi bật</span></h1>
+    </div>
+    <div class="row g-4">
+      <div class="col-lg-4 col-md-6" *ngFor="let item of hotels; let i=index">
+        <div class="room-item shadow rounded-4 overflow-hidden mb-3">
+          <div class="position-relative">
+            <img style="width: 100%; max-height: 200px;" [src]="'http://127.0.0.1:8000/Images/'+item.images[0]?.path" alt="">
+            <small
+              class="position-absolute start-0 top-100 translate-middle-y bg-primary text-white rounded py-1 px-3 ms-4">Khu
+              vực</small>
+          </div>
+          <div class="p-4 mt-2">
+            <div class="d-flex justify-content-between mb-3">
+              <h5 class="mb-0">{{ item.hotel_name }}</h5>
+              <div class="flex justify-content-center">
+                <p-rating [(ngModel)]="item.star_rating" [cancel]="false" [readonly]="true"></p-rating>
+              </div>
+            </div>
+            <div class="d-flex mb-3">
+              <i class="fa fa-map-marker text-primary mt-1 me-3"></i>
+              <p class="text-body mb-3">{{ item.hotel_address }}</p>
+            </div>
+            <!-- <line-clamp [row]="3">
+              <div #content>
+                <p class="text-body mb-3">{{ item.description }}.</p>
+              </div>
+            </line-clamp> -->
+            <div class="d-flex justify-content-between">
+              <a class="btn btn-sm btn-primary rounded py-2 px-4" href="/hotel/{{ item.id }}">View Detail</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Hotel end -->
 
 
 <!-- Video Start -->
@@ -200,7 +227,7 @@
 <!-- Video Start -->
 
 
-<!-- Service Start -->
+<!-- Blog Start -->
 <div class="container-xxl py-5">
   <div class="container">
     <div class="text-center">
@@ -221,7 +248,7 @@
     </div>
   </div>
 </div>
-<!-- Service End -->
+<!-- Blog End -->
 
 
 <!-- Testimonial Start -->

@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { MenuItem } from 'src/app/module/_mShared/model/menuItem.class';
-import { PhotoService } from './../../../services/photoservice.service';
+import { PhotoService } from '../../../services/photoservice.service';
 import { RoomTypeDetailComponent } from './room-type-detail/room-type-detail.component';
 import { roomTypeClientService } from 'src/app/main/services/room-type-client.service';
 import * as moment from 'moment';
@@ -42,8 +42,12 @@ export class HotelBookingRoomComponent implements OnInit {
 
   @Input('hotelRoomTypeData') RoomTypeData: any[] = [];
   @Input() hotel_id: any;
+  @Input() hotel_name: any;
   @ViewChild('dialog') dialog: RoomTypeDetailComponent;
   rangeDates: Date[] = [];
+
+  firstTable: boolean = true;
+  dataTable: boolean = false;
 
   roomType: any;
   selectedType!: Type;
@@ -81,6 +85,7 @@ export class HotelBookingRoomComponent implements OnInit {
       { name: 'Thành tiền', code: '1' },
       { name: '1 Đêm', code: '2' }
     ];
+    console.log(this.RoomTypeData);
 
   }
 
@@ -102,7 +107,8 @@ export class HotelBookingRoomComponent implements OnInit {
       next: (res) => {
         console.log(res);
         this.roomTypes = res;
-
+        this.firstTable = false;
+        this.dataTable = true
 
         // this.getImage();
       },
@@ -141,9 +147,8 @@ export class HotelBookingRoomComponent implements OnInit {
     return total;
   }
   onRowSelect(event: any) {
-    // Lấy dữ liệu của hàng được chọn
-    const selectedRowData = event.data;
-    console.log(selectedRowData); // In ra dữ liệu của hàng được chọn
+    this.selectedRoomType = event.data;
+    console.log(this.selectedRoomType); // Dữ liệu của dòng được chọn
   }
 
 }

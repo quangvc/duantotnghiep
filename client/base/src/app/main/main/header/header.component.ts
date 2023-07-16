@@ -28,11 +28,18 @@ export class HeaderComponent implements OnInit{
     let user = JSON.parse(userLogged);
     console.log(user);
 
-    if(user.user.name === "Admin"){
-      this.path = 'nine'
-    }else{
-      this.path = 'profile'
+
+    if (user && user.role && user.role.length > 0) {
+      if (user.role[0] === "admin") {
+        this.path = 'profile'
+      }else{
+        this.path = 'profile'
+      }
+    } else {
+      // Xử lý khi giá trị không xác định
+      // alert('User or role is undefined');
     }
+
   }
 
 

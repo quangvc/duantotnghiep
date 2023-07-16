@@ -2,3 +2,20 @@
 line-clamp {
   border: 1px solid;
 }
+.go-top-button {
+  position: fixed;
+  bottom: 20px;
+  right: 40px;
+  padding: 10px;
+  border: none;
+  background-color: #FEA116;
+  color: #fff;
+  font-size: 14px;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.go-top-button.show {
+  opacity: 1;
+}

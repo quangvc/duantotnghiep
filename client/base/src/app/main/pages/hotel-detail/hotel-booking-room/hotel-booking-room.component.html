@@ -1,28 +1,8 @@
 <!-- Book room start -->
 <div id="booking-room" class="shadow rounded-4 overflow-hidden mb-3 p-5">
-  <h3>Những phòng còn trống tại Khách sạn Melia Hà Nội</h3>
+  <h3>Những phòng còn trống tại Khách sạn {{hotel_name}}</h3>
   <!-- Filter start -->
   <div class="container bg-white rounded-3 px-2 py-1 mb-5">
-    <div class="row">
-      <div class="col-10 filter-checkbox">
-        <h5>Tìm kiếm nhanh hơn bằng cách chọn những tiện nghi bạn cần</h5>
-        <div class="row">
-          <div class="col">
-            <!-- <p-checkbox formControlName="" value="" inputId=""></p-checkbox> -->
-            <p-checkbox [binary]="true" inputId="room"></p-checkbox>
-            <label style="margin-left: 5px; font-weight: 500;" for="room">Miễn phí hủy phòng</label>
-          </div>
-          <div class="col">
-            <p-checkbox [binary]="true" inputId="breakfast"></p-checkbox>
-            <label style="margin-left: 5px; font-weight: 500;" for="breakfast">Miễn phí bữa sáng</label>
-          </div>
-        </div>
-      </div>
-      <div class="col">
-        <p-dropdown [options]="types" optionLabel="name">
-        </p-dropdown>
-      </div>
-    </div>
     <hr>
     <div class="">
       <div class="d-flex flex-row justify-content-between">
@@ -50,14 +30,14 @@
                     <div class="col">
                       <p-calendar [(ngModel)]="rangeDates" selectionMode="range" dateFormat="dd-mm-yy" [touchUI]="true" [showIcon]="true" style="width: 100%;"></p-calendar>
                     </div>
-                    <div class="col my-auto">
+                    <!-- <div class="col my-auto">
                       <select class="form-select">
                         <option selected>Adult</option>
                         <option value="1">Adult 1</option>
                         <option value="2">Adult 2</option>
                         <option value="3">Adult 3</option>
                       </select>
-                    </div>
+                    </div> -->
                   </div>
                 </div>
                 <div class="col-md-2  my-auto">
@@ -73,14 +53,73 @@
   <!-- Filter end -->
 
   <!-- Table start -->
-  <div class="row">
+  <div class="row" *ngIf="firstTable">
     <p-table class="col-9"
-    [value]="roomTypes"
+    [value]="RoomTypeData"
      (onRowSelect)="onRowSelect($event)"
      selectionMode="multiple"
      [(selection)]="selectedRoomType"
      [metaKeySelection]="false"
      dataKey="id"
+     >
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Loại phòng</th>
+          <th>Số lượng người</th>
+          <th>Giá phòng</th>
+          <th>Số lượng phòng</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-roomType let-i="index">
+        <tr>
+          <td>
+            <a (click)="openDialog(roomType)">{{ roomType.name }}</a>
+            <room-type-detail #dialog>
+            </room-type-detail>
+          </td>
+          <td class="d-flex flex-row">
+            <div *ngFor="let user of getCapacitysArray(roomType.capacity)">
+              <i class="pi pi-user"></i>
+            </div>
+          </td>
+          <td>
+            {{ roomType.price_per_night | currency: 'VND'  }}
+          </td>
+          <td>
+            Lọc để hiển thị các phòng còn trống
+          </td>
+        </tr>
+      </ng-template>
+      <!-- <ng-template pTemplate="footer">
+        <tr>
+          <td colspan="3"></td>
+          <td>{{ calculateTotal() }}</td>
+        </tr>
+      </ng-template> -->
+    </p-table>
+    <p-table class="col-3">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Tổng</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-roomType let-rowIndex="rowIndex">
+        <tr>
+          <td>{{ calculateTotal() }}</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+
+
+  <div class="row" *ngIf="dataTable">
+    <p-table class="col-9"
+    [value]="roomTypes"
+    (onRowSelect)="onRowSelect($event)"
+    selectionMode="multiple"
+    [(selection)]="selectedRoomType"
+    [metaKeySelection]="false"
+    dataKey="roomType.room_type.id"
      >
       <ng-template pTemplate="header">
         <tr>

@@ -8,8 +8,7 @@
           <li class="breadcrumb-item"><a href="#">Home</a></li>
           <li class="breadcrumb-item"><a href="#">Pages</a></li>
           <li class="breadcrumb-item"><a href="hotels">Hotels</a></li>
-          <li class="breadcrumb-item" aria-current="page"><a href="detail" class="text-primary">Khách sạn Grand Vista
-              Hanoi</a></li>
+          <li class="breadcrumb-item" aria-current="page"><a href="detail" class="text-primary">Khách sạn {{ hotel_name }}</a></li>
         </ol>
       </nav>
     </div>
@@ -71,10 +70,10 @@
 
               </div>
               <div class="d-flex mb-3">
-                <span class="fs-3 text-primary"><strong>1.861.061 VND</strong></span>
+                <span class="fs-3 text-primary"><strong>{{ minPrice | currency: 'VND' }} VND</strong></span>
               </div>
               <div class="d-flex justify-content-between">
-                <a class="btn btn-md btn-dark rounded-3 bg-primary border-primary py-2 px-4" href="booking">Book Now</a>
+                <a class="btn btn-md btn-dark rounded-3 bg-primary border-primary py-2 px-4" (click)="scrollToSection('booking-section')">Book Now</a>
               </div>
             </div>
             <!-- End Giá - Đặt -->
@@ -161,7 +160,7 @@
             </div>
           </div>
           <div class="text-center mt-2">
-            <a href="" class="fs-6"><strong>Xem tất cả các tiện ích</strong></a>
+            <a (click)="scrollToSection('amenities-section')" class="fs-6"><strong>Xem tất cả các tiện ích</strong></a>
           </div>
         </div>
         <!-- End Menu Tiện Ích -->
@@ -342,15 +341,15 @@
 
 
       <!-- Book room start -->
-      <app-hotel-booking-room [hotelRoomTypeData]=hotelRoomTypeData [hotel_id]=hotel_id></app-hotel-booking-room>
+      <app-hotel-booking-room id="booking-section" class="section" [hotelRoomTypeData]=hotelRoomTypeData [hotel_id]=hotel_id [hotel_name]=hotel_name></app-hotel-booking-room>
       <!-- Book room end -->
 
       <!-- Start Policy -->
-      <app-hotel-policy></app-hotel-policy>
+      <app-hotel-policy [hotel_name]=hotel_name></app-hotel-policy>
       <!-- End Policy -->
 
       <!-- Start Hotel Amenities -->
-      <app-hotel-detail-amenities></app-hotel-detail-amenities>
+      <app-hotel-detail-amenities id="amenities-section" class="section" [hotel_name]=hotel_name></app-hotel-detail-amenities>
       <!-- End Hotel Amenities -->
     </div>
   </div>
