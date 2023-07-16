@@ -31,4 +31,9 @@ export class roomTypeClientService {
     return this.http.get<any>(url);
   }
 
+  findRoomType(id:any, date_in: any, date_out: any): Observable<any>{
+    const url = `${this.API_URL}/${ROOM_TYPES}/get/${id}/${date_in}/${date_out}`;
+    return this.http.get<any>(url);
+  }
+
 }

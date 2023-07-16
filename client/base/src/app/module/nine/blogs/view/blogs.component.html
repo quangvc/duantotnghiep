@@ -6,7 +6,6 @@
     <tr>
       <th>#</th>
       <th>{{'blog.title' | translate}}</th>
-      <th>{{'blog.content' | translate}}</th>
       <th>{{'blog.image' | translate}}</th>
       <th>{{'blog.user_id' | translate}}</th>
       <th>{{'blog.slug' | translate}}</th>
@@ -19,9 +18,6 @@
       <td>{{ i + 1 }}</td>
       <td>{{ data.title }}</td>
       <td>
-        <div class="txt-blog-ellipsis">{{ data.content }}</div>
-      </td>
-      <td>
         <img nz-image width="100px" height="100px"
           [nzSrc]="'http://127.0.0.1:8000/Images/blog/'+data.image"
           alt=""
@@ -29,7 +25,7 @@
       </td>
       <td>{{ data.user_name }}</td>
       <td>{{ data.slug }}</td>
-      <td><nz-switch [(ngModel)]="data.status"></nz-switch></td>
+      <td><nz-switch [(ngModel)]="data.status" (ngModelChange)="confirmChangeStatus($event,data)"></nz-switch></td>
       <td>
         <q-menu
           [model]="menus"
@@ -44,5 +40,12 @@
   *ngIf="displayCreateUpdateBlog"
   [displayCreateUpdateBlog]="displayCreateUpdateBlog"
   [blogId]="blogId"
-  (closeModal)="cancel($event)">
-</create-update-blog>
+  (closeModal)="cancel($event)"
+></create-update-blog>
+
+<view-post
+  *ngIf="displayViewPost"
+  [displayViewPost]="displayViewPost"
+  [blogId]="blogId"
+  (closeModal)="cancel($event)"
+></view-post>

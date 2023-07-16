@@ -1,0 +1,74 @@
+<div class="">
+  <form [formGroup]="formAccount" >
+    <div class="row">
+      <div class="col-10">
+        <div class="mb-3">
+          <label for="hotel" class="form-label">Khách sạn</label>
+          <input type="text" class="form-control" id="hotel" [disabled]="true" [value]="hotel">
+        </div>
+
+        <div class="mb-3">
+          <label for="email" class="form-label">Thư điện tử</label>
+          <input type="email" class="form-control" id="email" formControlName="email" >
+        </div>
+        <error-msg [profileForm]="formAccount" key="email" check="required" msg="Vui lòng không để trống."></error-msg>
+      </div>
+
+      <div class="col-2">
+        <div class="mb-3">
+          <img nz-image width="200px" height="200px"
+            nzSrc="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
+            alt=""
+            />
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-12">
+        <div class="mb-3">
+          <label for="name" class="form-label">Tên người dùng</label>
+          <input type="text" class="form-control" id="name" formControlName="name">
+        </div>
+        <error-msg [profileForm]="formAccount" key="name" check="required" msg="Vui lòng không để trống."></error-msg>
+      </div>
+
+      <div class="col-12">
+        <div class="mb-3">
+          <label for="gender" class="form-label">Giới tính</label>
+          <input type="text" class="form-control" id="gender" formControlName="gender">
+        </div>
+        <error-msg [profileForm]="formAccount" key="gender" check="required" msg="Vui lòng không để trống."></error-msg>
+      </div>
+
+      <div class="col-12">
+        <div class="mb-3">
+          <label for="phone" class="form-label">Số điện thoại</label>
+          <input type="number" class="form-control" id="phone" formControlName="phone_number">
+        </div>
+        <error-msg [profileForm]="formAccount" key="phone_number" check="required" msg="Vui lòng không để trống."></error-msg>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-12">
+        <div class="mb-3">
+          <label for="role" class="form-label">Chức vụ</label>
+          <input type="text" class="form-control" id="role" [disabled]="true" [value]="role">
+        </div>
+      </div>
+    </div>
+  </form>
+
+  <div class="row">
+    <div class="col-12">
+      <div class="mb-3">
+        <label for="active" class="form-label">Kích hoạt</label><br>
+        <nz-switch [(ngModel)]="user.active" [disabled]="admin" ></nz-switch>
+      </div>
+    </div>
+  </div>
+
+  <button nz-button nzType="primary" (click)="confirmSave()">Lưu thay đổi</button>
+
+</div>

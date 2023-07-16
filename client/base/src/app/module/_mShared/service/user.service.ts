@@ -39,4 +39,9 @@ export class UserService {
     return this.http.post(url, role, this.httpOptions);
   }
 
+  updateUser(data:any, id:any):Observable<any>{
+    const url = `${this.API_URL}/${USERS}/${id}`;
+    return this.http.post(url, data, this.httpOptions);
+  }
+
 }
