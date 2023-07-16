@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Router } from '@angular/router';
 import { Auth } from 'src/app/auth/_aShared/auth.class';
 
 @Component({
@@ -13,14 +14,13 @@ export class InfomationComponent implements OnInit {
 
   auth = Auth.User('user');
 
-  constructor() { }
+  constructor(private router: Router,) { }
 
-  ngOnInit() {
-    console.log(this.auth)
-  }
+  ngOnInit() {}
 
   handleOk(){
-
+    this.router.navigate(['nine/account']);
+    this.closeModal.emit();
   }
 
   handleCancel(){
