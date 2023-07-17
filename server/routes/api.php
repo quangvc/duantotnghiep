@@ -192,7 +192,6 @@ Route::group(['prefix' => 'admin'], function () {
             Route::get('/monthly-room', 'monthly_rooms');
             Route::get('/last-month-revenue', 'lastMonthRevenue');
             Route::get('/lm-count-room', 'lastMonthCountRooms');
-
         }
     );
 });
@@ -211,6 +210,7 @@ Route::group(['prefix' => 'client'], function () {
         function () {
             Route::get('/', 'index');
             Route::get('region/{region_id}', 'filterRegion');
+            Route::get('/get/{region_id}/{checkin}/{checkout}', 'getHotel');
             Route::get('/{id}', 'show');
         }
     );
