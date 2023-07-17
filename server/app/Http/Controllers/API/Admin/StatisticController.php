@@ -19,13 +19,28 @@ class StatisticController extends Controller
         if ($end_date->diffInDays($start_date) > 35) {
             return response('Khoảng thời gian quá rộng. Vui lòng thu hẹp khoảng thời gian');
         }
-        while ($start_date->lte($end_date)) {
-            $revenue[$start_date->toDateString()] = Booking::whereIn('status', [1, 3])
-                ->whereDate('checkin_date', $start_date)
-                ->sum('total_price');
-
-            $start_date->addDay();
+        $role = auth()->user()->getRoleNames()->first();
+        if ($role == 'admin') {
+            while ($start_date->lte($end_date)) {
+                $revenue[$start_date->toDateString()] = Booking::whereIn('status', [1, 3])
+                    ->whereDate('checkin_date', $start_date)
+                    ->sum('total_price');
+    
+                $start_date->addDay();
+            }
+        } elseif ($role == 'manager') {
+            while ($start_date->lte($end_date)) {
+                $revenue[$start_date->toDateString()] = Booking::with('booking_details.room_type.hotel', function ($query) {
+                    $query->where('hotel.id', auth()->user()->hotel_id);
+                })
+                ->whereIn('status', [1, 3])
+                    ->whereDate('checkin_date', $start_date)                    
+                    ->sum('total_price');
+    
+                $start_date->addDay();
+            }
         }
+        
 
         return $revenue;
     }
@@ -33,11 +48,22 @@ class StatisticController extends Controller
     // thống kê doanh thu hàng tháng
     public function monthly_revenue() {
         $revenue = [];
+        $role = auth()->user()->getRoleNames()->first();
         for ($i = 11; $i >= 0; $i--) {
             $month = now()->subMonths($i)->format('M');
-            $revenue[$month] = Booking::whereIn('status', [1,3])
+            if ($role == 'admin') {
+                $revenue[$month] = Booking::whereIn('status', [1,3])
                 ->whereMonth('checkin_date', now()->subMonths($i)->month) 
                 ->sum('total_price');
+            } elseif ($role == 'manager') {
+                $revenue[$month] = Booking::with('booking_details.room_type.hotel', function ($query) {
+                    $query->where('hotel.id', auth()->user()->hotel_id);
+                })
+                ->whereIn('status', [1,3])
+                ->whereMonth('checkin_date', now()->subMonths($i)->month) 
+                ->sum('total_price');
+            }            
+            
         }
         return $revenue;
     }
@@ -45,6 +71,7 @@ class StatisticController extends Controller
     // thống kê số phòng đã cho thuê hàng tháng
     public function monthly_rooms() {
         $countBookingRevenue = [];
+        $role = auth()->user()->getRoleNames()->first();
         for ($i = 11; $i >= 0; $i--) {
             $month = now()->subMonths($i)->format('M');
             $countBookingRevenue[$month] = BookingDetail::whereHas('booking', function ($query) use ($i) {
@@ -65,25 +92,58 @@ class StatisticController extends Controller
 
     // doanh thu trong 1 tháng gần nhất
     public function lastMonthRevenue() {
-        $lmRevenue = Booking::whereIn('status', [1,3])
-        ->where('created_at', '>', now()->subMonth())
-        ->sum('total_price');
+        $role = auth()->user()->getRoleNames()->first();
+        if ($role == 'admin') {
+            $lmRevenue = Booking::whereIn('status', [1,3])
+            ->where('created_at', '>', now()->subMonth())
+            ->sum('total_price');
+        } elseif ($role == 'manager') {
+            $lmRevenue = Booking::with('booking_details.room_type.hotel', function ($query) {
+                $query->where('hotel.id', auth()->user()->hotel_id);
+            })        
+            ->whereIn('status', [1,3])
+            ->where('created_at', '>', now()->subMonth())
+            ->sum('total_price');
+        }       
+
         return $lmRevenue;
     }
 
     // số booking trong 1 tháng gần nhất
     public function lmCountBooking() {
-        $lmCountBooking = Booking::whereIn('status', [1,3])
-        ->where('created_at', '>', now()->subMonth())
-        ->count();
+        $role = auth()->user()->getRoleNames()->first();
+        if ($role == 'admin') {
+            $lmCountBooking = Booking::whereIn('status', [1,3])
+            ->where('created_at', '>', now()->subMonth())
+            ->count();
+        } elseif ($role == 'manager') {
+            $lmCountBooking = Booking::with('booking_details.room_type.hotel', function ($query) {
+                $query->where('hotel.id', auth()->user()->hotel_id);
+            })
+            ->whereIn('status', [1,3])
+            ->where('created_at', '>', now()->subMonth())
+            ->count();
+        }
+        
         return $lmCountBooking;
     }
 
     // số phòng cho thuê trong 1 tháng gần nhất
     public function lastMonthCountRooms() {
-        $lmcRooms = BookingDetail::whereHas('booking', function ($query) {
-            $query->where('created_at', '>', now()->subMonth());
-        })->count();
+        $role = auth()->user()->getRoleNames()->first();
+        if ($role == 'admin') {
+            $lmcRooms = BookingDetail::whereHas('booking', function ($query) {
+                $query->where('created_at', '>', now()->subMonth());
+            })->count();
+        } elseif ($role == 'manager') {
+            $lmcRooms = BookingDetail::with('booking_details.room_type.hotel', function ($query) {
+                    $query->where('hotel.id', auth()->user()->hotel_id);
+                })            
+                ->whereHas('booking', function ($query) {
+                $query->where('created_at', '>', now()->subMonth());
+            })->count();
+        }
+
         return $lmcRooms;
     }
 
