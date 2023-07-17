@@ -100,6 +100,7 @@ Route::group(['prefix' => 'admin'], function () {
             Route::post('/', 'store')->middleware('permission:add_room_type');
             Route::put('/{id}', 'update')->middleware('permission:edit_room_type');
             Route::get('/{id}', 'show')->middleware('permission:show_room_type');
+            Route::get('/get/{hotel_id}/{checkin}/{checkout}', 'getRoomtype');
             Route::delete('/{id}', 'destroy')->middleware('permission:delete_room_type');
         }
     );
