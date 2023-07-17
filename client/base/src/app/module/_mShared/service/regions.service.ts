@@ -38,7 +38,7 @@ export class RegionsService {
 
   updateRegion(id:any, data:any): Observable<any>{
     const url = `${this.API_URL}/${REGIONS}/${id}`;
-    return this.http.put<any>(url, data, this.httpOptions)
+    return this.http.post<any>(url, data, this.httpOptions)
   }
 
   deleteRegion(id:any): Observable<any>{

@@ -109,7 +109,7 @@ Route::group(['prefix' => 'admin'], function () {
         function () {
             Route::get('/', 'index')->middleware('permission:view_region');
             Route::post('/', 'store')->middleware('permission:add_region');
-            Route::put('/{id}', 'update')->middleware('permission:edit_region');
+            Route::post('/{id}', 'update')->middleware('permission:edit_region');
             Route::get('/{id}', 'show')->middleware('permission:show_region');
             Route::delete('/{id}', 'destroy')->middleware('permission:delete_region');
         }

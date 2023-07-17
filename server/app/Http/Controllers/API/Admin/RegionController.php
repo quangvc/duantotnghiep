@@ -8,6 +8,7 @@ use App\Http\Requests\RegionRequest;
 use App\Http\Resources\API\RegionResource;
 use App\Traits\MessageStatusAPI;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
 
 class RegionController extends Controller
 {
@@ -27,9 +28,12 @@ class RegionController extends Controller
         ]);
 
         if ($request->hasFile('image')) {
-            $file = $request->image;
-            $region->image = $file->hashName();
-            $file->move(base_path('public/Images/regions'), $region->image);
+            $image = $request->file('image');
+            $filename = time() . '.' . $image->getClientOriginalExtension();
+            $path = public_path('/Images/regions');
+            $image->move($path, $filename);
+            $image = url('/Images/regions' . $filename);
+            $region->image = $filename;
         }
 
         $region->save();
@@ -51,29 +55,40 @@ class RegionController extends Controller
         }
     }
 
-    public function update(RegionRequest $request, $id)
+    public function update(Request $request, $id)
     {
-        $validated = $request->validated();
-        $region = Region::findOrFail($id);
+        $request->validate([
+            'name' =>  'string',
+            'image' =>  'bail|image|max:2048|mimes:jpeg,png,jpg|mimetypes:image/jpeg,image/png,image/jpg',
+        ]);
+
+        $region = Region::find($id);
+
         if (!$region) {
             return MessageStatusAPI::displayInvalidInput($region);
         }
-
 
         if ($request->hasFile('image')) {
             if ($region->image != '' && file_exists(public_path('Images/regions/' . $region->image))) {
                 unlink(public_path('Images/regions/' . $region->image));
             }
-            $file = $request->region;
-            $region->image = $file->hashName();
-            $file->move(base_path('public/Images/regions'), $region->image);
+            $image = $request->file('image');
+            $filename = time() . '.' . $image->getClientOriginalExtension();
+            $path = public_path('/Images/regions');
+            $image->move($path, $filename);
+            $image = url('/Images/regions' . $filename);
+            $region->image = $filename;
         }
 
+
+
         $region->update([
-            'name' => $validated['name'],
-            'image' => $validated['image']
+            'name' => $request['name'],
+            'image' => $request['image']
         ]);
+
         return MessageStatusAPI::update();
+
     }
 
     public function show($id)
