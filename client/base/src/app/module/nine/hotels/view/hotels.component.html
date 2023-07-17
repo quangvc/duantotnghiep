@@ -46,3 +46,11 @@
   [hotel_id]="hotelId"
   (closeModal)="cancel($event)">
 </hotel-image>
+
+<detail-hotel
+  *ngIf="displayDetail"
+  [displayDetail]="displayDetail"
+  [hotelId]="hotelId"
+  [roomTypes]="roomTypes"
+  (closeModal)="cancel($event)"
+></detail-hotel>

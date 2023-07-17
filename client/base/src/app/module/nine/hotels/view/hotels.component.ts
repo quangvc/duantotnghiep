@@ -11,6 +11,7 @@ import { HotelsService } from 'src/app/module/_mShared/service/hotels.service';
 import { ImagesService } from 'src/app/module/_mShared/service/images.service';
 import { RegionsService } from 'src/app/module/_mShared/service/regions.service';
 import { Auth } from 'src/app/auth/_aShared/auth.class';
+import { RoomTypeService } from 'src/app/module/_mShared/service/room_type.service';
 
 @Component({
   selector: 'app-hotels',
@@ -22,9 +23,11 @@ export class HotelsComponent implements OnInit, OnDestroy {
   private subscription = new Subscription();
 
   displayCreateUpdateHotel: boolean = false;
+  displayDetail: boolean = false;
 
   constructor(
     private hotelsService: HotelsService,
+    private roomTypeService: RoomTypeService,
     private imagesService: ImagesService,
     private message: NzMessageService,
     private modal: NzModalService
@@ -32,6 +35,9 @@ export class HotelsComponent implements OnInit, OnDestroy {
 
   hotels: any[] = [];
   hotelId: any;
+
+  roomTypes: any[]=[];
+
   menus: MenuItem[] = [];
   statusOption: any;
   role:any;
@@ -85,9 +91,15 @@ export class HotelsComponent implements OnInit, OnDestroy {
       });
     }
   }
-
+  // menu button
   dropdownItemsButton(data:any){
     this.menus = [
+      {
+        label: "Thông tin khác",
+        command: () => {
+          this.detail(data);
+        },
+      },
       {
         label: "Chỉnh sửa",
         command: () => {
@@ -104,11 +116,20 @@ export class HotelsComponent implements OnInit, OnDestroy {
       {
         label: "Xóa",
         command: () => {
+          this.showConfirm(data);
         },
       },
     ]
   }
 
+  // detail
+  detail(data:any){
+    this.displayDetail = true;
+    this.hotelId = data.id;
+    this.roomTypes = data.room_type;
+  }
+
+  // add edit
   addHotel(){
     this.displayCreateUpdateHotel = true;
     this.hotelId = null;
@@ -119,6 +140,7 @@ export class HotelsComponent implements OnInit, OnDestroy {
     this.hotelId = hotel.id;
   };
 
+  // status
   confirmChangeStatus(event:any, data:any){
 
     if(Auth.User('role') == 'admin')
@@ -155,6 +177,38 @@ export class HotelsComponent implements OnInit, OnDestroy {
     this.subscription.add(obs);
   }
 
+  // delete
+  showConfirm(data:any){
+    this.confirmModal = this.modal.confirm({
+      nzTitle: `Xác nhận xóa ${data.name} !!`,
+      nzContent: `Bạn có muốn xóa ${data.name} không ?`,
+      nzOnOk: () =>
+        new Promise((resolve, reject) => {
+          this.deleteHotel(data);
+          setTimeout(0.6 > 0.5 ? resolve : reject, 1000);
+        }).catch()
+    });
+  }
+
+  async deleteHotel(data:any){
+    let hotels:any = await firstValueFrom(this.roomTypeService.getRoomTypes());
+    if(hotels.data.length > 0) {
+      this.message.create(ERROR, `Không thể xóa ${data.hotel_name}, tồn tại một trường liên kết với ${data.hotel_name}`)
+    }else{
+      this.hotelsService.deleteHotel(data.id).subscribe({
+        next: (res) => {
+          this.message.create(SUCCESS, `Xóa ${data.hotel_name} thành công.`)
+          this.getHotels();
+        },
+        error: (err) => {
+          this.message.create(ERROR, `${err.error.message}`)
+          this.message.create(ERROR, `${err.message}`)
+        }
+      })
+    }
+
+  }
+
   showModalImg(hotel:any){
     this.hotelId = hotel.id;
     this.displayImage = true;
@@ -163,6 +217,7 @@ export class HotelsComponent implements OnInit, OnDestroy {
   cancel(event:any){
     this.displayCreateUpdateHotel = false;
     this.displayImage = false;
+    this.displayDetail = false;
     this.getHotels();
   }
 
