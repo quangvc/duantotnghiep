@@ -1,13 +1,14 @@
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
-import { Subscription } from 'rxjs';
+import { Subscription, firstValueFrom } from 'rxjs';
 import { NineStatus } from 'src/app/module/_mShared/enum/enum';
 import { MenuItem } from 'src/app/module/_mShared/model/menuItem.class';
 import { ERROR, SUCCESS } from 'src/app/module/_mShared/model/url.class';
 import { Enum } from 'src/app/module/_mShared/service/static/enum.service';
 import { RegionsService } from 'src/app/module/_mShared/service/regions.service';
 import { Auth } from 'src/app/auth/_aShared/auth.class';
+import { HotelsService } from 'src/app/module/_mShared/service/hotels.service';
 
 @Component({
   selector: 'app-regions',
@@ -22,6 +23,7 @@ export class RegionsComponent implements OnInit, OnDestroy {
 
   constructor(
     private regionService: RegionsService,
+    private hotelService: HotelsService,
     private message: NzMessageService,
     private modal: NzModalService
   ) { }
@@ -109,8 +111,8 @@ export class RegionsComponent implements OnInit, OnDestroy {
 
   showConfirm(data:any){
     this.confirmModal = this.modal.confirm({
-      nzTitle: `Do you Want to delete ${data.name} ?`,
-      nzContent: 'When clicked the OK button, this dialog will be closed after 1 second',
+      nzTitle: `Xác nhận xóa ${data.name} !!`,
+      nzContent: `Bạn có muốn xóa ${data.name} không ?`,
       nzOnOk: () =>
         new Promise((resolve, reject) => {
           this.deleteRegion(data);
@@ -119,17 +121,23 @@ export class RegionsComponent implements OnInit, OnDestroy {
     });
   }
 
-  deleteRegion(data:any){
-    this.regionService.deleteRegion(data.id).subscribe({
-      next: (res) => {
-        this.message.create(SUCCESS, `Xóa ${data.name} thành công.`)
-        this.getRegion();
-      },
-      error: (err) => {
-        this.message.create(ERROR, `${err.error.message}`)
-        this.message.create(ERROR, `${err.message}`)
-      }
-    })
+  async deleteRegion(data:any){
+    let hotels:any = await firstValueFrom(this.hotelService.getHotels());
+    if(hotels.data.length > 0) {
+      this.message.create(ERROR, `Không thể xóa Khu vực ${data.name}, tồn tại một trường liên kết với khu vực ${data.name}`)
+    }else{
+      this.regionService.deleteRegion(data.id).subscribe({
+        next: (res) => {
+          this.message.create(SUCCESS, `Xóa ${data.name} thành công.`)
+          this.getRegion();
+        },
+        error: (err) => {
+          this.message.create(ERROR, `${err.error.message}`)
+          this.message.create(ERROR, `${err.message}`)
+        }
+      })
+    }
+
   }
 
   cancel(event:any){
