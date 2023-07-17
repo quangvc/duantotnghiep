@@ -33,3 +33,18 @@
   font-size: 15px;
   font-weight: 500;
 }
+
+.formDiv {
+  margin-top: 5px;
+  margin-bottom: 5px;
+
+}
+
+.formInput {
+  border: 1px solid #e9ecef;
+  padding: 5px;
+}
+
+.formInput:focus {
+  border: 1px solid #e9ecef;
+}

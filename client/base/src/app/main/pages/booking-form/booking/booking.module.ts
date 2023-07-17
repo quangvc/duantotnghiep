@@ -8,7 +8,12 @@ import { MessageModule } from 'primeng/message';
 import { PanelModule } from 'primeng/panel';
 import { DropdownModule } from 'primeng/dropdown';
 import { AccordionModule } from 'primeng/accordion';
-
+import { ButtonModule } from 'primeng/button';
+import { MessagesModule } from 'primeng/messages';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ToastModule } from 'primeng/toast';
+import { ConfirmationService, MessageService } from 'primeng/api';
+import { BookingClientService } from 'src/app/main/services/bookingClient.service';
 @NgModule({
   imports: [
     CommonModule,
@@ -19,8 +24,18 @@ import { AccordionModule } from 'primeng/accordion';
     PanelModule,
     DropdownModule,
     AccordionModule,
-    BookingRoutes
+    BookingRoutes,
+    ButtonModule,
+    MessageModule,
+    MessagesModule,
+    ConfirmDialogModule,
+    ToastModule
   ],
-  declarations: [BookingComponent]
+  declarations: [BookingComponent],
+  providers: [
+    ConfirmationService,
+    MessageService,
+    BookingClientService
+  ],
 })
 export class BookingModule { }

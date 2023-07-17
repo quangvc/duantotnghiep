@@ -1,9 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { MenuItem } from 'primeng/api';
-import { Validators, FormControl, FormGroup, FormBuilder } from '@angular/forms';
+import { Validators, FormControl, FormGroup, FormBuilder, FormArray } from '@angular/forms';
 import { SelectItem } from 'primeng/api';
-import { MessageService } from 'primeng/api';
-
+import { MessageService, ConfirmationService } from 'primeng/api';
+import * as moment from 'moment';
+import { NzMessageService } from 'ng-zorro-antd/message';
+import { ERROR, SUCCESS } from 'src/app/module/_mShared/model/url.class';
+import { BookingClientService } from 'src/app/main/services/bookingClient.service';
 
 const toggleButton = document.getElementById('showToggleButton') as HTMLButtonElement | null;
 
@@ -50,102 +53,145 @@ if (toggleButton && content) {
       }
   `]
 })
-export class BookingComponent implements OnInit{
+export class BookingComponent implements OnInit {
   userform: FormGroup;
   selectedCountry: string;
   countries: any[];
   ingredient: string;
   submitted: boolean = true;
 
+  // Dữ liệu hiển thị
+  displayDateIn: any;
+  displayDateOut: any;
+  totalAmount: any;
+  roomTypeData: any[] = [];
+
+
   genders: SelectItem[] = [];
 
   description: string = '';
-
-  brands: string[] = ['Audi', 'BMW', 'Fiat', 'Ford', 'Honda', 'Jaguar', 'Mercedes', 'Renault', 'Volvo', 'VW'];
 
   filteredBrands: any[] = [];
 
 
 
 
-  constructor(private fb: FormBuilder, private messageService: MessageService) {
-    this.countries = [
-      { name: 'Australia', code: 'AU' },
-      { name: 'Brazil', code: 'BR' },
-      { name: 'China', code: 'CN' },
-      { name: 'Egypt', code: 'EG' },
-      { name: 'France', code: 'FR' },
-      { name: 'Germany', code: 'DE' },
-      { name: 'India', code: 'IN' },
-      { name: 'Japan', code: 'JP' },
-      { name: 'Spain', code: 'ES' },
-      { name: 'United States', code: 'US' },
-    ];
+  constructor(
+    private fb: FormBuilder,
+    private messageService: MessageService,
+    private confirmationService: ConfirmationService,
+    private message: NzMessageService,
+    private BookingClientService: BookingClientService,
+    ) {
+
   }
-  cities = [
-    { name: 'New York', code: 'NY' },
-    { name: 'Rome', code: 'RM' },
-    { name: 'London', code: 'LDN' },
-    { name: 'Istanbul', code: 'IST' },
-    { name: 'Paris', code: 'PRS' }
-  ];
-  items: MenuItem[] = [];
-  activeIndex: number = 0;
   ngOnInit() {
-    this.items = [
-      {
-        label: 'Đặt',
-        routerLink: 'personal'
-      },
-      {
-        label: 'Xem lại',
-        routerLink: 'seat'
-      },
-      {
-        label: 'Thanh toán',
-        routerLink: 'payment'
-      },
-      {
-        label: 'Xử lý',
-        routerLink: 'confirmation'
-      },
-      {
-        label: 'Gửi phiếu thanh toán',
-        routerLink: 'bill'
-      }
-    ];
+    // Khai báo các trường dữ liệu của form
     this.userform = this.fb.group({
-      'fullname': new FormControl('', Validators.required),
-      'phoneNumber': new FormControl('', Validators.required),
-      'email': new FormControl('', Validators.required),
+      'guest_name': new FormControl(null, Validators.required),
+      'guest_phone': new FormControl(null, [Validators.required, Validators.pattern('[0-9]{10}')]),
+      'guest_email': new FormControl(null, [Validators.required, Validators.pattern('[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}')]),
+      'hotel_id': new FormControl(null, Validators.required),
+      'checkin_date': new FormControl(null, Validators.required),
+      'checkout_date': new FormControl(null, Validators.required),
+      'people_quantity': new FormControl(5),
+      'total_price': new FormControl(null, Validators.required),
+      'items': this.fb.array([]),
     });
 
-  }
+    // Lấy dữ liệu từ sessionStorage
+    const resultArrayJson = sessionStorage.getItem('resultArray');
+    const totalAmount = sessionStorage.getItem('totalAmount');
+    const dateIn = sessionStorage.getItem('dateIn');
+    const dateOut = sessionStorage.getItem('dateOut');
+    const hotelId = sessionStorage.getItem('hotelId');
+
+    let resultArray: any[] = [];
+
+    if (resultArrayJson) {
+      resultArray = JSON.parse(resultArrayJson);
+    }
+
+    // Kiểm tra và sử dụng dữ liệu
+    if (resultArray.length > 0 && totalAmount && dateIn && dateOut && hotelId) {
+      this.displayDateIn = moment(dateIn, 'DD-MM-YYYY').format('ddd, DD MMM YYYY');
+      this.displayDateOut = moment(dateOut, 'DD-MM-YYYY').format('ddd, DD MMM YYYY');
+      this.roomTypeData = resultArray;
+      this.totalAmount = totalAmount;
+      // Xóa dữ liệu từ sessionStorage sau khi đã sử dụng
+      // sessionStorage.removeItem('resultArray');
+      // sessionStorage.removeItem('totalAmount');
+
+
+
+      // Thêm dữ liệu từ sessionStorage vào form
+      const itemsArray = this.userform.get('items') as FormArray;
+      resultArray.forEach(item => {
+        const newItem = this.fb.group({
+          'room_type_id': new FormControl(item.roomType_Id, Validators.required),
+          'quantity': new FormControl(item.quantity, Validators.required)
+        });
+        itemsArray.push(newItem);
+      });
+      this.userform.patchValue({
+        'hotel_id': hotelId,
+        'checkin_date': dateIn || null,
+        'checkout_date': dateOut || null,
+        'total_price': totalAmount || null,
+      });
 
 
 
 
 
+    } else {
+      // Hiển thị thông báo lỗi
+      alert("Không có dữ liệu trong sessionStorage");
 
-
-
-
-
-
-  filterBrands(event: any) {
-    this.filteredBrands = [];
-    for (let i = 0; i < this.brands.length; i++) {
-      let brand = this.brands[i];
-      if (brand.toLowerCase().indexOf(event.query.toLowerCase()) == 0) {
-        this.filteredBrands.push(brand);
-      }
+      // Chuyển về trang trước đó
+      window.history.back();
     }
   }
 
-  onSubmit(value: string) {
-    this.submitted = true;
-    this.messageService.add({ severity: 'info', summary: 'Success', detail: 'Form Submitted', sticky: true });
+  // Hiển thị dữ liệu items (room type)
+  get items(): FormArray {
+    return this.userform.get('items') as FormArray;
   }
 
-  get diagnostic() { return JSON.stringify(this.userform.value); }
+  async onSubmit() {
+    const formValue = this.userform.value;
+    if (this.userform.valid) {
+      // Xử lý khi form hợp lệ
+      console.log(formValue);
+      this.confirmationService.confirm({
+        message: 'Bạn có chắc chắn thông tin đã đúng chứ?',
+        accept: async() => {
+          debugger
+          let newData = this.userform.value;
+          let create = this.BookingClientService.createBooking(newData);
+          await create.subscribe({
+            next: (res) => {
+              this.message.create(SUCCESS, `Đăng ký thành công!`);
+              sessionStorage.clear();
+            },
+            error: (err) => {
+              this.message.create(ERROR, err.error.message);
+            }
+      })
+        },
+        reject: () => {
+          // Xử lý khi nhấn No
+          // Đóng confirm popup
+        }
+      });
+
+
+
+
+    } else {
+      // Xử lý khi form không hợp lệ
+      this.messageService.add({ severity: 'warn', summary: 'Cảnh báo', detail: 'Bạn chưa nhập đủ thông tin' });
+    }
+  }
+
 }
