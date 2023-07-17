@@ -16,11 +16,11 @@ const routes: Routes = [
     { path: 'filter', loadChildren: () => import('./pages/filter-page/filter-page.module').then(m => m.FilterPageModule)},
     { path: 'profile', loadChildren: () => import('./pages/profile/profile.module').then(m => m.ProfileModule)},
     {
-      path: 'booking',
-      redirectTo: 'booking/bookingform', // Chuyển hướng đến 'booking/review' khi người dùng truy cập '/booking'
+      path: 'payment',
+      redirectTo: 'payment/bookingform', // Chuyển hướng đến 'booking/review' khi người dùng truy cập '/booking'
       pathMatch: 'full',
     },
-    {path: 'booking', component: BookingFormComponent, children: [
+    {path: 'payment', component: BookingFormComponent, children: [
       { path: 'review', loadChildren: () => import('./pages/booking-form/review/review.module').then(m => m.ReviewModule)},
       { path: 'bookingform', loadChildren: () => import('./pages/booking-form/booking/booking.module').then(m => m.BookingModule)}
     ]},
