@@ -1,6 +1,7 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NzMessageService } from 'ng-zorro-antd/message';
+import { Subscription } from 'rxjs';
 import { ERROR, SUCCESS } from 'src/app/module/_mShared/model/url.class';
 import { RegionsService } from 'src/app/module/_mShared/service/regions.service';
 
@@ -10,7 +11,9 @@ declare let $: any;
   selector: 'create-update-region',
   templateUrl: './create-update-region.component.html'
 })
-export class CreateUpdateRegionComponent implements OnInit {
+export class CreateUpdateRegionComponent implements OnInit, OnDestroy {
+
+  private subscription = new Subscription();
 
   @Input() displayCreateUpdateRegion: boolean = false;
   @Input() regionId: any;
@@ -38,7 +41,7 @@ export class CreateUpdateRegionComponent implements OnInit {
 
   getValueRegion(){
     if(this.regionId){
-      this.regionService.findOne(this.regionId).subscribe({
+      let obs = this.regionService.findOne(this.regionId).subscribe({
         next: (res) => {
           this.formRegion.patchValue({
             name: res.data.name,
@@ -49,6 +52,8 @@ export class CreateUpdateRegionComponent implements OnInit {
           this.message.create(ERROR, `${err.message}`)
         }
       })
+
+      this.subscription.add(obs);
     }
   }
 
@@ -76,8 +81,7 @@ export class CreateUpdateRegionComponent implements OnInit {
 
       createUpdate.subscribe({
         next: (res) => {
-          console.log(res)
-          // this.closeModal.emit();
+          this.closeModal.emit();
           this.message.create(SUCCESS, `${res.message}`);
         },
         error: (err) => {
@@ -90,6 +94,11 @@ export class CreateUpdateRegionComponent implements OnInit {
 
   handleCancel(){
     this.closeModal.emit();
+    this.formRegion.reset();
+  }
+
+  ngOnDestroy(): void {
+      this.subscription.unsubscribe();
   }
 
 }

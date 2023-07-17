@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
 import { Subscription } from 'rxjs';
@@ -99,6 +99,7 @@ export class RegionsComponent implements OnInit, OnDestroy {
 
   addRegion(){
     this.displayCreateUpdateRegion = true;
+    this.regionId = null;
   }
 
   editRegion(region:any){

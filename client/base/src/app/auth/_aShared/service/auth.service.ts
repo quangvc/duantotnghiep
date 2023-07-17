@@ -1,5 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -13,7 +14,6 @@ export class AuthService {
 
   private httpOptions = {
     headers: new HttpHeaders({
-      'Content-Type': 'application/json',
       'Authorization': `Bearer ${this.user ? this.user.token : null}`
     })
   }
@@ -50,5 +50,10 @@ export class AuthService {
 
   getUserRole(){
     return sessionStorage.getItem('userRole') != null ? sessionStorage.getItem('userRole') : '';
+  }
+
+  sendResetLink(data:any): Observable<any>{
+    const url = `${this.API_URL}/send-reset-link`;
+    return this.http.post<any>(url, data, this.httpOptions)
   }
 }
