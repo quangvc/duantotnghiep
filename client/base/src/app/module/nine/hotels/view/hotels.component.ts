@@ -111,6 +111,7 @@ export class HotelsComponent implements OnInit, OnDestroy {
 
   addHotel(){
     this.displayCreateUpdateHotel = true;
+    this.hotelId = null;
   }
 
   editHotel(hotel:any){

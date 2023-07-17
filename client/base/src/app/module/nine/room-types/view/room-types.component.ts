@@ -76,6 +76,7 @@ export class RoomTypesComponent implements OnInit, OnDestroy {
 
   addRoomType(){
     this.displayCreateUpdateRoomType = true;
+    this.roomTypeId = null;
   }
 
   showSettingImage(data:any){

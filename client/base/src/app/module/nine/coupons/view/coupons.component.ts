@@ -76,6 +76,7 @@ export class CouponsComponent implements OnInit {
 
   addCoupon(){
     this.displayCreateUpdateCoupon = true;
+    this.couponId = null;
   }
 
   editCoupon(coupon:any){

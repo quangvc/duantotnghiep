@@ -85,6 +85,7 @@ export class BlogsComponent implements OnInit {
 
   addBlog(){
     this.displayCreateUpdateBlog = true;
+    this.blogId = null;
   }
 
   editBlog(blog:any){

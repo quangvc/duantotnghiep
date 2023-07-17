@@ -90,6 +90,7 @@ export class RoomsComponent implements OnInit, OnDestroy {
 
   addRoom() {
     this.displayCreateUpdateRoom = true;
+    this.roomId = null;
   }
 
   editRoom(room:any){
