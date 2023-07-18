@@ -7,6 +7,7 @@ import * as moment from 'moment';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { ERROR, SUCCESS } from 'src/app/module/_mShared/model/url.class';
 import { BookingClientService } from 'src/app/main/services/bookingClient.service';
+import { HotelClientService } from 'src/app/main/services/hotelClient.service';
 
 const toggleButton = document.getElementById('showToggleButton') as HTMLButtonElement | null;
 
@@ -64,6 +65,10 @@ export class BookingComponent implements OnInit {
   displayDateIn: any;
   displayDateOut: any;
   totalAmount: any;
+  hotel_Id: any;
+  hotels: any[] = [];
+  hotel_name: any
+  hotelRoomTypeData: any[] = [];
   roomTypeData: any[] = [];
 
 
@@ -82,6 +87,7 @@ export class BookingComponent implements OnInit {
     private confirmationService: ConfirmationService,
     private message: NzMessageService,
     private BookingClientService: BookingClientService,
+    private HotelClientService: HotelClientService,
     ) {
 
   }
@@ -139,11 +145,6 @@ export class BookingComponent implements OnInit {
         'checkout_date': dateOut || null,
         'total_price': totalAmount || null,
       });
-
-
-
-
-
     } else {
       // Hiển thị thông báo lỗi
       alert("Không có dữ liệu trong sessionStorage");
@@ -151,6 +152,23 @@ export class BookingComponent implements OnInit {
       // Chuyển về trang trước đó
       window.history.back();
     }
+    this.getHotel(hotelId);
+  }
+
+  getHotel(id: any) { // Lấy giá trị ID từ URL
+      this.HotelClientService.findOne(id).subscribe({
+
+        next: (res) => {
+          console.log(res);
+
+          this.hotels = res.data;
+          this.hotel_name = res.data[0].hotel_name;
+          this.hotelRoomTypeData = res.data[0].room_type;
+        },
+        error: (err) => {{
+          console.log('Đã xảy ra lỗi khi gọi API:', err);
+        }}
+      });
   }
 
   // Hiển thị dữ liệu items (room type)
@@ -171,8 +189,11 @@ export class BookingComponent implements OnInit {
           let create = this.BookingClientService.createBooking(newData);
           await create.subscribe({
             next: (res) => {
+
               this.message.create(SUCCESS, `Đăng ký thành công!`);
-              sessionStorage.clear();
+              // sessionStorage.clear();
+              window.location.href = 'booking/payment'
+
             },
             error: (err) => {
               this.message.create(ERROR, err.error.message);
