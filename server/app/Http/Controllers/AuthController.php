@@ -140,7 +140,6 @@ class AuthController extends Controller
         
     }
 
-
     /**
      * Assign roles to the user
      *
