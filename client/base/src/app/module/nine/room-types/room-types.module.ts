@@ -15,9 +15,6 @@ import { RoomTypeImgComponent } from './room-type-img/room-type-img.component';
     QImageModule,
     RoomTypesRoutes,
   ],
-  exports: [
-    RoomTypesComponent
-  ],
   declarations: [RoomTypesComponent, CreateUpdateRoomTypeComponent, RoomTypeImgComponent]
 })
 export class RoomTypesModule { }

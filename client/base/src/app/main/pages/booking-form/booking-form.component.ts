@@ -44,11 +44,7 @@ export class BookingFormComponent implements OnInit {
     this.items = [
       {
         label: 'Đặt',
-        routerLink: 'personal'
-      },
-      {
-        label: 'Xem lại',
-        routerLink: 'seat'
+        routerLink: 'bookingform'
       },
       {
         label: 'Thanh toán',
