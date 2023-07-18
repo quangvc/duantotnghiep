@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { ADMIN, USERS } from '../model/url.class';
 import { Auth } from 'src/app/auth/_aShared/auth.class';
 
@@ -19,6 +19,8 @@ export class UserService {
       Authorization: `Bearer ${this.token}`,
     }),
   };
+
+  public $hotelId = new BehaviorSubject<any>(null);
 
 
 
