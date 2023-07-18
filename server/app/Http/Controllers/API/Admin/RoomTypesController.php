@@ -5,10 +5,12 @@ namespace App\Http\Controllers\API\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateRoomTypeRequest;
 use App\Http\Resources\API\RoomTypeResource;
+use App\Models\BookingDetail;
 use App\Models\Room;
 use App\Models\RoomType;
 use Illuminate\Http\Request;
 use App\Traits\MessageStatusAPI;
+use Carbon\Carbon;
 use Illuminate\Http\Response;
 
 class RoomTypesController extends Controller
