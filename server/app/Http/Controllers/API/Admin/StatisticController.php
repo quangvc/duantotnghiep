@@ -23,24 +23,23 @@ class StatisticController extends Controller
         if ($role == 'admin') {
             while ($start_date->lte($end_date)) {
                 $revenue[$start_date->toDateString()] = Booking::whereIn('status', [1, 3])
-                    ->whereDate('checkin_date', $start_date)
+                    ->whereDate('created_at', $start_date)
                     ->sum('total_price');
     
                 $start_date->addDay();
             }
         } elseif ($role == 'manager') {
             while ($start_date->lte($end_date)) {
-                $revenue[$start_date->toDateString()] = Booking::with('booking_details.room_type.hotel', function ($query) {
-                    $query->where('hotel.id', auth()->user()->hotel_id);
-                })
+                $revenue[$start_date->toDateString()] = Booking::whereHas('booking_details.room_type.hotel', function ($query) {
+                $query->where('id', auth()->user()->hotel_id);
+            })->with('booking_details.room_type.hotel')
                 ->whereIn('status', [1, 3])
-                    ->whereDate('checkin_date', $start_date)                    
+                    ->whereDate('created_at', $start_date)                    
                     ->sum('total_price');
     
                 $start_date->addDay();
             }
-        }
-        
+        }       
 
         return $revenue;
     }
@@ -53,14 +52,14 @@ class StatisticController extends Controller
             $month = now()->subMonths($i)->format('M');
             if ($role == 'admin') {
                 $revenue[$month] = Booking::whereIn('status', [1,3])
-                ->whereMonth('checkin_date', now()->subMonths($i)->month) 
+                ->whereMonth('created_at', now()->subMonths($i)->month) 
                 ->sum('total_price');
             } elseif ($role == 'manager') {
-                $revenue[$month] = Booking::with('booking_details.room_type.hotel', function ($query) {
-                    $query->where('hotel.id', auth()->user()->hotel_id);
-                })
+                $revenue[$month] = Booking::whereHas('booking_details.room_type.hotel', function ($query) {
+                    $query->where('id', auth()->user()->hotel_id);
+                })->with('booking_details.room_type.hotel')
                 ->whereIn('status', [1,3])
-                ->whereMonth('checkin_date', now()->subMonths($i)->month) 
+                ->whereMonth('created_at', now()->subMonths($i)->month) 
                 ->sum('total_price');
             }            
             
@@ -74,11 +73,23 @@ class StatisticController extends Controller
         $role = auth()->user()->getRoleNames()->first();
         for ($i = 11; $i >= 0; $i--) {
             $month = now()->subMonths($i)->format('M');
-            $countBookingRevenue[$month] = BookingDetail::whereHas('booking', function ($query) use ($i) {
-                $query->where('created_at', '>', now()->subMonth())
-                ->whereMonth('checkin_date', now()->subMonths($i)->month);
-            })                
-            ->count();
+            if ($role == 'admin') {
+                $countBookingRevenue[$month] = BookingDetail::whereHas('booking', function ($query) use ($i) {
+                    $query->whereMonth('created_at', now()->subMonths($i)->month)
+                    ->whereIn('status', [1,3]);
+                })                
+                ->count();
+            } elseif ($role == 'manager') {
+                $countBookingRevenue[$month] = BookingDetail::whereHas('room_type.hotel', function ($query) {
+                    $query->where('id', auth()->user()->hotel_id);
+                })->with('room_type.hotel')            
+                ->whereHas('booking', function ($query) use ($i) {
+                    $query->whereMonth('created_at', now()->subMonths($i)->month)
+                    ->whereIn('status', [1,3]);
+                })                
+                ->count();
+            }
+            
         }
         return $countBookingRevenue;
     }
@@ -98,9 +109,9 @@ class StatisticController extends Controller
             ->where('created_at', '>', now()->subMonth())
             ->sum('total_price');
         } elseif ($role == 'manager') {
-            $lmRevenue = Booking::with('booking_details.room_type.hotel', function ($query) {
-                $query->where('hotel.id', auth()->user()->hotel_id);
-            })        
+            $lmRevenue = Booking::whereHas('booking_details.room_type.hotel', function ($query) {
+                $query->where('id', auth()->user()->hotel_id);
+            })->with('booking_details.room_type.hotel')  
             ->whereIn('status', [1,3])
             ->where('created_at', '>', now()->subMonth())
             ->sum('total_price');
@@ -117,9 +128,9 @@ class StatisticController extends Controller
             ->where('created_at', '>', now()->subMonth())
             ->count();
         } elseif ($role == 'manager') {
-            $lmCountBooking = Booking::with('booking_details.room_type.hotel', function ($query) {
-                $query->where('hotel.id', auth()->user()->hotel_id);
-            })
+            $lmCountBooking = Booking::whereHas('booking_details.room_type.hotel', function ($query) {
+                $query->where('id', auth()->user()->hotel_id);
+            })->with('booking_details.room_type.hotel')
             ->whereIn('status', [1,3])
             ->where('created_at', '>', now()->subMonth())
             ->count();
@@ -136,9 +147,9 @@ class StatisticController extends Controller
                 $query->where('created_at', '>', now()->subMonth());
             })->count();
         } elseif ($role == 'manager') {
-            $lmcRooms = BookingDetail::with('booking_details.room_type.hotel', function ($query) {
-                    $query->where('hotel.id', auth()->user()->hotel_id);
-                })            
+            $lmcRooms = BookingDetail::whereHas('room_type.hotel', function ($query) {
+                $query->where('id', auth()->user()->hotel_id);
+            })->with('room_type.hotel')          
                 ->whereHas('booking', function ($query) {
                 $query->where('created_at', '>', now()->subMonth());
             })->count();
