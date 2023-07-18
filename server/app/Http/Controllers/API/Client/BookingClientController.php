@@ -104,6 +104,6 @@ class BookingClientController extends Controller
             }
         }
 
-        return MessageStatusAPI::store();
+        return MessageStatusAPI::store($booking);
     }
 }

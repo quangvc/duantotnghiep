@@ -15,24 +15,24 @@ class PaymentController extends Controller
         $vnp_TmnCode = "ENZCQ3F2";
         $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
 
-        // $booking = Booking::find($request->id);
+        $booking = Booking::find($request->id);
 
-        // $vnp_TxnRef = $booking->booking_number; //Mã đơn hàng. Trong thực tế Merchant cần insert đơn hàng vào DB và gửi mã này sang VNPAY
-        // $vnp_OrderInfo = 'Thanh toan dat phong khach san. ID booking '.$booking->booking_number;
-        // $vnp_OrderType = 170003;
-        // $vnp_Amount = $booking->total_price * 100;
-        // $vnp_Locale = 'vn';
-        // $vnp_BankCode = $request->bank_code;
+        $vnp_TxnRef = $booking->booking_number; //Mã đơn hàng. Trong thực tế Merchant cần insert đơn hàng vào DB và gửi mã này sang VNPAY
+        $vnp_OrderInfo = 'Thanh toan dat phong khach san. ID booking '.$booking->booking_number;
+        $vnp_OrderType = 170003;
+        $vnp_Amount = $booking->total_price * 100;
+        $vnp_Locale = 'vn';
+        $vnp_BankCode = $request->bank_code;
         $vnp_IpAddr = $_SERVER['REMOTE_ADDR'];
         //Add Params of 2.0.1 Version
         //Billing
         
-        $vnp_TxnRef = 'HD8_83291499';
-        $vnp_OrderInfo = 'Thanh toan dat phong khach san. ID booking ';
-        $vnp_OrderType = 170003;
-        $vnp_Amount = 1000000 * 100;
-        $vnp_Locale = 'vn';
-        $vnp_BankCode = 'NCB';
+        // $vnp_TxnRef = 'HD8_83291499';
+        // $vnp_OrderInfo = 'Thanh toan dat phong khach san. ID booking ';
+        // $vnp_OrderType = 170003;
+        // $vnp_Amount = 1000000 * 100;
+        // $vnp_Locale = 'vn';
+        // $vnp_BankCode = 'NCB';
 
         $inputData = array(
             "vnp_Version" => "2.1.0",
