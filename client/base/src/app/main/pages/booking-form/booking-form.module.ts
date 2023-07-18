@@ -1,5 +1,5 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
 import { BookingFormComponent } from './booking-form.component';
 import { BookingFormRoutes } from './booking-form.routing';
 

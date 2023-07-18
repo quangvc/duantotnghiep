@@ -176,7 +176,7 @@ export class HotelBookingRoomComponent implements OnInit {
 
 
     // Điều hướng đến trang thanh toán (thay 'payment' bằng URL của trang thanh toán)
-    window.location.href = 'payment';
+    window.location.href = 'booking';
   }
 
 }
