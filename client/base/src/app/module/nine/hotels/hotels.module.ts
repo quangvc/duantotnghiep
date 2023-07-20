@@ -17,7 +17,9 @@ import { RoomTypesModule } from '../room-types/room-types.module';
     QMenuModule,
     QImageModule,
 
-    HotelsRoutes
+    HotelsRoutes,
+
+    RoomTypesModule
   ],
   declarations: [HotelsComponent, AddHotelComponent, ImageComponent, DetailHotelComponent],
   providers: [RegionsService]

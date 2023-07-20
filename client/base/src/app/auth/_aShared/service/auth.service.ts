@@ -56,4 +56,14 @@ export class AuthService {
     const url = `${this.API_URL}/send-reset-link`;
     return this.http.post<any>(url, data, this.httpOptions)
   }
+
+  register(account:any): Observable<any>{
+    const url = `${this.API_URL}/register`;
+    return this.http.post<any>(url, account)
+  }
+
+  updatePass(data:any, httpOptions:any): Observable<any>{
+    const url = `${this.API_URL}/reset-password`;
+    return this.http.post<any>(url, data, httpOptions);
+  }
 }

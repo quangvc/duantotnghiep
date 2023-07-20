@@ -137,7 +137,7 @@ class AuthController extends Controller
                 'message' => 'Old password does not match'
             ], 400);
         }
-        
+
     }
 
     /**
