@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use App\Models\Keyword;
 
 class KeywordCheckMiddleware
 {
@@ -16,7 +17,8 @@ class KeywordCheckMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        $keywords = ['bad', 'inappropriate', 'sex', 'http', 'shope', 'địt mẹ']; // Các từ khóa cần kiểm tra
+        // $keywords = ['bad', 'inappropriate', 'sex', 'http', 'shope', 'địt mẹ']; // Các từ khóa cần kiểm tra
+        $keywords = Keyword::pluck('keyword');
 
         $content = $request->input('content'); // Giả sử nội dung cần kiểm tra là trường 'content'
 

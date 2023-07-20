@@ -31,6 +31,7 @@ use App\Http\Controllers\API\Client\RoomClientController;
 use App\Http\Controllers\API\Client\RoomTypesClientController;
 use App\Http\Controllers\API\Client\UserClientController;
 use App\Http\Controllers\Api\Client\CommentClientController;
+use App\Http\Controllers\KeywordController;
 use App\Http\Controllers\PaymentController;
 
 
@@ -61,6 +62,7 @@ Route::middleware('auth:sanctum')->put('/change-password', [AuthController::clas
 
 Route::post('/vnpay-payment', [PaymentController::class, 'vnpay_payment']);
 
+Route::get('/get-keywords', [KeywordController::class, 'index']);
 
 Route::group(['prefix' => 'admin'], function () {
     Route::group(['prefix' => 'users', 'controller' => UserController::class], function () {
