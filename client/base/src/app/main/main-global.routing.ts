@@ -13,7 +13,7 @@ const routes: Routes = [
     { path: 'blogs/:slug', loadChildren: () => import('./pages/blog/blog-detail/blog-detail.module').then(m => m.BlogDetailModule)},
     { path: 'hotels/region/:region_id', loadChildren: () => import('./pages/hotel/hotel.module').then(m => m.HotelModule)},
     { path: 'hotel/:id', loadChildren: () => import('./pages/hotel-detail/hotel-detail.module').then(m => m.HotelDetailModule)},
-    { path: 'filter', loadChildren: () => import('./pages/filter-page/filter-page.module').then(m => m.FilterPageModule)},
+    { path: 'hotels/get/:region_id/:checkin/:checkout', loadChildren: () => import('./pages/filter-page/filter-page.module').then(m => m.FilterPageModule)},
     { path: 'profile', loadChildren: () => import('./pages/profile/profile.module').then(m => m.ProfileModule)},
     {
       path: 'booking',

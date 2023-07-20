@@ -49,7 +49,6 @@ export class CarouselComponent implements OnInit {
     let obs = this.BannersClientService.getBanners().subscribe({
       next: (res) => {
         this.banners = res.data;
-        console.log(res)
       },
       error: (err) => {
         this.message.create(ERROR, err.error.message);

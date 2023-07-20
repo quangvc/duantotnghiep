@@ -7,9 +7,10 @@ import { FilterPageRoutes } from './filter-page.routing';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { AccordionModule } from 'primeng/accordion';
 import { CheckboxModule } from 'primeng/checkbox';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PaginatorModule } from 'primeng/paginator';
 import { SliderModule } from 'primeng/slider';
+import { RatingModule } from 'primeng/rating';
 
 @NgModule({
   imports: [
@@ -21,6 +22,8 @@ import { SliderModule } from 'primeng/slider';
     CheckboxModule,
     PaginatorModule,
     SliderModule,
+    RatingModule,
+    ReactiveFormsModule,
 
     FilterPageRoutes
   ],

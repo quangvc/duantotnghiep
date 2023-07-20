@@ -272,7 +272,7 @@ Route::group(['prefix' => 'client'], function () {
             Route::get('/{blog_id}', 'index');
             Route::post('/', 'store');
 
-            Route::get('reply/{parent_id}', 'listReply');
+            Route::get('/reply/{parent_id}', 'listReply');
             Route::post('/{id}', 'reply');
         }
     );

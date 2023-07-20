@@ -80,8 +80,8 @@ class BookingClientController extends Controller
             if ($count_all_rooms - $count_booked_rooms < $item['quantity']) {
                 return 'room_type_id ' . $item['room_type_id'] . ' hết phòng';
             }
-            
-        }        
+
+        }
         $booking = new Booking([
             'checkin_date' =>  $checkin_date,
             'checkout_date' => $checkout_date,
@@ -104,6 +104,6 @@ class BookingClientController extends Controller
             }
         }
 
-        return MessageStatusAPI::store();
+        return MessageStatusAPI::store($booking);
     }
 }

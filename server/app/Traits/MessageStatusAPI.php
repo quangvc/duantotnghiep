@@ -6,7 +6,7 @@ trait MessageStatusAPI
 {
     /**
      * Message Show
-     * 
+     *
      * @return string
      */
 
@@ -21,19 +21,20 @@ trait MessageStatusAPI
 
     /**
      * Message Store
-     * 
+     *
      * @return string
      */
-    public static function store()
+    public static function store($data = null)
     {
         return response()->json([
+            'data' => $data,
             'message' => 'Created successfully'
         ], 201);
     }
 
     /**
      * Message Update
-     * 
+     *
      * @return string
      */
     public static function update()

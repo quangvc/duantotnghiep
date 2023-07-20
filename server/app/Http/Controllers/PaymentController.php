@@ -22,7 +22,7 @@ class PaymentController extends Controller
         $vnp_OrderType = 170003;
         $vnp_Amount = $booking->total_price * 100;
         $vnp_Locale = 'vn';
-        $vnp_BankCode = $request->bank_code;
+        $vnp_BankCode = $request = 'TpBank';
         $vnp_IpAddr = $_SERVER['REMOTE_ADDR'];
         //Add Params of 2.0.1 Version
         //Billing
