@@ -1,3 +1,15 @@
+:host {
+  ::ng-deep .prime-input-override {
+      width: 100%;
+      height: 50px;
+  }
+}
+
+
+
+
+
+
 .steps {
   margin-top: -41px;
   display: inline-block;

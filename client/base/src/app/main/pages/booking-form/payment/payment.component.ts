@@ -1,6 +1,7 @@
 import { PaymentService } from './../../../services/payment.service';
 import { Component, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import * as moment from 'moment';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { ConfirmationService, MessageService } from 'primeng/api';
@@ -35,6 +36,18 @@ export class PaymentComponent implements OnInit {
   filteredBrands: any[] = [];
 
   paymentData: any;
+  paymentForm: FormGroup;
+  banks: any[] = [
+    { label: 'Ngan hang NCB', value: 'NCB' },
+    { label: 'Ngan hang HDBank', value: 'HDBANK' },
+    { label: 'Ngan hang Dong A', value: 'DONGABANK' },
+    { label: 'Ngân hàng TPBank ', value: 'TPBANK' },
+    { label: 'Ngân hàng BIDV ', value: 'BIDV' },
+    { label: 'Ngân hàng Techcombank ', value: 'TECHCOMBANK' },
+    { label: 'Ngan hang VPBank ', value: 'VPBANK' },
+    { label: 'Ngan hang Agribank ', value: 'AGRIBANK' },
+    // Add more banks as needed
+  ];
 
 
 
@@ -46,10 +59,17 @@ export class PaymentComponent implements OnInit {
     private BookingClientService: BookingClientService,
     private HotelClientService: HotelClientService,
     private PaymentService: PaymentService,
+    private fb: FormBuilder,
+    private route: Router
     ) {
 
   }
   ngOnInit() {
+    this.paymentForm = this.fb.group({
+      id: [null, Validators.required],
+      bank_code: ['', Validators.required],
+      // redirect: ''
+    });
 
     // Lấy dữ liệu từ sessionStorage
     const resData = sessionStorage.getItem('resData');
@@ -62,10 +82,10 @@ export class PaymentComponent implements OnInit {
     if (this.roomTypeData.length > 0 && resData && hotel_Id) {
       var paymentObjData = JSON.parse(resData);
       this.paymentData = paymentObjData;
+      this.paymentForm.controls['id'].setValue(paymentObjData.id);
       this.displayDateIn = moment(this.paymentData.checkin_date).format('ddd, DD MMM YYYY');
       this.displayDateOut = moment(this.paymentData.checkout_date).format('ddd, DD MMM YYYY');
-      console.log(this.paymentData);
-      console.log(this.roomTypeData);
+
     } else {
       // Hiển thị thông báo lỗi
       alert("Không có dữ liệu trong sessionStorage");
@@ -92,17 +112,30 @@ export class PaymentComponent implements OnInit {
       });
   }
   paymentTransaction() {
-    let createUpdate;
-    createUpdate = this.PaymentService.createPayment(this.paymentData.id);
 
-    createUpdate.subscribe({
-      next: (res) => {
-        this.message.create(SUCCESS, `${res.message}`);
-      },
-      error: (err) => {
-        this.message.create(ERROR, `${err.error.message}`)
-        this.message.create(ERROR, `${err.message}`)
-      }
-    })
+  }
+
+  onSubmit() {
+    if (this.paymentForm.valid) {
+      const selectedBankValue = this.paymentForm.value.bank_code;
+      const bookingId = this.paymentForm.value.id;
+      // Do something with the selected bank value
+      console.log('Booking id: ', bookingId);
+      console.log('Selected Bank: ', selectedBankValue);
+      let create = this.PaymentService.createPayment(this.paymentForm.value);
+      create.subscribe({
+        next: (res) => {
+          console.log(res);
+
+          this.message.create(SUCCESS, `${res.message}`);
+          // this.route.navigateByUrl(res.data)
+          window.location.href = res.data
+        },
+        error: (err) => {
+          this.message.create(ERROR, `${err.error.message}`)
+          this.message.create(ERROR, `${err.message}`)
+        }
+      })
+    }
   }
 }

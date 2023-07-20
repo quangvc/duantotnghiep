@@ -22,10 +22,11 @@ class PaymentController extends Controller
         $vnp_OrderType = 170003;
         $vnp_Amount = $booking->total_price * 100;
         $vnp_Locale = 'vn';
-        $vnp_BankCode = $request = 'TpBank';
+        $vnp_BankCode = $request->bank_code;
         $vnp_IpAddr = $_SERVER['REMOTE_ADDR'];
         //Add Params of 2.0.1 Version
         //Billing
+
         // $vnp_TxnRef = 'HD8_83291499';
         // $vnp_OrderInfo = 'Thanh toan dat phong khach san. ID booking ';
         // $vnp_OrderType = 170003;
@@ -78,15 +79,17 @@ class PaymentController extends Controller
         $returnData = array('code' => '00'
             , 'message' => 'success'
             , 'data' => $vnp_Url);
-            if (isset($_POST['redirect'])) {
-                header('Location: ' . $vnp_Url);
-                die();
-            } else {
-                return response([
-                    "Error redirect"
-                ]);
-                // echo json_encode($returnData);
-            }
+
+        return $returnData;
+            // if (isset($_POST['redirect'])) {
+            //     header('Location: ' . $vnp_Url);
+            //     die();
+            // } else {
+            //     return response([
+            //         "Error redirect"
+            //     ]);
+            //     // echo json_encode($returnData);
+            // }
     }
 
     // public function paymentReturn (Request $request)
@@ -180,8 +183,8 @@ class PaymentController extends Controller
                 //Giả sử: $order = mysqli_fetch_assoc($result);
 
 
-                // $booking = Booking::where('booking_number', $booking_number)->first();
-                $booking = Booking::find(8);
+                $booking = Booking::where('booking_number', $booking_number)->first();
+                // $booking = Booking::find();
 
                 if ($booking != NULL) {
                     if($booking->total_price == $vnp_Amount) //Kiểm tra số tiền thanh toán của giao dịch: giả sử số tiền kiểm tra là đúng. //$booking["Amount"] == $vnp_Amount
