@@ -11,7 +11,7 @@ class PaymentController extends Controller
 {
     public function vnpay_payment(Request $request) {
 
-        $vnp_Returnurl = "http://localhost:8000/payment-return"; //trang trả về sau khi thanh toán xong
+        $vnp_Returnurl = "http://localhost:4300/payment-return"; //trang trả về sau khi thanh toán xong
         $vnp_TmnCode = "ENZCQ3F2";
         $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
 
@@ -200,6 +200,7 @@ class PaymentController extends Controller
                             //Trả kết quả về cho VNPAY: Website/APP TMĐT ghi nhận yêu cầu thành công
                             $returnData['RspCode'] = '00';
                             $returnData['Message'] = 'Confirm Success';
+
                         } else {
                             $returnData['RspCode'] = '02';
                             $returnData['Message'] = 'Order already confirmed';
@@ -224,7 +225,11 @@ class PaymentController extends Controller
 
         //Trả lại VNPAY theo định dạng JSON
         // echo json_encode($returnData);
+        // return header('Location: https://www.facebook.com/');
+        // return view('welcome', $returnData);
         return response($returnData);
+
+
     }
 
 

@@ -117,9 +117,10 @@ export class BlogDetailComponent implements OnInit{
 
   private formBuilderComment(){
     this.formComment = this.fb.group({
-      parent_id: [null],
+      cmt_id: [null],
       content: [null, Validators.required],
       blog_id: [null, Validators.required],
+
     })
   }
 
@@ -143,9 +144,9 @@ export class BlogDetailComponent implements OnInit{
   addReply(cmt_id: any) {
     debugger
     console.log(cmt_id);
-    this.formComment.controls['parent_id'].setValue(cmt_id);
+    this.formComment.controls['cmt_id'].setValue(cmt_id);
     if(this.formComment.valid){
-      let create = this.CommentService.createReply(cmt_id, this.formComment.value);
+      let create = this.CommentService.createComment(this.formComment.value);
       create.subscribe({
         next: (res) => {
           console.log('Oke đã thêm reply:', res);
