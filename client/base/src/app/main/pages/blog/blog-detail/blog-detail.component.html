@@ -159,7 +159,7 @@
             <form class="form-outline w-100" [formGroup]="formComment">
               <input type="number" id="blog_id" formControlName="blog_id" style="display: none;">
               <!-- Parent ID là ID của bình luận mà người dùng đang trả lời -->
-              <input type="number" id="parent_id" formControlName="parent_id" [value]="item.id" style="display: none;">
+              <input type="number" id="cmt_id" formControlName="cmt_id" [value]="item.id" style="display: none;">
               <textarea class="form-control" id="content" formControlName="content" rows="4"
                 placeholder="Viết 1 câu gì đó vào đây..." style="background: #fff;"></textarea>
             </form>
@@ -183,9 +183,10 @@
                   Trả lời lúc {{ reply.created_at | date: 'dd/MM/yyyy, h:mm a' }}
                 </p>
               </div>
+              <p class="mt-2 mb-3 pb-2">{{ reply.content }}</p>
             </div>
             <!-- Nội dung câu trả lời -->
-            <p class="mt-2 mb-3 pb-2" *ngFor="let reply of item.replies">{{ reply.content }}</p>
+
           </div>
         </div>
       </div>
