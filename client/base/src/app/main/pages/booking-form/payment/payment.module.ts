@@ -5,6 +5,8 @@ import { PaymentComponent } from './payment.component';
 import { PanelModule } from 'primeng/panel';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { BookingClientService } from 'src/app/main/services/bookingClient.service';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { DropdownModule } from 'primeng/dropdown';
 
 
 
@@ -13,7 +15,11 @@ import { BookingClientService } from 'src/app/main/services/bookingClient.servic
   imports: [
     CommonModule,
     PaymentRoutes,
-    PanelModule
+    PanelModule,
+    FormsModule,
+    ReactiveFormsModule,
+    DropdownModule,
+
   ],
   providers: [
     ConfirmationService,
