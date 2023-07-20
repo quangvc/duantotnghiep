@@ -80,14 +80,14 @@
           </div>
           <div class="form-group mt-4">
             <div class="col-md-6 col-sm-6 col-xs-12">
-              <button type="submit" class="btn btn-primary btn-submit-fix">Đặt Phòng</button>
+              <button class="btn btn-primary btn-submit-fix" (click)="paymentTransaction()">Đặt Phòng</button>
             </div>
           </div>
         </div>
       </div>
       <!--CREDIT CART PAYMENT END-->
     </div>
-    <div class="col bg-white rounded-4 p-0 border border-1 h-fit">
+    <div class="col bg-white rounded-4 p-0 border border-1 h-fit" *ngIf="paymentData">
       <!-- Thông tin đơn hàng -->
       <div class="d-flex flex-row p-3">
         <img src="./../../../assets/image/hotelvsg.svg" class="me-4 my-auto" alt="">
@@ -147,7 +147,7 @@
             <p class="gray-text">Tên khách hàng: </p>
           </div>
           <div class="col">
-            <p>Hêt cứu</p>
+            <p>{{ paymentData.guest_name }}</p>
           </div>
         </div>
         <div class="date-in-out row">
@@ -155,7 +155,7 @@
             <p class="gray-text">Email: </p>
           </div>
           <div class="col">
-            <p>hetcuu@gmail.com</p>
+            <p>{{ paymentData.guest_email }}</p>
           </div>
         </div>
         <div class="date-in-out row">
@@ -163,7 +163,7 @@
             <p class="gray-text">Số điện thoại: </p>
           </div>
           <div class="col">
-            <p>0374069452</p>
+            <p>{{ paymentData.guest_phone }}</p>
           </div>
         </div>
       </div>

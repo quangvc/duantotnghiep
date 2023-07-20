@@ -176,34 +176,38 @@
             <span class="p-inputgroup-addon">
               <i class="pi pi-search"></i>
             </span>
-            <input pInputText placeholder="Thành phố, khách sạn hoặc điểm đến" />
+            <input class="w-10 px-2" style="border: 1px solid #e9ecef;" pInputText placeholder="Thành phố, khách sạn hoặc điểm đến" />
           </div>
           <p-dropdown [options]="types" optionLabel="name" class="ml-4">
           </p-dropdown>
         </div>
         <!-- Start Thông tin -->
-        <a href="booking">
-          <div class="d-flex justify-content-between mt-4 bg-white border border-1 mb-3">
+
+          <div class="d-flex justify-content-between mt-4 bg-white border border-1 mb-3" *ngFor="let data of hotels">
             <div class="col p-0">
-              <img style="width: 100%;" src="./../../../assets/image/ks1.jpg" alt="">
+              <a href="/hotel/{{ data.id }}">
+                <img style="width: 100%;" src="./../../../assets/image/ks1.jpg" alt="">
+                <!-- <img style="width: 100%;" [src]="'http://127.0.0.1:8000/Images/'+data.image[0].path" alt=""> -->
+              </a>
             </div>
             <div class="col-6">
-              <h5><strong>Khách sạn Grand Vista Hanoi</strong></h5>
-              <h6><strong>Grand Vista Hanoi</strong></h6>
+              <a href="/hotel/{{ data.id }}">
+                <h5><strong>Khách sạn {{ data.hotel_name }}</strong></h5>
+              </a>
+
+              <h6><strong>{{ data.hotel_name }}</strong></h6>
               <div class="d-flex mb-2">
                 <small class="bg-primary text-white rounded-5 py-1 px-3"><strong>Hotel</strong>
                 </small>
                 <div class="ps-2">
-                  <small class="fa fa-star text-primary rating-star"></small>
-                  <small class="fa fa-star text-primary rating-star"></small>
-                  <small class="fa fa-star text-primary rating-star"></small>
-                  <small class="fa fa-star text-primary rating-star"></small>
-                  <small class="fa fa-star text-primary rating-star"></small>
+                  <form [formGroup]="formStar" >
+                    <p-rating class="my-auto" formControlName="value" [cancel]="false" [readonly]="true"></p-rating>
+                  </form>
                 </div>
               </div>
               <div class="mb-2">
                 <i class="fa fa-map-marker text-primary me-3"></i>
-                <span>Quận Ba Đình, Hà Nội.</span>
+                <span>{{ data.hotel_address }}</span>
               </div>
             </div>
             <div class="col" style="border-left: 1px solid rgb(191, 191, 191);">
@@ -211,207 +215,16 @@
                 <p style="color: #5bbbf7; font-size: 12px; font-weight: 500;">
                   Thanh toán khi nhận phòng
                 </p>
-                <p style="color: rgb(153, 153, 153); font-size: 12px; font-weight: 500; ">
+                <!-- <p style="color: rgb(153, 153, 153); font-size: 12px; font-weight: 500; ">
                   <s>
                     24.000.000 VND
                   </s>
-                </p>
+                </p> -->
                 <h6 class="text-primary fw-bold">18.720.000 VND</h6>
-                <button class="d-flex justify-content-between align-items-center" style="color: #11a2fc; border: none; background-color: white;">
-                  <span style="font-size: 12px; font-weight: 500; margin-right: 10px;">
-                    Giá cuối cùng
-                  </span>
-                  <i class="pi pi-angle-down"></i>
-                </button>
               </div>
 
             </div>
           </div>
-        </a>
-        <a href="booking">
-          <div class="d-flex justify-content-between mt-4 bg-white border border-1 mb-3">
-            <div class="col p-0">
-              <img style="width: 100%;" src="./../../../assets/image/ks1.jpg" alt="">
-            </div>
-            <div class="col-6">
-              <h5><strong>Khách sạn Grand Vista Hanoi</strong></h5>
-              <h6><strong>Grand Vista Hanoi</strong></h6>
-              <div class="d-flex mb-2">
-                <small class="bg-primary text-white rounded-5 py-1 px-3"><strong>Hotel</strong>
-                </small>
-                <div class="ps-2">
-                  <small class="fa fa-star text-primary rating-star"></small>
-                  <small class="fa fa-star text-primary rating-star"></small>
-                  <small class="fa fa-star text-primary rating-star"></small>
-                  <small class="fa fa-star text-primary rating-star"></small>
-                  <small class="fa fa-star text-primary rating-star"></small>
-                </div>
-              </div>
-              <div class="mb-2">
-                <i class="fa fa-map-marker text-primary me-3"></i>
-                <span>Quận Ba Đình, Hà Nội.</span>
-              </div>
-            </div>
-            <div class="col" style="border-left: 1px solid rgb(191, 191, 191);">
-              <div class="p-2 d-flex flex-column align-items-end">
-                <p style="color: #5bbbf7; font-size: 12px; font-weight: 500;">
-                  Thanh toán khi nhận phòng
-                </p>
-                <p style="color: rgb(153, 153, 153); font-size: 12px; font-weight: 500; ">
-                  <s>
-                    24.000.000 VND
-                  </s>
-                </p>
-                <h6 class="text-primary fw-bold">18.720.000 VND</h6>
-                <button class="d-flex justify-content-between align-items-center" style="color: #11a2fc; border: none; background-color: white;">
-                  <span style="font-size: 12px; font-weight: 500; margin-right: 10px;">
-                    Giá cuối cùng
-                  </span>
-                  <i class="pi pi-angle-down"></i>
-                </button>
-              </div>
-
-            </div>
-          </div>
-        </a>
-        <a href="booking">
-          <div class="d-flex justify-content-between mt-4 bg-white border border-1 mb-3">
-            <div class="col p-0">
-              <img style="width: 100%;" src="./../../../assets/image/ks1.jpg" alt="">
-            </div>
-            <div class="col-6">
-              <h5><strong>Khách sạn Grand Vista Hanoi</strong></h5>
-              <h6><strong>Grand Vista Hanoi</strong></h6>
-              <div class="d-flex mb-2">
-                <small class="bg-primary text-white rounded-5 py-1 px-3"><strong>Hotel</strong>
-                </small>
-                <div class="ps-2">
-                  <small class="fa fa-star text-primary rating-star"></small>
-                  <small class="fa fa-star text-primary rating-star"></small>
-                  <small class="fa fa-star text-primary rating-star"></small>
-                  <small class="fa fa-star text-primary rating-star"></small>
-                  <small class="fa fa-star text-primary rating-star"></small>
-                </div>
-              </div>
-              <div class="mb-2">
-                <i class="fa fa-map-marker text-primary me-3"></i>
-                <span>Quận Ba Đình, Hà Nội.</span>
-              </div>
-            </div>
-            <div class="col" style="border-left: 1px solid rgb(191, 191, 191);">
-              <div class="p-2 d-flex flex-column align-items-end">
-                <p style="color: #5bbbf7; font-size: 12px; font-weight: 500;">
-                  Thanh toán khi nhận phòng
-                </p>
-                <p style="color: rgb(153, 153, 153); font-size: 12px; font-weight: 500; ">
-                  <s>
-                    24.000.000 VND
-                  </s>
-                </p>
-                <h6 class="text-primary fw-bold">18.720.000 VND</h6>
-                <button class="d-flex justify-content-between align-items-center" style="color: #11a2fc; border: none; background-color: white;">
-                  <span style="font-size: 12px; font-weight: 500; margin-right: 10px;">
-                    Giá cuối cùng
-                  </span>
-                  <i class="pi pi-angle-down"></i>
-                </button>
-              </div>
-
-            </div>
-          </div>
-        </a>
-        <a href="booking">
-          <div class="d-flex justify-content-between mt-4 bg-white border border-1 mb-3">
-            <div class="col p-0">
-              <img style="width: 100%;" src="./../../../assets/image/ks1.jpg" alt="">
-            </div>
-            <div class="col-6">
-              <h5><strong>Khách sạn Grand Vista Hanoi</strong></h5>
-              <h6><strong>Grand Vista Hanoi</strong></h6>
-              <div class="d-flex mb-2">
-                <small class="bg-primary text-white rounded-5 py-1 px-3"><strong>Hotel</strong>
-                </small>
-                <div class="ps-2">
-                  <small class="fa fa-star text-primary rating-star"></small>
-                  <small class="fa fa-star text-primary rating-star"></small>
-                  <small class="fa fa-star text-primary rating-star"></small>
-                  <small class="fa fa-star text-primary rating-star"></small>
-                  <small class="fa fa-star text-primary rating-star"></small>
-                </div>
-              </div>
-              <div class="mb-2">
-                <i class="fa fa-map-marker text-primary me-3"></i>
-                <span>Quận Ba Đình, Hà Nội.</span>
-              </div>
-            </div>
-            <div class="col" style="border-left: 1px solid rgb(191, 191, 191);">
-              <div class="p-2 d-flex flex-column align-items-end">
-                <p style="color: #5bbbf7; font-size: 12px; font-weight: 500;">
-                  Thanh toán khi nhận phòng
-                </p>
-                <p style="color: rgb(153, 153, 153); font-size: 12px; font-weight: 500; ">
-                  <s>
-                    24.000.000 VND
-                  </s>
-                </p>
-                <h6 class="text-primary fw-bold">18.720.000 VND</h6>
-                <button class="d-flex justify-content-between align-items-center" style="color: #11a2fc; border: none; background-color: white;">
-                  <span style="font-size: 12px; font-weight: 500; margin-right: 10px;">
-                    Giá cuối cùng
-                  </span>
-                  <i class="pi pi-angle-down"></i>
-                </button>
-              </div>
-
-            </div>
-          </div>
-        </a>
-        <a href="booking">
-          <div class="d-flex justify-content-between mt-4 bg-white border border-1 mb-3">
-            <div class="col p-0">
-              <img style="width: 100%;" src="./../../../assets/image/ks1.jpg" alt="">
-            </div>
-            <div class="col-6">
-              <h5><strong>Khách sạn Grand Vista Hanoi</strong></h5>
-              <h6><strong>Grand Vista Hanoi</strong></h6>
-              <div class="d-flex mb-2">
-                <small class="bg-primary text-white rounded-5 py-1 px-3"><strong>Hotel</strong>
-                </small>
-                <div class="ps-2">
-                  <small class="fa fa-star text-primary rating-star"></small>
-                  <small class="fa fa-star text-primary rating-star"></small>
-                  <small class="fa fa-star text-primary rating-star"></small>
-                  <small class="fa fa-star text-primary rating-star"></small>
-                  <small class="fa fa-star text-primary rating-star"></small>
-                </div>
-              </div>
-              <div class="mb-2">
-                <i class="fa fa-map-marker text-primary me-3"></i>
-                <span>Quận Ba Đình, Hà Nội.</span>
-              </div>
-            </div>
-            <div class="col" style="border-left: 1px solid rgb(191, 191, 191);">
-              <div class="p-2 d-flex flex-column align-items-end">
-                <p style="color: #5bbbf7; font-size: 12px; font-weight: 500;">
-                  Thanh toán khi nhận phòng
-                </p>
-                <p style="color: rgb(153, 153, 153); font-size: 12px; font-weight: 500; ">
-                  <s>
-                    24.000.000 VND
-                  </s>
-                </p>
-                <h6 class="text-primary fw-bold">18.720.000 VND</h6>
-                <button class="d-flex justify-content-between align-items-center" style="color: #11a2fc; border: none; background-color: white;">
-                  <span style="font-size: 12px; font-weight: 500; margin-right: 10px;">
-                    Giá cuối cùng
-                  </span>
-                  <i class="pi pi-angle-down"></i>
-                </button>
-              </div>
-
-            </div>
-          </div>
-        </a>
         <!-- End Thông tin -->
 
         <!-- Phân trang start -->

@@ -102,6 +102,7 @@ export class HotelBookingRoomComponent implements OnInit {
         this.roomTypes = res;
         this.firstTable = false;
         this.dataTable = true;
+        this.resultArray = [];
       },
       error: (err) => {
         this.message.create(ERROR, err.message);

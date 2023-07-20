@@ -15,26 +15,22 @@
 <!-- Booking Start -->
 <div class="container-fluid booking pb-5 wow fadeIn">
   <div class="container">
-    <div class="bg-white shadow" style="padding: 35px;">
-      <div class="row g-2">
-        <div class="col-md-10">
-          <div class="row">
-            <div class="col">
-              <label for="date_in">Ngày nhập phòng</label>
-              <p-calendar class="w-100" [(ngModel)]="date_in" dateFormat="dd-mm-yy"></p-calendar>
-            </div>
-            <div class="col">
-              <label for="date_out">Ngày trả phòng</label>
-              <p-calendar class="w-100" [(ngModel)]="date_out" dateFormat="dd-mm-yy"></p-calendar>
-            </div>
-            <div class="col">
-              <label for="selectedRegion">Khu vực</label>
-              <p-dropdown [(ngModel)]="selectedRegion" [options]="lstRegions" optionLabel="name" placeholder="Chọn khu vực"></p-dropdown>
-            </div>
-          </div>
+    <div class="bg-white shadow px-3 py-1">
+      <div class="row">
+        <div class="col">
+          <label for="date_in">Ngày nhập phòng</label>
+          <p-calendar class="w-100" [(ngModel)]="date_in" [numberOfMonths]="2" dateFormat="dd-mm-yy" styleClass="prime-input-override"></p-calendar>
         </div>
-        <div class="col-md-2">
-          <a href="filter" class="btn btn-primary w-100">Submit</a>
+        <div class="col">
+          <label for="date_out">Ngày trả phòng</label>
+          <p-calendar class="w-100" [(ngModel)]="date_out" [numberOfMonths]="2" dateFormat="dd-mm-yy" styleClass="prime-input-override"></p-calendar>
+        </div>
+        <div class="col">
+          <label for="selectedRegion">Khu vực</label>
+          <p-dropdown [(ngModel)]="selectedRegion" [options]="lstRegions" optionLabel="name" placeholder="Chọn khu vực" styleClass="prime-input-override"></p-dropdown>
+        </div>
+        <div class="col-md-2 " style="margin-top: 35px;">
+          <a (click)="filterHotel()" class="btn btn-primary w-100">Submit</a>
         </div>
       </div>
     </div>

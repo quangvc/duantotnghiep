@@ -67,10 +67,13 @@ export class BookingComponent implements OnInit {
   totalAmount: any;
   hotel_Id: any;
   hotels: any[] = [];
-  hotel_name: any
+  hotel_name: any;
   hotelRoomTypeData: any[] = [];
   roomTypeData: any[] = [];
 
+
+  // Dữ liệu được trả lại sau khi thêm đơn
+  resData: any
 
   genders: SelectItem[] = [];
 
@@ -107,16 +110,18 @@ export class BookingComponent implements OnInit {
 
     // Lấy dữ liệu từ sessionStorage
     const resultArrayJson = sessionStorage.getItem('resultArray');
+    let resultArray: any[] = [];
+    if (resultArrayJson) {
+      resultArray = JSON.parse(resultArrayJson);
+    }
     const totalAmount = sessionStorage.getItem('totalAmount');
     const dateIn = sessionStorage.getItem('dateIn');
     const dateOut = sessionStorage.getItem('dateOut');
     const hotelId = sessionStorage.getItem('hotelId');
 
-    let resultArray: any[] = [];
+    this.hotel_Id = hotelId;
 
-    if (resultArrayJson) {
-      resultArray = JSON.parse(resultArrayJson);
-    }
+
 
     // Kiểm tra và sử dụng dữ liệu
     if (resultArray.length > 0 && totalAmount && dateIn && dateOut && hotelId) {
@@ -189,9 +194,12 @@ export class BookingComponent implements OnInit {
           let create = this.BookingClientService.createBooking(newData);
           await create.subscribe({
             next: (res) => {
-
+              sessionStorage.clear();
+              this.resData = res.data;
+              sessionStorage.setItem('hotel_Id', this.hotel_Id.toString());
+              sessionStorage.setItem('resData', JSON.stringify(this.resData));
+              sessionStorage.setItem('roomTypeArray', JSON.stringify(this.roomTypeData));
               this.message.create(SUCCESS, `Đăng ký thành công!`);
-              // sessionStorage.clear();
               window.location.href = 'booking/payment'
 
             },

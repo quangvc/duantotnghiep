@@ -20,13 +20,11 @@ export class HeaderComponent implements OnInit{
 
   ngOnInit() {
     this.checkLogin();
-    console.log(this.user);
 
   }
   checkLogin(){
     let userLogged:any = sessionStorage.getItem('user');
     let user = JSON.parse(userLogged);
-    console.log(user);
 
 
     if (user && user.role && user.role.length > 0) {

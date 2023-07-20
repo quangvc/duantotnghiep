@@ -70,12 +70,56 @@ export class BlogDetailComponent implements OnInit{
     });
   }
 
+  getComment(blog_id: any) {
+    let obs = this.CommentService.getCommentByBlog(blog_id).subscribe({
+      next: (res) => {
+        console.log(res.data);
+
+        this.comments = res.data.map((comment: any) => ({
+          ...comment,
+          isReplying: false,
+          replies: [] // Khởi tạo mảng chứa các câu trả lời cho mỗi bình luận
+        }));
+
+        // Lấy và lưu các câu trả lời cho mỗi bình luận
+        this.comments.forEach((comment: any) => {
+          this.CommentService.getReplyByComment(comment.id).subscribe({
+            next: (replyRes) => {
+              console.log(replyRes.data);
+              comment.replies = replyRes.data;
+            },
+            error: (err) => {
+              console.log('Đã xảy ra lỗi khi gọi API:', err);
+            }
+          });
+        });
+      },
+      error: (err) => {{
+        console.log('Đã xảy ra lỗi khi gọi API:', err);
+      }}
+    });
+    this.subscription.add(obs);
+  }
+
+  getReply(cmt_id: any) {
+    const cmtId = cmt_id
+      this.CommentService.getReplyByComment(cmtId).subscribe({
+
+        next: (res) => {
+          console.log(res.data);
+        },
+        error: (err) => {{
+          console.log('Đã xảy ra lỗi khi gọi API:', err);
+        }}
+      });;
+  }
 
 
   private formBuilderComment(){
     this.formComment = this.fb.group({
+      parent_id: [null],
       content: [null, Validators.required],
-      blog_id: this.blogId,
+      blog_id: [null, Validators.required],
     })
   }
 
@@ -96,24 +140,26 @@ export class BlogDetailComponent implements OnInit{
     }
   }
 
-
-  getComment(blog_id: any) {
-    let obs = this.CommentService.getCommentByBlog(blog_id).subscribe({
-      next: (res) => {
-        console.log(res.data);
-
-        this.comments = res.data.map((comment: any) => ({
-          ...comment,
-          isReplying: false
-        }));
-        console.log(res)
-      },
-      error: (err) => {{
-        console.log('Đã xảy ra lỗi khi gọi API:', err);
-      }}
-    })
-    this.subscription.add(obs);
+  addReply(cmt_id: any) {
+    debugger
+    console.log(cmt_id);
+    this.formComment.controls['parent_id'].setValue(cmt_id);
+    if(this.formComment.valid){
+      let create = this.CommentService.createReply(cmt_id, this.formComment.value);
+      create.subscribe({
+        next: (res) => {
+          console.log('Oke đã thêm reply:', res);
+          location.reload();
+        },
+        error: (err) => {
+          console.log('Đã xảy ra lỗi khi gọi API:', err);
+        }
+      })
+    }
   }
+
+
+
 
   checkComment() {
     this.isCommentsArrayEmpty = this.comments.length === 0 ? false : true;

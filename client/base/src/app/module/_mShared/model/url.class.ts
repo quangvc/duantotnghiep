@@ -7,6 +7,8 @@ export const REGIONS = "regions"
 export const REGION = "region"
 export const ROOM_TYPES = "room-types"
 export const ROOMS = "rooms"
+export const PAYMENT = "vnpay-payment"
+
 
 export const BOOKINGS = "bookings"
 
@@ -16,6 +18,8 @@ export const IMAGE = "image"
 export const COUPONS = "coupons"
 export const BLOGS = "blogs"
 export const COMMENTS = "comments"
+export const REPLY = "reply"
+
 export const FEEDBACK = "feedback"
 export const BANNERS = "banners"
 
