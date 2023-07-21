@@ -5,13 +5,14 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Booking;
 use App\Enums\BookingStatusEnum;
+use App\Notifications\ResetPasswordNotification;
 use Exception;
 
 class PaymentController extends Controller
 {
     public function vnpay_payment(Request $request) {
 
-        $vnp_Returnurl = "http://localhost:8000/payment-return"; //trang trả về sau khi thanh toán xong
+        $vnp_Returnurl = "http://localhost:4300/booking/payment-done"; //trang trả về sau khi thanh toán xong
         $vnp_TmnCode = "ENZCQ3F2";
         $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
 
@@ -26,6 +27,7 @@ class PaymentController extends Controller
         $vnp_IpAddr = $_SERVER['REMOTE_ADDR'];
         //Add Params of 2.0.1 Version
         //Billing
+
         // $vnp_TxnRef = 'HD8_83291499';
         // $vnp_OrderInfo = 'Thanh toan dat phong khach san. ID booking ';
         // $vnp_OrderType = 170003;
@@ -78,15 +80,17 @@ class PaymentController extends Controller
         $returnData = array('code' => '00'
             , 'message' => 'success'
             , 'data' => $vnp_Url);
-            if (isset($_POST['redirect'])) {
-                header('Location: ' . $vnp_Url);
-                die();
-            } else {
-                return response([
-                    "Error redirect"
-                ]);
-                // echo json_encode($returnData);
-            }
+
+        return $returnData;
+            // if (isset($_POST['redirect'])) {
+            //     header('Location: ' . $vnp_Url);
+            //     die();
+            // } else {
+            //     return response([
+            //         "Error redirect"
+            //     ]);
+            //     // echo json_encode($returnData);
+            // }
     }
 
     // public function paymentReturn (Request $request)
@@ -197,6 +201,7 @@ class PaymentController extends Controller
                             //Trả kết quả về cho VNPAY: Website/APP TMĐT ghi nhận yêu cầu thành công
                             $returnData['RspCode'] = '00';
                             $returnData['Message'] = 'Confirm Success';
+
                         } else {
                             $returnData['RspCode'] = '02';
                             $returnData['Message'] = 'Order already confirmed';
@@ -221,7 +226,11 @@ class PaymentController extends Controller
 
         //Trả lại VNPAY theo định dạng JSON
         // echo json_encode($returnData);
+        // return header('Location: https://www.facebook.com/');
+        // return view('welcome', $returnData);
         return response($returnData);
+
+
     }
 
 

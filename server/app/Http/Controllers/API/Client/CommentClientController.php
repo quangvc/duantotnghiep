@@ -16,10 +16,10 @@ class CommentClientController extends Controller
     //
     public function index($blog_id)
     {
-        $comment = Comment::where('blog_id', '=', $blog_id)->get();
+        $comment = Comment::where('blog_id', '=', $blog_id)->where('parent_id', null)->get();
         return CommentResource::collection($comment);
     }
-    
+
     public function store(CreateCommentRequest $request)
     {
         if(Auth::check()){
@@ -41,7 +41,7 @@ class CommentClientController extends Controller
         } else {
             return abort(401, 'Unauthorized. User is not logged in');
         }
-            
+
     }
 
     public function listReply($parent_id)
@@ -51,7 +51,7 @@ class CommentClientController extends Controller
             return CommentResource::collection($reply);
         }
         return MessageStatusAPI::notFound();
-    }    
+    }
 
     // public function update(CreateCommentRequest $request, $id)
     // {
@@ -64,12 +64,12 @@ class CommentClientController extends Controller
     //     return abort(403, 'Forbidden: You don’t have permission');
     // }
 
-            
+
     // public function destroy($id)
     // {
     //     $cmt = Comment::find($id);
     //     $role = auth()->user()->getRoleNames()->first();
-    //     if ($role == 'Admin' || auth()->user()->id == $cmt->blog->user_id || auth()->user()->id == $cmt->user_id) { 
+    //     if ($role == 'Admin' || auth()->user()->id == $cmt->blog->user_id || auth()->user()->id == $cmt->user_id) {
     //         $cmt->delete();
     //         return MessageStatusAPI::destroy();
     //     }

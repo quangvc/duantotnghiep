@@ -40,6 +40,9 @@ export class HotelClientService {
     return this.http.get<any>(url);
   }
 
-
+  findHotels(region_id:any, date_in: any, date_out: any): Observable<any>{
+    const url = `${this.API_URL}/${CLIENT}/${HOTELS}/get/${region_id}/${date_in}/${date_out}`;
+    return this.http.get<any>(url);
+  }
 
 }

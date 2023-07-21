@@ -28,6 +28,7 @@ import { NzStepsModule } from 'ng-zorro-antd/steps';
 import { StepEmailComponent } from './auth/login/component-step/step-email.component';
 import { StepCodeComponent } from './auth/login/component-step/step-code.component';
 import { StepPasswordComponent } from './auth/login/component-step/step-password.component';
+import { ResetPasswordComponent } from './auth/reset-password/reset-password.component';
 
 registerLocaleData(en);
 
@@ -40,6 +41,7 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     AppComponent,
     LoginComponent,
     RegisterComponent,
+    ResetPasswordComponent,
     ForgotPasswordComponent,
     //step
     StepEmailComponent,

@@ -13,8 +13,10 @@ import { RoomTypeImgComponent } from './room-type-img/room-type-img.component';
     SharedModule,
     QMenuModule,
     QImageModule,
-    RoomTypesRoutes,
   ],
-  declarations: [RoomTypesComponent, CreateUpdateRoomTypeComponent, RoomTypeImgComponent]
+  declarations: [RoomTypesComponent, CreateUpdateRoomTypeComponent, RoomTypeImgComponent],
+  exports: [
+    RoomTypesComponent
+  ],
 })
 export class RoomTypesModule { }

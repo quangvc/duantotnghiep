@@ -7,6 +7,9 @@
   "created_at": "Ngày tạo",
   "updated_at": "Ngày cập nhật",
 
+  "checkin": "Ngày vào",
+  "checkout": "Ngày ra",
+
   "button": {
     "add_new": "Thêm mới",
     "update": "Cập nhật",
@@ -21,9 +24,11 @@
     "name": "Họ tên",
     "username": "Tên người dùng",
     "password": "Mật khẩu",
+    "password_confirm": "Nhập lại mật khẩu",
     "email": "Địa chỉ Email",
     "forgot_pasword": "Quên mật khẩu",
-    "or_register_now": "Hoặc Đăng ký ngay !!"
+    "or_register_now": "Hoặc Đăng ký ngay !!",
+    "phone_number": "Số điện thoại"
   },
   "user": {
     "name": "Quản lý người dùng",

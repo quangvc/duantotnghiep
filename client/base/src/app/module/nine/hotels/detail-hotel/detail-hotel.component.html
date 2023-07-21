@@ -7,7 +7,10 @@
   <ng-container *nzModalContent>
 
     <nz-divider nzText="Loại phòng" nzOrientation="left"></nz-divider>
-    <nz-table #basicTable [nzData]="roomTypes">
+    <app-room-types
+      [idHotel]="idHotel"
+    ></app-room-types>
+    <!-- <nz-table #basicTable [nzData]="roomTypes">
       <thead>
         <tr>
           <th>#</th>
@@ -32,6 +35,6 @@
           <td>{{ data.description }}</td>
         </tr>
       </tbody>
-    </nz-table>
+    </nz-table> -->
   </ng-container>
 </nz-modal>

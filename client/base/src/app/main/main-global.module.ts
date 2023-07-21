@@ -18,7 +18,6 @@ import { BookingFormModule } from './pages/booking-form/booking-form.module';
     HttpClientModule,
     BrowserAnimationsModule,
     MainModule,
-    BookingFormModule,
     MainGlobalRoutes,
   ]
 })

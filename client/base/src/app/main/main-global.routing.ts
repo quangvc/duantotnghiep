@@ -13,8 +13,9 @@ const routes: Routes = [
     { path: 'blogs/:slug', loadChildren: () => import('./pages/blog/blog-detail/blog-detail.module').then(m => m.BlogDetailModule)},
     { path: 'hotels/region/:region_id', loadChildren: () => import('./pages/hotel/hotel.module').then(m => m.HotelModule)},
     { path: 'hotel/:id', loadChildren: () => import('./pages/hotel-detail/hotel-detail.module').then(m => m.HotelDetailModule)},
-    { path: 'filter', loadChildren: () => import('./pages/filter-page/filter-page.module').then(m => m.FilterPageModule)},
+    { path: 'hotels/get/:region_id/:checkin/:checkout', loadChildren: () => import('./pages/filter-page/filter-page.module').then(m => m.FilterPageModule)},
     { path: 'profile', loadChildren: () => import('./pages/profile/profile.module').then(m => m.ProfileModule)},
+    { path: 'filter-payment', loadChildren: () => import('./pages/booking-form/filter-payment/filter-payment.module').then(m => m.FilterPaymentModule)},
     {
       path: 'booking',
       redirectTo: 'booking/bookingform', // Chuyển hướng đến 'booking/review' khi người dùng truy cập '/booking'
@@ -23,7 +24,8 @@ const routes: Routes = [
     {path: 'booking', component: BookingFormComponent, children: [
       { path: 'review', loadChildren: () => import('./pages/booking-form/review/review.module').then(m => m.ReviewModule)},
       { path: 'bookingform', loadChildren: () => import('./pages/booking-form/booking/booking.module').then(m => m.BookingModule)},
-      { path: 'payment', loadChildren: () => import('./pages/booking-form/payment/payment.module').then(m => m.PaymentModule)}
+      { path: 'payment', loadChildren: () => import('./pages/booking-form/payment/payment.module').then(m => m.PaymentModule)},
+      { path: 'payment-done', loadChildren: () => import('./pages/booking-form/payment-done/payment-done.module').then(m => m.PaymentDoneModule)}
     ]},
 
   ]},

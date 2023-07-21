@@ -120,6 +120,10 @@ export class LoginComponent implements OnInit {
     this.displayForgotPassword = true;
   }
 
+  register(){
+    this.router.navigate(['/register']);
+  }
+
   emitEvent(event:any){
     this.displayForgotPassword = false;
   }

@@ -14,6 +14,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ToastModule } from 'primeng/toast';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { BookingClientService } from 'src/app/main/services/bookingClient.service';
+import { PaymentService } from 'src/app/main/services/payment.service';
 @NgModule({
   imports: [
     CommonModule,
@@ -35,7 +36,8 @@ import { BookingClientService } from 'src/app/main/services/bookingClient.servic
   providers: [
     ConfirmationService,
     MessageService,
-    BookingClientService
+    BookingClientService,
+    PaymentService
   ],
 })
 export class BookingModule { }

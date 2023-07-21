@@ -6,6 +6,7 @@ import { ERROR } from 'src/app/module/_mShared/model/url.class';
 import { Subscription } from 'rxjs';
 import { BlogClientService } from '../../services/blogClient.service';
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
+import * as moment from 'moment';
 
 interface Hotel {
   // ...
@@ -57,12 +58,13 @@ export class HomeComponent implements OnInit {
     this.getRegions();
     this.getBlogs();
     this.getHotels();
+
+
   }
 
   getRegions(){
     let obs = this.RegionsClientService.getRegions().subscribe({
       next: (res) => {
-        console.log(res.data)
         this.regions = res.data.slice(0, 3);
         this.lstRegions = res.data;
         // const limitedData = res.data.property.slice(0, 2);
@@ -79,7 +81,6 @@ export class HomeComponent implements OnInit {
   getHotels(){
     let obs = this.HotelClientService.getHotels().subscribe({
       next: (res) => {
-        console.log(res.data)
         this.hotels = res.data.slice(0, 6);
         this.starRating = res.data.star_rating;
       },
@@ -94,19 +95,50 @@ export class HomeComponent implements OnInit {
     hotel.star_rating = event.value;
   }
 
+  filterHotel() {
+    if (this.selectedRegion && this.date_in && this.date_out) {
+      this.date_in = moment(this.date_in)?.format('DD-MM-YYYY') || '';
+      this.date_out = moment(this.date_out)?.format('DD-MM-YYYY') || '';
+      this.selectedRegion = JSON.stringify(this.selectedRegion);
+      // Chuyển đổi chuỗi JSON thành đối tượng JavaScript
+      const selectedRegionObject = JSON.parse(this.selectedRegion);
 
+      // Truy cập vào thuộc tính id trong đối tượng
+      console.log(selectedRegionObject.id);
+      console.log(this.date_in);
+      console.log(this.date_out);
+      // Các giá trị cụ thể cho các tham số
+      const regionId = selectedRegionObject.id;
+      const checkinDate = this.date_in;
+      const checkoutDate = this.date_out;
+
+      // Xây dựng URL mới từ đoạn định dạng và các giá trị cụ thể
+      const baseUrl = 'hotels/get/';
+      const urlWithParams = `${baseUrl}${regionId}/${checkinDate}/${checkoutDate}`;
+
+      // Chuyển hướng trình duyệt đến URL mới
+      window.location.href = urlWithParams;
+
+    }
+  }
 
   getBlogs(){
     // let obs = this.BlogClientService.getBlogs().subscribe({
     let obs = this.BlogClientService.getBlogs().subscribe({
       next: (res) => {
         this.blogs = res.data;
-        console.log(res)
       },
       error: (err) => {{
         this.message.create(ERROR, err.message);
       }}
     })
     this.subscription.add(obs);
+  }
+
+  scrollToSection(sectionId: string) {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
   }
 }

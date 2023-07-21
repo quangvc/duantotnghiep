@@ -21,6 +21,7 @@
         </style>
     </head>
     <body class="antialiased">
+        {{request()->input('vnp_Amount')}}
         {{-- @if (session('success'))
             <div class="alert alert-success">
                 {{ session('success') }}

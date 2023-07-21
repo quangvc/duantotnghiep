@@ -14,7 +14,10 @@ export class DetailHotelComponent implements OnInit {
 
   constructor() { }
 
+  idHotel: any;
+
   ngOnInit() {
+    this.idHotel = this.hotelId;
   }
 
   handleCancel(){

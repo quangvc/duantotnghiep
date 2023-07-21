@@ -31,7 +31,7 @@
       </div>
     </div>
     <button nz-button class="login-form-button login-form-margin" [nzType]="'primary'">{{'auth.login' | translate}}</button>
-    <a>{{'auth.or_register_now' | translate}}</a>
+    <a (click)="register()">{{'auth.or_register_now' | translate}}</a>
   </form>
 </div>
 

@@ -1,10 +1,13 @@
+import { PaymentService } from './../../../services/payment.service';
 import { Component, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import * as moment from 'moment';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { BookingClientService } from 'src/app/main/services/bookingClient.service';
 import { HotelClientService } from 'src/app/main/services/hotelClient.service';
+import { ERROR, SUCCESS } from 'src/app/module/_mShared/model/url.class';
 
 @Component({
   selector: 'app-payment',
@@ -32,6 +35,20 @@ export class PaymentComponent implements OnInit {
 
   filteredBrands: any[] = [];
 
+  paymentData: any;
+  paymentForm: FormGroup;
+  banks: any[] = [
+    { label: 'Ngan hang NCB', value: 'NCB' },
+    { label: 'Ngan hang HDBank', value: 'HDBANK' },
+    { label: 'Ngan hang Dong A', value: 'DONGABANK' },
+    { label: 'Ngân hàng TPBank ', value: 'TPBANK' },
+    { label: 'Ngân hàng BIDV ', value: 'BIDV' },
+    { label: 'Ngân hàng Techcombank ', value: 'TECHCOMBANK' },
+    { label: 'Ngan hang VPBank ', value: 'VPBANK' },
+    { label: 'Ngan hang Agribank ', value: 'AGRIBANK' },
+    // Add more banks as needed
+  ];
+
 
 
 
@@ -41,41 +58,42 @@ export class PaymentComponent implements OnInit {
     private message: NzMessageService,
     private BookingClientService: BookingClientService,
     private HotelClientService: HotelClientService,
+    private PaymentService: PaymentService,
+    private fb: FormBuilder,
+    private route: Router
     ) {
 
   }
   ngOnInit() {
+    this.paymentForm = this.fb.group({
+      id: [null, Validators.required],
+      bank_code: ['', Validators.required],
+      // redirect: ''
+    });
 
     // Lấy dữ liệu từ sessionStorage
-    const resultArrayJson = sessionStorage.getItem('resultArray');
-    const totalAmount = sessionStorage.getItem('totalAmount');
-    const dateIn = sessionStorage.getItem('dateIn');
-    const dateOut = sessionStorage.getItem('dateOut');
-    const hotelId = sessionStorage.getItem('hotelId');
-
-    let resultArray: any[] = [];
-
-    if (resultArrayJson) {
-      resultArray = JSON.parse(resultArrayJson);
+    const resData = sessionStorage.getItem('resData');
+    const hotel_Id = sessionStorage.getItem('hotel_Id');
+    const roomTypeArrayJson = sessionStorage.getItem('roomTypeArray');
+    if (roomTypeArrayJson) {
+      this.roomTypeData = JSON.parse(roomTypeArrayJson);
     }
-
     // Kiểm tra và sử dụng dữ liệu
-    if (resultArray.length > 0 && totalAmount && dateIn && dateOut && hotelId) {
-      this.displayDateIn = moment(dateIn, 'DD-MM-YYYY').format('ddd, DD MMM YYYY');
-      this.displayDateOut = moment(dateOut, 'DD-MM-YYYY').format('ddd, DD MMM YYYY');
-      this.roomTypeData = resultArray;
-      this.totalAmount = totalAmount;
-      // Xóa dữ liệu từ sessionStorage sau khi đã sử dụng
-      // sessionStorage.removeItem('resultArray');
-      // sessionStorage.removeItem('totalAmount');
+    if (this.roomTypeData.length > 0 && resData && hotel_Id) {
+      var paymentObjData = JSON.parse(resData);
+      this.paymentData = paymentObjData;
+      this.paymentForm.controls['id'].setValue(paymentObjData.id);
+      this.displayDateIn = moment(this.paymentData.checkin_date).format('ddd, DD MMM YYYY');
+      this.displayDateOut = moment(this.paymentData.checkout_date).format('ddd, DD MMM YYYY');
+
     } else {
       // Hiển thị thông báo lỗi
       alert("Không có dữ liệu trong sessionStorage");
-
       // Chuyển về trang trước đó
       window.history.back();
     }
-    this.getHotel(hotelId);
+
+    this.getHotel(hotel_Id)
   }
 
   getHotel(id: any) { // Lấy giá trị ID từ URL
@@ -92,5 +110,32 @@ export class PaymentComponent implements OnInit {
           console.log('Đã xảy ra lỗi khi gọi API:', err);
         }}
       });
+  }
+  paymentTransaction() {
+
+  }
+
+  onSubmit() {
+    if (this.paymentForm.valid) {
+      const selectedBankValue = this.paymentForm.value.bank_code;
+      const bookingId = this.paymentForm.value.id;
+      // Do something with the selected bank value
+      console.log('Booking id: ', bookingId);
+      console.log('Selected Bank: ', selectedBankValue);
+      let create = this.PaymentService.createPayment(this.paymentForm.value);
+      create.subscribe({
+        next: (res) => {
+          console.log(res);
+
+          this.message.create(SUCCESS, `${res.message}`);
+          // this.route.navigateByUrl(res.data)
+          window.location.href = res.data
+        },
+        error: (err) => {
+          this.message.create(ERROR, `${err.error.message}`)
+          this.message.create(ERROR, `${err.message}`)
+        }
+      })
+    }
   }
 }

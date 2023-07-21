@@ -1,4 +1,5 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
 import { Subscription } from 'rxjs';
@@ -13,6 +14,8 @@ import { RoomTypeService } from 'src/app/module/_mShared/service/room_type.servi
 })
 export class RoomTypesComponent implements OnInit, OnDestroy {
 
+  @Input() idHotel: any;
+
   private subscription = new Subscription();
 
   displayCreateUpdateRoomType: boolean = false;
@@ -20,12 +23,16 @@ export class RoomTypesComponent implements OnInit, OnDestroy {
   constructor(
     private roomTypeService: RoomTypeService,
     private message: NzMessageService,
-    private modal: NzModalService
+    private modal: NzModalService,
+    private fb: FormBuilder
   ) { }
 
   confirmModal?: NzModalRef;
 
+  formFilter!: FormGroup;
+
   roomTypes:any[] = [];
+
   menus: MenuItem[] = [];
 
   roomTypeId: any;
@@ -33,7 +40,15 @@ export class RoomTypesComponent implements OnInit, OnDestroy {
   displayImage: boolean = false;
 
   ngOnInit() {
+    this.createFormFilter();
     this.getRoomTypes();
+  }
+
+  private createFormFilter(){
+    this.formFilter = this.fb.group({
+      checkin: [],
+      checkout: []
+    })
   }
 
   dropdownItemsButton(data:any){
@@ -64,7 +79,13 @@ export class RoomTypesComponent implements OnInit, OnDestroy {
     let obs = this.roomTypeService.getRoomTypes().subscribe({
       next: (res) => {
         this.roomTypes = res.data;
-        console.log(this.roomTypes)
+        if(this.idHotel){
+          this.roomTypes = this.roomTypes.filter(type => type.hotelId == this.idHotel);
+        }
+
+        // for (const item of this.roomTypes) {
+        //   // item.room_count = res.rooms_count;
+        // }
       },
       error: (err) => {
         this.message.create(ERROR, `${err.error.message}`)
@@ -116,6 +137,34 @@ export class RoomTypesComponent implements OnInit, OnDestroy {
     this.subscription.add(obs);
   }
 
+  kCheckin(event:any){
+    console.log(event.target.value)
+
+  }
+
+  kCheckout(event:any){
+    console.log(event.target.value)
+  }
+
+  submitCheck(){
+    let id = this.idHotel;
+    let checkin = this.formFilter.value.checkin;
+    let checkout = this.formFilter.value.checkout;
+
+    this.roomTypeService.filterRoomType(id,checkin,checkout).subscribe({
+      next: (res) => {
+        // this.roomTypes = res.room_type;
+        console.log(res)
+        // for (const item of this.roomTypes) {
+        //   item.room_count = res.rooms_count;
+        // }
+      },
+      error: (err) => {
+        this.message.create(ERROR, err.error.message);
+      }
+    })
+  }
+
   cancel(event:any){
     this.displayCreateUpdateRoomType = false;
     this.displayImage = false;
@@ -127,3 +176,7 @@ export class RoomTypesComponent implements OnInit, OnDestroy {
   }
 
 }
+
+// interface RoomTypeDto{
+
+// }

@@ -6,7 +6,7 @@ trait MessageStatusAPI
 {
     /**
      * Message Show
-     * 
+     *
      * @return string
      */
 
@@ -21,7 +21,7 @@ trait MessageStatusAPI
 
     /**
      * Message Store
-     * 
+     *
      * @return string
      */
     public static function store($data = null)
@@ -34,7 +34,7 @@ trait MessageStatusAPI
 
     /**
      * Message Update
-     * 
+     *
      * @return string
      */
     public static function update()

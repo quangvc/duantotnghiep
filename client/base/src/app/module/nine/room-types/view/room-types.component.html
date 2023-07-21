@@ -1,4 +1,31 @@
 <div class="mb-3">
+  <nz-card style="width:100%;">
+    <form [formGroup]="formFilter">
+      <div class="row">
+
+        <div class="col-6">
+          <div class="mb-3">
+            <label for="checkin" class="form-label">{{'checkin' | translate}}</label>
+            <input type="date" class="form-control" id="checkin" formControlName="checkin" (change)="kCheckin($event)">
+          </div>
+        </div>
+
+        <div class="col-6">
+          <div class="mb-3">
+            <label for="checkout" class="form-label">{{'checkout' | translate}}</label>
+            <input type="date" class="form-control" id="checkout" formControlName="checkout" (change)="kCheckout($event)">
+          </div>
+        </div>
+
+        <button class="btn btn-primary" (click)="submitCheck()">suubmit</button>
+
+      </div>
+    </form>
+
+  </nz-card>
+</div>
+
+<div class="mb-3">
   <button nz-button [nzSize]="'large'" nzType="primary" (click)="addRoomType()" >{{'button.add_new' | translate}}</button>
 </div>
 <nz-table #basicTable [nzData]="roomTypes">
