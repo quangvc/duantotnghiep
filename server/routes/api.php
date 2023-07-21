@@ -62,7 +62,9 @@ Route::middleware('auth:sanctum')->put('/change-password', [AuthController::clas
 
 Route::post('/vnpay-payment', [PaymentController::class, 'vnpay_payment']);
 
-Route::get('/get-keywords', [KeywordController::class, 'index']);
+Route::get('/keywords', [KeywordController::class, 'show']);
+Route::post('/keywords', [KeywordController::class, 'store']);
+Route::delete('/keywords', [KeywordController::class, 'destroy']);
 
 Route::group(['prefix' => 'admin'], function () {
     Route::group(['prefix' => 'users', 'controller' => UserController::class], function () {

@@ -180,8 +180,8 @@ class PaymentController extends Controller
                 //Giả sử: $order = mysqli_fetch_assoc($result);
 
 
-                // $booking = Booking::where('booking_number', $booking_number)->first();
-                $booking = Booking::find(8);
+                $booking = Booking::where('booking_number', $booking_number)->first();
+                // $booking = Booking::find(8);
 
                 if ($booking != NULL) {
                     if($booking->total_price == $vnp_Amount) //Kiểm tra số tiền thanh toán của giao dịch: giả sử số tiền kiểm tra là đúng. //$booking["Amount"] == $vnp_Amount
