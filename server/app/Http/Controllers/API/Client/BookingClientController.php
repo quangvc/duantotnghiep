@@ -19,8 +19,13 @@ class BookingClientController extends Controller
 {
     public function index($number_booking)
     {
-        $bookings = Booking::where('status', '=', '1')
-            ->where('booking_number', '=', $number_booking)
+        $bookings = Booking::where('booking_number', '=', $number_booking)
+            ->get();
+        return BookingResource::collection($bookings);
+    }
+    public function userBooking($id_user)
+    {
+        $bookings = Booking::where('user_id', '=', $id_user)
             ->get();
         return BookingResource::collection($bookings);
     }
@@ -80,7 +85,6 @@ class BookingClientController extends Controller
             if ($count_all_rooms - $count_booked_rooms < $item['quantity']) {
                 return 'room_type_id ' . $item['room_type_id'] . ' hết phòng';
             }
-
         }
         $booking = new Booking([
             'checkin_date' =>  $checkin_date,

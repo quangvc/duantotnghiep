@@ -33,7 +33,8 @@ use App\Http\Controllers\API\Client\UserClientController;
 use App\Http\Controllers\Api\Client\CommentClientController;
 use App\Http\Controllers\KeywordController;
 use App\Http\Controllers\PaymentController;
-
+use App\Notifications\SendMailPaymentNotification;
+use Illuminate\Support\Facades\Notification;
 
 /*
 |--------------------------------------------------------------------------
@@ -59,7 +60,9 @@ Route::post('/reset-password', [AuthController::class, 'updatepass'])->name('pas
 Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logout']);
 Route::middleware('auth:sanctum')->put('/change-password', [AuthController::class, 'changePassword']);
 
-
+Route::get('/test', function () {
+    Notification::route('mail', 'huyit0811@gmail.com')->notify(new SendMailPaymentNotification('123'));
+});
 Route::post('/vnpay-payment', [PaymentController::class, 'vnpay_payment']);
 
 Route::get('/get-keywords', [KeywordController::class, 'index']);
@@ -258,6 +261,7 @@ Route::group(['prefix' => 'client'], function () {
         ['prefix' => 'bookings', 'controller' => BookingClientController::class], // Thêm `prefix` để xác định endpoint chung của API
         function () {
             Route::get('/{booking_number}', 'index');
+            Route::get('/user/{id_user}', 'userBooking');
             Route::post('/', 'store');
         }
     );
