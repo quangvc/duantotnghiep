@@ -173,15 +173,17 @@
         <!-- Hiển thị các câu trả lời cho bình luận này -->
         <div class="mb-3 px-5" *ngIf="item.replies && item.replies.length > 0">
           <div class="d-flex flex-column">
-            <div class="d-flex flex-start align-items-center" *ngFor="let reply of item.replies">
+            <div *ngFor="let reply of item.replies">
               <!-- Avatar người dùng trả lời (thay thế bằng hình ảnh avatar người dùng thực) -->
-              <img class="rounded-circle shadow-1-strong me-3" src="./../../../../assets/image/avt1.jpg" alt="avatar"
+              <div class="d-flex flex-start align-items-center">
+                <img class="rounded-circle shadow-1-strong me-3" src="./../../../../assets/image/avt1.jpg" alt="avatar"
                 width="60" height="60" />
               <div class="me-3">
                 <h6 class="fw-bold text-primary mb-1">{{ reply.user }}</h6>
                 <p class="text-muted small mb-0">
                   Trả lời lúc {{ reply.created_at | date: 'dd/MM/yyyy, h:mm a' }}
                 </p>
+              </div>
               </div>
               <p class="mt-2 mb-3 pb-2">{{ reply.content }}</p>
             </div>

@@ -5,13 +5,14 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Booking;
 use App\Enums\BookingStatusEnum;
+use App\Notifications\ResetPasswordNotification;
 use Exception;
 
 class PaymentController extends Controller
 {
     public function vnpay_payment(Request $request) {
 
-        $vnp_Returnurl = "http://localhost:4300/payment-return"; //trang trả về sau khi thanh toán xong
+        $vnp_Returnurl = "http://localhost:4300/booking/payment-done"; //trang trả về sau khi thanh toán xong
         $vnp_TmnCode = "ENZCQ3F2";
         $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
 
