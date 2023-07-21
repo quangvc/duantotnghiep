@@ -51,12 +51,8 @@ export class BookingFormComponent implements OnInit {
         routerLink: 'payment'
       },
       {
-        label: 'Xử lý',
-        routerLink: 'confirmation'
-      },
-      {
-        label: 'Gửi phiếu thanh toán',
-        routerLink: 'bill'
+        label: 'Thanh toán thành công',
+        routerLink: 'payment-done'
       }
     ];
 
