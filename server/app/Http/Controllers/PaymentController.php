@@ -5,12 +5,14 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Booking;
 use App\Enums\BookingStatusEnum;
-use App\Notifications\ResetPasswordNotification;
 use Exception;
+use Illuminate\Support\Facades\Notification;
+use App\Notifications\SendMailPaymentNotification;
 
 class PaymentController extends Controller
 {
-    public function vnpay_payment(Request $request) {
+    public function vnpay_payment(Request $request)
+    {
 
         $vnp_Returnurl = "http://localhost:4300/booking/payment-done"; //trang trả về sau khi thanh toán xong
         $vnp_TmnCode = "ENZCQ3F2";
@@ -19,7 +21,7 @@ class PaymentController extends Controller
         $booking = Booking::find($request->id);
 
         $vnp_TxnRef = $booking->booking_number; //Mã đơn hàng. Trong thực tế Merchant cần insert đơn hàng vào DB và gửi mã này sang VNPAY
-        $vnp_OrderInfo = 'Thanh toan dat phong khach san. ID booking '.$booking->booking_number;
+        $vnp_OrderInfo = 'Thanh toan dat phong khach san. ID booking ' . $booking->booking_number;
         $vnp_OrderType = 170003;
         $vnp_Amount = $booking->total_price * 100;
         $vnp_Locale = 'vn';
@@ -77,20 +79,20 @@ class PaymentController extends Controller
             $vnpSecureHash =   hash_hmac('sha512', $hashdata, env('VNP_HASHSECRET'));
             $vnp_Url .= 'vnp_SecureHash=' . $vnpSecureHash;
         }
-        $returnData = array('code' => '00'
-            , 'message' => 'success'
-            , 'data' => $vnp_Url);
+        $returnData = array(
+            'code' => '00', 'message' => 'success', 'data' => $vnp_Url
+        );
 
         return $returnData;
-            // if (isset($_POST['redirect'])) {
-            //     header('Location: ' . $vnp_Url);
-            //     die();
-            // } else {
-            //     return response([
-            //         "Error redirect"
-            //     ]);
-            //     // echo json_encode($returnData);
-            // }
+        // if (isset($_POST['redirect'])) {
+        //     header('Location: ' . $vnp_Url);
+        //     die();
+        // } else {
+        //     return response([
+        //         "Error redirect"
+        //     ]);
+        //     // echo json_encode($returnData);
+        // }
     }
 
     // public function paymentReturn (Request $request)
@@ -142,7 +144,8 @@ class PaymentController extends Controller
     // }
 
 
-    public function paymentReturn (Request $request) {
+    public function paymentReturn(Request $request)
+    {
 
         $inputData = $request->toArray();
         $returnData = array();
@@ -170,7 +173,7 @@ class PaymentController extends Controller
         $secureHash = hash_hmac('sha512', $hashData, env('VNP_HASHSECRET'));
         $vnpTranId = $inputData['vnp_TransactionNo']; //Mã giao dịch tại VNPAY
         $vnp_BankCode = $inputData['vnp_BankCode']; //Ngân hàng thanh toán
-        $vnp_Amount = $inputData['vnp_Amount']/100; // Số tiền thanh toán VNPAY phản hồi
+        $vnp_Amount = $inputData['vnp_Amount'] / 100; // Số tiền thanh toán VNPAY phản hồi
 
         $Status = 0; // Là trạng thái thanh toán của giao dịch chưa có IPN lưu tại hệ thống của merchant chiều khởi tạo URL thanh toán.
         $booking_number = $inputData['vnp_TxnRef'];
@@ -188,7 +191,7 @@ class PaymentController extends Controller
                 // $booking = Booking::find(8);
 
                 if ($booking != NULL) {
-                    if($booking->total_price == $vnp_Amount) //Kiểm tra số tiền thanh toán của giao dịch: giả sử số tiền kiểm tra là đúng. //$booking["Amount"] == $vnp_Amount
+                    if ($booking->total_price == $vnp_Amount) //Kiểm tra số tiền thanh toán của giao dịch: giả sử số tiền kiểm tra là đúng. //$booking["Amount"] == $vnp_Amount
                     {
                         if ($booking->status !== NULL && $booking->status == 0) {
                             if ($inputData['vnp_ResponseCode'] == '00' || $inputData['vnp_TransactionStatus'] == '00') {
@@ -196,18 +199,17 @@ class PaymentController extends Controller
                                 $booking->update([
                                     'status' => BookingStatusEnum::RESERVED
                                 ]);
+                                Notification::route('mail', $booking->guest_email)->notify(new SendMailPaymentNotification($booking->booking_number));
                             }
 
                             //Trả kết quả về cho VNPAY: Website/APP TMĐT ghi nhận yêu cầu thành công
                             $returnData['RspCode'] = '00';
                             $returnData['Message'] = 'Confirm Success';
-
                         } else {
                             $returnData['RspCode'] = '02';
                             $returnData['Message'] = 'Order already confirmed';
                         }
-                    }
-                    else {
+                    } else {
                         $returnData['RspCode'] = '04';
                         $returnData['Message'] = 'invalid amount';
                     }
@@ -223,16 +225,10 @@ class PaymentController extends Controller
             $returnData['RspCode'] = '99';
             $returnData['Message'] = 'Unknow error';
         }
-
         //Trả lại VNPAY theo định dạng JSON
         // echo json_encode($returnData);
         // return header('Location: https://www.facebook.com/');
         // return view('welcome', $returnData);
         return response($returnData);
-
-
     }
-
-
-
 }
