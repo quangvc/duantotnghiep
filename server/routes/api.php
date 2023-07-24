@@ -94,6 +94,7 @@ Route::group(['prefix' => 'admin'], function () {
             Route::post('/', 'store')->middleware('permission:add_room');
             Route::put('/changeStatus/{id}', 'changeStatus')->middleware('permission:changeStatus_room');
             Route::get('/{id}', 'show')->middleware('permission:show_room');
+            Route::get('/get/{hotel_id}/{checkin}/{checkout}', 'getRoomtype');
             Route::put('/{id}', 'update')->middleware('permission:edit_room');
             Route::delete('/{id}', 'destroy')->middleware('permission:delete_room');
         }
@@ -300,6 +301,7 @@ Route::group(['prefix' => 'client'], function () {
         function () {
             Route::get('/', 'index');
             Route::get('/{id}', 'show');
+            Route::get('/check/{id}', 'checkQuantity');
         }
     );
 });
