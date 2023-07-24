@@ -30,6 +30,8 @@ export class PaymentComponent implements OnInit {
   hotel_name: any
   hotelRoomTypeData: any[] = [];
   roomTypeData: any[] = [];
+  CouponId: any
+  discountAmount: any
 
   description: string = '';
 
@@ -74,6 +76,9 @@ export class PaymentComponent implements OnInit {
     // Lấy dữ liệu từ sessionStorage
     const resData = sessionStorage.getItem('resData');
     const hotel_Id = sessionStorage.getItem('hotel_Id');
+    const totalAmount = sessionStorage.getItem('totalAmount');
+    const CouponId = sessionStorage.getItem('CouponId');
+    const discountAmount = sessionStorage.getItem('discountAmount');
     const roomTypeArrayJson = sessionStorage.getItem('roomTypeArray');
     if (roomTypeArrayJson) {
       this.roomTypeData = JSON.parse(roomTypeArrayJson);
@@ -85,6 +90,9 @@ export class PaymentComponent implements OnInit {
       this.paymentForm.controls['id'].setValue(paymentObjData.id);
       this.displayDateIn = moment(this.paymentData.checkin_date).format('ddd, DD MMM YYYY');
       this.displayDateOut = moment(this.paymentData.checkout_date).format('ddd, DD MMM YYYY');
+      this.totalAmount = totalAmount;
+      this.CouponId = CouponId;
+      this.discountAmount = discountAmount;
 
     } else {
       // Hiển thị thông báo lỗi

@@ -1,1 +1,68 @@
-<p>filter-payment works!</p>
+<div class="text-center my-5">
+  <h1 class="text-uppercase">Tìm kiếm đơn đặt phòng của bạn ở đây</h1>
+  <span class="w-100 ">
+    <!-- <i class="pi pi-search"></i> -->
+    <input class=" py-2 px-4 border border-1 rounded-5" style="width: 75%;" type="text" [(ngModel)]="searchCode"
+      placeholder="Điền mã đơn của bạn vào đây VD: HD35_47466892" />
+  </span>
+  <button class="py-2 px-4 bg-primary rounded-5 border-0 fw-bold" (click)="onSearch()">Tìm</button>
+
+  <!-- <div *ngIf="showTable" class="my-4">
+    <p-table [value]="data" [columns]="cols" *ngIf="data && data.length > 0">
+      <ng-template pTemplate="header" let-columns>
+        <tr>
+          <th *ngFor="let col of columns">
+            {{ col.header }}
+          </th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-rowData let-columns="columns">
+        <tr>
+          <td *ngFor="let col of columns">{{ rowData[col.field] }}</td>
+        </tr>
+      </ng-template>
+    </p-table>
+    <div *ngIf="data && data.length === 0">
+      Mã đơn sai hoặc không tồn tại, thử nhập lại hoặc liên hệ tới khách sạn bạn đặt phòng!
+    </div>
+  </div> -->
+
+  <div *ngIf="showTable" class="my-4">
+    <p-table [value]="data" [lazy]="true" [loading]="loading" (onLazyLoad)="loadCustomers($event)" [tableStyle]="{ 'min-width': '50rem' }">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Mã đơn</th>
+          <th>Ngày đặt</th>
+          <th>Check in</th>
+          <th>Check out</th>
+          <th>Số lượng người</th>
+          <th>Mã giảm giá</th>
+          <th>Tên khách</th>
+          <th>Email khách</th>
+          <th>SĐT khách</th>
+          <th>Tổng giá</th>
+          <th>Trạng thái</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-data>
+        <tr>
+          <td>{{ data.booking_number }}</td>
+          <td>{{ bookingDate }}</td>
+          <td>{{ data.checkin_date }}</td>
+          <td>{{ data.checkout_date }}</td>
+          <td>{{ data.people_quantity }}</td>
+          <td>{{ data.coupon }}</td>
+          <td>{{ data.guest_name }}</td>
+          <td>{{ data.guest_email }}</td>
+          <td>{{ data.guest_phone }}</td>
+          <td>{{ data.total_price }}</td>
+          <td>{{ statusText }}</td>
+          <!-- <td>{{ data.status }}</td> -->
+        </tr>
+      </ng-template>
+    </p-table>
+    <div *ngIf="data && data.length === 0">
+      Mã đơn sai hoặc không tồn tại, thử nhập lại hoặc liên hệ tới khách sạn bạn đặt phòng!
+    </div>
+  </div>
+</div>

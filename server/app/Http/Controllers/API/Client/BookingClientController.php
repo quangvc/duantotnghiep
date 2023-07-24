@@ -45,7 +45,7 @@ class BookingClientController extends Controller
             $guest_name =  $validated['guest_name'];
             $guest_email =  $validated['guest_email'];
             $guest_phone =  $validated['guest_phone'];
-            $user_id =  null;
+            $user_id =  $validated['user_id'];
         }
         // return $request->query('people_quantity');
         $checkin_date = Carbon::parse($validated['checkin_date']);
