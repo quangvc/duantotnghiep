@@ -68,7 +68,7 @@
                   <div class="bg-white rounded-4 p-3">
                     <div class="d-flex flex-row justify-content-between mb-3">
                       <p class="my-auto" style="font-size: 14px; font-weight: 500;">Thành tiền</p>
-                      <h5 class="fw-bold text-primary">{{ totalAmount | currency: 'VND' }} VND</h5>
+                      <h5 class="fw-bold text-primary">{{ currentTotalAmount | currency: 'VND' }} VND</h5>
                     </div>
                     <div class="blue-text d-flex flex-row">
                       <i class="fa fa-exclamation-circle me-3 fs-3" aria-hidden="true"></i>
@@ -88,7 +88,7 @@
                   <hr>
                   <div class="d-flex flex-row justify-content-between mb-3">
                     <h5 class="">Tổng tất cả: </h5>
-                    <h5 class="fw-bold text-primary">{{ totalAmount | currency: 'VND' }} VND</h5>
+                    <h5 class="fw-bold text-primary">{{ currentTotalAmount | currency: 'VND' }} VND</h5>
                   </div>
 
                 </ng-template>
@@ -186,13 +186,13 @@
                 </div>
               </div>
             </div>
-            <div *ngIf="totalAmount && selectedCoupon">
+            <div *ngIf="currentTotalAmount && selectedCoupon">
               <div class="date-in-out row">
                 <div class="col">
                   <p class="gray-text">Tổng giá trị sau giảm giá:</p>
                 </div>
                 <div class="col">
-                  <p>{{ totalAmount | currency: 'VND' }}</p>
+                  <p>{{ currentTotalAmount | currency: 'VND' }}</p>
                 </div>
               </div>
             </div>
