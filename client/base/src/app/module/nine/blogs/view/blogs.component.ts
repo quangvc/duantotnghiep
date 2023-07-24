@@ -130,7 +130,7 @@ export class BlogsComponent implements OnInit {
 
   confirmChangeStatus(event:any, data:any){
 
-    if(Auth.User('role') == 'client')
+    if(Auth.User('role') != 'client')
     this.confirmModal = this.modal.confirm({
       nzTitle: `Xác thực sự kiện !!`,
       nzContent: 'Xác nhận thay đổi trạng thái ?',
