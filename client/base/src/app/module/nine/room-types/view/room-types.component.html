@@ -29,7 +29,7 @@
   <button nz-button [nzSize]="'large'" nzType="primary" (click)="addRoomType()" >{{'button.add_new' | translate}}</button>
 </div>
 
-<div class="row">
+<!-- <div class="row">
   <ng-container *ngFor="let item of roomTypes">
     <div class="col-md-2">
       <div class="item">
@@ -46,9 +46,9 @@
       </div>
     </div>
   </ng-container>
-</div>
+</div> -->
 
-<!-- <nz-table #basicTable [nzData]="roomTypes">
+<nz-table #basicTable [nzData]="roomTypes">
   <thead>
     <tr>
       <th>#</th>
@@ -80,7 +80,7 @@
       </td>
     </tr>
   </tbody>
-</nz-table> -->
+</nz-table>
 
 <create-update-room-type
   *ngIf="displayCreateUpdateRoomType"
