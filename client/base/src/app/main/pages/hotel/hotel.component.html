@@ -1,0 +1,191 @@
+<!-- Page Header Start -->
+<div class="container-fluid page-header mb-5 p-0" style="background-image: url(../../../assets/image/carousel-1.jpg);">
+  <div class="container-fluid page-header-inner py-5">
+    <div class="container text-center pb-5">
+      <h1 class="display-3 text-white mb-3 animated slideInDown">Hotels</h1>
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb justify-content-center text-uppercase">
+          <li class="breadcrumb-item"><a href="#">Home</a></li>
+          <li class="breadcrumb-item"><a href="#">Pages</a></li>
+          <li class="breadcrumb-item text-white active" aria-current="page">Hotels</li>
+        </ol>
+      </nav>
+    </div>
+  </div>
+</div>
+<!-- Page Header End -->
+
+
+<!-- Booking Start -->
+<div class="container-fluid booking pb-5 wow fadeIn" data-wow-delay="0.1s">
+  <div class="container">
+    <div class="bg-white shadow" style="padding: 35px;">
+      <div class="row g-2">
+        <div class="col-md-10">
+          <div class="row g-2">
+            <div class="col-md-3">
+              <div class="date" id="date1" data-target-input="nearest">
+                <input type="text" class="form-control datetimepicker-input" placeholder="Check in" data-target="#date1"
+                  data-toggle="datetimepicker" />
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="date" id="date2" data-target-input="nearest">
+                <input type="text" class="form-control datetimepicker-input" placeholder="Check out"
+                  data-target="#date2" data-toggle="datetimepicker" />
+              </div>
+            </div>
+            <div class="col-md-3">
+              <select class="form-select">
+                <option selected>Adult</option>
+                <option value="1">Adult 1</option>
+                <option value="2">Adult 2</option>
+                <option value="3">Adult 3</option>
+              </select>
+            </div>
+            <div class="col-md-3">
+              <select class="form-select">
+                <option selected>Child</option>
+                <option value="1">Child 1</option>
+                <option value="2">Child 2</option>
+                <option value="3">Child 3</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-2">
+          <a href="filter" class="btn btn-primary w-100">Submit</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Booking End -->
+
+
+
+<!-- Room Start -->
+<div class="container-xxl py-5">
+  <div class="container">
+    <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
+      <!-- <h6 class="section-title text-center text-primary text-uppercase">Our Hotels</h6> -->
+
+        <h1 class="mb-4"><strong>Khám phá các <span class="text-primary text-uppercase">Khác sạn của chúng tôi</span></strong></h1>
+
+    </div>
+    <div class="row mt-5">
+      <div class="col-lg-4 wow fadeInUp" data-wow-delay="0.1s">
+        <div class="room-item shadow rounded-3 overflow-hidden p-2 ">
+          <div class="hotel-city">
+            <div class="hotel-district-title">
+              <h6><strong>Khách sạn ở các thành phố nổi tiếng</strong></h6>
+            </div>
+            <div *ngFor="let region of regions;">
+              <div class="hotel-district-item">
+                <a href="hotels/region/{{ region.id }}" class=""><strong>{{ region.name }}</strong> </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg wow fadeInUp" data-wow-delay="0.3s">
+        <h2><strong>Các khách sạn được yêu thích ở  {{ regionName ? regionName : 'Khu vực' }}</strong></h2>
+        <div class="room-item shadow rounded-4 overflow-hidden mb-3" *ngFor="let data of hotels;">
+          <div class="position-relative w-100" >
+            <div class="row">
+              <div class="col p-0" *ngFor="let image of data.images; let i=index">
+                <img style="width: 100%;" [src]="'http://127.0.0.1:8000/Images/'+image.path" alt="" *ngIf="i<3">
+              </div>
+
+            </div>
+            <small
+              class="position-absolute start-0 top-100 translate-middle-y bg-primary text-white rounded py-1 px-3 ms-4">Hotel</small>
+          </div>
+          <div class="p-4 mt-2">
+            <div class="d-flex justify-content-between mb-3">
+              <h5 class="mb-0">{{ data.hotel_name }}</h5>
+              <div class="flex justify-content-center">
+                <form [formGroup]="formStar">
+                    <p-rating formControlName="value" [cancel]="false" [readonly]="true"></p-rating>
+                </form>
+              </div>
+            </div>
+            <div class="d-flex mb-3">
+              <i class="fa fa-map-marker text-primary mt-1 me-3"></i>
+              <p class="text-body mb-3">{{ data.hotel_address }}</p>
+            </div>
+            <!-- <line-clamp [row]="3">
+              <div #content>
+                <p class="text-body mb-3">{{ data.description }}.</p>
+              </div>
+            </line-clamp> -->
+            <div class="d-flex justify-content-between">
+              <a class="btn btn-sm btn-primary rounded py-2 px-4" href="/hotel/{{ data.id }}">View Detail</a>
+            </div>
+          </div>
+        </div>
+
+
+
+
+        <!-- <div class="room-item shadow rounded-4 overflow-hidden mb-3">
+          <div class="position-relative">
+            <img class="img-fluid" src="../../../assets/image/room-2.jpg" alt="">
+            <small
+              class="position-absolute start-0 top-100 translate-middle-y bg-primary text-white rounded py-1 px-3 ms-4">Hotel</small>
+          </div>
+          <div class="p-4 mt-2">
+            <div class="d-flex justify-content-between mb-3">
+              <h5 class="mb-0">Executive Suite</h5>
+              <div class="ps-2">
+                <small class="fa fa-star text-primary"></small>
+                <small class="fa fa-star text-primary"></small>
+                <small class="fa fa-star text-primary"></small>
+                <small class="fa fa-star text-primary"></small>
+                <small class="fa fa-star text-primary"></small>
+              </div>
+            </div>
+            <div class="d-flex mb-3">
+              <i class="fa fa-map-marker text-primary mt-1 me-3"></i>
+              <p class="text-body mb-3">Phường Trung Hòa, Cau Giay District</p>
+            </div>
+            <p class="text-body mb-3">Erat ipsum justo amet duo et elitr dolor, est duo duo eos lorem sed diam stet diam
+              sed stet lorem.</p>
+            <div class="d-flex justify-content-between">
+              <a class="btn btn-sm btn-primary rounded py-2 px-4" href="/detail">View Detail</a>
+            </div>
+          </div>
+        </div>
+        <div class="room-item shadow rounded-4 overflow-hidden mb-3">
+          <div class="position-relative">
+            <img class="img-fluid" src="../../../assets/image/room-2.jpg" alt="">
+            <small
+              class="position-absolute start-0 top-100 translate-middle-y bg-primary text-white rounded py-1 px-3 ms-4">Hotel</small>
+          </div>
+          <div class="p-4 mt-2">
+            <div class="d-flex justify-content-between mb-3">
+              <h5 class="mb-0">Executive Suite</h5>
+              <div class="ps-2">
+                <small class="fa fa-star text-primary"></small>
+                <small class="fa fa-star text-primary"></small>
+                <small class="fa fa-star text-primary"></small>
+                <small class="fa fa-star text-primary"></small>
+                <small class="fa fa-star text-primary"></small>
+              </div>
+            </div>
+            <div class="d-flex mb-3">
+              <i class="fa fa-map-marker text-primary mt-1 me-3"></i>
+              <p class="text-body mb-3">Phường Trung Hòa, Cau Giay District</p>
+            </div>
+            <p class="text-body mb-3">Erat ipsum justo amet duo et elitr dolor, est duo duo eos lorem sed diam stet diam
+              sed stet lorem.</p>
+            <div class="d-flex justify-content-between">
+              <a class="btn btn-sm btn-primary rounded py-2 px-4" href="/detail">View Detail</a>
+            </div>
+          </div>
+        </div> -->
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Room End -->

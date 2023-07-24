@@ -16,10 +16,11 @@ class CommentResource extends JsonResource
     {
         return[
             'id' => $this->id,
-            'user_id' => $this->user_id,
+            'user' => $this->user->name,
             'parent_id' => $this->parent_id,
-            'blog_id' => $this->blog_id,
+            'blog' => $this->blog->title,
             'content' => $this->content,
+            'created_at' => $this->created_at
         ];
     }
 }

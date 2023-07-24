@@ -1,4 +1,31 @@
 <div class="mb-3">
+  <nz-card style="width:100%;">
+    <form [formGroup]="formFilter">
+      <div class="row">
+
+        <div class="col-6">
+          <div class="mb-3">
+            <label for="checkin" class="form-label">{{'checkin' | translate}}</label>
+            <input type="date" class="form-control" id="checkin" formControlName="checkin" (change)="kCheckin($event)">
+          </div>
+        </div>
+
+        <div class="col-6">
+          <div class="mb-3">
+            <label for="checkout" class="form-label">{{'checkout' | translate}}</label>
+            <input type="date" class="form-control" id="checkout" formControlName="checkout" (change)="kCheckout($event)">
+          </div>
+        </div>
+
+        <button class="btn btn-primary" (click)="submitCheck()">suubmit</button>
+
+      </div>
+    </form>
+
+  </nz-card>
+</div>
+
+<div class="mb-3">
   <button nz-button [nzSize]="'large'" nzType="primary" (click)="addRoomType()" >{{'button.add_new' | translate}}</button>
 </div>
 <nz-table #basicTable [nzData]="roomTypes">
@@ -10,6 +37,7 @@
       <th>{{'room_type.name' | translate}}</th>
       <th>{{'room_type.price_per_night' | translate}}</th>
       <th>{{'room_type.capacity' | translate}}</th>
+      <th>{{'room.quantity' | translate}}</th>
       <th>{{'description' | translate}}</th>
       <th>{{'action' | translate}}</th>
     </tr>
@@ -22,6 +50,7 @@
       <td>{{ data.name }}</td>
       <td>{{ data.price_per_night | currency: 'VND' }}</td>
       <td>{{ data.capacity }}</td>
+      <td>{{ data.room.length }}</td>
       <td>{{ data.description }}</td>
       <td>
         <q-menu
@@ -39,3 +68,11 @@
   [roomTypeId]="roomTypeId"
   (closeModal)="cancel($event)">
 </create-update-room-type>
+
+<room-type-img
+  *ngIf="displayImage"
+  [displayImage]="displayImage"
+  [roomTypeId]="roomTypeId"
+  (closeModal)="cancel($event)"
+></room-type-img>
+

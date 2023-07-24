@@ -1,1 +1,9 @@
 <span class="errMsg" *ngIf="profileForm.get(key)!.touched && profileForm.get(key)!.errors?.[check]" >{{msg}}</span>
+
+<!-- <ng-container *ngIf="entityControl.invalid && entityControl.dirty">
+  <ng-container *ngFor="let validation of validationMessages">
+    <span class="errMsg" *ngIf="entityControl.errors" >
+      {{ keyTranslate | translate }} {{ validation.message | translate: validation.translateParams }}
+    </span>
+  </ng-container>
+</ng-container> -->

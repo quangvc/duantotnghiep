@@ -43,7 +43,12 @@ return [
         'api' => [
             'driver' => 'sanctum',
             'provider' => 'users',
-
+        ],
+        'throttle' => [
+            'driver' => 'session',
+            'provider' => 'users',
+            'limit' => 5,
+            'expires' => 2,
         ],
     ],
 

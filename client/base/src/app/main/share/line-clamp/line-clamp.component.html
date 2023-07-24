@@ -1,0 +1,6 @@
+<div #box class="box">
+  <ng-content></ng-content>
+</div>
+<a href="javascript:void(0)" *ngIf="enabled" (click)=" toggle() ">
+{{opened ? 'Hiển thị bớt' : 'Hiển thị thêm'}}
+</a>

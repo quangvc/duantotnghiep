@@ -1,0 +1,95 @@
+// Room section
+.room-section {
+  background-color: #f2f3f3;
+
+}
+.room-preview {
+  max-height: 500px;
+  border-radius: 5px;
+  font-size: 14px;
+  font-weight: 500;
+}
+.room-detail {
+  padding: 0;
+  height: 400px;
+  overflow: -moz-scrollbars-none;
+    -ms-overflow-style: none;
+}
+.room-detail::-webkit-scrollbar {
+  width: 0 !important;
+  display: none;
+}
+
+.room-detail-item {
+  border-radius: 5px;
+  background-color: white;
+  margin-bottom: 15px;
+}
+
+
+.room-img {
+  max-height: 200px;
+}
+.room-services {
+  background-color: #e8fef5;
+  color: #00875a;
+  border-radius: 10px;
+  padding: 4px 8px;
+}
+.room-convenient-item {
+  color: #00875a;
+  font-weight: 500;
+  font-size: 14px;
+}
+.room-rule-item {
+  font-weight: 500;
+  font-size: 14px;
+}
+.room-price-item {
+  font-weight: 500;
+  font-size: 14px;
+}
+.highlight-text {
+  color: #0264c8;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.highlight-button {
+  background-color: #f7f9fa;
+  color: #0264c8;
+  font-weight: 500;
+  font-size: 14px;
+  padding: 15px;
+  border: none;
+  border-radius: 5px;
+}
+.btn-view-detail {
+  background-color: #f7f9fa;
+  color: #0264c8;
+  font-weight: 500;
+  font-size: 14px;
+  padding: 6px;
+  border: none;
+  border-radius: 5px;
+  text-align: center;
+
+}
+.btn-view-detail > label {
+  cursor: pointer;
+}
+.btn-view-detail:hover {
+  background-color: #ededed;
+  color: #0202bb;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.amenities-list-item {
+  margin-left: 30px;
+  margin-bottom: 4px;
+  padding-left: 16px;
+  color: black;
+  font-weight: 600;
+  font-size: 14px;
+}

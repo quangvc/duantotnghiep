@@ -1,0 +1,24 @@
+<nz-table #basicTable [nzData]="feedbacks">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>{{'comments.user_name' | translate}}</th>
+      <th>{{'bookings.booking_number' | translate}}</th>
+      <th>{{'comments.content' | translate}}</th>
+      <th>{{'rate' | translate}}</th>
+      <th>{{'created_at' | translate}}</th>
+      <th>{{'action' | translate}}</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let data of basicTable.data; let i = index">
+      <td>{{ i + 1 }}</td>
+      <td>...</td>
+      <td>{{ data.booking_id }}</td>
+      <td>{{ data.content }}</td>
+      <td>{{ data.rating }}</td>
+      <td>...</td>
+      <td></td>
+    </tr>
+  </tbody>
+</nz-table>

@@ -34,4 +34,25 @@ export class Auth{
       return hotel = user.hotel_id;
     }
   }
+  static Admin(){
+    switch (Auth.User('role')) {
+      case "admin":
+        return true;
+        break;
+      default:
+        return false;
+        break;
+    }
+  }
+
+  static Manager(){
+    switch (Auth.User('role')) {
+      case "manager":
+        return true;
+        break;
+      default:
+        return false;
+        break;
+    }
+  }
 }

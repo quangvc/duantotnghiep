@@ -5,13 +5,18 @@ import { RoomTypesRoutes } from './room-types.routing';
 import { SharedModule } from 'src/app/_shared/shared/shared.module';
 import { CreateUpdateRoomTypeComponent } from './create-update-room-type/create-update-room-type.component';
 import { QMenuModule } from '../../_mShared/q-menu/q-menu.module';
+import { QImageModule } from '../../_mShared/q-image/q-image.module';
+import { RoomTypeImgComponent } from './room-type-img/room-type-img.component';
 
 @NgModule({
   imports: [
     SharedModule,
     QMenuModule,
-    RoomTypesRoutes,
+    QImageModule,
   ],
-  declarations: [RoomTypesComponent, CreateUpdateRoomTypeComponent]
+  declarations: [RoomTypesComponent, CreateUpdateRoomTypeComponent, RoomTypeImgComponent],
+  exports: [
+    RoomTypesComponent
+  ],
 })
 export class RoomTypesModule { }

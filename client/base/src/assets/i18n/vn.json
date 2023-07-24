@@ -2,6 +2,13 @@
   "action": "Hành động",
   "status": "Trạng thái",
   "description": "Mô tả",
+  "rate": "Đánh giá",
+
+  "created_at": "Ngày tạo",
+  "updated_at": "Ngày cập nhật",
+
+  "checkin": "Ngày vào",
+  "checkout": "Ngày ra",
 
   "button": {
     "add_new": "Thêm mới",
@@ -17,9 +24,11 @@
     "name": "Họ tên",
     "username": "Tên người dùng",
     "password": "Mật khẩu",
+    "password_confirm": "Nhập lại mật khẩu",
     "email": "Địa chỉ Email",
     "forgot_pasword": "Quên mật khẩu",
-    "or_register_now": "Hoặc Đăng ký ngay !!"
+    "or_register_now": "Hoặc Đăng ký ngay !!",
+    "phone_number": "Số điện thoại"
   },
   "user": {
     "name": "Quản lý người dùng",
@@ -39,7 +48,8 @@
     "name": "Tên khu vực"
   },
   "room": {
-    "room_number": "Số phòng"
+    "room_number": "Số phòng",
+    "quantity": "Số lượng phòng"
   },
   "room_type": {
     "name": "Tên loại phòng",
@@ -58,14 +68,32 @@
     "quantity": "Số lượng"
   },
   "blog": {
+    "name": "Bài viết",
     "title": "Tiêu đề",
     "content": "Nội dung",
     "image": "Hình ảnh",
     "user_id": "người tạo",
-    "slug": "I don't know bruh"
+    "slug": "Slug"
   },
   "banners": {
     "image": "Hình ảnh"
+  },
+  "bookings": {
+    "booking_number": "Mã phòng",
+    "user": "Người dùng",
+    "checkin_date": "Ngày vào",
+    "checkout_date": "Ngày ra",
+    "people_quantity": "Số lượng người",
+    "coupon_id": "Phiếu giảm giá",
+    "note": "Ghi chú",
+    "guest_name": "Tên khách hàng",
+    "guest_email": "Email Khách hàng",
+    "guest_phone": "Số điện thoại",
+    "total_price": "Tổng giá"
+  },
+  "comments": {
+    "user_name": "Tên người dùng",
+    "content": "Nội dung"
   }
 
 }

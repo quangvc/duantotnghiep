@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 use Spatie\Permission\Models\Role;
+use App\Traits\MessageStatusAPI;
 
 class AuthController extends Controller
 {
@@ -115,6 +116,28 @@ class AuthController extends Controller
         return $status === Password::PASSWORD_RESET
             ? response()->json('status', __($status))
             : response()->json(['email' => [__($status)]]);
+    }
+
+    public function changePassword(Request $request)
+    {
+        $request->validate([
+            'old_password' => 'required',
+            'password' => 'required|min:6|confirmed',
+        ]);
+
+        $user = $request->user();
+        if (Hash::check($request->old_password, $user->password)) {
+            $user->update([
+                'password' => Hash::make($request->password)
+            ]);
+
+            return MessageStatusAPI::update();
+        } else {
+            return response([
+                'message' => 'Old password does not match'
+            ], 400);
+        }
+
     }
 
     /**

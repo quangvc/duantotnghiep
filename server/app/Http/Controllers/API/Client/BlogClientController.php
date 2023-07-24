@@ -16,12 +16,15 @@ class BlogClientController extends Controller
 {
     public function index()
     {
-        $blog = Blog::where('active' ,'=' ,'1')->get();
+        $blog = Blog::where('active', '=', '1')->get();
         return BlogResource::collection($blog);
     }
     public function show($slug)
     {
-        $blog = Blog::where('slug', $slug)->first();
+        $blog = Blog::where('active', '=', '1')
+            ->where('slug', $slug)
+            ->orderBy('created_at', 'desc')
+            ->first();
         if ($blog) {
             return new BlogResource($blog);
         } else {

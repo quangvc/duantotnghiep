@@ -5,7 +5,7 @@ import { Observable, Subscription, firstValueFrom } from 'rxjs';
 import { NineStatus } from 'src/app/module/_mShared/enum/enum';
 import { MenuItem } from 'src/app/module/_mShared/model/menuItem.class';
 import { ERROR, SUCCESS } from 'src/app/module/_mShared/model/url.class';
-import { Enum } from 'src/app/module/_mShared/service/enum.service';
+import { Enum } from 'src/app/module/_mShared/service/static/enum.service';
 
 
 import { CouponsService } from 'src/app/module/_mShared/service/coupons.service';
@@ -76,6 +76,7 @@ export class CouponsComponent implements OnInit {
 
   addCoupon(){
     this.displayCreateUpdateCoupon = true;
+    this.couponId = null;
   }
 
   editCoupon(coupon:any){
@@ -95,7 +96,7 @@ export class CouponsComponent implements OnInit {
       nzOnOk: () =>
         new Promise((resolve, reject) => {
           this.deleteCoupon(data);
-          setTimeout(Math.random() > 0.5 ? resolve : reject, 1000);
+          setTimeout(0.6 > 0.5 ? resolve : reject, 1000);
         }).catch(() => console.log('Oops errors!'))
     });
   }

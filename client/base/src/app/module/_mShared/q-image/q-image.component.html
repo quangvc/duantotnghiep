@@ -26,11 +26,8 @@
             </div>
           </ng-container>
           <div class="item">
-            <form [formGroup]="formBanner" enctype="multipart/form-data" *ngIf="!hotel">
-              <input #fileUploader id="file" type="file" class="upload" (change)="onFileChange($event)" multiple placeholder="Upload"/>
-            </form>
-            <input #fileUploader id="file" type="file" class="upload" (change)="onFileChange($event)" placeholder="Upload" *ngIf="hotel"/>
-
+            <input #fileUploader id="file" type="file" class="upload" multiple placeholder="Upload" *ngIf="banner"/>
+            <input id="fileSingle" type="file" class="upload" placeholder="Upload" *ngIf="hotel || roomType"/>
           </div>
         </div>
       </nz-checkbox-wrapper>

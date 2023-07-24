@@ -14,20 +14,18 @@
     <tr *ngFor="let data of basicTable.data; let i = index">
       <td>{{ i + 1 }}</td>
       <td><img [src]="'http://127.0.0.1:8000/Images/banners/'+data.image" width="100" alt=""></td>
-      <td></td>
+      <td><nz-switch [(ngModel)]="data.status" (ngModelChange)="confirmChangeStatus($event,data)"></nz-switch></td>
       <td>
-        <!-- <q-menu
-          [model]="menus"
-          (buttonItem)="dropdownItemsButton(data)">
-        </q-menu> -->
+        <button nz-button nzType="primary" [nzSize]="'large'" nzShape="circle" (click)="showConfirmDelete(data.id)" nzDanger><span nz-icon nzType="delete" nzTheme="outline"></span></button>
       </td>
     </tr>
   </tbody>
 </nz-table>
 
-<!-- <q-image
+<q-image
   *ngIf="displayMultipleImage"
-  [displayAddBanner]="displayAddBanner"
-  (closeModal)="submitForm($event)"
-></q-image> -->
+  [displayMultipleImage]="displayMultipleImage"
+  [banner]="banner"
+  (cancelModal)="submitForm($event)"
+></q-image>
 

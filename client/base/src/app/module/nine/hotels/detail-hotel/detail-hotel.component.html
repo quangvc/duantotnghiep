@@ -1,0 +1,40 @@
+<nz-modal
+  [(nzVisible)]="displayDetail"
+  nzTitle="Chi tiết khách sạn"
+  nzWidth="1400px"
+  (nzOnCancel)="handleCancel()"
+>
+  <ng-container *nzModalContent>
+
+    <nz-divider nzText="Loại phòng" nzOrientation="left"></nz-divider>
+    <app-room-types
+      [idHotel]="idHotel"
+    ></app-room-types>
+    <!-- <nz-table #basicTable [nzData]="roomTypes">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>{{'hotel.name' | translate}}</th>
+          <th>{{'region.name' | translate}}</th>
+          <th>{{'room_type.name' | translate}}</th>
+          <th>{{'room_type.price_per_night' | translate}}</th>
+          <th>{{'room_type.capacity' | translate}}</th>
+          <th>{{'room.quantity' | translate}}</th>
+          <th>{{'description' | translate}}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of basicTable.data; let i = index">
+          <td>{{ i + 1 }}</td>
+          <td>{{ data.hotel.name }}</td>
+          <td>{{ data.hotel.region }}</td>
+          <td>{{ data.name }}</td>
+          <td>{{ data.price_per_night | currency: 'VND' }}</td>
+          <td>{{ data.capacity }}</td>
+          <td>{{ data.room.length }}</td>
+          <td>{{ data.description }}</td>
+        </tr>
+      </tbody>
+    </nz-table> -->
+  </ng-container>
+</nz-modal>

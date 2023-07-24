@@ -1,0 +1,11 @@
+<p-toast></p-toast>
+<header class="container-fluid h-5rem bg-white mt-5">
+  <!-- <div class="logo py-4">
+    <a href="home" class="my-auto">
+      <h5 class="text-primary">NineHotel</h5>
+    </a>
+  </div> -->
+  <p-steps class="my-auto" [style]="{'width': '100%'}" [model]="items" [(activeIndex)]="activeIndex"
+    [readonly]="true"></p-steps>
+</header>
+<router-outlet></router-outlet>

@@ -8,15 +8,20 @@ import { RegionsService } from '../../_mShared/service/regions.service';
 import { QMenuModule } from '../../_mShared/q-menu/q-menu.module';
 import { ImageComponent } from './image/image.component';
 import { QImageModule } from '../../_mShared/q-image/q-image.module';
+import { DetailHotelComponent } from './detail-hotel/detail-hotel.component';
+import { RoomTypesModule } from '../room-types/room-types.module';
 
 @NgModule({
   imports: [
     SharedModule,
     QMenuModule,
     QImageModule,
-    HotelsRoutes
+
+    HotelsRoutes,
+
+    RoomTypesModule
   ],
-  declarations: [HotelsComponent, AddHotelComponent, ImageComponent],
+  declarations: [HotelsComponent, AddHotelComponent, ImageComponent, DetailHotelComponent],
   providers: [RegionsService]
 })
 export class HotelsModule { }

@@ -5,14 +5,15 @@ namespace App\Http\Controllers\API\Client;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\API\BannerResource;
 use App\Models\Banner;
-use Illuminate\Http\Request;
-use App\Traits\MessageStatusAPI;
 
 class BannerClientController extends Controller
 {
     public function index()
     {
-        $banner = Banner::all();
+        $banner = Banner::where('status', '=', '1')
+            ->orderBy('created_at', 'desc')
+            ->take(3)
+            ->get();
         return BannerResource::collection($banner);
     }
 }

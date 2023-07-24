@@ -12,7 +12,6 @@ use Illuminate\Support\Facades\DB;
 
 class CommentController extends Controller
 {
-    //
     public function index()
     {
         $comment = Comment::all();
@@ -20,38 +19,31 @@ class CommentController extends Controller
     }
     public function store(CreateCommentRequest $request)
     {
-
-        $validatedData = $request->validate([
-            'content' => 'required',
-            'blog_id' => 'required|integer|exists:tbl_blogs,id'
-        ]);
+        $request->validated();
+        $validated = request()->all();
         $user_id = auth()->user()->id;
 
         $comment = new Comment;
         $comment->user_id = $user_id;
-        $comment->content = $validatedData['content'];
-        $comment->blog_id = $validatedData['blog_id'];
-        $comment->save();
-        return response()->json(['message' => 'Comment created successfully.']);
-    }
-    public function update(CreateCommentRequest $request, $id)
-    {
-        $cmt = Comment::find($id);
-        $user_id = auth()->user()->id;
-        if ($user_id !== $cmt->user_id) {
-            return MessageStatusAPI::notFound();
+        $comment->content = $validated['content'];
+        $comment->blog_id = $validated['blog_id'];
+
+        if ($request->has('cmt_id')) {
+            $comment->parent_id = $request->cmt_id;
         }
-        $cmt->update($request->all());
-        return MessageStatusAPI::update();
+
+        $comment->save();
+        return MessageStatusAPI::store();
     }
+    
     public function destroy($id)
     {
         $cmt = Comment::find($id);
-        $user_id = auth()->user()->name;
-        if ($user_id !== 'Admin') {
-            return MessageStatusAPI::notFound();
+        $role = auth()->user()->getRoleNames()->first();
+        if ($role == 'Admin' || auth()->user()->id == $cmt->blog->user_id) { // $cmt->user()->id == $cmt->user_id
+            $cmt->delete();
+            return MessageStatusAPI::destroy();
         }
-        $cmt->delete();
-        return MessageStatusAPI::destroy();
+        return abort(403, 'Forbidden: You don’t have permission');
     }
 }

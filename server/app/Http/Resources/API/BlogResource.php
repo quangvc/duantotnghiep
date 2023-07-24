@@ -22,6 +22,8 @@ class BlogResource extends JsonResource
             'user_name'=>$this->user->name,
             'active' =>$this->active,
             'slug'=>$this->slug,
+            'created_at'=>$this->created_at,
+            'updated_at'=>$this->updated_at,
         ];
     }
 }

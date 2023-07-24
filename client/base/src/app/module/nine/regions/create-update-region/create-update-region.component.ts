@@ -1,14 +1,19 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NzMessageService } from 'ng-zorro-antd/message';
+import { Subscription } from 'rxjs';
 import { ERROR, SUCCESS } from 'src/app/module/_mShared/model/url.class';
 import { RegionsService } from 'src/app/module/_mShared/service/regions.service';
+
+declare let $: any;
 
 @Component({
   selector: 'create-update-region',
   templateUrl: './create-update-region.component.html'
 })
-export class CreateUpdateRegionComponent implements OnInit {
+export class CreateUpdateRegionComponent implements OnInit, OnDestroy {
+
+  private subscription = new Subscription();
 
   @Input() displayCreateUpdateRegion: boolean = false;
   @Input() regionId: any;
@@ -36,30 +41,52 @@ export class CreateUpdateRegionComponent implements OnInit {
 
   getValueRegion(){
     if(this.regionId){
-      this.regionService.findOne(this.regionId).subscribe({
+      let obs = this.regionService.findOne(this.regionId).subscribe({
         next: (res) => {
-          console.log(res);
+          this.formRegion.patchValue({
+            name: res.data.name,
+          })
         },
         error: (err) => {
-          this.message.create(ERROR, err.message);
+          this.message.create(ERROR, `${err.error.message}`)
+          this.message.create(ERROR, `${err.message}`)
         }
       })
+
+      this.subscription.add(obs);
     }
   }
 
   handleOk(){
-    if(this.formRegion.valid){
-      let create = this.regionService.createRegion(this.formRegion.value);
-      // let update = this.regionService.updateRegion(this.region.id, this.formRegion.value);
 
-      let createUpdate = create;
+    if(this.formRegion.valid){
+
+      const formData = new FormData();
+
+      formData.append('name', this.formRegion.value.name);
+
+      let file = $('#file').prop('files');
+
+      if(file.length > 0){
+        formData.append("image", file[0]);
+      }
+
+      let createUpdate;
+
+      if(this.regionId){
+        createUpdate = this.regionService.updateRegion(this.regionId, formData);
+      }else{
+        createUpdate = this.regionService.createRegion(formData);
+      }
+
       createUpdate.subscribe({
         next: (res) => {
           this.closeModal.emit();
-          this.message.create(SUCCESS, `This is a message of ${SUCCESS}`);
+          this.message.create(SUCCESS, `${res.message}`);
         },
         error: (err) => {
-          this.message.create(ERROR, err.message);
+          this.message.create(ERROR, `${err.error.message}`)
+          this.message.create(ERROR, `${err.message}`)
         }
       })
     }
@@ -67,6 +94,11 @@ export class CreateUpdateRegionComponent implements OnInit {
 
   handleCancel(){
     this.closeModal.emit();
+    this.formRegion.reset();
+  }
+
+  ngOnDestroy(): void {
+      this.subscription.unsubscribe();
   }
 
 }

@@ -2,20 +2,20 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ADMIN, BANNERS } from '../model/url.class';
 import { Observable } from 'rxjs';
+import { Auth } from 'src/app/auth/_aShared/auth.class';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BannersService {
 
-  sessionUser:any = sessionStorage.getItem('user');
-  user:any = JSON.parse(this.sessionUser);
+  token = Auth.User('token');
 
   private API_URL = `http://127.0.0.1:8000/api/${ADMIN}`;
 
   private httpOptions = {
     headers: new HttpHeaders({
-      'Authorization': `Bearer ${this.user.token}`
+      'Authorization': `Bearer ${this.token}`
     })
   }
 
@@ -27,8 +27,18 @@ export class BannersService {
   }
 
   createBanner(data: any): Observable<any>{
-    const url = `http://127.0.0.1:8000/api/admin/banners/`;
+    const url = `${this.API_URL}/${BANNERS}`;
     return this.http.post<any>(url, data, this.httpOptions);
+  }
+
+  deleteBanner(id:any): Observable<any>{
+    const url = `${this.API_URL}/${BANNERS}/${id}`;
+    return this.http.delete<any>(url, this.httpOptions);
+  }
+
+  changeStatus(id:any): Observable<any>{
+    const url = `${this.API_URL}/${BANNERS}/${id}/changeStatus`;
+    return this.http.put<any>(url, this.httpOptions);
   }
 
 }

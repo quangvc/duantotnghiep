@@ -55,7 +55,8 @@ export class CreateUpdateRoomTypeComponent implements OnInit, OnDestroy {
         this.hotels = res.data
       },
       error: (err) => {
-        this.message.create(ERROR, err.error.message);
+        this.message.create(ERROR, `${err.error.message}`)
+        this.message.create(ERROR, `${err.message}`)
       }
     });
 
@@ -73,7 +74,8 @@ export class CreateUpdateRoomTypeComponent implements OnInit, OnDestroy {
           })
         },
         error: (err) => {
-          this.message.create(ERROR, err.error.message);
+          this.message.create(ERROR, `${err.error.message}`)
+          this.message.create(ERROR, `${err.message}`)
         }
       });
 
@@ -94,7 +96,8 @@ export class CreateUpdateRoomTypeComponent implements OnInit, OnDestroy {
           this.message.create(SUCCESS, `Thêm mới thành công !`);
         },
         error: (err) => {
-          this.message.create(ERROR, err.error.message);
+          this.message.create(ERROR, `${err.error.message}`)
+          this.message.create(ERROR, `${err.message}`)
         }
       });
       this.subscription.add(obs)

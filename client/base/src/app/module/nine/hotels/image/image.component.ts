@@ -16,9 +16,9 @@ export class ImageComponent implements OnInit {
 
   images: any[]=[];
 
-  constructor(private imageService: ImagesService,
+  constructor(
+    private imageService: ImagesService,
     private message: NzMessageService,
-    private imagesService: ImagesService,
     private modal: NzModalService
     ) { }
 
@@ -87,48 +87,22 @@ export class ImageComponent implements OnInit {
     this.imageId = data.id
   }
 
-  saveImage(idImage:any){
+  saveImage(file:any){
     const formData = new FormData();
 
-    if(idImage){
-      console.log(idImage)
-      this.imageService.$image.subscribe(file => {
-        if(file){
-          formData.append('path', file[0])
-          this.imagesService.updateImage(idImage,formData).subscribe({
-            next: (res) => {
-              this.displayMultipleImage = false;
-              this.getImages();
-            },
-            error: (err) => {
-              this.message.create(ERROR, err.error.message);
-            },
-          });
-        }
-      })
-    }else{
-      this.imageService.$image.subscribe(file => {
-        if(file){
-          formData.append('path', file[0])
-          this.imagesService.addImage(this.hotel_id,formData).subscribe({
-            next: (res) => {
-              this.displayMultipleImage = false;
-              this.getImages();
-            },
-            error: (err) => {
-              this.message.create(ERROR, err.error.message);
-            },
-          });
-        }
-      })
+    if(file){
+      formData.append('path', file[0])
+      this.imageService.addImage(this.hotel_id,formData).subscribe({
+        next: (res) => {
+          this.displayMultipleImage = false;
+          this.getImages();
+        },
+        error: (err) => {
+          this.message.create(ERROR, err.error.message);
+        },
+      });
     }
 
-
-
-    // for (let i = 0; i < fileList.length; i++) {
-    //   const file: File = fileList[i];
-    //   formData.append(`image[${i}]`, file);
-    // }
   }
 
   showConfirmDelete(id:any){
