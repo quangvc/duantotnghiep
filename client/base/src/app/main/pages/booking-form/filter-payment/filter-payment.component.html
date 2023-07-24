@@ -7,26 +7,6 @@
   </span>
   <button class="py-2 px-4 bg-primary rounded-5 border-0 fw-bold" (click)="onSearch()">Tìm</button>
 
-  <!-- <div *ngIf="showTable" class="my-4">
-    <p-table [value]="data" [columns]="cols" *ngIf="data && data.length > 0">
-      <ng-template pTemplate="header" let-columns>
-        <tr>
-          <th *ngFor="let col of columns">
-            {{ col.header }}
-          </th>
-        </tr>
-      </ng-template>
-      <ng-template pTemplate="body" let-rowData let-columns="columns">
-        <tr>
-          <td *ngFor="let col of columns">{{ rowData[col.field] }}</td>
-        </tr>
-      </ng-template>
-    </p-table>
-    <div *ngIf="data && data.length === 0">
-      Mã đơn sai hoặc không tồn tại, thử nhập lại hoặc liên hệ tới khách sạn bạn đặt phòng!
-    </div>
-  </div> -->
-
   <div *ngIf="showTable" class="my-4">
     <p-table [value]="data" [lazy]="true" [loading]="loading" (onLazyLoad)="loadCustomers($event)" [tableStyle]="{ 'min-width': '50rem' }">
       <ng-template pTemplate="header">
@@ -61,7 +41,7 @@
         </tr>
       </ng-template>
     </p-table>
-    <div *ngIf="data && data.length === 0">
+    <div *ngIf="data && data.length === 0" class="my-5">
       Mã đơn sai hoặc không tồn tại, thử nhập lại hoặc liên hệ tới khách sạn bạn đặt phòng!
     </div>
   </div>
