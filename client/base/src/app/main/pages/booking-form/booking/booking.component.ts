@@ -1,3 +1,4 @@
+import { CouponClientService } from './../../../services/coupon-client.service';
 import { Component, OnInit } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { Validators, FormControl, FormGroup, FormBuilder, FormArray } from '@angular/forms';
@@ -8,6 +9,9 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 import { ERROR, SUCCESS } from 'src/app/module/_mShared/model/url.class';
 import { BookingClientService } from 'src/app/main/services/bookingClient.service';
 import { HotelClientService } from 'src/app/main/services/hotelClient.service';
+import { Auth } from 'src/app/auth/_aShared/auth.class';
+import { Subscription } from 'rxjs';
+import { Router } from '@angular/router';
 
 const toggleButton = document.getElementById('showToggleButton') as HTMLButtonElement | null;
 
@@ -70,7 +74,11 @@ export class BookingComponent implements OnInit {
   hotel_name: any;
   hotelRoomTypeData: any[] = [];
   roomTypeData: any[] = [];
-
+  coupons: any[] = []
+  notLogin: boolean;
+  selectedCoupon: any;
+  discountAmount: number = 0;
+  selectedCouponId: any;
 
   // Dữ liệu được trả lại sau khi thêm đơn
   resData: any
@@ -82,7 +90,7 @@ export class BookingComponent implements OnInit {
   filteredBrands: any[] = [];
 
 
-
+  private subscription = new Subscription();
 
   constructor(
     private fb: FormBuilder,
@@ -91,12 +99,19 @@ export class BookingComponent implements OnInit {
     private message: NzMessageService,
     private BookingClientService: BookingClientService,
     private HotelClientService: HotelClientService,
+    private CouponClientService: CouponClientService,
+    private router: Router,
     ) {
 
   }
   ngOnInit() {
+    this.notLogin = true;
+
+    this.checkLogin();
+
     // Khai báo các trường dữ liệu của form
     this.userform = this.fb.group({
+      'user_id': new FormControl(null),
       'guest_name': new FormControl(null, Validators.required),
       'guest_phone': new FormControl(null, [Validators.required, Validators.pattern('[0-9]{10}')]),
       'guest_email': new FormControl(null, [Validators.required, Validators.pattern('[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}')]),
@@ -106,6 +121,8 @@ export class BookingComponent implements OnInit {
       'people_quantity': new FormControl(5),
       'total_price': new FormControl(null, Validators.required),
       'items': this.fb.array([]),
+      'coupon_id': new FormControl(null)
+
     });
 
     // Lấy dữ liệu từ sessionStorage
@@ -129,12 +146,6 @@ export class BookingComponent implements OnInit {
       this.displayDateOut = moment(dateOut, 'DD-MM-YYYY').format('ddd, DD MMM YYYY');
       this.roomTypeData = resultArray;
       this.totalAmount = totalAmount;
-      // Xóa dữ liệu từ sessionStorage sau khi đã sử dụng
-      // sessionStorage.removeItem('resultArray');
-      // sessionStorage.removeItem('totalAmount');
-
-
-
       // Thêm dữ liệu từ sessionStorage vào form
       const itemsArray = this.userform.get('items') as FormArray;
       resultArray.forEach(item => {
@@ -157,9 +168,25 @@ export class BookingComponent implements OnInit {
       // Chuyển về trang trước đó
       window.history.back();
     }
+
+    // Gán thông tin user nếu có đăng nhập
+    if (Auth) {
+      let user = Auth.User('user')
+      console.log(user);
+      this.userform.patchValue({
+        'user_id': user.id,
+        'guest_name': user.name,
+        'guest_email': user.email,
+        'guest_phone': user.phone_number,
+      });
+
+    } else {
+      console.log('Chua dang nhap');
+    }
     this.getHotel(hotelId);
   }
 
+  // Lấy dữ liệu khách sạn
   getHotel(id: any) { // Lấy giá trị ID từ URL
       this.HotelClientService.findOne(id).subscribe({
 
@@ -176,11 +203,39 @@ export class BookingComponent implements OnInit {
       });
   }
 
+  // Kiểm tra đăng nhập (nếu không đăng nhập thì không có mã giảm)
+  async checkLogin(){
+    let userLogged:any = sessionStorage.getItem('user');
+    let user = JSON.parse(userLogged);
+    if(user){
+      this.notLogin = false;
+      this.getCoupons();
+    } else {
+      console.log('Không đăng nhập');
+
+    }
+  }
+
+  // Lấy dữ liệu mã giảm
+  getCoupons(){
+    let obs = this.CouponClientService.getCoupons().subscribe({
+      next: (res) => {
+        this.coupons = res.data;
+        console.log(this.coupons)
+      },
+      error: (err) => {{
+        this.message.create(ERROR, err.message);
+      }}
+    })
+    this.subscription.add(obs);
+  }
+
   // Hiển thị dữ liệu items (room type)
   get items(): FormArray {
     return this.userform.get('items') as FormArray;
   }
 
+  // Thêm mới Booking
   async onSubmit() {
     const formValue = this.userform.value;
     if (this.userform.valid) {
@@ -189,16 +244,21 @@ export class BookingComponent implements OnInit {
       this.confirmationService.confirm({
         message: 'Bạn có chắc chắn thông tin đã đúng chứ?',
         accept: async() => {
-          debugger
           let newData = this.userform.value;
           let create = this.BookingClientService.createBooking(newData);
           await create.subscribe({
             next: (res) => {
+              console.log(res);
+
               sessionStorage.clear();
               this.resData = res.data;
               sessionStorage.setItem('hotel_Id', this.hotel_Id.toString());
               sessionStorage.setItem('resData', JSON.stringify(this.resData));
               sessionStorage.setItem('roomTypeArray', JSON.stringify(this.roomTypeData));
+              sessionStorage.setItem('totalAmount', res.data.total_price.toString());
+              sessionStorage.setItem('discountAmount', this.discountAmount.toString());
+              sessionStorage.setItem('discountAmount', this.discountAmount.toString());
+              sessionStorage.setItem('CouponId', this.selectedCouponId.toString());
               this.message.create(SUCCESS, `Đăng ký thành công!`);
               window.location.href = 'booking/payment'
 
@@ -218,9 +278,45 @@ export class BookingComponent implements OnInit {
 
 
     } else {
-      // Xử lý khi form không hợp lệ
       this.messageService.add({ severity: 'warn', summary: 'Cảnh báo', detail: 'Bạn chưa nhập đủ thông tin' });
     }
   }
+
+  // chạy khi chọn 1 mã
+  onCouponSelected(event: any) {
+    this.selectedCouponId = event.value.id;
+
+    if (this.selectedCouponId) {
+      this.selectedCoupon = this.coupons.find(coupon => coupon.id === this.selectedCouponId);
+      if (this.selectedCoupon) {
+        this.totalAmount = this.calculateTotalPrice(this.selectedCoupon.value, this.selectedCoupon.type);
+        this.userform.patchValue({
+          'coupon_id': this.selectedCouponId,
+          'total_price': this.totalAmount || null,
+        });
+        this.messageService.add({ severity: 'success', summary: 'Thành công', detail: `Total Price: ${this.totalAmount} VND` });
+      }
+    } else {
+      this.selectedCoupon = null;
+      this.messageService.add({ severity: 'warn', summary: 'Cảnh báo', detail: 'Vui lòng chọn mã giảm giá trước khi tính toán.' });
+    }
+  }
+
+  // Tính toán số tiền sau khi nhập mã giảm
+  calculateTotalPrice(couponValue: number, couponType: string): number {
+    let finalPrice = this.totalAmount;
+
+    if (couponType === 'percent') {
+      this.discountAmount = (couponValue / 100) * this.totalAmount;
+      finalPrice = this.totalAmount - this.discountAmount;
+    } else if (couponType === 'value') {
+      this.discountAmount = couponValue;
+      finalPrice = this.totalAmount - this.discountAmount;
+    }
+
+    return finalPrice;
+  }
+
+
 
 }

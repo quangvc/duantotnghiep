@@ -141,6 +141,28 @@
             </div>
           </div>
           <hr>
+          <div>
+            <div class="date-in-out row" *ngIf="CouponId">
+              <div class="col">
+                <p class="gray-text">Giảm giá:</p>
+              </div>
+              <div class="col">
+                <p>
+                  <Del class="text-green-500">-{{ discountAmount | currency: 'VND' }}</Del>
+                </p>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="date-in-out row">
+              <div class="col">
+                <p class="gray-text">Tổng tiền</p>
+              </div>
+              <div class="col text-primary fw-bold fs-5">
+                <p>{{ totalAmount | currency: 'VND' }}</p>
+              </div>
+            </div>
+          </div>
         </div>
 
       </div>

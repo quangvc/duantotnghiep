@@ -11,8 +11,8 @@
     <form class="" [formGroup]="userform" (ngSubmit)="onSubmit()">
       <div class="content d-flex flex-row justify-content-between">
         <!-- Left Columm -->
-        <div class="col p-0 me-4">
-          <div class="d-flex flex-row bg-white rounded-4 p-3 mb-3">
+        <div class="col p-0 me-4" >
+          <div class="d-flex flex-row bg-white rounded-4 p-3 mb-3" *ngIf="notLogin">
             <img src="./../../../assets/image/gift.png" alt="" class="me-3">
             <div class="my-auto">
               <p class="fw-bold">Đăng nhập hoặc Đăng ký và tận hưởng ưu đãi dành riêng cho thành viên</p>
@@ -22,8 +22,8 @@
 
           <!-- Info form start -->
           <div class="mb-3">
-            <h5>Nhập thông tin của bạn vào đây</h5>
-
+            <h5 *ngIf="notLogin">Nhập thông tin của bạn vào đây</h5>
+            <h5 *ngIf="!notLogin">Thông tin của bạn</h5>
             <div class="p-inputgroup formDiv">
               <span class="p-inputgroup-addon">
                 <i class="pi pi-user"></i>
@@ -158,9 +158,44 @@
                   </div>
                 </div>
               </div>
+              <div class="date-in-out row" *ngIf="!notLogin">
+                <div class="col">
+                  <p class="gray-text">Mã giảm giá:</p>
+                </div>
+                <div class="col" >
+                  <p-dropdown [options]="coupons" (onChange)="onCouponSelected($event)" optionLabel="name"></p-dropdown>
+                </div>
+              </div>
               <hr>
             </div>
-
+            <div *ngIf="selectedCoupon">
+              <div class="date-in-out row">
+                <div class="col">
+                  <p class="gray-text">Loại giảm giá:</p>
+                </div>
+                <div class="col">
+                  <p>{{ selectedCoupon.type }}</p>
+                </div>
+              </div>
+              <div class="date-in-out row">
+                <div class="col">
+                  <p class="gray-text">Giá trị giảm giá:</p>
+                </div>
+                <div class="col">
+                  <p>{{ discountAmount | currency: 'VND' }}</p>
+                </div>
+              </div>
+            </div>
+            <div *ngIf="totalAmount && selectedCoupon">
+              <div class="date-in-out row">
+                <div class="col">
+                  <p class="gray-text">Tổng giá trị sau giảm giá:</p>
+                </div>
+                <div class="col">
+                  <p>{{ totalAmount | currency: 'VND' }}</p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>

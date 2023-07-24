@@ -8,6 +8,8 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { FormsModule } from '@angular/forms';
 import { DropdownModule } from 'primeng/dropdown';
 import { ReactiveFormsModule } from '@angular/forms';
+import { TableModule } from 'primeng/table';
+
 @NgModule({
   declarations: [ProfileComponent],
   imports: [
@@ -17,7 +19,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     ConfirmDialogModule,
     FormsModule,
     DropdownModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    TableModule
   ],
   providers: [ConfirmationService],
 })

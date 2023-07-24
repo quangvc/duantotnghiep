@@ -91,7 +91,8 @@ export class LoginComponent implements OnInit {
           await sessionStorage.setItem('remember', myLocal);
 
           // Check quyền
-          this.checkLogin();
+          // this.checkLogin();
+          window.history.back();
         },
         error: (err) => {
           this.message.create(ERROR, err.error.message);

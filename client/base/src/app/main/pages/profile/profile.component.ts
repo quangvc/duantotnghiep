@@ -10,7 +10,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthClientService } from '../../services/auth-client.service';
 import { ERROR, SUCCESS } from 'src/app/module/_mShared/model/url.class';
 import { NzMessageService } from 'ng-zorro-antd/message';
-
+import { BookingClientService } from '../../services/bookingClient.service';
+import * as moment from 'moment';
+import { StatusHelper } from 'src/shared/helpers/BookingHelper';
 
 
 @Component({
@@ -23,6 +25,12 @@ export class ProfileComponent implements OnInit {
   notLogin: any
   userData:any = sessionStorage.getItem('user');
   user = JSON.parse(this.userData);
+  data: any[] = [];
+  showTable: boolean = false;
+  cols: any[] = [];
+  bookingDate: any;
+  statusText: any;
+
   path: any
   hasPermisson: boolean;
   ltsGenders: any;
@@ -38,13 +46,13 @@ export class ProfileComponent implements OnInit {
     private formBuilder: FormBuilder,
     private AuthClientService: AuthClientService,
     private message: NzMessageService,
+    private BookingClientService: BookingClientService,
 
   ) {
     this.selectedGender = 0; // hoặc giá trị mặc định khác tùy vào yêu cầu của bạn
   }
 
   ngOnInit() {
-    console.log(this.auth);
 
     this.checkLogin();
     this.getValueFormUpdate()
@@ -57,15 +65,54 @@ export class ProfileComponent implements OnInit {
       gender: [0, Validators.required],
       avatar: ['', Validators.required],
     });
+
+    this.getBookings();
   }
+
+
+
+  getBookings() {
+    let user = Auth.User('user')
+    console.log(user);
+
+    this.BookingClientService.findByAcc(user.id).subscribe(
+      (response) => {
+        this.data = response.data;
+        this.showTable = true;
+        this.bookingDate = moment(response.data.booking_date).format('DD-MM-YYYY');
+        this.statusText = StatusHelper.getStatusText(response.data[0].status);
+        // this.setupColumns();
+      },
+      (error) => {
+        this.showTable = true;
+        this.data = [];
+        // this.setupColumns();
+      }
+    );
+  }
+
+  // setupColumns() {
+  //   this.cols = [
+  //     { field: 'booking_number', header: 'Mã đơn' },
+  //     { field: 'booking_date', header: 'Ngày đặt' },
+  //     { field: 'checkin_date', header: 'Thời gian Check in' },
+  //     { field: 'checkout_date', header: 'Thời gian Check out' },
+  //     { field: 'people_quantity', header: 'Số lượng người' },
+  //     { field: 'coupon', header: 'Mã giảm giá' },
+  //     { field: 'guest_name', header: 'Tên khách' },
+  //     { field: 'guest_email', header: 'Email khách' },
+  //     { field: 'guest_phone', header: 'SĐT khách' },
+  //     { field: 'total_price', header: 'Tổng giá' },
+  //     { field: 'status', header: 'Trạng thái' },
+  //   ];
+  // }
+
 
   getValueFormUpdate(){
     let userId = this.auth.id
     if(userId) {
       let obs = this.AuthClientService.getUser(userId).subscribe({
         next: (res) => {
-          console.log(res);
-
           this.userForm.patchValue(res.data);
         },
         error: (err) => {
