@@ -79,6 +79,8 @@ export class BookingComponent implements OnInit {
   selectedCoupon: any;
   discountAmount: number = 0;
   selectedCouponId: any;
+  originalTotalAmount: number;
+  currentTotalAmount: number;
 
   // Dữ liệu được trả lại sau khi thêm đơn
   resData: any
@@ -106,7 +108,6 @@ export class BookingComponent implements OnInit {
   }
   ngOnInit() {
     this.notLogin = true;
-
     this.checkLogin();
 
     // Khai báo các trường dữ liệu của form
@@ -146,6 +147,8 @@ export class BookingComponent implements OnInit {
       this.displayDateOut = moment(dateOut, 'DD-MM-YYYY').format('ddd, DD MMM YYYY');
       this.roomTypeData = resultArray;
       this.totalAmount = totalAmount;
+      this.originalTotalAmount = this.totalAmount;
+      this.currentTotalAmount = this.totalAmount;
       // Thêm dữ liệu từ sessionStorage vào form
       const itemsArray = this.userform.get('items') as FormArray;
       resultArray.forEach(item => {
@@ -249,16 +252,17 @@ export class BookingComponent implements OnInit {
           await create.subscribe({
             next: (res) => {
               console.log(res);
-
               sessionStorage.clear();
               this.resData = res.data;
               sessionStorage.setItem('hotel_Id', this.hotel_Id.toString());
               sessionStorage.setItem('resData', JSON.stringify(this.resData));
               sessionStorage.setItem('roomTypeArray', JSON.stringify(this.roomTypeData));
               sessionStorage.setItem('totalAmount', res.data.total_price.toString());
-              sessionStorage.setItem('discountAmount', this.discountAmount.toString());
-              sessionStorage.setItem('discountAmount', this.discountAmount.toString());
-              sessionStorage.setItem('CouponId', this.selectedCouponId.toString());
+              if (this.selectedCouponId) {
+                sessionStorage.setItem('discountAmount', this.discountAmount.toString());
+                sessionStorage.setItem('CouponId', this.selectedCouponId.toString());
+              }
+
               this.message.create(SUCCESS, `Đăng ký thành công!`);
               window.location.href = 'booking/payment'
 
@@ -285,16 +289,15 @@ export class BookingComponent implements OnInit {
   // chạy khi chọn 1 mã
   onCouponSelected(event: any) {
     this.selectedCouponId = event.value.id;
-
     if (this.selectedCouponId) {
       this.selectedCoupon = this.coupons.find(coupon => coupon.id === this.selectedCouponId);
       if (this.selectedCoupon) {
-        this.totalAmount = this.calculateTotalPrice(this.selectedCoupon.value, this.selectedCoupon.type);
+        this.currentTotalAmount = this.calculateTotalPrice(this.selectedCoupon.value, this.selectedCoupon.type);
         this.userform.patchValue({
           'coupon_id': this.selectedCouponId,
-          'total_price': this.totalAmount || null,
+          'total_price': this.currentTotalAmount || null,
         });
-        this.messageService.add({ severity: 'success', summary: 'Thành công', detail: `Total Price: ${this.totalAmount} VND` });
+        this.messageService.add({ severity: 'success', summary: 'Thành công', detail: `Total Price: ${this.currentTotalAmount} VND` });
       }
     } else {
       this.selectedCoupon = null;
@@ -304,7 +307,7 @@ export class BookingComponent implements OnInit {
 
   // Tính toán số tiền sau khi nhập mã giảm
   calculateTotalPrice(couponValue: number, couponType: string): number {
-    let finalPrice = this.totalAmount;
+    let finalPrice = this.originalTotalAmount;
 
     if (couponType === 'percent') {
       this.discountAmount = (couponValue / 100) * this.totalAmount;
