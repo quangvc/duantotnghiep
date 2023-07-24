@@ -18,6 +18,7 @@ use App\Http\Controllers\API\Admin\UserController;
 use App\Http\Controllers\API\Admin\CouponController;
 use App\Http\Controllers\API\Admin\FeedbackController;
 use App\Http\Controllers\API\Admin\BannerController;
+use App\Http\Controllers\API\Admin\StaticController;
 use App\Http\Controllers\API\Client\BannerClientController;
 use App\Http\Controllers\API\Client\BlogClientController;
 use App\Http\Controllers\API\Client\BookingClientController;
@@ -179,6 +180,14 @@ Route::group(['prefix' => 'admin'], function () {
             Route::delete('/{id}', 'destroy')->middleware('permission:delete_banners');
         }
     );
+    Route::group(
+        ['prefix' => 'statics', 'controller' => StaticController::class],
+        function () {
+            Route::get('/', 'index');
+            Route::get('/revenueByDay/{date}', 'revenueByDay');
+            Route::get('/revenueByMonth/{date}', 'revenueByMonth');
+        }
+    );
 });
 Route::group(['prefix' => 'client'], function () {
     Route::group(['prefix' => 'users', 'controller' => UserClientController::class], function () {
@@ -219,6 +228,7 @@ Route::group(['prefix' => 'client'], function () {
             Route::delete('/{id}', 'destroy');
         }
     );
+   
 
     Route::group(
         ['prefix' => 'regions', 'controller' => RegionClientController::class],
@@ -296,4 +306,5 @@ Route::group(['prefix' => 'client'], function () {
             Route::delete('/{id}', 'destroy');
         }
     );
+    
 });
