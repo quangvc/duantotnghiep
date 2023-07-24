@@ -82,7 +82,7 @@ export class RoomTypesComponent implements OnInit, OnDestroy {
         if(this.idHotel){
           this.roomTypes = this.roomTypes.filter(type => type.hotelId == this.idHotel);
         }
-
+        console.log(this.roomTypes)
         // for (const item of this.roomTypes) {
         //   // item.room_count = res.rooms_count;
         // }
@@ -153,7 +153,7 @@ export class RoomTypesComponent implements OnInit, OnDestroy {
 
     this.roomTypeService.filterRoomType(id,checkin,checkout).subscribe({
       next: (res) => {
-        // this.roomTypes = res.room_type;
+        this.roomTypes = res;
         console.log(res)
         // for (const item of this.roomTypes) {
         //   item.room_count = res.rooms_count;
