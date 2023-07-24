@@ -84,6 +84,7 @@ class PaymentController extends Controller
         );
 
         return $returnData;
+        
         // if (isset($_POST['redirect'])) {
         //     header('Location: ' . $vnp_Url);
         //     die();
@@ -95,55 +96,7 @@ class PaymentController extends Controller
         // }
     }
 
-    // public function paymentReturn (Request $request)
-    // {
-    //     $vnp_SecureHash = $_GET['vnp_SecureHash'];
-    //     $inputData = array();
-    //     foreach ($_GET as $key => $value) {
-    //         if (substr($key, 0, 4) == "vnp_") {
-    //             $inputData[$key] = $value;
-    //         }
-    //     }
-
-    //     unset($inputData['vnp_SecureHash']);
-    //     ksort($inputData);
-    //     $i = 0;
-    //     $hashData = "";
-    //     foreach ($inputData as $key => $value) {
-    //         if ($i == 1) {
-    //             $hashData = $hashData . '&' . urlencode($key) . "=" . urlencode($value);
-    //         } else {
-    //             $hashData = $hashData . urlencode($key) . "=" . urlencode($value);
-    //             $i = 1;
-    //         }
-    //     }
-
-    //     $secureHash = hash_hmac('sha512', $hashData, env('VNP_HASHSECRET'));
-    //     if ($secureHash == $vnp_SecureHash) {
-    //         if ($_GET['vnp_ResponseCode'] == '00') {
-    //             // Cập nhật trạng thái đơn hàng trong cơ sở dữ liệu
-    //             $booking = Booking::where('booking_number', $request->booking_number)->first();
-    //             $booking->update([
-    //                 'status' => 2
-    //             ]);
-
-    //             return response([
-    //                 "GD Thanh cong" => $inputData
-    //             ]);
-    //         }
-    //         else {
-    //             return response([
-    //                 "GD Khong thanh cong"
-    //             ]);
-    //         }
-    //     } else {
-    //         return response([
-    //             "Chu ky khong hop le"
-    //         ]);
-    //     }
-    // }
-
-
+    
     public function paymentReturn(Request $request)
     {
 
@@ -227,8 +180,6 @@ class PaymentController extends Controller
         }
         //Trả lại VNPAY theo định dạng JSON
         // echo json_encode($returnData);
-        // return header('Location: https://www.facebook.com/');
-        // return view('welcome', $returnData);
         return response($returnData);
     }
 }

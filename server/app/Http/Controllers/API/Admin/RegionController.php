@@ -30,9 +30,9 @@ class RegionController extends Controller
         if ($request->hasFile('image')) {
             $image = $request->file('image');
             $filename = time() . '.' . $image->getClientOriginalExtension();
-            $path = public_path('/Images/regions');
+            $path = public_path('Images/regions');
             $image->move($path, $filename);
-            $image = url('/Images/regions' . $filename);
+            $image = url('Images/regions' . $filename);
             $region->image = $filename;
         }
 

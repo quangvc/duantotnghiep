@@ -65,10 +65,6 @@ Route::get('/test', function () {
 });
 Route::post('/vnpay-payment', [PaymentController::class, 'vnpay_payment']);
 
-Route::get('/keywords', [KeywordController::class, 'show']);
-Route::post('/keywords', [KeywordController::class, 'store']);
-Route::delete('/keywords', [KeywordController::class, 'destroy']);
-
 Route::group(['prefix' => 'admin'], function () {
     Route::group(['prefix' => 'users', 'controller' => UserController::class], function () {
         Route::get('/', 'index');
@@ -205,7 +201,16 @@ Route::group(['prefix' => 'admin'], function () {
             Route::get('/lm-count-room', 'lastMonthCountRooms');
         }
     );
+    Route::group(
+        ['prefix' => 'keywords', 'controller' => KeywordController::class],
+        function () {
+            Route::get('/', 'show');
+            Route::post('/', 'store');
+            Route::delete('/', 'destroy');
+        }
+    );
 });
+
 Route::group(['prefix' => 'client'], function () {
     Route::group(['prefix' => 'users', 'controller' => UserClientController::class], function () {
         Route::get('/', 'index');
