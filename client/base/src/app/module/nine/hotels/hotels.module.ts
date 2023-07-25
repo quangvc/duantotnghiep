@@ -16,9 +16,7 @@ import { RoomTypesModule } from '../room-types/room-types.module';
     SharedModule,
     QMenuModule,
     QImageModule,
-
     HotelsRoutes,
-
     RoomTypesModule
   ],
   declarations: [HotelsComponent, AddHotelComponent, ImageComponent, DetailHotelComponent],

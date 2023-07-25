@@ -52,8 +52,6 @@
   <thead>
     <tr>
       <th>#</th>
-      <th>{{'hotel.name' | translate}}</th>
-      <th>{{'region.name' | translate}}</th>
       <th>{{'room_type.name' | translate}}</th>
       <th>{{'room_type.price_per_night' | translate}}</th>
       <th>{{'room_type.capacity' | translate}}</th>
@@ -65,8 +63,6 @@
   <tbody>
     <tr *ngFor="let data of basicTable.data; let i = index">
       <td>{{ i + 1 }}</td>
-      <td>{{ data.hotel.name }}</td>
-      <td>{{ data.hotel.region }}</td>
       <td>{{ data.name }}</td>
       <td>{{ data.price_per_night | currency: 'VND' }}</td>
       <td>{{ data.capacity }}</td>
@@ -95,4 +91,11 @@
   [roomTypeId]="roomTypeId"
   (closeModal)="cancel($event)"
 ></room-type-img>
+
+<room-modal
+  *ngIf="displayRoom"
+  [displayRoom]="displayRoom"
+  [room]="room"
+  (closeModal)="cancel($event)"
+></room-modal>
 

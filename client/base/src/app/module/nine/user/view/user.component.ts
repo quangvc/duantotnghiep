@@ -7,7 +7,6 @@ import { MenuItem } from 'src/app/module/_mShared/model/menuItem.class';
 import { ERROR, SUCCESS } from 'src/app/module/_mShared/model/url.class';
 import { UserDto } from 'src/app/module/_mShared/model/userDto.class';
 import { UserService } from 'src/app/module/_mShared/service/user.service';
-import { AssignHotelComponent } from '../assign-hotel/assign-hotel.component';
 
 @Component({
   selector: 'app-user',
@@ -16,8 +15,6 @@ import { AssignHotelComponent } from '../assign-hotel/assign-hotel.component';
 })
 export class UserComponent implements OnInit, OnDestroy {
   private subscription = new Subscription();
-
-  @ViewChild(AssignHotelComponent) hotel: AssignHotelComponent;
 
   constructor(
     private userService: UserService,

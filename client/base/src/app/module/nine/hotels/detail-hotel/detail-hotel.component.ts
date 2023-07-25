@@ -10,6 +10,7 @@ export class DetailHotelComponent implements OnInit {
   @Input() hotelId: any;
   @Input() displayDetail: boolean;
   @Input() roomTypes: any[]=[];
+  @Input() hotel_name: any;
   @Output() closeModal = new EventEmitter<any>();
 
   constructor() { }

@@ -7,14 +7,17 @@ import { CreateUpdateRoomTypeComponent } from './create-update-room-type/create-
 import { QMenuModule } from '../../_mShared/q-menu/q-menu.module';
 import { QImageModule } from '../../_mShared/q-image/q-image.module';
 import { RoomTypeImgComponent } from './room-type-img/room-type-img.component';
+import { RoomsModule } from '../rooms/view/rooms.module';
+import { RoomModalComponent } from './room-modal/room-modal.component';
 
 @NgModule({
   imports: [
     SharedModule,
     QMenuModule,
     QImageModule,
+    RoomsModule,
   ],
-  declarations: [RoomTypesComponent, CreateUpdateRoomTypeComponent, RoomTypeImgComponent],
+  declarations: [RoomTypesComponent, CreateUpdateRoomTypeComponent, RoomTypeImgComponent, RoomModalComponent],
   exports: [
     RoomTypesComponent
   ],

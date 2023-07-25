@@ -1,14 +1,15 @@
 <nz-modal
-  [(nzVisible)]="displayDetail"
-  [nzTitle]="hotel_name"
+  [(nzVisible)]="displayRoom"
+  [nzTitle]="'single'"
   nzWidth="1400px"
   (nzOnCancel)="handleCancel()"
 >
   <ng-container *nzModalContent>
 
-    <app-room-types
-      [idHotel]="idHotel"
-    ></app-room-types>
+  <app-rooms
+    [room]="room"
+  ></app-rooms>
+
 
   </ng-container>
 </nz-modal>

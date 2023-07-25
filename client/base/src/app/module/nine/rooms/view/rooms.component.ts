@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
 import { Subscription, firstValueFrom } from 'rxjs';
@@ -15,6 +15,9 @@ import { RoomsService } from 'src/app/module/_mShared/service/rooms.service';
   styleUrls: ['./rooms.component.scss'],
 })
 export class RoomsComponent implements OnInit, OnDestroy {
+
+  @Input() room: any[] = [];
+
   private subscription = new Subscription();
 
   displayCreateUpdateRoom: boolean = false;

@@ -39,6 +39,10 @@ export class RoomTypesComponent implements OnInit, OnDestroy {
 
   displayImage: boolean = false;
 
+  displayRoom: boolean = false;
+
+  room: any;
+
   ngOnInit() {
     this.createFormFilter();
     this.getRoomTypes();
@@ -57,6 +61,12 @@ export class RoomTypesComponent implements OnInit, OnDestroy {
         label: "Chỉnh sửa",
         command: () => {
           this.editRoomType(data);
+        },
+      },
+      {
+        label: "Phòng",
+        command: () => {
+          this.showRoom(data);
         },
       },
       {
@@ -165,9 +175,15 @@ export class RoomTypesComponent implements OnInit, OnDestroy {
     })
   }
 
+  showRoom(data:any){
+    this.displayRoom = true;
+    this.room = data.room;
+  }
+
   cancel(event:any){
     this.displayCreateUpdateRoomType = false;
     this.displayImage = false;
+    this.displayRoom = false;
     this.getRoomTypes();
   }
 

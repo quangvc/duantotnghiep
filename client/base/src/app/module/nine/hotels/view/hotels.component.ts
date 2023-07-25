@@ -43,6 +43,8 @@ export class HotelsComponent implements OnInit, OnDestroy {
   role:any;
   confirmModal?: NzModalRef;
 
+  hotel_name: any;
+
   displayImage: boolean = false;
 
   ngOnInit() {
@@ -70,6 +72,7 @@ export class HotelsComponent implements OnInit, OnDestroy {
     let obs = this.hotelsService.getHotels().subscribe({
       next: (res) => {
         this.hotels = res.data;
+        console.log(this.hotels)
         this.getImage();
       },
       error: (err) => {{
@@ -95,7 +98,7 @@ export class HotelsComponent implements OnInit, OnDestroy {
   dropdownItemsButton(data:any){
     this.menus = [
       {
-        label: "Thông tin khác",
+        label: "Loại phòng",
         command: () => {
           this.detail(data);
         },
@@ -127,6 +130,7 @@ export class HotelsComponent implements OnInit, OnDestroy {
     this.displayDetail = true;
     this.hotelId = data.id;
     this.roomTypes = data.room_type;
+    this.hotel_name = data.hotel_name;
   }
 
   // add edit
