@@ -85,14 +85,14 @@ export class NineLayoutComponent implements OnInit {
         label: "Quản lý đặt phòng ",
         icon: 'form',
         items: [
-          {
-            label: "Quản lý loại phòng",
-            routerLink: "room-types",
-          },
-          {
-            label: "Danh sách phòng",
-            routerLink: "rooms",
-          },
+          // {
+          //   label: "Quản lý loại phòng",
+          //   routerLink: "room-types",
+          // },
+          // {
+          //   label: "Danh sách phòng",
+          //   routerLink: "rooms",
+          // },
           {
             label: "Đặt phòng",
             routerLink: "bookings",

@@ -62,16 +62,34 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let data of booking[0].booking_details; let i = index">
+        <tr *ngFor="let data of booking_details; let i = index">
           <td>{{ i + 1 }}</td>
           <td>{{ data.room_type.hotel.hotel_name }}</td>
-          <td>...</td>
+          <td>
+              <select class="form-select" (change)="asignRoom($event,data)">
+                <option value="" >Chọn</option>
+                <ng-container *ngFor="let room of rooms">
+                  <ng-container *ngIf="
+                    room.room_type.hotel.id == data.room_type.hotel_id &&
+                    room.room_type.id == data.room_type.id"
+                  >
+                    <option [value]="room.room_number" >
+                      {{room.room_number}}
+                    </option>
+                  </ng-container>
+                </ng-container>
+
+              </select>
+          </td>
           <td>{{ data.room_type.name }}</td>
+        </tr>
       </tbody>
     </nz-table>
 
-    <nz-divider nzText="Ghi chú" nzOrientation="left"></nz-divider>
-    <textarea class="form-control" id="exampleFormControlTextarea1" rows="5" [disabled]="true">{{booking[0].note}}</textarea>
+    <ng-container *ngIf="booking.length > 0">
+      <nz-divider nzText="Ghi chú" nzOrientation="left"></nz-divider>
+      <textarea class="form-control" id="exampleFormControlTextarea1" rows="5" [disabled]="true">{{booking[0].note}}</textarea>
+    </ng-container>
 
   </ng-container>
 
