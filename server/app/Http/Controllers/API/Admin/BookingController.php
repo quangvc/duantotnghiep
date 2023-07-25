@@ -114,6 +114,7 @@ class BookingController extends Controller
             'checkout_date' => $checkout_date,
             'people_quantity' =>  $validated['people_quantity'],
             'user_id' =>  $user_id,
+            'coupon_id' => $request->coupon_id,
             'guest_name' =>  $guest_name,
             'guest_email' =>  $guest_email,
             'guest_phone' =>  $guest_phone,

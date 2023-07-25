@@ -9,6 +9,7 @@ use App\Traits\MessageStatusAPI;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\API\RoomResource;
 use App\Enums\StatusEnum;
+use App\Models\RoomType;
 use Carbon\Carbon;
 
 class RoomController extends Controller
@@ -121,13 +122,17 @@ class RoomController extends Controller
         return MessageStatusAPI::update();
     }
 
-    public function roomsCanRent ($date_from, $date_to) {
+    public function roomsCanRent ($hotel_id, $date_from, $date_to) {
         $date_from = Carbon::parse($date_from);
         $date_to = Carbon::parse($date_to);
         
         // all rooms 
-        $rooms = Room::all();
-
+        $rooms = RoomType::where('hotel_id', $hotel_id)    
+            ->with(['rooms' => function ($query) {
+                $query->select('room_number', 'room_type_id');
+            }])
+            ->get();
+// return $rooms;
         // các phòng đã đặt
         $booked_rooms = BookingDetail::join('tbl_bookings', 'tbl_bookings.id', '=', 'booking_id')
             ->where(function ($query) use ($date_from, $date_to) {
@@ -147,7 +152,7 @@ class RoomController extends Controller
             })
             ->get();
 
-
+return $booked_rooms;
 
     }
 }

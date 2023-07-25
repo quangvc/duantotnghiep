@@ -96,6 +96,7 @@ Route::group(['prefix' => 'admin'], function () {
             Route::get('/{id}', 'show')->middleware('permission:show_room');
             Route::put('/{id}', 'update')->middleware('permission:edit_room');
             Route::delete('/{id}', 'destroy')->middleware('permission:delete_room');
+            Route::get('/{hotel_id}/{date_from}/{date_to}', 'roomsCanRent');
         }
     );
 
