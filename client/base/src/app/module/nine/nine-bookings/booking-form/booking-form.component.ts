@@ -3,6 +3,7 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
 import { ERROR } from 'src/app/module/_mShared/model/url.class';
 import { BookingsService } from 'src/app/module/_mShared/service/bookings.service';
+import { RoomsService } from 'src/app/module/_mShared/service/rooms.service';
 
 @Component({
   selector: 'booking-form',
@@ -18,27 +19,41 @@ export class BookingFormComponent implements OnInit {
     private bookingsService: BookingsService,
     private modal: NzModalService,
     private message: NzMessageService,
+    private roomService: RoomsService
   ) { }
 
 
   confirmModal?: NzModalRef;
 
 
-  booking: any[] = []
+  booking: any[] = [];
+  booking_details: any[] = [];
+
+  rooms: any[] = [];
 
   ngOnInit() {
     this.getDetail();
+    this.getRooms();
   }
 
   getDetail(){
     this.bookingsService.findOne(this.bookingId).subscribe({
       next: (res) => {
         this.booking = res.data;
-        console.log(this.booking)
+        this.booking_details = this.booking[0].booking_details;
+        // console.log(this.booking_details )
       },
       error: (err) => {
         this.message.create(ERROR, err.error.message);
         this.message.create(ERROR, err.message);
+      }
+    })
+  }
+
+  getRooms(){
+    this.roomService.getRooms().subscribe({
+      next: (res) => {
+        this.rooms = res.data;
       }
     })
   }
@@ -65,6 +80,14 @@ export class BookingFormComponent implements OnInit {
           setTimeout(0.6 > 0.5 ? resolve : reject, 1000);
         }).catch()
     });
+  }
+
+  asignRoom(event:any,data:any){
+    console.log(event.target.value);
+    if(event){
+
+    }
+    console.log(data);
   }
 
   handleCancel(){
