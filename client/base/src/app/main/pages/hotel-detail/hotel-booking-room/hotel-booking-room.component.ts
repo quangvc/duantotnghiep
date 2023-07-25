@@ -26,12 +26,6 @@ interface roomType {
   providers: [PhotoService]
 })
 export class HotelBookingRoomComponent implements OnInit {
-  constructor(
-    private roomTypeClientService: roomTypeClientService,
-    private message: NzMessageService,
-  ) { }
-  private subscription = new Subscription();
-
   @Input('hotelRoomTypeData') RoomTypeData: any[] = [];
   @Input() hotel_id: any;
   @Input() hotel_name: any;
@@ -57,6 +51,7 @@ export class HotelBookingRoomComponent implements OnInit {
   selectedQuantity: string;
   total: number = 0;
   selectedRow: any;
+  minimumDate: Date;
 
   totalQuantity: any;
   totalPrice: any;
@@ -78,7 +73,34 @@ export class HotelBookingRoomComponent implements OnInit {
     }
   ];
 
+  constructor(
+    private roomTypeClientService: roomTypeClientService,
+    private message: NzMessageService,
+  ) {
+    // Tạo ngày hiện tại
+    const currentDate = moment();
+
+    // Thêm 1 ngày vào ngày hiện tại
+    const nextDay = currentDate.add(1, 'days');
+
+    // Lưu giá trị vào biến minimumDate
+    this.minimumDate = nextDay.toDate();
+  }
+  private subscription = new Subscription();
+
   ngOnInit() {
+    // Kiểm tra xem có tồn tại các trường checkinDate và checkoutDate trong sessionStorage hay không
+    const checkinDate = sessionStorage.getItem('checkinDate');
+    const checkoutDate = sessionStorage.getItem('checkoutDate');
+
+    if (checkinDate && checkoutDate) {
+      this.visible = true;
+      // Nếu tồn tại, gán giá trị vào biến date_in và date_out
+      this.date_in = checkinDate;
+      this.date_out = checkoutDate;
+      // Sau đó gọi hàm lấy dữ liệu roomtype từ backend
+      this.getRoomType();
+    }
   }
 
   // Hàm xử lý sự kiện khi nhấn vào nút Thay đổi tìm kiếm / Ẩn bộ lọc
@@ -94,8 +116,11 @@ export class HotelBookingRoomComponent implements OnInit {
 
   // Hàm lấy danh sách các loại phòng theo ngày đặt và ngày trả
   getRoomType() {
-    this.date_in = moment(this.rangeDates[0])?.format('DD-MM-YYYY') || '';
-    this.date_out = moment(this.rangeDates[this.rangeDates.length - 1])?.format('DD-MM-YYYY') || '';
+    debugger
+    // const formatDateIn = moment(this.date_in)?.format('DD-MM-YYYY') || '';
+    // const formatDateOut = moment(this.date_out)?.format('DD-MM-YYYY') || '';
+    this.date_in = moment(this.date_in)?.format('DD-MM-YYYY') || '';
+    this.date_out = moment(this.date_out)?.format('DD-MM-YYYY') || '';
     const obs = this.roomTypeClientService.findRoomType(this.hotel_id, this.date_in, this.date_out).subscribe({
       next: (res) => {
         console.log(res);

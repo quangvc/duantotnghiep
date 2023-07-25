@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { AuthClientService } from './../../services/auth-client.service';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { HotelClientService } from '../../services/hotelClient.service';
 import { RegionsClientService } from '../../services/regions-client.service';
 import { NzMessageService } from 'ng-zorro-antd/message';
@@ -20,7 +21,7 @@ interface Hotel {
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
-
+  @ViewChild('videoModal') videoModal!: ElementRef;
   private subscription = new Subscription();
 
   sessionUser:any = sessionStorage.getItem('user');
@@ -31,8 +32,10 @@ export class HomeComponent implements OnInit {
     private RegionsClientService: RegionsClientService,
     private message: NzMessageService,
     private BlogClientService: BlogClientService,
+    private AuthClientService: AuthClientService,
     ) { }
 
+  videoUrl: string | null = null;
   hotels: any[] = [];
   hotelId: any;
   regions: any[] = [];
@@ -50,6 +53,12 @@ export class HomeComponent implements OnInit {
   statusOption: any;
   role:any;
   starRating: number = 0;
+  users: any[] = [];
+
+
+  countUsers: any;
+  countHotels: any;
+  countRegions: any;
 
 
   displayImage: boolean = false;
@@ -58,8 +67,7 @@ export class HomeComponent implements OnInit {
     this.getRegions();
     this.getBlogs();
     this.getHotels();
-
-
+    this.getUsers()
   }
 
   getRegions(){
@@ -67,6 +75,7 @@ export class HomeComponent implements OnInit {
       next: (res) => {
         this.regions = res.data.slice(0, 3);
         this.lstRegions = res.data;
+        this.countRegions = res.data.length;
         // const limitedData = res.data.property.slice(0, 2);
         // this.regions = limitedData
         // this.getImage();
@@ -83,6 +92,22 @@ export class HomeComponent implements OnInit {
       next: (res) => {
         this.hotels = res.data.slice(0, 6);
         this.starRating = res.data.star_rating;
+        this.countHotels = res.data.length;
+      },
+      error: (err) => {{
+        this.message.create(ERROR, err.message);
+      }}
+    })
+    this.subscription.add(obs);
+  }
+
+  getUsers(){
+    let obs = this.AuthClientService.getUsers().subscribe({
+      next: (res) => {
+        this.users = res.data;
+        this.countUsers = res.data.length;
+        console.log(this.countUsers);
+
       },
       error: (err) => {{
         this.message.create(ERROR, err.message);
@@ -97,6 +122,8 @@ export class HomeComponent implements OnInit {
 
   filterHotel() {
     if (this.selectedRegion && this.date_in && this.date_out) {
+      sessionStorage.setItem('checkinDate', this.date_in.toString());
+      sessionStorage.setItem('checkoutDate', this.date_out.toString());
       this.date_in = moment(this.date_in)?.format('DD-MM-YYYY') || '';
       this.date_out = moment(this.date_out)?.format('DD-MM-YYYY') || '';
       this.selectedRegion = JSON.stringify(this.selectedRegion);
@@ -111,6 +138,7 @@ export class HomeComponent implements OnInit {
       const regionId = selectedRegionObject.id;
       const checkinDate = this.date_in;
       const checkoutDate = this.date_out;
+
 
       // Xây dựng URL mới từ đoạn định dạng và các giá trị cụ thể
       const baseUrl = 'hotels/get/';
@@ -139,6 +167,22 @@ export class HomeComponent implements OnInit {
     const element = document.getElementById(sectionId);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
+    }
+  }
+
+  closeModal(): void {
+    // Lưu trạng thái của video trước khi đóng modal
+    const iframeElement = this.videoModal.nativeElement.querySelector('iframe');
+    if (iframeElement) {
+      this.videoUrl = iframeElement.src;
+      iframeElement.src = '';
+    }
+  }
+  openModal(): void {
+    // Khôi phục lại video khi mở modal
+    const iframeElement = this.videoModal.nativeElement.querySelector('iframe');
+    if (iframeElement) {
+      iframeElement.src = this.videoUrl;
     }
   }
 }

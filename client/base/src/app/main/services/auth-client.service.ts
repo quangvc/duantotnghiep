@@ -8,29 +8,39 @@ import { CLIENT, USERS } from 'src/app/module/_mShared/model/url.class';
   providedIn: 'root'
 })
 export class AuthClientService {
-
-  token = Auth.User('token');
-
   private API_URL = `http://127.0.0.1:8000/api/${CLIENT}`;
 
-  private httpOptions = {
-    headers: new HttpHeaders({
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${this.token}`,
-    }),
-  };
 
 
 
   constructor(private http: HttpClient) {}
 
+  getUsers(): Observable<any> {
+    const url = `${this.API_URL}/${USERS}`;
+    return this.http.get<any>(url);
+  }
+
   getUser(id: any): Observable<any> {
     const url = `${this.API_URL}/${USERS}/${id}`;
-    return this.http.get<any>(url, this.httpOptions);
+    const sessionUser = sessionStorage.getItem('user');
+    const user = sessionUser ? JSON.parse(sessionUser) : null;
+    const httpOptions = user ? {
+      headers: new HttpHeaders({
+        'Authorization': `Bearer ${user.token}`
+      })
+    } : {};
+    return this.http.get<any>(url, httpOptions);
   }
 
   Update(id:any, data:any): Observable<any>{
     const url = `${this.API_URL}/${USERS}/${id}`;
-    return this.http.post(url,data,this.httpOptions)
+    const sessionUser = sessionStorage.getItem('user');
+    const user = sessionUser ? JSON.parse(sessionUser) : null;
+    const httpOptions = user ? {
+      headers: new HttpHeaders({
+        'Authorization': `Bearer ${user.token}`
+      })
+    } : {};
+    return this.http.post(url,data,httpOptions)
   }
 }

@@ -139,10 +139,12 @@
         <!-- Thông tin bình luận -->
         <div class="d-flex flex-start align-items-center">
           <!-- Avatar người dùng (thay thế bằng hình ảnh avatar người dùng thực) -->
-          <img class="rounded-circle shadow-1-strong me-3" src="./../../../../assets/image/avt1.jpg" alt="avatar"
-            width="60" height="60" />
+          <img [src]="'http://127.0.0.1:8000/Images/avatars/'+item.user.avatar" alt="Admin"
+                  class="rounded-circle" width="150">
+          <!-- <img class="rounded-circle shadow-1-strong me-3" src="./../../../../assets/image/avt1.jpg" alt="avatar"
+            width="60" height="60" /> -->
           <div class="me-3">
-            <h6 class="fw-bold text-primary mb-1">{{ item.user }}</h6>
+            <h6 class="fw-bold text-primary mb-1">{{ item.user.name }}</h6>
             <p class="text-muted small mb-0">
               Tạo lúc {{ item.created_at | date: 'dd/MM/yyyy, h:mm a' }}
             </p>
@@ -176,10 +178,12 @@
             <div *ngFor="let reply of item.replies">
               <!-- Avatar người dùng trả lời (thay thế bằng hình ảnh avatar người dùng thực) -->
               <div class="d-flex flex-start align-items-center">
-                <img class="rounded-circle shadow-1-strong me-3" src="./../../../../assets/image/avt1.jpg" alt="avatar"
-                width="60" height="60" />
+                <!-- <img class="rounded-circle shadow-1-strong me-3" src="./../../../../assets/image/avt1.jpg" alt="avatar"
+                width="60" height="60" /> -->
+                <img [src]="'http://127.0.0.1:8000/Images/avatars/'+reply.user.avatar" alt="Admin"
+                  class="rounded-circle" width="150">
               <div class="me-3">
-                <h6 class="fw-bold text-primary mb-1">{{ reply.user }}</h6>
+                <h6 class="fw-bold text-primary mb-1">{{ reply.user.name }}</h6>
                 <p class="text-muted small mb-0">
                   Trả lời lúc {{ reply.created_at | date: 'dd/MM/yyyy, h:mm a' }}
                 </p>
