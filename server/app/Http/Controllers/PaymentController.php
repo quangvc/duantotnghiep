@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Booking;
+use App\Models\Coupon;
 use App\Enums\BookingStatusEnum;
 use Exception;
 use Illuminate\Support\Facades\Notification;
@@ -74,13 +75,13 @@ class PaymentController extends Controller
             $query .= urlencode($key) . "=" . urlencode($value) . '&';
         }
 
-        $vnp_Url = $vnp_Url . "?" . $query;
+        // $vnp_Url = $vnp_Url . "?" . $query;
         if (env('VNP_HASHSECRET')) {
             $vnpSecureHash =   hash_hmac('sha512', $hashdata, env('VNP_HASHSECRET'));
-            $vnp_Url .= 'vnp_SecureHash=' . $vnpSecureHash;
+            $query .= 'vnp_SecureHash=' . $vnpSecureHash;
         }
         $returnData = array(
-            'code' => '00', 'message' => 'success', 'data' => $vnp_Url
+            'code' => '00', 'message' => 'success', 'data' => $vnp_Url, 'query' => $query
         );
 
         return $returnData;
@@ -152,6 +153,12 @@ class PaymentController extends Controller
                                 $booking->update([
                                     'status' => BookingStatusEnum::RESERVED
                                 ]);
+                                if ($booking->coupon_id) {
+                                    $coupon = Coupon::find($booking->coupon_id);
+                                    $coupon->update([
+                                        $coupon->decrement('quantity')
+                                    ]);
+                                }
                                 Notification::route('mail', $booking->guest_email)->notify(new SendMailPaymentNotification($booking->booking_number));
                             }
 

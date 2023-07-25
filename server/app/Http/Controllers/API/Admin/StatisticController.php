@@ -11,7 +11,7 @@ use Carbon\Carbon;
 
 class StatisticController extends Controller
 {
-    // thống kê doanh thu ngày theo trong thời gian 
+    // thống kê doanh thu ngày trong khoảng thời gian 
     public function filter_by_date($date_from, $date_to) {
         $revenue = [];
         $start_date = Carbon::parse($date_from);

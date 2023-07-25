@@ -158,6 +158,7 @@ Route::group(['prefix' => 'admin'], function () {
             Route::post('/', 'store');
             Route::get('/{id}', 'show');
             Route::post('/{id}/confirm-booking', 'confirmBooking');
+            Route::put('/{id}/checkout', 'checkout');
         }
     );
     Route::group(
@@ -270,6 +271,7 @@ Route::group(['prefix' => 'client'], function () {
             Route::get('/{booking_number}', 'index');
             Route::get('/user/{id_user}', 'userBooking');
             Route::post('/', 'store');
+            Route::put('/cancel-booking/{id}', 'cancelBooking');
         }
     );
     Route::group(

@@ -14,6 +14,7 @@ use App\Traits\MessageStatusAPI;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use App\Enums\BookingStatusEnum;
 
 class BookingClientController extends Controller
 {
@@ -91,6 +92,7 @@ class BookingClientController extends Controller
             'checkout_date' => $checkout_date,
             'people_quantity' =>  $validated['people_quantity'],
             'user_id' =>  $user_id,
+            'coupon_id' =>  $request->coupon_id,
             'guest_name' =>  $guest_name,
             'guest_email' =>  $guest_email,
             'guest_phone' =>  $guest_phone,
@@ -110,4 +112,18 @@ class BookingClientController extends Controller
 
         return MessageStatusAPI::store($booking);
     }
+
+    public function cancelBooking($id) {
+        $booking = Booking::find($id);
+        if ($booking->checkin_date->diffInDays(now()) >= 2 ) {
+            $booking->update([
+                'status' => BookingStatusEnum::CANCELLED
+            ]);
+        } else {
+            return response(['Bạn không thể hủy vào lúc này!']);
+        }
+
+        return MessageStatusAPI::update();
+    }
+
 }
