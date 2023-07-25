@@ -53,18 +53,20 @@
           <div class="col-sm-4 wow fadeIn">
             <div class="border rounded p-1">
               <div class="border rounded text-center p-4">
-                <i class="fa fa-hotel fa-2x text-primary mb-2"></i>
-                <h2 class="mb-1" data-toggle="counter-up">1234</h2>
-                <p class="mb-0">Khách sạn</p>
+                <!-- <i class="fa fa-map-marker fa-2x text-primary mb-2"></i> -->
+                <i class="fa fa-globe fa-2x text-primary mb-2"></i>
+
+                <h2 class="mb-1" data-toggle="counter-up">{{ countRegions }}</h2>
+                <p class="mb-0">Tỉnh thành</p>
               </div>
             </div>
           </div>
           <div class="col-sm-4 wow fadeIn" data-wow-delay="0.3s">
             <div class="border rounded p-1">
               <div class="border rounded text-center p-4">
-                <i class="fa fa-users-cog fa-2x text-primary mb-2"></i>
-                <h2 class="mb-1" data-toggle="counter-up">1234</h2>
-                <p class="mb-0">Phòng</p>
+                <i class="fa fa-hotel fa-2x text-primary mb-2"></i>
+                <h2 class="mb-1" data-toggle="counter-up">{{ countHotels }}</h2>
+                <p class="mb-0">Khách sạn</p>
               </div>
             </div>
           </div>
@@ -72,8 +74,8 @@
             <div class="border rounded p-1">
               <div class="border rounded text-center p-4">
                 <i class="fa fa-users fa-2x text-primary mb-2"></i>
-                <h2 class="mb-1" data-toggle="counter-up">1234</h2>
-                <p class="mb-0">Số khách hàng</p>
+                <h2 class="mb-1" data-toggle="counter-up">{{ countUsers }}</h2>
+                <p class="mb-0">Khách hàng</p>
               </div>
             </div>
           </div>
@@ -204,18 +206,17 @@
   </div>
 </div>
 
-<div class="modal fade" id="videoModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" #videoModal id="videoModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content rounded-0">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">Youtube Video</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="closeModal()"></button>
       </div>
       <div class="modal-body">
         <!-- 16:9 aspect ratio -->
-        <div class="ratio ratio-16x9">
-          <iframe class="embed-responsive-item" src="" id="video" allowfullscreen allowscriptaccess="always"
-            allow="autoplay"></iframe>
+        <div class="ratio ratio-16x9" (click)="openModal()">
+            <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/dQw4w9WgXcQ?&autoplay=1&mute=1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
         </div>
       </div>
     </div>

@@ -81,6 +81,9 @@ export class BookingComponent implements OnInit {
   selectedCouponId: any;
   originalTotalAmount: number;
   currentTotalAmount: number;
+  showCouponInputFlag: boolean = false;
+  couponCode: string;
+  showBtnApply: boolean = true;
 
   // Dữ liệu được trả lại sau khi thêm đơn
   resData: any
@@ -103,7 +106,7 @@ export class BookingComponent implements OnInit {
     private HotelClientService: HotelClientService,
     private CouponClientService: CouponClientService,
     private router: Router,
-    ) {
+  ) {
 
   }
   ngOnInit() {
@@ -147,7 +150,6 @@ export class BookingComponent implements OnInit {
       this.displayDateOut = moment(dateOut, 'DD-MM-YYYY').format('ddd, DD MMM YYYY');
       this.roomTypeData = resultArray;
       this.totalAmount = totalAmount;
-      this.originalTotalAmount = this.totalAmount;
       this.currentTotalAmount = this.totalAmount;
       // Thêm dữ liệu từ sessionStorage vào form
       const itemsArray = this.userform.get('items') as FormArray;
@@ -191,26 +193,28 @@ export class BookingComponent implements OnInit {
 
   // Lấy dữ liệu khách sạn
   getHotel(id: any) { // Lấy giá trị ID từ URL
-      this.HotelClientService.findOne(id).subscribe({
+    this.HotelClientService.findOne(id).subscribe({
 
-        next: (res) => {
-          console.log(res);
+      next: (res) => {
+        console.log(res);
 
-          this.hotels = res.data;
-          this.hotel_name = res.data[0].hotel_name;
-          this.hotelRoomTypeData = res.data[0].room_type;
-        },
-        error: (err) => {{
+        this.hotels = res.data;
+        this.hotel_name = res.data[0].hotel_name;
+        this.hotelRoomTypeData = res.data[0].room_type;
+      },
+      error: (err) => {
+        {
           console.log('Đã xảy ra lỗi khi gọi API:', err);
-        }}
-      });
+        }
+      }
+    });
   }
 
   // Kiểm tra đăng nhập (nếu không đăng nhập thì không có mã giảm)
-  async checkLogin(){
-    let userLogged:any = sessionStorage.getItem('user');
+  async checkLogin() {
+    let userLogged: any = sessionStorage.getItem('user');
     let user = JSON.parse(userLogged);
-    if(user){
+    if (user) {
       this.notLogin = false;
       this.getCoupons();
     } else {
@@ -220,15 +224,17 @@ export class BookingComponent implements OnInit {
   }
 
   // Lấy dữ liệu mã giảm
-  getCoupons(){
+  getCoupons() {
     let obs = this.CouponClientService.getCoupons().subscribe({
       next: (res) => {
         this.coupons = res.data;
         console.log(this.coupons)
       },
-      error: (err) => {{
-        this.message.create(ERROR, err.message);
-      }}
+      error: (err) => {
+        {
+          this.message.create(ERROR, err.message);
+        }
+      }
     })
     this.subscription.add(obs);
   }
@@ -246,13 +252,12 @@ export class BookingComponent implements OnInit {
       console.log(formValue);
       this.confirmationService.confirm({
         message: 'Bạn có chắc chắn thông tin đã đúng chứ?',
-        accept: async() => {
+        accept: async () => {
           let newData = this.userform.value;
           let create = this.BookingClientService.createBooking(newData);
           await create.subscribe({
             next: (res) => {
               console.log(res);
-              sessionStorage.clear();
               this.resData = res.data;
               sessionStorage.setItem('hotel_Id', this.hotel_Id.toString());
               sessionStorage.setItem('resData', JSON.stringify(this.resData));
@@ -270,47 +275,46 @@ export class BookingComponent implements OnInit {
             error: (err) => {
               this.message.create(ERROR, err.error.message);
             }
-      })
+          })
         },
         reject: () => {
           // Xử lý khi nhấn No
           // Đóng confirm popup
         }
       });
-
-
-
-
     } else {
       this.messageService.add({ severity: 'warn', summary: 'Cảnh báo', detail: 'Bạn chưa nhập đủ thông tin' });
     }
   }
 
   // chạy khi chọn 1 mã
-  onCouponSelected(event: any) {
-    this.selectedCouponId = event.value.id;
-    if (this.selectedCouponId) {
-      this.selectedCoupon = this.coupons.find(coupon => coupon.id === this.selectedCouponId);
-      if (this.selectedCoupon) {
-        this.currentTotalAmount = this.calculateTotalPrice(this.selectedCoupon.value, this.selectedCoupon.type);
-        this.userform.patchValue({
-          'coupon_id': this.selectedCouponId,
-          'total_price': this.currentTotalAmount || null,
-        });
-        this.messageService.add({ severity: 'success', summary: 'Thành công', detail: `Total Price: ${this.currentTotalAmount} VND` });
-      }
-    } else {
-      this.selectedCoupon = null;
-      this.messageService.add({ severity: 'warn', summary: 'Cảnh báo', detail: 'Vui lòng chọn mã giảm giá trước khi tính toán.' });
-    }
-  }
+  // onCouponSelected(event: any) {
+  //   this.selectedCouponId = event.value.id;
+  //   if (this.selectedCouponId) {
+  //     this.selectedCoupon = this.coupons.find(coupon => coupon.id === this.selectedCouponId);
+  //     if (this.selectedCoupon) {
+  //       this.currentTotalAmount = this.calculateTotalPrice(this.selectedCoupon.value, this.selectedCoupon.type);
+  //       this.userform.patchValue({
+  //         'coupon_id': this.selectedCouponId,
+  //         'total_price': this.currentTotalAmount || null,
+  //       });
+  //       this.messageService.add({ severity: 'success', summary: 'Thành công', detail: `Total Price: ${this.currentTotalAmount} VND` });
+  //     }
+  //   } else {
+  //     this.selectedCoupon = null;
+  //     this.messageService.add({ severity: 'warn', summary: 'Cảnh báo', detail: 'Vui lòng chọn mã giảm giá trước khi tính toán.' });
+  //   }
+  // }
 
   // Tính toán số tiền sau khi nhập mã giảm
-  calculateTotalPrice(couponValue: number, couponType: string): number {
-    let finalPrice = this.originalTotalAmount;
+  calculateTotalPrice(couponValue: number, couponType: string, maxDiscount: number): number {
+    let finalPrice = this.totalAmount;
 
     if (couponType === 'percent') {
       this.discountAmount = (couponValue / 100) * this.totalAmount;
+      if (this.discountAmount > maxDiscount) {
+        this.discountAmount = maxDiscount;
+      }
       finalPrice = this.totalAmount - this.discountAmount;
     } else if (couponType === 'value') {
       this.discountAmount = couponValue;
@@ -318,6 +322,74 @@ export class BookingComponent implements OnInit {
     }
 
     return finalPrice;
+  }
+
+  // Hiển thị input để nhập mã giảm giá khi nhấn nút "Áp dụng mã giảm giá"
+  showCouponInput() {
+    this.showCouponInputFlag = true;
+    this.showBtnApply = false;
+  }
+
+  // Hủy input mã giảm giá và hiển thị lại nút "Áp dụng mã giảm giá"
+  cancelCouponInput() {
+    this.showCouponInputFlag = false;
+    this.showBtnApply = true;
+    this.couponCode = '';
+  }
+  // Kiểm tra mã giảm giá khi nhấn nút "Kiểm tra"
+  // checkCoupon(couponCode: any) {
+  //   debugger
+  //   this.CouponClientService.findByCode(couponCode).subscribe({
+  //     next: (res) => {
+  //       console.log(res);
+  //       this.coupons = res.data;
+  //       this.discountAmount = this.calculateTotalPrice(res.data.value, res.data.type);
+  //     },
+  //     error: (err) => {
+  //       {
+  //         console.log('Đã xảy ra lỗi khi gọi API:', err);
+  //       }
+  //     }
+  //   });
+  //   this.showCouponInputFlag = false;
+  // }
+
+  async checkCoupon(couponCode: any) {
+    if (couponCode) {
+      // Xử lý khi form hợp lệ
+
+      this.confirmationService.confirm({
+        message: 'Bạn có chắc chắn dùng mã giảm giá này?',
+        accept: async () => {
+          debugger
+          await this.CouponClientService.findByCode(couponCode).subscribe({
+            next: (res) => {
+              console.log(res);
+              this.selectedCoupon = res.data;
+              this.selectedCouponId = res.data.id;
+              this.currentTotalAmount = this.calculateTotalPrice(res.data.value, res.data.type, res.data.max);
+              this.showCouponInputFlag = false;
+              this.userform.patchValue({
+                'coupon_id': this.selectedCouponId,
+                'total_price': this.currentTotalAmount || null,
+              });
+              this.messageService.add({ severity: 'success', summary: 'Thành công', detail: 'Oke luông (●´ω｀●)' });
+            },
+            error: (err) => {
+              {
+                this.messageService.add({ severity: 'warn', summary: 'Cảnh báo', detail: 'Sai mã hoặc mã k tồn tại (╥﹏╥)' });
+              }
+            }
+          });
+        },
+        reject: () => {
+          // Xử lý khi nhấn No
+          // Đóng confirm popup
+        }
+      });
+    } else {
+      this.messageService.add({ severity: 'warn', summary: 'Cảnh báo', detail: 'Nhập mã vào rồi mới nhấn!' });
+    }
   }
 
 

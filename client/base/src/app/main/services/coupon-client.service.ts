@@ -23,5 +23,9 @@ export class CouponClientService {
     const url = `${this.API_URL}/${COUPONS}`;
     return this.http.get<any>(url);
   }
+  findByCode(name: any): Observable<any> {
+    const url = `${this.API_URL}/${COUPONS}/check/${name}`;
+    return this.http.get<any>(url);
+  }
 
 }
