@@ -65,30 +65,18 @@ export class RoomsComponent implements OnInit, OnDestroy {
   }
 
   getRooms() {
-    let obs = this.roomsService.getRooms().subscribe({
-      next: (room) => {
-        this.rooms = room.data;
-        this.viewNameStatus(room.data);
-        console.log(room)
-      },
-      error: (err) => {
-        this.message.create(ERROR, `${err.error.message}`)
-        this.message.create(ERROR, `${err.message}`)
-      },
-    });
-
-    this.subscription.add(obs);
+    // this.viewNameStatus();
   }
 
-  async viewNameStatus(rooms:any){
-    for (const item of rooms) {
-      this.statusOption.forEach((status:any) => {
-        if(item.status == status.value){
-          item.txtStatus = status.text;
-        }
-      });
-    }
-  }
+  // async viewNameStatus(){
+  //   for (const item of this.room) {
+  //     this.statusOption.forEach((status:any) => {
+  //       if(item.status == status.value){
+  //         item.txtStatus = status.text;
+  //       }
+  //     });
+  //   }
+  // }
 
 
   addRoom() {

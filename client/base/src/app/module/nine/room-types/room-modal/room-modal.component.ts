@@ -9,12 +9,14 @@ export class RoomModalComponent implements OnInit {
 
   @Input() displayRoom: boolean
   @Input() room: any[] = [];
+  @Input() hotel: any;
+  @Input() roomType_name: any;
   @Output() closeModal = new EventEmitter<any>();
 
   constructor() { }
 
   ngOnInit() {
-    console.log(this.room);
+    console.log(this.hotel);
   }
 
   handleCancel(){

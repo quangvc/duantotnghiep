@@ -43,6 +43,10 @@ export class RoomTypesComponent implements OnInit, OnDestroy {
 
   room: any;
 
+  hotel: any;
+
+  roomType_name: any;
+
   ngOnInit() {
     this.createFormFilter();
     this.getRoomTypes();
@@ -178,6 +182,8 @@ export class RoomTypesComponent implements OnInit, OnDestroy {
   showRoom(data:any){
     this.displayRoom = true;
     this.room = data.room;
+    this.hotel = data.hotel;
+    this.roomType_name = data.name;
   }
 
   cancel(event:any){

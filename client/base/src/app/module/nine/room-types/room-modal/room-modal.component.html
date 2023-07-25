@@ -1,6 +1,6 @@
 <nz-modal
   [(nzVisible)]="displayRoom"
-  [nzTitle]="'single'"
+  [nzTitle]="hotel.name + ' > ' + roomType_name"
   nzWidth="1400px"
   (nzOnCancel)="handleCancel()"
 >
