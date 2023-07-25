@@ -75,13 +75,13 @@ class PaymentController extends Controller
             $query .= urlencode($key) . "=" . urlencode($value) . '&';
         }
 
-        // $vnp_Url = $vnp_Url . "?" . $query;
+        $vnp_Url = $vnp_Url . "?" . $query;
         if (env('VNP_HASHSECRET')) {
-            $vnpSecureHash =   hash_hmac('sha512', $hashdata, env('VNP_HASHSECRET'));
-            $query .= 'vnp_SecureHash=' . $vnpSecureHash;
+            $vnpSecureHash = hash_hmac('sha512', $hashdata, env('VNP_HASHSECRET'));
+            $vnp_Url .= 'vnp_SecureHash=' . $vnpSecureHash;
         }
         $returnData = array(
-            'code' => '00', 'message' => 'success', 'data' => $vnp_Url, 'query' => $query
+            'code' => '00', 'message' => 'success', 'data' => $vnp_Url
         );
 
         return $returnData;
@@ -93,7 +93,7 @@ class PaymentController extends Controller
         //     return response([
         //         "Error redirect"
         //     ]);
-        //     // echo json_encode($returnData);
+            // echo json_encode($returnData);
         // }
     }
 
@@ -159,7 +159,7 @@ class PaymentController extends Controller
                                         $coupon->decrement('quantity')
                                     ]);
                                 }
-                                Notification::route('mail', $booking->guest_email)->notify(new SendMailPaymentNotification($booking->booking_number));
+                                // Notification::route('mail', $booking->guest_email)->notify(new SendMailPaymentNotification($booking->booking_number));
                             }
 
                             //Trả kết quả về cho VNPAY: Website/APP TMĐT ghi nhận yêu cầu thành công
