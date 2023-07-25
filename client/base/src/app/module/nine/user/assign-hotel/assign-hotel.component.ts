@@ -67,7 +67,6 @@ export class AssignHotelComponent implements OnInit , OnDestroy{
     let hotelFake:any[] = [];
     this.users.forEach(user => {
       if(user.hotelId){
-        // let a = this.hotels.find(h => h.id == user.hotelId);
         hotelFake.push(user.hotel);
       }
     });
