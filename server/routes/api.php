@@ -33,6 +33,7 @@ use App\Http\Controllers\API\Client\UserClientController;
 use App\Http\Controllers\Api\Client\CommentClientController;
 use App\Http\Controllers\KeywordController;
 use App\Http\Controllers\PaymentController;
+use App\Models\Booking;
 use App\Notifications\SendMailPaymentNotification;
 use Illuminate\Support\Facades\Notification;
 
@@ -60,8 +61,9 @@ Route::post('/reset-password', [AuthController::class, 'updatepass'])->name('pas
 Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logout']);
 Route::middleware('auth:sanctum')->put('/change-password', [AuthController::class, 'changePassword']);
 
-Route::get('/test', function () {
-    Notification::route('mail', 'huyit0811@gmail.com')->notify(new SendMailPaymentNotification('123'));
+Route::get('/sendMail/{booking_number}', function ($booking_number) {
+    $booking = Booking::where('booking_number', '=', $booking_number)->first();
+    Notification::route('mail', $booking->guest_email)->notify(new SendMailPaymentNotification($booking_number));
 });
 Route::post('/vnpay-payment', [PaymentController::class, 'vnpay_payment']);
 
