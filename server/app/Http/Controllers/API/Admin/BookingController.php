@@ -168,7 +168,14 @@ class BookingController extends Controller
                 }
             }
             return 'Xếp phòng thành công!';
-
         }
+    }
+
+    public function checkout($id) {
+        $booking = Booking::find($id);
+        $booking->update([
+            'status' => 4,
+            'checkout_date' => now()
+        ]);
     }
 }
