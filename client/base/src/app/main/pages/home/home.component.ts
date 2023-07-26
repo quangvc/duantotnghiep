@@ -24,8 +24,8 @@ export class HomeComponent implements OnInit {
   @ViewChild('videoModal') videoModal!: ElementRef;
   private subscription = new Subscription();
 
-  sessionUser:any = sessionStorage.getItem('user');
-  user:any = JSON.parse(this.sessionUser);
+  sessionUser: any = sessionStorage.getItem('user');
+  user: any = JSON.parse(this.sessionUser);
 
   constructor(
     private HotelClientService: HotelClientService,
@@ -33,7 +33,16 @@ export class HomeComponent implements OnInit {
     private message: NzMessageService,
     private BlogClientService: BlogClientService,
     private AuthClientService: AuthClientService,
-    ) { }
+  ) {
+    // Tạo ngày hiện tại
+    const currentDate = moment();
+
+    // Thêm 1 ngày vào ngày hiện tại
+    const nextDay = currentDate.add(1, 'days');
+
+    // Lưu giá trị vào biến minimumDate
+    this.minimumDate = nextDay.toDate();
+  }
 
   videoUrl: string | null = null;
   hotels: any[] = [];
@@ -51,9 +60,10 @@ export class HomeComponent implements OnInit {
   ratings: number[] = []; // Biến trung gian để lưu trữ giá trị xếp hạng
   formStar!: FormGroup;
   statusOption: any;
-  role:any;
+  role: any;
   starRating: number = 0;
   users: any[] = [];
+  minimumDate: Date;
 
 
   countUsers: any;
@@ -70,7 +80,7 @@ export class HomeComponent implements OnInit {
     this.getUsers()
   }
 
-  getRegions(){
+  getRegions() {
     let obs = this.RegionsClientService.getRegions().subscribe({
       next: (res) => {
         this.regions = res.data.slice(0, 3);
@@ -80,28 +90,32 @@ export class HomeComponent implements OnInit {
         // this.regions = limitedData
         // this.getImage();
       },
-      error: (err) => {{
-        this.message.create(ERROR, err.message);
-      }}
+      error: (err) => {
+        {
+          this.message.create(ERROR, err.message);
+        }
+      }
     })
     this.subscription.add(obs);
   }
 
-  getHotels(){
+  getHotels() {
     let obs = this.HotelClientService.getHotels().subscribe({
       next: (res) => {
         this.hotels = res.data.slice(0, 6);
         this.starRating = res.data.star_rating;
         this.countHotels = res.data.length;
       },
-      error: (err) => {{
-        this.message.create(ERROR, err.message);
-      }}
+      error: (err) => {
+        {
+          this.message.create(ERROR, err.message);
+        }
+      }
     })
     this.subscription.add(obs);
   }
 
-  getUsers(){
+  getUsers() {
     let obs = this.AuthClientService.getUsers().subscribe({
       next: (res) => {
         this.users = res.data;
@@ -109,9 +123,11 @@ export class HomeComponent implements OnInit {
         console.log(this.countUsers);
 
       },
-      error: (err) => {{
-        this.message.create(ERROR, err.message);
-      }}
+      error: (err) => {
+        {
+          this.message.create(ERROR, err.message);
+        }
+      }
     })
     this.subscription.add(obs);
   }
@@ -150,15 +166,17 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  getBlogs(){
+  getBlogs() {
     // let obs = this.BlogClientService.getBlogs().subscribe({
     let obs = this.BlogClientService.getBlogs().subscribe({
       next: (res) => {
         this.blogs = res.data;
       },
-      error: (err) => {{
-        this.message.create(ERROR, err.message);
-      }}
+      error: (err) => {
+        {
+          this.message.create(ERROR, err.message);
+        }
+      }
     })
     this.subscription.add(obs);
   }

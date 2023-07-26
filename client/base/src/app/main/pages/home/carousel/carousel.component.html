@@ -1,9 +1,10 @@
 <!-- Carousel Start -->
-<div class="container-fluid p-0 mb-5">
+<div class="carousel-edit container-fluid p-0 mb-5">
   <div id="header-carousel" class="carousel slide" data-bs-ride="carousel">
     <div class="carousel-inner">
       <ng-container *ngFor="let item of banners; let i = index">
         <div class="carousel-item" [class.active]="i === 0">
+          <!-- Ảnh trong carousel sẽ có kích thước cố định là 100% chiều rộng và 300px chiều cao -->
           <img class="w-100" [src]="'http://127.0.0.1:8000/Images/banners/' + item.image" alt="Image">
           <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
             <div class="p-3" style="max-width: 700px;">
@@ -24,29 +25,5 @@
       <span class="visually-hidden">Next</span>
     </button>
   </div>
-
-  <!-- <p-carousel [value]="banners" styleClass="custom-carousel" [numVisible]="3" [numScroll]="1" [circular]="true"
-    [autoplayInterval]="3000" [responsiveOptions]="responsiveOptions">
-    <ng-template let-product pTemplate="item">
-      <div class="product-item">
-        <div class="product-item-content">
-          <div class="p-mb-3">
-          </div>
-          <div>
-            <h4 class="p-mb-1">{{product.name}}</h4>
-            <h6 class="p-mt-0 p-mb-3">${{product.price}}</h6>
-            <span
-              [class]="'product-badge status-'+product.inventoryStatus.toLowerCase()">{{product.inventoryStatus}}</span>
-            <div class="car-buttons p-mt-5">
-              <p-button type="button" styleClass="p-button p-button-rounded p-mr-2" icon="pi pi-search"></p-button>
-              <p-button type="button" styleClass="p-button-success p-button-rounded p-mr-2"
-                icon="pi pi-star"></p-button>
-              <p-button type="button" styleClass="p-button-help p-button-rounded" icon="pi pi-cog"></p-button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </ng-template>
-  </p-carousel> -->
 </div>
 <!-- Carousel End -->

@@ -1,189 +1,242 @@
-<!-- Page Header Start -->
-<div class="container-fluid page-header mb-5 p-0" style="background-image: url(../../../assets/image/carousel-1.jpg);">
-  <div class="container-fluid page-header-inner py-5">
-    <div class="container text-center pb-5">
-      <h1 class="display-3 text-white mb-3 animated slideInDown">Hotels</h1>
-      <nav aria-label="breadcrumb">
-        <ol class="breadcrumb justify-content-center text-uppercase">
-          <li class="breadcrumb-item"><a href="#">Home</a></li>
-          <li class="breadcrumb-item"><a href="#">Pages</a></li>
-          <li class="breadcrumb-item text-white active" aria-current="page">Hotels</li>
-        </ol>
-      </nav>
-    </div>
-  </div>
-</div>
-<!-- Page Header End -->
-
-
-<!-- Booking Start -->
-<div class="container-fluid booking pb-5 wow fadeIn" data-wow-delay="0.1s">
-  <div class="container">
-    <div class="bg-white shadow" style="padding: 35px;">
-      <div class="row g-2">
-        <div class="col-md-10">
-          <div class="row g-2">
-            <div class="col-md-3">
-              <div class="date" id="date1" data-target-input="nearest">
-                <input type="text" class="form-control datetimepicker-input" placeholder="Check in" data-target="#date1"
-                  data-toggle="datetimepicker" />
-              </div>
-            </div>
-            <div class="col-md-3">
-              <div class="date" id="date2" data-target-input="nearest">
-                <input type="text" class="form-control datetimepicker-input" placeholder="Check out"
-                  data-target="#date2" data-toggle="datetimepicker" />
-              </div>
-            </div>
-            <div class="col-md-3">
-              <select class="form-select">
-                <option selected>Adult</option>
-                <option value="1">Adult 1</option>
-                <option value="2">Adult 2</option>
-                <option value="3">Adult 3</option>
-              </select>
-            </div>
-            <div class="col-md-3">
-              <select class="form-select">
-                <option selected>Child</option>
-                <option value="1">Child 1</option>
-                <option value="2">Child 2</option>
-                <option value="3">Child 3</option>
-              </select>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-2">
-          <a href="filter" class="btn btn-primary w-100">Submit</a>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-<!-- Booking End -->
-
-
-
 <!-- Room Start -->
-<div class="container-xxl py-5">
+<div class="container-xxl py-5 " style="background-color: #f7f9fa;">
   <div class="container">
-    <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
-      <!-- <h6 class="section-title text-center text-primary text-uppercase">Our Hotels</h6> -->
-
-        <h1 class="mb-4"><strong>Khám phá các <span class="text-primary text-uppercase">Khác sạn của chúng tôi</span></strong></h1>
-
-    </div>
     <div class="row mt-5">
-      <div class="col-lg-4 wow fadeInUp" data-wow-delay="0.1s">
-        <div class="room-item shadow rounded-3 overflow-hidden p-2 ">
-          <div class="hotel-city">
-            <div class="hotel-district-title">
-              <h6><strong>Khách sạn ở các thành phố nổi tiếng</strong></h6>
-            </div>
-            <div *ngFor="let region of regions;">
-              <div class="hotel-district-item">
-                <a href="hotels/region/{{ region.id }}" class=""><strong>{{ region.name }}</strong> </a>
+      <!-- Left -->
+      <div class="col-lg-3">
+        <!-- Sort start -->
+        <div class="rounded-3 border border-3 overflow-hidden p-2 mb-3 bg-white">
+          <div>
+            <h5 class="fw-bold">Sắp xếp kết quả</h5>
+            <h6>Sắp xếp kết quả theo lựa chọn</h6>
+          </div>
+          <hr>
+          <div>
+            <div class="">
+              <div class="d-flex flex-column gap-3">
+                <div class="flex align-items-center">
+                  <p-radioButton name="sort" value="highestPrice" [(ngModel)]="sortRadio"
+                    inputId="sortRadio1"></p-radioButton>
+                  <label for="sortRadio1" class="ml-2 fw-medium">Giá cao nhất</label>
+                </div>
+
+                <div class="flex align-items-center">
+                  <p-radioButton name="sort" value="lowestPrice" [(ngModel)]="sortRadio"
+                    inputId="sortRadio2"></p-radioButton>
+                  <label for="sortRadio2" class="ml-2 fw-medium">Giá thấp nhất</label>
+                </div>
+
+                <div class="flex align-items-center">
+                  <p-radioButton name="sort" value="pointEvaluation" [(ngModel)]="sortRadio"
+                    inputId="sortRadio3"></p-radioButton>
+                  <label for="sortRadio3" class="ml-2 fw-medium">Điểm đánh giá</label>
+                </div>
+
+                <div class="flex align-items-center">
+                  <p-radioButton name="sort" value="popularity" [(ngModel)]="sortRadio"
+                    inputId="sortRadio4"></p-radioButton>
+                  <label for="sortRadio4" class="ml-2 fw-medium">Độ phổ biến</label>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-      <div class="col-lg wow fadeInUp" data-wow-delay="0.3s">
-        <h2><strong>Các khách sạn được yêu thích ở  {{ regionName ? regionName : 'Khu vực' }}</strong></h2>
-        <div class="room-item shadow rounded-4 overflow-hidden mb-3" *ngFor="let data of hotels;">
-          <div class="position-relative w-100" >
-            <div class="row">
-              <div class="col p-0" *ngFor="let image of data.images; let i=index">
-                <img style="width: 100%;" [src]="'http://127.0.0.1:8000/Images/'+image.path" alt="" *ngIf="i<3">
-              </div>
+        <!-- Sort start -->
 
-            </div>
-            <small
-              class="position-absolute start-0 top-100 translate-middle-y bg-primary text-white rounded py-1 px-3 ms-4">Hotel</small>
+        <!-- Start Khu vực -->
+        <div class="rounded-3 border border-3 overflow-hidden p-2 mb-3 bg-white">
+          <div>
+            <h5 class="fw-bold">Khu vực</h5>
+            <h6>Hiển thị khách sạn theo khu vực</h6>
           </div>
-          <div class="p-4 mt-2">
-            <div class="d-flex justify-content-between mb-3">
-              <h5 class="mb-0">{{ data.hotel_name }}</h5>
-              <div class="flex justify-content-center">
+          <hr>
+          <div>
+            <div class="">
+              <div class="d-flex flex-column gap-3">
+                <div *ngFor="let region of regions">
+                  <p-radioButton name="regionOption" [value]="region.id" [(ngModel)]="selectedRegion" (onClick)="onRegionSelected(region.id)"></p-radioButton>
+                  <label>{{ region.name }}</label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- End Khu vực -->
+
+        <!-- Filter start -->
+        <!-- <div class="room-item rounded-3 border border-3 overflow-hidden mb-3 bg-white">
+          <div class="p-2">
+            <div class="d-flex justify-content-between">
+              <h5 class="fw-bold">Lọc kết quả</h5>
+              <a href="">Đặt lại bộ lọc</a>
+            </div>
+            <h6>Lọc kết quả phân loại theo:</h6>
+            <hr>
+          </div>
+
+          <p-accordion [multiple]="true" [activeIndex]="[0]" class="accordion-override">
+            <p-accordionTab [selected]="isExpanded">
+              <ng-template pTemplate="header">
+                <h6 class="fw-bold">Chính sách đặt phòng</h6>
+              </ng-template>
+              <ng-template pTemplate="content">
+                <div class="d-flex align-items-center mb-2">
+                  <p-checkbox [binary]="true" inputId="binary"></p-checkbox>
+                  <label for="binary" class="ml-3 fw-medium">Miễn phí hủy phòng</label>
+                </div>
+              </ng-template>
+            </p-accordionTab>
+            <p-accordionTab [selected]="isExpanded">
+              <ng-template pTemplate="header">
+                <h6 class="fw-bold">Khoảng giá phòng mỗi đêm</h6>
+              </ng-template>
+              <ng-template pTemplate="content">
+                <div class="d-flex justify-content-between mb-4">
+                  <div class="px-4 py-2 rounded-4 border border-1 me-3">
+                    <span class="fw-bold">VND</span> 0
+                  </div>
+                  <div class="px-4 py-2 rounded-4 border border-1">
+                    <span class="fw-bold">VND</span> 24.000.000
+                  </div>
+                </div>
+                <p-slider [(ngModel)]="rangeValues" [range]="true"></p-slider>
+              </ng-template>
+            </p-accordionTab>
+            <p-accordionTab [selected]="isExpanded">
+              <ng-template pTemplate="header">
+                <h6 class="fw-bold">Hạng sao</h6>
+              </ng-template>
+              <ng-template pTemplate="content">
+                <div class="d-flex align-items-center mb-2">
+                  <p-checkbox [binary]="true" inputId="binary"></p-checkbox>
+                  <div class="ps-2">
+                    <small class="fa fa-star text-primary fs-6"></small>
+                  </div>
+                </div>
+                <div class="d-flex align-items-center mb-2">
+                  <p-checkbox [binary]="true" inputId="binary"></p-checkbox>
+                  <div class="ps-2">
+                    <small class="fa fa-star text-primary fs-6"></small>
+                    <small class="fa fa-star text-primary fs-6"></small>
+                  </div>
+                </div>
+                <div class="d-flex align-items-center mb-2">
+                  <p-checkbox [binary]="true" inputId="binary"></p-checkbox>
+                  <div class="ps-2">
+                    <small class="fa fa-star text-primary fs-6"></small>
+                    <small class="fa fa-star text-primary fs-6"></small>
+                    <small class="fa fa-star text-primary fs-6"></small>
+                  </div>
+                </div>
+                <div class="d-flex align-items-center mb-2">
+                  <p-checkbox [binary]="true" inputId="binary"></p-checkbox>
+                  <div class="ps-2">
+                    <small class="fa fa-star text-primary fs-6"></small>
+                    <small class="fa fa-star text-primary fs-6"></small>
+                    <small class="fa fa-star text-primary fs-6"></small>
+                    <small class="fa fa-star text-primary fs-6"></small>
+                  </div>
+                </div>
+                <div class="d-flex align-items-center mb-2">
+                  <p-checkbox [binary]="true" inputId="binary"></p-checkbox>
+                  <div class="ps-2">
+                    <small class="fa fa-star text-primary fs-6"></small>
+                    <small class="fa fa-star text-primary fs-6"></small>
+                    <small class="fa fa-star text-primary fs-6"></small>
+                    <small class="fa fa-star text-primary fs-6"></small>
+                    <small class="fa fa-star text-primary fs-6"></small>
+                  </div>
+                </div>
+              </ng-template>
+            </p-accordionTab>
+            <p-accordionTab [selected]="isExpanded">
+              <ng-template pTemplate="header">
+                <h6 class="fw-bold">Tiện nghi</h6>
+              </ng-template>
+              <ng-template pTemplate="content">
+                <div class="d-flex align-items-center mb-2">
+                  <p-checkbox [binary]="true" inputId="binary"></p-checkbox>
+                  <label for="binary" class="ml-3 fw-medium">Wifi</label>
+                </div>
+                <div class="d-flex align-items-center mb-2">
+                  <p-checkbox [binary]="true" inputId="binary"></p-checkbox>
+                  <label for="binary" class="ml-3 fw-medium">Hồ bơi</label>
+                </div>
+                <div class="d-flex align-items-center mb-2">
+                  <p-checkbox [binary]="true" inputId="binary"></p-checkbox>
+                  <label for="binary" class="ml-3 fw-medium">Chỗ để xe</label>
+                </div>
+                <div class="d-flex align-items-center mb-2">
+                  <p-checkbox [binary]="true" inputId="binary"></p-checkbox>
+                  <label for="binary" class="ml-3 fw-medium">Thang máy</label>
+                </div>
+                <div class="d-flex align-items-center mb-2">
+                  <p-checkbox [binary]="true" inputId="binary"></p-checkbox>
+                  <label for="binary" class="ml-3 fw-medium">Lễ tân 24h</label>
+                </div>
+              </ng-template>
+            </p-accordionTab>
+          </p-accordion>
+        </div> -->
+        <!-- Filter end -->
+      </div>
+
+      <!-- Right -->
+      <div class="col-lg wow fadeInUp" data-wow-delay="0.3s">
+        <div class="d-flex flex-row border border-1 rounded-4 p-3 mb-3 bg-white">
+          <img src="./../../../assets/image/gift.png" alt="" class="me-3">
+          <div class="my-auto">
+            <p class="fw-bold">Đăng nhập hoặc Đăng ký và tận hưởng ưu đãi dành riêng cho thành viên</p>
+            <a href="login" class="fw-bold">Đăng nhập hoặc đăng ký</a>
+          </div>
+        </div>
+        <div class="d-flex justify-content-between">
+          <div class="p-inputgroup">
+            <span class="p-inputgroup-addon">
+              <i class="pi pi-search"></i>
+            </span>
+            <input class="w-10 px-2" style="border: 1px solid #e9ecef;" pInputText
+              placeholder="Thành phố, khách sạn hoặc điểm đến" #searchInput />
+            <button (click)="onSearch(searchInput.value)">Search</button>
+            <!-- <button (click)="resetSearch()">Reset</button> -->
+          </div>
+        </div>
+        <!-- Start Thông tin -->
+
+        <div class="d-flex justify-content-between mt-4 bg-white border border-1 mb-3" *ngFor="let data of hotels">
+          <div class="col-4 p-0">
+            <a href="/hotel/{{ data.id }}">
+              <!-- <img style="width: 100%;" src="./../../../assets/image/ks1.jpg" alt=""> -->
+              <img *ngIf="data.images[0]" style="width: 100%;" [src]="'http://127.0.0.1:8000/Images/'+data.images[0].path" alt="">
+            </a>
+          </div>
+          <div class="col">
+            <a href="/hotel/{{ data.id }}">
+              <h5><strong>Khách sạn {{ data.hotel_name }}</strong></h5>
+            </a>
+
+            <h6><strong>{{ data.hotel_name }}</strong></h6>
+            <div class="d-flex mb-2">
+              <small class="bg-primary text-white rounded-5 py-1 px-3"><strong>Hotel</strong>
+              </small>
+              <div class="ps-2">
                 <form [formGroup]="formStar">
-                    <p-rating formControlName="value" [cancel]="false" [readonly]="true"></p-rating>
+                  <p-rating class="my-auto" formControlName="value" [cancel]="false" [readonly]="true"></p-rating>
                 </form>
               </div>
             </div>
-            <div class="d-flex mb-3">
-              <i class="fa fa-map-marker text-primary mt-1 me-3"></i>
-              <p class="text-body mb-3">{{ data.hotel_address }}</p>
-            </div>
-            <!-- <line-clamp [row]="3">
-              <div #content>
-                <p class="text-body mb-3">{{ data.description }}.</p>
-              </div>
-            </line-clamp> -->
-            <div class="d-flex justify-content-between">
-              <a class="btn btn-sm btn-primary rounded py-2 px-4" href="/hotel/{{ data.id }}">View Detail</a>
+            <div class="mb-2">
+              <i class="fa fa-map-marker text-primary me-3"></i>
+              <span>{{ data.hotel_address }}</span>
             </div>
           </div>
         </div>
+        <!-- End Thông tin -->
 
-
-
-
-        <!-- <div class="room-item shadow rounded-4 overflow-hidden mb-3">
-          <div class="position-relative">
-            <img class="img-fluid" src="../../../assets/image/room-2.jpg" alt="">
-            <small
-              class="position-absolute start-0 top-100 translate-middle-y bg-primary text-white rounded py-1 px-3 ms-4">Hotel</small>
-          </div>
-          <div class="p-4 mt-2">
-            <div class="d-flex justify-content-between mb-3">
-              <h5 class="mb-0">Executive Suite</h5>
-              <div class="ps-2">
-                <small class="fa fa-star text-primary"></small>
-                <small class="fa fa-star text-primary"></small>
-                <small class="fa fa-star text-primary"></small>
-                <small class="fa fa-star text-primary"></small>
-                <small class="fa fa-star text-primary"></small>
-              </div>
-            </div>
-            <div class="d-flex mb-3">
-              <i class="fa fa-map-marker text-primary mt-1 me-3"></i>
-              <p class="text-body mb-3">Phường Trung Hòa, Cau Giay District</p>
-            </div>
-            <p class="text-body mb-3">Erat ipsum justo amet duo et elitr dolor, est duo duo eos lorem sed diam stet diam
-              sed stet lorem.</p>
-            <div class="d-flex justify-content-between">
-              <a class="btn btn-sm btn-primary rounded py-2 px-4" href="/detail">View Detail</a>
-            </div>
-          </div>
-        </div>
-        <div class="room-item shadow rounded-4 overflow-hidden mb-3">
-          <div class="position-relative">
-            <img class="img-fluid" src="../../../assets/image/room-2.jpg" alt="">
-            <small
-              class="position-absolute start-0 top-100 translate-middle-y bg-primary text-white rounded py-1 px-3 ms-4">Hotel</small>
-          </div>
-          <div class="p-4 mt-2">
-            <div class="d-flex justify-content-between mb-3">
-              <h5 class="mb-0">Executive Suite</h5>
-              <div class="ps-2">
-                <small class="fa fa-star text-primary"></small>
-                <small class="fa fa-star text-primary"></small>
-                <small class="fa fa-star text-primary"></small>
-                <small class="fa fa-star text-primary"></small>
-                <small class="fa fa-star text-primary"></small>
-              </div>
-            </div>
-            <div class="d-flex mb-3">
-              <i class="fa fa-map-marker text-primary mt-1 me-3"></i>
-              <p class="text-body mb-3">Phường Trung Hòa, Cau Giay District</p>
-            </div>
-            <p class="text-body mb-3">Erat ipsum justo amet duo et elitr dolor, est duo duo eos lorem sed diam stet diam
-              sed stet lorem.</p>
-            <div class="d-flex justify-content-between">
-              <a class="btn btn-sm btn-primary rounded py-2 px-4" href="/detail">View Detail</a>
-            </div>
-          </div>
-        </div> -->
+        <!-- Phân trang start -->
+        <p-paginator (onPageChange)="onPageChange($event)" [first]="first" [rows]="rows" [totalRecords]="120"
+          [rowsPerPageOptions]="[5, 10, 20, 30]"></p-paginator>
+        <!-- Phân trang end -->
       </div>
     </div>
   </div>
