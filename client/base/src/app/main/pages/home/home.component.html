@@ -19,11 +19,11 @@
       <div class="row">
         <div class="col">
           <label for="date_in">Ngày nhập phòng</label>
-          <p-calendar class="w-100" [(ngModel)]="date_in" [numberOfMonths]="2" dateFormat="dd-mm-yy" styleClass="prime-input-override"></p-calendar>
+          <p-calendar class="w-100" [(ngModel)]="date_in" [minDate]="minimumDate" [numberOfMonths]="2" dateFormat="dd-mm-yy" styleClass="prime-input-override"></p-calendar>
         </div>
         <div class="col">
           <label for="date_out">Ngày trả phòng</label>
-          <p-calendar class="w-100" [(ngModel)]="date_out" [numberOfMonths]="2" dateFormat="dd-mm-yy" styleClass="prime-input-override"></p-calendar>
+          <p-calendar class="w-100" [(ngModel)]="date_out" [minDate]="minimumDate" [numberOfMonths]="2" dateFormat="dd-mm-yy" styleClass="prime-input-override"></p-calendar>
         </div>
         <div class="col">
           <label for="selectedRegion">Khu vực</label>
