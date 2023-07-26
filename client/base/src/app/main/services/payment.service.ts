@@ -30,4 +30,14 @@ export class PaymentService {
     return this.http.post<any>(url, data);
   }
 
+  sendMail(booking_number: any): Observable<any>{
+    const url = `${this.API_URL}/sendMail/${booking_number}`;
+    return this.http.get<any>(url);
+  }
+
+  paymentDone(data: any): Observable<any>{
+    const url = `${this.API_URL}/payment-return?${data}`;
+    return this.http.get<any>(url);
+  }
+
 }

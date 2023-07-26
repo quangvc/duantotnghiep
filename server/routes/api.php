@@ -66,6 +66,7 @@ Route::get('/sendMail/{booking_number}', function ($booking_number) {
     Notification::route('mail', $booking->guest_email)->notify(new SendMailPaymentNotification($booking_number));
 });
 Route::post('/vnpay-payment', [PaymentController::class, 'vnpay_payment']);
+Route::get('/payment-return', [PaymentController::class, 'paymentReturn']);
 
 Route::group(['prefix' => 'admin'], function () {
     Route::group(['prefix' => 'users', 'controller' => UserController::class], function () {

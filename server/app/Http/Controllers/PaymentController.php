@@ -85,7 +85,7 @@ class PaymentController extends Controller
         );
 
         return $returnData;
-        
+
         // if (isset($_POST['redirect'])) {
         //     header('Location: ' . $vnp_Url);
         //     die();
@@ -97,7 +97,7 @@ class PaymentController extends Controller
         // }
     }
 
-    
+
     public function paymentReturn(Request $request)
     {
 
@@ -131,7 +131,6 @@ class PaymentController extends Controller
 
         $Status = 0; // Là trạng thái thanh toán của giao dịch chưa có IPN lưu tại hệ thống của merchant chiều khởi tạo URL thanh toán.
         $booking_number = $inputData['vnp_TxnRef'];
-
         try {
             //Check Orderid
             //Kiểm tra checksum của dữ liệu
@@ -159,7 +158,7 @@ class PaymentController extends Controller
                                         $coupon->decrement('quantity')
                                     ]);
                                 }
-                                // Notification::route('mail', $booking->guest_email)->notify(new SendMailPaymentNotification($booking->booking_number));
+                                Notification::route('mail', $booking->guest_email)->notify(new SendMailPaymentNotification($booking->booking_number));
                             }
 
                             //Trả kết quả về cho VNPAY: Website/APP TMĐT ghi nhận yêu cầu thành công
