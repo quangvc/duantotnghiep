@@ -107,8 +107,7 @@ class BookingController extends Controller
             if ($count_all_rooms - $count_booked_rooms < $item['quantity']) {
                 return 'room_type_id ' . $item['room_type_id'] . ' hết phòng';
             }
-            
-        }        
+        }
         $booking = new Booking([
             'checkin_date' =>  $checkin_date,
             'checkout_date' => $checkout_date,
@@ -145,7 +144,6 @@ class BookingController extends Controller
             // $rooms_id = $request->room_id;
             $items = $request->all();
             $booking_details = BookingDetail::where('booking_id', $id)->get();
-
             foreach ($items as $item) {
                 foreach ($item['room_id'] as $room) {
                     foreach ($booking_details as $booking_detail) {
@@ -157,6 +155,7 @@ class BookingController extends Controller
                         }
                     }
                 }
+                return $item;
             }
             foreach ($booking_details as $booking_detail) {
                 if ($booking_detail->room_id == '') {
@@ -168,11 +167,17 @@ class BookingController extends Controller
                     return 'Lỗi. Xếp phòng thất bại!';
                 }
             }
+            $booking = Booking::find($id);
+            $booking->update([
+                'status' => 2,
+
+            ]);
             return 'Xếp phòng thành công!';
         }
     }
 
-    public function checkout($id) {
+    public function checkout($id)
+    {
         $booking = Booking::find($id);
         $booking->update([
             'status' => 4,
