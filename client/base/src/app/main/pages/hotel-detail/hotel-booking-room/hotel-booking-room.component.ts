@@ -52,6 +52,8 @@ export class HotelBookingRoomComponent implements OnInit {
   total: number = 0;
   selectedRow: any;
   minimumDate: Date;
+  displayDateIn: string = ''; // Ngày check-in
+  displayDateOut: string = ''; // Ngày check-out
 
   totalQuantity: any;
   totalPrice: any;
@@ -98,6 +100,8 @@ export class HotelBookingRoomComponent implements OnInit {
       // Nếu tồn tại, gán giá trị vào biến date_in và date_out
       this.date_in = checkinDate;
       this.date_out = checkoutDate;
+      sessionStorage.removeItem('checkinDate');
+      sessionStorage.removeItem('checkoutDate');
       // Sau đó gọi hàm lấy dữ liệu roomtype từ backend
       this.getRoomType();
     }

@@ -166,7 +166,7 @@ export class HomeComponent implements OnInit {
         // Chuyển hướng trình duyệt đến URL mới
         window.location.href = urlWithParams;
       } else {
-        this.message.create(WARNING, 'Ngày nhập phòng phải lớn hơn ngày trả phòng!');
+        this.message.create(WARNING, 'Ngày nhập phòng phải < ngày trả phòng!');
       }
 
     } else {
