@@ -32,6 +32,7 @@ export class ProfileComponent implements OnInit {
   cols: any[] = [];
   bookingDate: any;
   statusText: any;
+  displayGender: any
 
   path: any
   hasPermisson: boolean;
@@ -79,22 +80,35 @@ export class ProfileComponent implements OnInit {
       name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       phone_number: ['', Validators.required],
-      gender: [0, Validators.required],
-      avatar: ['', Validators.required],
+      gender: [null, Validators.required],
+      avatar: [null],
     });
-
-
-
-
     this.getBookings();
     this.getOption();
   }
+
+  onChangeGender(e: any) {
+    console.log(e.value.value);
+    this.userForm.setValue({
+      gender: e.value.value
+    });
+  }
+
   getValueFormUpdate() {
     let userId = this.auth.id
     if (userId) {
       let obs = this.AuthClientService.getUser(userId).subscribe({
         next: (res) => {
-          this.userForm.patchValue(res.data);
+          console.log(res);
+
+          this.userForm.patchValue({
+            name: res.data.name,
+            email: res.data.email,
+            phone_number: res.data.phone_number,
+            gender: res.data.gender,
+            avatar: res.data.avatar,
+          });
+          this.displayGender = GenderHelper.getGenderText(res.data.gender);
         },
         error: (err) => {
           this.message.create(ERROR, err.error.message);
@@ -105,6 +119,7 @@ export class ProfileComponent implements OnInit {
     }
   }
   handleUpdate() {
+    debugger
     if (this.userForm.invalid) return;
 
     let id = this.auth.id;
@@ -112,15 +127,19 @@ export class ProfileComponent implements OnInit {
       name: this.userForm.value.name,
       email: this.userForm.value.email,
       phone_number: this.userForm.value.phone_number,
-      gender: +this.userForm.value.gender,
+      gender: this.userForm.value.gender.value,
+      avatar: this.userForm.value.avatar,
     }
+    console.log(newData);
+
 
 
     let Update = this.AuthClientService.Update(id, newData);
     Update.subscribe({
       next: (user: any) => {
-        this.message.create(SUCCESS, `${id ? "Cập nhật" : "Thêm mới"} thành công`);
+        this.message.create(SUCCESS, `Cập nhật thành công`);
         this.hideDiv();
+        this.getValueFormUpdate();
         // sessionStorage.setItem('user', user);
       },
       error: (err: any) => {
