@@ -5,7 +5,7 @@ import { RoomTypeDetailComponent } from './room-type-detail/room-type-detail.com
 import { roomTypeClientService } from 'src/app/main/services/room-type-client.service';
 import * as moment from 'moment';
 import { NzMessageService } from 'ng-zorro-antd/message';
-import { ERROR } from 'src/app/module/_mShared/model/url.class';
+import { ERROR, WARNING } from 'src/app/module/_mShared/model/url.class';
 import { Subscription } from 'rxjs';
 import { SelectItem } from 'primeng/api';
 import { Table } from 'primeng/table';
@@ -121,19 +121,23 @@ export class HotelBookingRoomComponent implements OnInit {
     // const formatDateOut = moment(this.date_out)?.format('DD-MM-YYYY') || '';
     this.date_in = moment(this.date_in)?.format('DD-MM-YYYY') || '';
     this.date_out = moment(this.date_out)?.format('DD-MM-YYYY') || '';
-    const obs = this.roomTypeClientService.findRoomType(this.hotel_id, this.date_in, this.date_out).subscribe({
-      next: (res) => {
-        console.log(res);
-        this.roomTypes = res;
-        this.firstTable = false;
-        this.dataTable = true;
-        this.resultArray = [];
-      },
-      error: (err) => {
-        this.message.create(ERROR, err.message);
-      }
-    });
-    this.subscription.add(obs);
+    if (this.date_in && this.date_out && (this.date_in != "Invalid date" && this.date_in != "Invalid date")) {
+      const obs = this.roomTypeClientService.findRoomType(this.hotel_id, this.date_in, this.date_out).subscribe({
+        next: (res) => {
+          console.log(res);
+          this.roomTypes = res;
+          this.firstTable = false;
+          this.dataTable = true;
+          this.resultArray = [];
+        },
+        error: (err) => {
+          this.message.create(ERROR, err.message);
+        }
+      });
+      this.subscription.add(obs);
+    } else {
+      this.message.create(WARNING, 'Vui lòng nhập đày đủ Ngày nhận phòng - ngày trả phòng');
+    }
   }
 
   // Hàm trả về mảng số lượng người dùng cho hiển thị biểu tượng
@@ -203,6 +207,14 @@ export class HotelBookingRoomComponent implements OnInit {
 
     // Điều hướng đến trang thanh toán (thay 'payment' bằng URL của trang thanh toán)
     window.location.href = 'booking';
+  }
+
+  resetdate() {
+    this.date_in = '';
+    this.date_out = '';
+
+    this.firstTable = true;
+    this.dataTable = false;
   }
 
 }
