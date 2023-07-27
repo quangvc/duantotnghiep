@@ -1,10 +1,32 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
+import { BookingClientService } from 'src/app/main/services/bookingClient.service';
 import { RoomClientService } from 'src/app/main/services/room-client.service';
 import { ERROR } from 'src/app/module/_mShared/model/url.class';
 import { BookingsService } from 'src/app/module/_mShared/service/bookings.service';
 
+
+interface Hotel {
+  id: number;
+  hotel_name: string;
+}
+
+interface RoomType {
+  id: number;
+  hotel_id: number;
+  name: string;
+  hotel: Hotel;
+}
+
+interface BookingDetail {
+  id: number;
+  booking_id: number;
+  room_type_id: number;
+  room_id: number | null;
+  room_type: RoomType;
+  count?: number;
+}
 @Component({
   selector: 'user-detail-payment',
   templateUrl: './user-detail-payment.component.html',
@@ -17,8 +39,8 @@ export class UserDetailPaymentComponent implements OnInit {
   @Output() closeModal = new EventEmitter<any>();
 
   constructor(
-    // private bookingsService: BookingClientService,
-    private bookingsService: BookingsService,
+    private bookingsService: BookingClientService,
+    // private bookingsService: BookingsService,
     private modal: NzModalService,
     private message: NzMessageService,
     private roomService: RoomClientService
@@ -29,7 +51,7 @@ export class UserDetailPaymentComponent implements OnInit {
 
 
   booking: any[] = [];
-  booking_details: any[] = [];
+  booking_details: BookingDetail[] = [];
 
   rooms: any[] = [];
 
@@ -44,14 +66,29 @@ export class UserDetailPaymentComponent implements OnInit {
         console.log(res);
 
         this.booking = res.data;
-        // this.booking_details = this.booking[0].booking_details;
-        // console.log(this.booking_details )
+        this.booking_details = this.booking[0].booking_details;
+        console.log(this.booking_details )
+        this.processBookingDetails();
       },
       error: (err) => {
         this.message.create(ERROR, err.error.message);
         this.message.create(ERROR, err.message);
       }
     })
+  }
+
+  processBookingDetails() {
+    const mergedBookingDetails: BookingDetail[] = this.booking_details.reduce((acc, cur) => {
+      const existingEntry = acc.find((entry) => entry.room_type_id === cur.room_type_id);
+      if (existingEntry) {
+        existingEntry.count! += 1;
+      } else {
+        acc.push({ ...cur, count: 1 });
+      }
+      return acc;
+    }, [] as BookingDetail[]);
+
+    this.booking_details = mergedBookingDetails;
   }
 
   getRooms(){

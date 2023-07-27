@@ -1,7 +1,7 @@
 <p>payment-detail works!</p>
 <nz-modal
   [(nzVisible)]="displayBookingForm"
-  nzTitle="Duyệt sản phẩm"
+  nzTitle="Chi tiết đơn đặt phòng"
   nzWidth="980px"
   (nzOnCancel)="handleCancel()"
 >
@@ -67,20 +67,7 @@
           <td>{{ i + 1 }}</td>
           <td>{{ data.room_type.hotel.hotel_name }}</td>
           <td>
-              <select class="form-select">
-                <option value="" >Chọn</option>
-                <ng-container *ngFor="let room of rooms">
-                  <ng-container *ngIf="
-                    room.room_type.hotel.id == data.room_type.hotel_id &&
-                    room.room_type.id == data.room_type.id"
-                  >
-                    <option [value]="room.room_number" >
-                      {{room.room_number}}
-                    </option>
-                  </ng-container>
-                </ng-container>
-
-              </select>
+            {{ data.count }}
           </td>
           <td>{{ data.room_type.name }}</td>
         </tr>
