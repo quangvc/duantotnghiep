@@ -35,6 +35,10 @@ export class BookingClientService {
     const url = `${this.API_URL}/${BOOKINGS}/${code}`;
     return this.http.get<any>(url);
   }
+  findOne(id:any): Observable<any>{
+    const url = `${this.API_URL}/${BOOKINGS}/${id}`;
+    return this.http.get<any>(url);
+  }
 
 
 }

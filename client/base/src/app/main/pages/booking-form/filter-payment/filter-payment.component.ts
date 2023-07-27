@@ -1,7 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import * as moment from 'moment';
+import { NzMessageService } from 'ng-zorro-antd/message';
 import { LazyLoadEvent, PrimeNGConfig } from 'primeng/api';
 import { BookingClientService } from 'src/app/main/services/bookingClient.service';
+import { StatusBookings } from 'src/app/module/_mShared/enum/enum';
+import { ERROR } from 'src/app/module/_mShared/model/url.class';
+import { Enum } from 'src/app/module/_mShared/service/static/enum.service';
 import { StatusHelper } from 'src/shared/helpers/BookingHelper';
 
 @Component({
@@ -9,7 +13,13 @@ import { StatusHelper } from 'src/shared/helpers/BookingHelper';
   templateUrl: './filter-payment.component.html',
   styleUrls: ['./filter-payment.component.scss']
 })
-export class FilterPaymentComponent {
+export class FilterPaymentComponent implements OnInit {
+
+  constructor(
+    private bookingService: BookingClientService,
+    private message: NzMessageService,
+    private primengConfig: PrimeNGConfig,
+  ) { }
   searchCode: string;
   showTable: boolean = false;
   data: any[];
@@ -17,55 +27,80 @@ export class FilterPaymentComponent {
   statusText: any;
   cols: any[] = [];
   loading: boolean;
+  displayBookingForm: boolean = false;
+  displayCreateBooking: boolean = false;
 
-  constructor(private bookingClientService: BookingClientService, private primengConfig: PrimeNGConfig) {}
+  bookings: any[] = [];
+
+  bookingFilters: any[] = [...this.bookings]
+
+  role:any;
+
+  tabs = [1, 2, 3];
+
+  statusOptions: any[] = [{text: "Tất cả", value: 0}];
+
+  bookingId: any;
 
   ngOnInit() {
-    this.loading = true;
-    this.primengConfig.ripple = true;
+    this.getOption();
+  }
+
+  getOption(){
+    this.statusOptions.push(...Enum.convertEnum(StatusBookings));
+  }
+
+  convertTextStatus(){
+    for (const booking of this.bookingFilters) {
+      if(booking.status == StatusBookings.Unconfirmed){
+        booking.txtStatus = "Đang chờ duyệt"
+      }
+      if(booking.status == StatusBookings.Confirmed){
+        booking.txtStatus = "Đã duyệt"
+      }
+      if(booking.status == StatusBookings.Using){
+        booking.txtStatus = "Đang sử dụng"
+      }
+      if(booking.status == StatusBookings.Clean){
+        booking.txtStatus = "Đang dọn dẹp"
+      }
+      if(booking.status == StatusBookings.Cancel){
+        booking.txtStatus = "Đã hủy"
+      }
+    }
   }
 
   onSearch() {
     console.log(this.searchCode);
-
-    this.bookingClientService.findByCode(this.searchCode).subscribe(
-      (response) => {
-        this.data = response.data;
+    let obs = this.bookingService.findByCode(this.searchCode).subscribe({
+      next: (res) => {
+        this.bookingFilters = res.data;
+        console.log(this.bookingFilters)
         this.showTable = true;
-        this.bookingDate = moment(response.data[0].booking_date).format('DD-MM-YYYY');
-        this.statusText = StatusHelper.getStatusText(response.data[0].status);
-        // this.setupColumns();
+        this.bookingDate = moment(res.data[0].booking_date).format('DD-MM-YYYY');
+        this.convertTextStatus();
+
       },
-      (error) => {
+      error: (err) => {
         this.showTable = true;
         this.data = [];
-        // this.setupColumns();
+        this.message.create(ERROR, `${err.error.message}`)
+        this.message.create(ERROR, `${err.message}`)
       }
-    );
+    })
   }
 
-  loadCustomers(event: LazyLoadEvent) {
-    this.loading = true;
-    setTimeout(() => {
-        if (this.data.length > 0) {
-            this.loading = false;
-        }
-    }, 1000);
+  eventSubmit(event:any){
+    this.displayBookingForm = false;
+    // this.getBookings();
   }
 
-  // setupColumns() {
-  //   this.cols = [
-  //     { field: 'booking_number', header: 'Mã đơn' },
-  //     { field: 'booking_date', header: 'Ngày đặt' },
-  //     { field: 'checkin_date', header: 'Thời gian Check in' },
-  //     { field: 'checkout_date', header: 'Thời gian Check out' },
-  //     { field: 'people_quantity', header: 'Số lượng người' },
-  //     { field: 'coupon', header: 'Mã giảm giá' },
-  //     { field: 'guest_name', header: 'Tên khách' },
-  //     { field: 'guest_email', header: 'Email khách' },
-  //     { field: 'guest_phone', header: 'SĐT khách' },
-  //     { field: 'total_price', header: 'Tổng giá' },
-  //     { field: 'status', header: 'Trạng thái' },
-  //   ];
-  // }
+  emitEvent(event:any){
+    this.displayCreateBooking = false;
+    // this.getBookings();
+  }
+  updateStatus(value:any){
+    this.displayBookingForm = true;
+    this.bookingId = value;
+  }
 }

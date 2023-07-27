@@ -13,6 +13,8 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 import { BookingClientService } from '../../services/bookingClient.service';
 import * as moment from 'moment';
 import { StatusHelper } from 'src/shared/helpers/BookingHelper';
+import { Enum } from 'src/app/module/_mShared/service/static/enum.service';
+import { StatusBookings } from 'src/app/module/_mShared/enum/enum';
 
 
 @Component({
@@ -23,7 +25,7 @@ export class ProfileComponent implements OnInit {
   auth = Auth.User('user');
   logged: any
   notLogin: any
-  userData:any = sessionStorage.getItem('user');
+  userData: any = sessionStorage.getItem('user');
   user = JSON.parse(this.userData);
   data: any[] = [];
   showTable: boolean = false;
@@ -36,6 +38,22 @@ export class ProfileComponent implements OnInit {
   ltsGenders: any;
   selectedGender: number;
 
+  searchCode: string;
+  loading: boolean;
+  displayBookingForm: boolean = false;
+  displayCreateBooking: boolean = false;
+
+  bookings: any[] = [];
+
+  bookingFilters: any[] = [...this.bookings]
+
+  role: any;
+
+  tabs = [1, 2, 3];
+
+  statusOptions: any[] = [{ text: "Tất cả", value: 0 }];
+
+  bookingId: any;
   userForm: FormGroup;
   private subscription = new Subscription();
 
@@ -45,6 +63,7 @@ export class ProfileComponent implements OnInit {
     private confirmationService: ConfirmationService,
     private formBuilder: FormBuilder,
     private AuthClientService: AuthClientService,
+    private bookingService: BookingClientService,
     private message: NzMessageService,
     private BookingClientService: BookingClientService,
 
@@ -53,11 +72,9 @@ export class ProfileComponent implements OnInit {
   }
 
   ngOnInit() {
-
     this.checkLogin();
     this.getValueFormUpdate()
     this.ltsGenders = GenderHelper.getAllGenderList();
-
     this.userForm = this.formBuilder.group({
       name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
@@ -66,51 +83,15 @@ export class ProfileComponent implements OnInit {
       avatar: ['', Validators.required],
     });
 
+
+
+
     this.getBookings();
+    this.getOption();
   }
-
-
-
-  getBookings() {
-    let user = Auth.User('user')
-    console.log(user);
-
-    this.BookingClientService.findByAcc(user.id).subscribe(
-      (response) => {
-        this.data = response.data;
-        this.showTable = true;
-        this.bookingDate = moment(response.data.booking_date).format('DD-MM-YYYY');
-        this.statusText = StatusHelper.getStatusText(response.data[0].status);
-        // this.setupColumns();
-      },
-      (error) => {
-        this.showTable = true;
-        this.data = [];
-        // this.setupColumns();
-      }
-    );
-  }
-
-  // setupColumns() {
-  //   this.cols = [
-  //     { field: 'booking_number', header: 'Mã đơn' },
-  //     { field: 'booking_date', header: 'Ngày đặt' },
-  //     { field: 'checkin_date', header: 'Thời gian Check in' },
-  //     { field: 'checkout_date', header: 'Thời gian Check out' },
-  //     { field: 'people_quantity', header: 'Số lượng người' },
-  //     { field: 'coupon', header: 'Mã giảm giá' },
-  //     { field: 'guest_name', header: 'Tên khách' },
-  //     { field: 'guest_email', header: 'Email khách' },
-  //     { field: 'guest_phone', header: 'SĐT khách' },
-  //     { field: 'total_price', header: 'Tổng giá' },
-  //     { field: 'status', header: 'Trạng thái' },
-  //   ];
-  // }
-
-
-  getValueFormUpdate(){
+  getValueFormUpdate() {
     let userId = this.auth.id
-    if(userId) {
+    if (userId) {
       let obs = this.AuthClientService.getUser(userId).subscribe({
         next: (res) => {
           this.userForm.patchValue(res.data);
@@ -123,34 +104,33 @@ export class ProfileComponent implements OnInit {
       this.subscription.add(obs);
     }
   }
-
-  handleUpdate(){
+  handleUpdate() {
     if (this.userForm.invalid) return;
 
-      let id = this.auth.id;
-      let newData = {
-        name: this.userForm.value.name,
-        email: this.userForm.value.email,
-        phone_number: this.userForm.value.phone_number,
-        gender: +this.userForm.value.gender,
+    let id = this.auth.id;
+    let newData = {
+      name: this.userForm.value.name,
+      email: this.userForm.value.email,
+      phone_number: this.userForm.value.phone_number,
+      gender: +this.userForm.value.gender,
+    }
+
+
+    let Update = this.AuthClientService.Update(id, newData);
+    Update.subscribe({
+      next: (user: any) => {
+        this.message.create(SUCCESS, `${id ? "Cập nhật" : "Thêm mới"} thành công`);
+        this.hideDiv();
+        // sessionStorage.setItem('user', user);
+      },
+      error: (err: any) => {
+        this.message.create(ERROR, err.error.message);
       }
-
-
-      let Update = this.AuthClientService.Update(id,newData);
-      Update.subscribe({
-        next: (user:any) => {
-          this.message.create(SUCCESS, `${id ? "Cập nhật" : "Thêm mới"} thành công`);
-          this.hideDiv();
-          // sessionStorage.setItem('user', user);
-        },
-        error: (err:any) => {
-          this.message.create(ERROR, err.error.message);
-        }
-      })
+    })
   }
 
-  checkLogin(){
-    let userLogged:any = sessionStorage.getItem('user');
+  checkLogin() {
+    let userLogged: any = sessionStorage.getItem('user');
     let user = JSON.parse(userLogged);
 
     if (user && user.role && user.role.length > 0) {
@@ -178,7 +158,7 @@ export class ProfileComponent implements OnInit {
     });
   }
 
-  async logOut(){
+  async logOut() {
 
     const httpOptions = {
       headers: new HttpHeaders({
@@ -190,10 +170,6 @@ export class ProfileComponent implements OnInit {
     await sessionStorage.removeItem('user');
     this.router.navigate(['login'])
   }
-
-
-
-
   showButton2: boolean = false;
   showViewDiv: boolean = true;
   showEditDiv: boolean = false;
@@ -207,5 +183,66 @@ export class ProfileComponent implements OnInit {
     this.showViewDiv = true;
     this.showEditDiv = false;
     this.showButton2 = false;
+  }
+
+
+  getBookings() {
+    let user = Auth.User('user')
+    console.log(user);
+
+    this.BookingClientService.findByAcc(user.id).subscribe({
+      next: (res) => {
+        this.bookingFilters = res.data;
+        console.log(this.bookingFilters)
+        this.showTable = true;
+        this.bookingDate = moment(res.data[0].booking_date).format('DD-MM-YYYY');
+        this.convertTextStatus();
+
+      },
+      error: (err) => {
+        this.showTable = true;
+        this.data = [];
+        this.message.create(ERROR, `${err.error.message}`)
+        this.message.create(ERROR, `${err.message}`)
+      }
+    });
+  }
+
+  getOption() {
+    this.statusOptions.push(...Enum.convertEnum(StatusBookings));
+  }
+
+  convertTextStatus() {
+    for (const booking of this.bookingFilters) {
+      if (booking.status == StatusBookings.Unconfirmed) {
+        booking.txtStatus = "Đang chờ duyệt"
+      }
+      if (booking.status == StatusBookings.Confirmed) {
+        booking.txtStatus = "Đã duyệt"
+      }
+      if (booking.status == StatusBookings.Using) {
+        booking.txtStatus = "Đang sử dụng"
+      }
+      if (booking.status == StatusBookings.Clean) {
+        booking.txtStatus = "Đang dọn dẹp"
+      }
+      if (booking.status == StatusBookings.Cancel) {
+        booking.txtStatus = "Đã hủy"
+      }
+    }
+  }
+
+  eventSubmit(event: any) {
+    this.displayBookingForm = false;
+    // this.getBookings();
+  }
+
+  emitEvent(event: any) {
+    this.displayCreateBooking = false;
+    // this.getBookings();
+  }
+  updateStatus(value: any) {
+    this.displayBookingForm = true;
+    this.bookingId = value;
   }
 }

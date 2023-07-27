@@ -54,6 +54,7 @@ export class HotelBookingRoomComponent implements OnInit {
   minimumDate: Date;
   displayDateIn: string = ''; // Ngày check-in
   displayDateOut: string = ''; // Ngày check-out
+  roomCount: number = 0;
 
   totalQuantity: any;
   totalPrice: any;
@@ -120,7 +121,6 @@ export class HotelBookingRoomComponent implements OnInit {
 
   // Hàm lấy danh sách các loại phòng theo ngày đặt và ngày trả
   getRoomType() {
-    debugger
     if (this.date_in && this.date_out) {
       if (this.date_in <= this.date_out) {
         this.date_in = moment(this.date_in)?.format('DD-MM-YYYY') || '';
@@ -129,6 +129,11 @@ export class HotelBookingRoomComponent implements OnInit {
           next: (res) => {
             console.log(res);
             this.roomTypes = res;
+            for (let index = 0; index < res.length; index++) {
+              this.roomCount += res[index].rooms_count;
+            }
+            console.log(this.roomCount);
+
             this.firstTable = false;
             this.dataTable = true;
             this.resultArray = [];

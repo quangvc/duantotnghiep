@@ -153,50 +153,57 @@
       </div>
 
     </div>
+
+
     <div class="card mb-3">
       <div class="card-body">
         <div class="row">
           <div class="col-sm-3">
             <h6 class="mb-0">Hóa đơn của bạn</h6>
-
-
           </div>
         </div>
         <hr>
         <div *ngIf="showTable" class="my-4">
-          <p-table [value]="data" [tableStyle]="{ 'min-width': '50rem' }">
-            <ng-template pTemplate="header">
+          <nz-table #basicTable [nzData]="bookingFilters">
+            <thead>
               <tr>
-                <th>Mã đơn</th>
-                <th>Ngày đặt</th>
-                <th>Check in</th>
-                <th>Check out</th>
-                <th>Số lượng người</th>
-                <th>Mã giảm giá</th>
-                <!-- <th>Tên khách</th>
-                <th>Email khách</th>
-                <th>SĐT khách</th> -->
-                <th>Tổng giá</th>
-                <th>Trạng thái</th>
+                <th>#</th>
+                <th>{{'bookings.booking_number' | translate}}</th>
+                <th>{{'bookings.user' | translate}}</th>
+                <th>{{'bookings.checkin_date' | translate}}</th>
+                <th>{{'bookings.checkout_date' | translate}}</th>
+                <th>{{'bookings.coupon_id' | translate}}</th>
+                <th>{{'bookings.note' | translate}}</th>
+                <th>{{'status' | translate}}</th>
+                <th>{{'action' | translate}}</th>
               </tr>
-            </ng-template>
-            <ng-template pTemplate="body" let-data>
-              <tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let data of basicTable.data; let i = index">
+                <td>{{ i + 1 }}</td>
                 <td>{{ data.booking_number }}</td>
-                <td>{{ bookingDate }}</td>
+                <td>{{ data.guest_name }}</td>
                 <td>{{ data.checkin_date }}</td>
                 <td>{{ data.checkout_date }}</td>
-                <td>{{ data.people_quantity }}</td>
                 <td>{{ data.coupon }}</td>
-                <!-- <td>{{ data.guest_name }}</td>
-                <td>{{ data.guest_email }}</td>
-                <td>{{ data.guest_phone }}</td> -->
-                <td>{{ data.total_price | currency: 'VND' }}</td>
-                <td>{{ statusText }}</td>
+                <td>{{ data.note }}</td>
+                <td><nz-tag [nzColor]="'#f50'">{{data.txtStatus}}</nz-tag></td>
+                <td>
+                  <button nz-button nzType="primary" [nzSize]="'large'" nzShape="circle"
+                    (click)="updateStatus(data.id)">
+                    <span nz-icon nzType="edit" nzTheme="outline"></span>
+                  </button>
+                </td>
               </tr>
-            </ng-template>
-          </p-table>
-          <div *ngIf="data && data.length === 0" class="my-5">
+            </tbody>
+          </nz-table>
+          <user-detail-payment
+            *ngIf="displayBookingForm"
+            [displayBookingForm]="displayBookingForm"
+            [bookingId]="bookingId"
+            (closeModal)="eventSubmit($event)">
+          </user-detail-payment>
+          <div *ngIf="bookingFilters && bookingFilters.length === 0" class="my-5">
             Mã đơn sai hoặc không tồn tại, thử nhập lại hoặc liên hệ tới khách sạn bạn đặt phòng!
           </div>
         </div>
