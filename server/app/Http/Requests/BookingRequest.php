@@ -12,7 +12,6 @@ class BookingRequest extends FormRequest
             'checkin_date'=> 'bail|required|date|after:tomorrow',
             'checkout_date'=> 'bail|required|date|after:checkin_date',
             'people_quantity'=> 'bail|required|alpha_num',
-            'guest_email' => 'email'
         ];
     }
 }

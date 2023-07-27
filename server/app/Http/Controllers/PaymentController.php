@@ -158,7 +158,7 @@ class PaymentController extends Controller
                                         $coupon->decrement('quantity')
                                     ]);
                                 }
-                                Notification::route('mail', $booking->guest_email)->notify(new SendMailPaymentNotification($booking->booking_number));
+                                // Notification::route('mail', $booking->guest_email)->notify(new SendMailPaymentNotification($booking->booking_number));
                             }
 
                             //Trả kết quả về cho VNPAY: Website/APP TMĐT ghi nhận yêu cầu thành công
