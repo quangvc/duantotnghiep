@@ -32,7 +32,7 @@ export class BookingClientService {
   }
 
   findByCode(code: any): Observable<any> {
-    const url = `${this.API_URL}/${BOOKINGS}/${code}`;
+    const url = `${this.API_URL}/${BOOKINGS}/booking-number/${code}`;
     return this.http.get<any>(url);
   }
   findOne(id:any): Observable<any>{

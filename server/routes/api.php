@@ -281,7 +281,7 @@ Route::group(['prefix' => 'client'], function () {
     Route::group(
         ['prefix' => 'bookings', 'controller' => BookingClientController::class], // Thêm `prefix` để xác định endpoint chung của API
         function () {
-            Route::get('/{booking_number}', 'index');
+            Route::get('/booking-number/{booking_number}', 'index');
             Route::get('/user/{id_user}', 'userBooking');
             Route::get('/{id}', 'show');
             Route::post('/', 'store');
