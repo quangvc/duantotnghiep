@@ -24,6 +24,20 @@ class BookingClientController extends Controller
             ->get();
         return BookingResource::collection($bookings);
     }
+
+    public function show($id)
+    {
+        $booking = Booking::with(['booking_details.room_type' => function ($query) {
+            $query->select('id', 'hotel_id', 'name');
+        }, 'booking_details.room_type.hotel' => function ($query) {
+            $query->select('id', 'hotel_name');
+        }])
+            ->where('id', $id)
+            ->get();
+
+        return MessageStatusAPI::show(BookingResource::collection($booking));
+    }
+
     public function userBooking($id_user)
     {
         $bookings = Booking::where('user_id', '=', $id_user)

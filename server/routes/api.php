@@ -248,6 +248,14 @@ Route::group(['prefix' => 'client'], function () {
     );
 
     Route::group(
+        ['prefix' => 'rooms', 'controller' => RoomClientController::class],
+        function () {
+            Route::get('/', 'index');
+            Route::get('/{id}', 'show');
+        }
+    );
+
+    Route::group(
         ['prefix' => 'regions', 'controller' => RegionClientController::class],
         function () {
             Route::get('/', 'index');
@@ -275,6 +283,7 @@ Route::group(['prefix' => 'client'], function () {
         function () {
             Route::get('/{booking_number}', 'index');
             Route::get('/user/{id_user}', 'userBooking');
+            Route::get('/{id}', 'show');
             Route::post('/', 'store');
             Route::put('/cancel-booking/{id}', 'cancelBooking');
         }
