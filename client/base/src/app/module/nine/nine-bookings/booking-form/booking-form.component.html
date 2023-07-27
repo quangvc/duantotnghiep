@@ -66,15 +66,18 @@
           <td>{{ i + 1 }}</td>
           <td>{{ data.room_type.hotel.hotel_name }}</td>
           <td>
-              <select class="form-select" (change)="asignRoom($event,data)">
-                <option value="" >Chọn</option>
+            <!-- <button class="btn btn-primary" (click)="roomList(data)">
+              Xếp phòng
+            </button> -->
+              <select class="form-select" (change)="asignRoom($event)">
+                <option value="0" >Chọn</option>
                 <ng-container *ngFor="let room of rooms">
                   <ng-container *ngIf="
                     room.room_type.hotel.id == data.room_type.hotel_id &&
                     room.room_type.id == data.room_type.id"
                   >
-                    <option [value]="room.room_number" >
-                      {{room.room_number}}
+                    <option [value]="room.id" [disabled]="room.isActive">
+                      {{room.room_number}} - {{room.isActive}}
                     </option>
                   </ng-container>
                 </ng-container>
@@ -99,3 +102,10 @@
     <button nz-button nzType="primary" (click)="handleOk()">Accept</button>
   </div>
 </nz-modal>
+
+<!-- <xep-phong
+  *ngIf="displayXepPhong"
+  [displayXepPhong]="displayXepPhong"
+  [room]="room"
+  (closeModal)="cancelModal($event)"
+></xep-phong> -->

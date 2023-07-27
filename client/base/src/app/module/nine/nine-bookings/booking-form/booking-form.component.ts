@@ -31,6 +31,9 @@ export class BookingFormComponent implements OnInit {
 
   rooms: any[] = [];
 
+  displayXepPhong: boolean = false;
+  room: any;
+
   ngOnInit() {
     this.getDetail();
     this.getRooms();
@@ -82,12 +85,36 @@ export class BookingFormComponent implements OnInit {
     });
   }
 
-  asignRoom(event:any,data:any){
+  asignRoom(event:any){
     console.log(event.target.value);
-    if(event){
 
-    }
-    console.log(data);
+      let mang = [];
+
+      for (const room of this.rooms) {
+
+        // if(event.target.value == 0){
+        //   room.isActive = false;
+        // }else{
+        //
+        //   }
+        // }
+        if(event.target.value == room.id){
+            room.isActive = true;
+            mang.push(room)
+        }
+
+      }
+      console.log(mang);
+      console.log(this.rooms.filter(x => x.room_type.id == 8));
+  }
+
+  // roomList(data:any){
+  //   this.displayXepPhong = true;
+  //   this.room = data;
+  // }
+
+  cancelModal(event: any){
+    this.displayXepPhong = false;
   }
 
   handleCancel(){

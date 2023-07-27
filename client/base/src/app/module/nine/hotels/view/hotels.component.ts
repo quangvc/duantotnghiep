@@ -58,6 +58,9 @@ export class HotelsComponent implements OnInit, OnDestroy {
       case 'admin':
         return this.role = true;
         break;
+      case 'manager':
+        return this.role = true;
+        break;
       default:
         return this.role = false;
         break;
@@ -108,6 +111,7 @@ export class HotelsComponent implements OnInit, OnDestroy {
         command: () => {
           this.editHotel(data);
         },
+        visible: Auth.User('role') == "admin"
       },
       {
         label: "Cài đặt hình ảnh",
