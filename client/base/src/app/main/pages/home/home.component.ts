@@ -1,3 +1,4 @@
+import { WARNING } from './../../../module/_mShared/model/url.class';
 import { AuthClientService } from './../../services/auth-client.service';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { HotelClientService } from '../../services/hotelClient.service';
@@ -138,31 +139,38 @@ export class HomeComponent implements OnInit {
 
   filterHotel() {
     if (this.selectedRegion && this.date_in && this.date_out) {
-      sessionStorage.setItem('checkinDate', this.date_in.toString());
-      sessionStorage.setItem('checkoutDate', this.date_out.toString());
-      this.date_in = moment(this.date_in)?.format('DD-MM-YYYY') || '';
-      this.date_out = moment(this.date_out)?.format('DD-MM-YYYY') || '';
-      this.selectedRegion = JSON.stringify(this.selectedRegion);
-      // Chuyển đổi chuỗi JSON thành đối tượng JavaScript
-      const selectedRegionObject = JSON.parse(this.selectedRegion);
+      debugger
+      if (this.date_in <= this.date_out) {
+        sessionStorage.setItem('checkinDate', this.date_in.toString());
+        sessionStorage.setItem('checkoutDate', this.date_out.toString());
+        this.date_in = moment(this.date_in)?.format('DD-MM-YYYY') || '';
+        this.date_out = moment(this.date_out)?.format('DD-MM-YYYY') || '';
+        this.selectedRegion = JSON.stringify(this.selectedRegion);
+        // Chuyển đổi chuỗi JSON thành đối tượng JavaScript
+        const selectedRegionObject = JSON.parse(this.selectedRegion);
 
-      // Truy cập vào thuộc tính id trong đối tượng
-      console.log(selectedRegionObject.id);
-      console.log(this.date_in);
-      console.log(this.date_out);
-      // Các giá trị cụ thể cho các tham số
-      const regionId = selectedRegionObject.id;
-      const checkinDate = this.date_in;
-      const checkoutDate = this.date_out;
+        // Truy cập vào thuộc tính id trong đối tượng
+        console.log(selectedRegionObject.id);
+        console.log(this.date_in);
+        console.log(this.date_out);
+        // Các giá trị cụ thể cho các tham số
+        const regionId = selectedRegionObject.id;
+        const checkinDate = this.date_in;
+        const checkoutDate = this.date_out;
 
 
-      // Xây dựng URL mới từ đoạn định dạng và các giá trị cụ thể
-      const baseUrl = 'hotels/get/';
-      const urlWithParams = `${baseUrl}${regionId}/${checkinDate}/${checkoutDate}`;
+        // Xây dựng URL mới từ đoạn định dạng và các giá trị cụ thể
+        const baseUrl = 'hotels/get/';
+        const urlWithParams = `${baseUrl}${regionId}/${checkinDate}/${checkoutDate}`;
 
-      // Chuyển hướng trình duyệt đến URL mới
-      window.location.href = urlWithParams;
+        // Chuyển hướng trình duyệt đến URL mới
+        window.location.href = urlWithParams;
+      } else {
+        this.message.create(WARNING, 'Ngày nhập phòng phải lớn hơn ngày trả phòng!');
+      }
 
+    } else {
+      this.message.create(WARNING, 'Xin nhập đủ dữ liệu!');
     }
   }
 
