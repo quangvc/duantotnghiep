@@ -30,9 +30,10 @@ export class HotelDetailComponent implements OnInit {
   hotel: any;
   hotel_id: any;
   hotel_name: any;
+  region_id: any;
+  region_name: any;
 
   minPrice: number;
-
   starRating: number;
   formStar!: FormGroup;
 
@@ -87,6 +88,10 @@ export class HotelDetailComponent implements OnInit {
           this.hotels = res.data;
           this.hotel_id = res.data[0].id;
           this.hotel_name = res.data[0].hotel_name;
+          this.region_id = res.data[0].region.id;
+          this.region_name = res.data[0].region.name;
+          console.log(this.region_id);
+          console.log(this.region_name);
 
 
           this.hotelRoomTypeData = res.data[0].room_type;
