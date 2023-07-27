@@ -117,24 +117,26 @@ export class HotelBookingRoomComponent implements OnInit {
   // Hàm lấy danh sách các loại phòng theo ngày đặt và ngày trả
   getRoomType() {
     debugger
-    // const formatDateIn = moment(this.date_in)?.format('DD-MM-YYYY') || '';
-    // const formatDateOut = moment(this.date_out)?.format('DD-MM-YYYY') || '';
-    this.date_in = moment(this.date_in)?.format('DD-MM-YYYY') || '';
-    this.date_out = moment(this.date_out)?.format('DD-MM-YYYY') || '';
-    if (this.date_in && this.date_out && (this.date_in != "Invalid date" && this.date_in != "Invalid date")) {
-      const obs = this.roomTypeClientService.findRoomType(this.hotel_id, this.date_in, this.date_out).subscribe({
-        next: (res) => {
-          console.log(res);
-          this.roomTypes = res;
-          this.firstTable = false;
-          this.dataTable = true;
-          this.resultArray = [];
-        },
-        error: (err) => {
-          this.message.create(ERROR, err.message);
-        }
-      });
-      this.subscription.add(obs);
+    if (this.date_in && this.date_out) {
+      if (this.date_in <= this.date_out) {
+        this.date_in = moment(this.date_in)?.format('DD-MM-YYYY') || '';
+        this.date_out = moment(this.date_out)?.format('DD-MM-YYYY') || '';
+        const obs = this.roomTypeClientService.findRoomType(this.hotel_id, this.date_in, this.date_out).subscribe({
+          next: (res) => {
+            console.log(res);
+            this.roomTypes = res;
+            this.firstTable = false;
+            this.dataTable = true;
+            this.resultArray = [];
+          },
+          error: (err) => {
+            this.message.create(ERROR, err.message);
+          }
+        });
+        this.subscription.add(obs);
+      } else {
+        this.message.create(WARNING, 'Vui lòng nhập Ngày nhận phòng < ngày trả phòng');
+      }
     } else {
       this.message.create(WARNING, 'Vui lòng nhập đày đủ Ngày nhận phòng - ngày trả phòng');
     }
