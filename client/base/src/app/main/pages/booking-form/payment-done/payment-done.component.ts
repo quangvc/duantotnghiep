@@ -22,21 +22,32 @@ export class PaymentDoneComponent implements OnInit {
       this.baseUrl = window.location.href.split('?')[1];
       console.log('BaseUrl:', this.baseUrl);
       this.paymentDone(this.baseUrl);
-      this.sendMail(this.vnpParams.vnp_TxnRef)
+      // if (this.vnpParams.vnp_ResponseCode === '00') {
+      //   this.sendMail(this.vnpParams.vnp_TxnRef)
+      // } else {
+      //   console.log('Đã gửi mail')
+      // }
+
     });
 
   }
-  paymentDone(baseUrl: any) { // Lấy giá trị ID từ URL
+  paymentDone(baseUrl: any) {
     this.PaymentService.paymentDone(baseUrl).subscribe({
       next: (res) => {
+        debugger
         console.log(res);
+        if (res.RspCode === '00') {
+          this.sendMail(this.vnpParams.vnp_TxnRef)
+        } else {
+          console.log('Đã gửi mail')
+        }
       },
       error: (err) => {{
         console.log('Đã xảy ra lỗi khi gọi API:', err);
       }}
     });
   }
-  sendMail(bookingNumber: any) { // Lấy giá trị ID từ URL
+  sendMail(bookingNumber: any) {
     this.PaymentService.sendMail(bookingNumber).subscribe({
       next: (res) => {
         console.log(res);

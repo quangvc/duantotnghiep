@@ -13,7 +13,7 @@ interface Banner {
   styleUrls: ['./carousel.component.scss']
 })
 export class CarouselComponent implements OnInit {
-
+  loading: boolean = true;
   private subscription = new Subscription();
   banner:any
 
@@ -45,15 +45,17 @@ export class CarouselComponent implements OnInit {
             }
         ];
 	}
-  getBanners(){
+  getBanners() {
     let obs = this.BannersClientService.getBanners().subscribe({
       next: (res) => {
         this.banners = res.data;
+        this.loading = false;
       },
       error: (err) => {
         this.message.create(ERROR, err.error.message);
-      }
-    })
+        this.loading = false;
+      },
+    });
 
     this.subscription.add(obs);
   }
