@@ -64,7 +64,7 @@ class BookingClientController extends Controller
             $count_booked_rooms = BookingDetail::join('tbl_bookings', 'tbl_bookings.id', '=', 'booking_id')
                 ->where([
                     ['room_type_id', $item['room_type_id']],
-                    ['tbl_bookings.status', 1],
+                    ['tbl_bookings.status', '<=', 1],
                 ])
                 ->where(function ($query) use ($checkin_date, $checkout_date) {
                     $query->where([
@@ -115,7 +115,8 @@ class BookingClientController extends Controller
 
     public function cancelBooking($id) {
         $booking = Booking::find($id);
-        if ($booking->checkin_date->diffInDays(now()) >= 2 ) {
+        $checkin_date = Carbon::parse($booking->checkin_date);
+        if ($checkin_date->diffInDays(now()) >= 7 ) {
             $booking->update([
                 'status' => BookingStatusEnum::CANCELLED
             ]);

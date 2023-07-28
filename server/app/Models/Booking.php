@@ -23,10 +23,10 @@ class Booking extends Model
     {
         return $this->hasMany(BookingDetail::class);
     }
-    public function booking_detail(): BelongsToMany
-    {
-        return $this->belongsToMany(RoomType::class, 'tbl_booking_detail');
-    }
+    // public function booking_detail(): BelongsToMany
+    // {
+    //     return $this->belongsToMany(RoomType::class, 'tbl_booking_detail');
+    // }
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
