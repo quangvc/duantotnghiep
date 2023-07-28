@@ -52,42 +52,46 @@
     </nz-table>
 
     <nz-divider nzText="Chi tiết" nzOrientation="left"></nz-divider>
-    <nz-table nzTemplateMode>
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>{{'hotel.name' | translate}}</th>
-          <th>{{'room.room_number' | translate}}</th>
-          <th>{{'room_type.name' | translate}}</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let data of booking_details; let i = index">
-          <td>{{ i + 1 }}</td>
-          <td>{{ data.room_type.hotel.hotel_name }}</td>
-          <td>
-            <!-- <button class="btn btn-primary" (click)="roomList(data)">
-              Xếp phòng
-            </button> -->
-              <select class="form-select" (change)="asignRoom($event)">
-                <option value="0" >Chọn</option>
-                <ng-container *ngFor="let room of rooms">
-                  <ng-container *ngIf="
-                    room.room_type.hotel.id == data.room_type.hotel_id &&
-                    room.room_type.id == data.room_type.id"
-                  >
-                    <option [value]="room.id" [disabled]="room.isActive">
-                      {{room.room_number}} - {{room.isActive}}
-                    </option>
-                  </ng-container>
-                </ng-container>
+    <form [formGroup]="formGroup">
 
-              </select>
-          </td>
-          <td>{{ data.room_type.name }}</td>
-        </tr>
-      </tbody>
-    </nz-table>
+      <nz-table nzTemplateMode>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>{{'hotel.name' | translate}}</th>
+            <th>{{'room.room_number' | translate}}</th>
+            <th>{{'room_type.name' | translate}}</th>
+          </tr>
+        </thead>
+        <tbody formArrayName="items">
+          <tr *ngFor="let item of roomItems.controls; let i = index" [formGroupName]="i">
+            <td>{{ i + 1 }}</td>
+            <td>{{ item.value.room_type.room_type.hotel.hotel_name }}</td>
+            <td>
+              <!-- <button class="btn btn-primary" (click)="roomList(data)">
+                Xếp phòng
+              </button> -->
+                <select class="form-select" (change)="asignRoom($event,i)" formControlName="roomID">
+                  <option [value]="null" >Chọn</option>
+                  <ng-container *ngFor="let room of rooms">
+                    <ng-container *ngIf="
+                      room.room_type.hotel.id == item.value.room_type.room_type.hotel_id &&
+                      room.room_type.id == item.value.room_type.room_type.id"
+                    >
+                      <option [value]="room.id" [disabled]="room.id == item.value.roomID">
+                        {{room.room_number}}
+                      </option>
+                    </ng-container>
+                  </ng-container>
+
+                </select>
+            </td>
+            <td>{{ item.value.room_type.room_type.name }}</td>
+          </tr>
+        </tbody>
+      </nz-table>
+
+    </form>
 
     <ng-container *ngIf="booking.length > 0">
       <nz-divider nzText="Ghi chú" nzOrientation="left"></nz-divider>

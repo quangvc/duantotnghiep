@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
 import { ERROR } from 'src/app/module/_mShared/model/url.class';
@@ -19,12 +20,14 @@ export class BookingFormComponent implements OnInit {
     private bookingsService: BookingsService,
     private modal: NzModalService,
     private message: NzMessageService,
-    private roomService: RoomsService
+    private roomService: RoomsService,
+    private fb: FormBuilder
   ) { }
 
 
   confirmModal?: NzModalRef;
 
+  formGroup!: FormGroup;
 
   booking: any[] = [];
   booking_details: any[] = [];
@@ -34,9 +37,34 @@ export class BookingFormComponent implements OnInit {
   displayXepPhong: boolean = false;
   room: any;
 
+  get roomItems() : FormArray {
+    return this.formGroup.get("items") as FormArray;
+  }
+
   ngOnInit() {
+    this.createFormArray();
     this.getDetail();
     this.getRooms();
+  }
+
+  private createFormArray(){
+    this.formGroup = this.fb.group({
+      items: this.fb.array([])
+    });
+  }
+
+  newRoom(detailRoom:any): FormGroup {
+    return this.fb.group({
+      room: [],
+      roomID: [null, Validators.required],
+      room_type: [detailRoom],
+    })
+  }
+
+  addItem(detailRoom: any) {
+    const items = this.formGroup.get('items') as FormArray;
+
+    this.roomItems.push(this.newRoom(detailRoom));
   }
 
   getDetail(){
@@ -44,7 +72,9 @@ export class BookingFormComponent implements OnInit {
       next: (res) => {
         this.booking = res.data;
         this.booking_details = this.booking[0].booking_details;
-        // console.log(this.booking_details )
+        this.booking_details.forEach(d => {
+          this.addItem(d)
+        });
       },
       error: (err) => {
         this.message.create(ERROR, err.error.message);
@@ -67,7 +97,8 @@ export class BookingFormComponent implements OnInit {
       nzContent: 'Bạn có muốn lưu thay đổi không?',
       nzOnOk: () =>
         new Promise((resolve, reject) => {
-          this.closeModal.emit();
+          // this.closeModal.emit();
+          console.log(this.formGroup.value)
           setTimeout(0.6 > 0.5 ? resolve : reject, 1000);
         }).catch()
     });
@@ -85,27 +116,33 @@ export class BookingFormComponent implements OnInit {
     });
   }
 
-  asignRoom(event:any){
-    console.log(event.target.value);
+  async asignRoom(event:any,i:any){
 
-      let mang = [];
+    let roomID = event.target.value;
+    let selectedRoom:any[] = [];
+    // if(event){
+    //   let room = await this.rooms.find(r => r.id == roomID);
 
-      for (const room of this.rooms) {
+    //   await this.selectedRoom.push(room);
 
-        // if(event.target.value == 0){
-        //   room.isActive = false;
-        // }else{
-        //
-        //   }
-        // }
-        if(event.target.value == room.id){
-            room.isActive = true;
-            mang.push(room)
-        }
-
+    // }
+    // console.log(this.formGroup.value);
+    this.formGroup.value.items.forEach((value:any) => {
+      // let uniq = value.filter((x:any) => x.roomID == roomID);
+      if(value.roomID == roomID){
+        selectedRoom.push(value);
       }
-      console.log(mang);
-      console.log(this.rooms.filter(x => x.room_type.id == 8));
+
+    });
+
+    // if(selectedRoom.length > 1){
+    //   this.message.create(ERROR, "Bạn đã đặt phòng này rồi");
+    //   (this.formGroup.controls['items'] as FormGroup).controls[i].reset();
+    // }
+
+  }
+
+  save(){
   }
 
   // roomList(data:any){
