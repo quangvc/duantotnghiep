@@ -129,7 +129,8 @@ class BookingClientController extends Controller
 
     public function cancelBooking($id) {
         $booking = Booking::find($id);
-        if ($booking->checkin_date->diffInDays(now()) >= 7 ) {
+        $checkin_date = Carbon::parse($booking->checkin_date);
+        if ($checkin_date->diffInDays(now()) >= 7 ) {
             $booking->update([
                 'status' => BookingStatusEnum::CANCELLED
             ]);
