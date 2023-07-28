@@ -40,8 +40,10 @@ class BookingClientController extends Controller
 
     public function userBooking($id_user)
     {
+
         $bookings = Booking::where('user_id', '=', $id_user)
             ->get();
+
         return BookingResource::collection($bookings);
     }
 
@@ -127,10 +129,11 @@ class BookingClientController extends Controller
         return MessageStatusAPI::store($booking);
     }
 
-    public function cancelBooking($id) {
+    public function cancelBooking($id)
+    {
         $booking = Booking::find($id);
         $checkin_date = Carbon::parse($booking->checkin_date);
-        if ($checkin_date->diffInDays(now()) >= 7 ) {
+        if ($checkin_date->diffInDays(now()) >= 7) {
             $booking->update([
                 'status' => BookingStatusEnum::CANCELLED
             ]);
@@ -140,5 +143,4 @@ class BookingClientController extends Controller
 
         return MessageStatusAPI::update();
     }
-
 }

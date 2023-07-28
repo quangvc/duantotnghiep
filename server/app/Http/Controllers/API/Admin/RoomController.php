@@ -123,7 +123,7 @@ class RoomController extends Controller
     }
 
 
-    public function getRoomtype($hotel_id, $checkin_date, $checkout_date)
+    public function getRoomNotBooked($hotel_id, $checkin_date, $checkout_date)
     {
         $roomtypes = RoomType::where('hotel_id', $hotel_id)->get();
 

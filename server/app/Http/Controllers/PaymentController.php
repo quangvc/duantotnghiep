@@ -93,7 +93,7 @@ class PaymentController extends Controller
         //     return response([
         //         "Error redirect"
         //     ]);
-            // echo json_encode($returnData);
+        // echo json_encode($returnData);
         // }
     }
 
