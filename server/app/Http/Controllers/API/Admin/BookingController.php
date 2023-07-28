@@ -57,6 +57,19 @@ class BookingController extends Controller
         $request->validated();
         $validated = $request->all();
 
+        $user = auth()->user();
+        if ($user) {
+            $guest_name = $user->name;
+            $guest_email = $user->email;
+            $guest_phone = $user->phone_number;
+            $user_id = $user->id;
+        } else {
+            $guest_name =  $validated['guest_name'];
+            $guest_email =  $validated['guest_email'];
+            $guest_phone =  $validated['guest_phone'];
+            $user_id =  $validated['user_id'];
+        }
+        
         // return $request->query('people_quantity');
         $checkin_date = Carbon::parse($validated['checkin_date']);
         $checkout_date = Carbon::parse($validated['checkout_date']);
@@ -100,6 +113,12 @@ class BookingController extends Controller
             'checkin_date' =>  $checkin_date,
             'checkout_date' => $checkout_date,
             'people_quantity' =>  $validated['people_quantity'],
+            'user_id' =>  $user_id,
+            'coupon_id' =>  $request->coupon_id,
+            'guest_name' =>  $guest_name,
+            'guest_email' =>  $guest_email,
+            'guest_phone' =>  $guest_phone,
+            'total_price' => $validated['total_price'],
         ]);
         $booking->update(['booking_number' => 'HD' . $booking->id . '_' . random_int('10000000', '99999999')]);
 
