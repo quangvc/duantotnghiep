@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use App\Models\Booking;
+use App\Models\BookingDetail;
 use Carbon\Carbon;
 
 class DeleteExpiredRecords extends Command
@@ -30,11 +31,16 @@ class DeleteExpiredRecords extends Command
     public function handle()
     {
         $expirationTime = Carbon::now()->subMinutes(5);
-        Booking::where([
+        $bookings = Booking::where([
             ['created_at', '<=', $expirationTime],
             ['status', 0]
-        ])->delete();
+        ])->get();
+        foreach ($bookings as $booking) {
+            BookingDetail::where([
+                ['booking_id', $booking->id]
+            ])->delete();
+        }
+        Booking::whereIn('id', $bookings->pluck('id'))->delete();
         $this->info('Expired records deleted successfully.');
-        // return Command::SUCCESS;
     }
 }

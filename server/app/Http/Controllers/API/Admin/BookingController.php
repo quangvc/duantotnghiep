@@ -69,7 +69,7 @@ class BookingController extends Controller
             $guest_phone =  $validated['guest_phone'];
             $user_id =  $validated['user_id'];
         }
-        
+
         // return $request->query('people_quantity');
         $checkin_date = Carbon::parse($validated['checkin_date']);
         $checkout_date = Carbon::parse($validated['checkout_date']);
@@ -138,7 +138,7 @@ class BookingController extends Controller
     {
         $booking = Booking::find($id);
         $booking->update($request->all());
-        
+
         return MessageStatusAPI::update();
     }
 
@@ -189,5 +189,19 @@ class BookingController extends Controller
             'status' => 4,
             'checkout_date' => now()
         ]);
+    }
+    public function deleteExpriredRecords()
+    {
+        $expirationTime = Carbon::now()->subMinutes(5);
+        $bookings = Booking::where([
+            ['created_at', '<=', $expirationTime],
+            ['status', 0]
+        ])->get();
+        foreach ($bookings as $booking) {
+            BookingDetail::where([
+                ['booking_id', $booking->id]
+            ])->delete();
+        }
+        $bookings->delete();
     }
 }

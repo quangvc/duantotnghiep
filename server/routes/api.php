@@ -163,6 +163,7 @@ Route::group(['prefix' => 'admin'], function () {
             Route::get('/{id}', 'show');
             Route::post('/{id}/confirm-booking', 'confirmBooking');
             Route::put('/{id}/checkout', 'checkout');
+            Route::delete('/', 'deleteExpriredRecords');
         }
     );
     Route::group(
