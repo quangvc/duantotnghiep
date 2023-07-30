@@ -248,6 +248,9 @@ export class ProfileComponent implements OnInit {
       if (booking.status == StatusBookings.Cancel) {
         booking.txtStatus = "Đã hủy"
       }
+      if (booking.status == StatusBookings.WaitingCancel) {
+        booking.txtStatus = "Đang chờ hủy"
+      }
     }
   }
 

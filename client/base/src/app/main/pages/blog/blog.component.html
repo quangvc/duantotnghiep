@@ -24,7 +24,7 @@
       </a>
       <line-clamp [row]="3">
         <div #content>
-          <p>{{ data.content }}.</p>
+          <p [innerHTML]="data.content">.</p>
         </div>
       </line-clamp>
 

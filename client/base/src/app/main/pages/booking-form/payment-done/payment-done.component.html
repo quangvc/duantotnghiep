@@ -16,7 +16,7 @@
 </div> -->
 
 <div class="content">
-  <div class="wrapper-1" *ngIf="vnpParams">
+  <div class="wrapper-1" *ngIf="vnpParams.vnp_ResponseCode == 0">
     <div class="wrapper-2 my-2">
       <h1>Thank you !</h1>
       <p>Cảm ơn quý khách hàng vì đã đặt phòng ở NineHotel.  </p>
@@ -30,6 +30,21 @@
     <div class="footer-like">
       <p>Không nhận được email?
        <a (click)="sendMail(vnpParams.vnp_TxnRef)">Nhấn vào đây để gửi lại!</a>
+      </p>
+    </div>
+  </div>
+  <div class="wrapper-1" *ngIf="vnpParams.vnp_ResponseCode != 0">
+    <div class="wrapper-2 my-2">
+      <h3>Thanh toán không thành công !</h3>
+      <p>Đơn đặt có mã: {{ vnpParams.vnp_TxnRef }} của bạn thanh toán không thành công.  </p>
+      <br>
+      <a class="go-home my-2" href="/">
+      Về trang chủ
+      </a>
+    </div>
+    <div class="footer-like">
+      <p>Muốn thanh toán lại?
+       <a (click)="sendMail(vnpParams.vnp_TxnRef)">Nhấn vào đây để thanh toán lại!</a>
       </p>
     </div>
   </div>

@@ -3,7 +3,7 @@
   [(nzVisible)]="displayBookingForm"
   nzTitle="Duyệt sản phẩm"
   nzWidth="980px"
-  (nzOnCancel)="handleCancel()"
+  [nzFooter]="modalFooter"
 >
   <ng-container *nzModalContent>
 
@@ -58,7 +58,7 @@
         <tr>
           <th>#</th>
           <th>{{'hotel.name' | translate}}</th>
-          <th>{{'room.room_number' | translate}}</th>
+          <th>{{'Số lượng phòng' | translate}}</th>
           <th>{{'room_type.name' | translate}}</th>
         </tr>
       </thead>
@@ -74,10 +74,20 @@
       </tbody>
     </nz-table>
 
-    <ng-container *ngIf="booking.length > 0">
+    <ng-container *ngIf="booking_status != 7">
       <nz-divider nzText="Ghi chú" nzOrientation="left"></nz-divider>
       <textarea class="form-control" id="exampleFormControlTextarea1" rows="5" [disabled]="true">{{booking[0].note}}</textarea>
     </ng-container>
 
+    <ng-container *ngIf="booking_status == 7">
+      <nz-divider nzText="Ghi chú" nzOrientation="left"></nz-divider>
+      <textarea class="form-control text-red-500" id="exampleFormControlTextarea1" rows="2" [disabled]="true">Đơn này đang chờ để hủy</textarea>
+    </ng-container>
   </ng-container>
+  <ng-template #modalFooter>
+    <button nz-button nzType="default" (click)="handleCancel()">Đóng</button>
+    <button nz-button nzType="primary" *ngIf="booking_status != 7" nzDanger (click)="showCancelConfirmationModal()">
+      Hủy đơn
+    </button>
+  </ng-template>
 </nz-modal>

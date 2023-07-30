@@ -52,7 +52,7 @@
             <form [formGroup]="userForm">
               <div class="row">
                 <div class="col-sm-3">
-                  <h6 class="mb-0">Full Name</h6>
+                  <h6 class="mb-0">Tên đầy đủ</h6>
                 </div>
                 <div class="col-sm-9 text-secondary">
                   {{ userForm.get('name')?.value }}
@@ -70,7 +70,7 @@
               <hr>
               <div class="row">
                 <div class="col-sm-3">
-                  <h6 class="mb-0">Phone</h6>
+                  <h6 class="mb-0">Số điện thoại</h6>
                 </div>
                 <div class="col-sm-9 text-secondary">
                   {{ userForm.get('phone_number')?.value }}
@@ -97,7 +97,7 @@
               <hr>
               <div class="row">
                 <div class="col-sm-12">
-                  <a class="btn btn-info " target="__blank" (click)="showDiv()" *ngIf="!showButton2">Edit</a>
+                  <a class="btn btn-info " target="__blank" (click)="showDiv()" *ngIf="!showButton2">Sửa</a>
                 </div>
               </div>
             </form>
@@ -143,8 +143,8 @@
               <div class="row">
                 <div class="col-sm-3"></div>
                 <div class="col-sm-9 text-secondary">
-                  <input type="button" class="btn btn-primary px-4" value="Save Changes" (click)="handleUpdate()">
-                  <button class="btn btn-danger" (click)="hideDiv()" *ngIf="showButton2">Cancel</button>
+                  <input type="button" class="btn btn-primary px-4" value="Lưu thay đổi" (click)="handleUpdate()">
+                  <button class="btn btn-danger" (click)="hideDiv()" *ngIf="showButton2">Hủy</button>
                 </div>
               </div>
             </form>
@@ -204,7 +204,7 @@
             (closeModal)="eventSubmit($event)">
           </user-detail-payment>
           <div *ngIf="bookingFilters && bookingFilters.length === 0" class="my-5">
-            Mã đơn sai hoặc không tồn tại, thử nhập lại hoặc liên hệ tới khách sạn bạn đặt phòng!
+            Bạn chưa đặt đơn hàng nào hoặc web đang bị lỗi, who care, who ask.
           </div>
         </div>
 
