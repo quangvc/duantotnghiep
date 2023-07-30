@@ -41,6 +41,7 @@ class DeleteExpiredRecords extends Command
             ])->delete();
         }
         Booking::whereIn('id', $bookings->pluck('id'))->delete();
-        $this->info('Expired records deleted successfully.');
+            $this->info('Expired records deleted successfully.');
+        // return Command::SUCCESS;
     }
 }
