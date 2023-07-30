@@ -51,7 +51,7 @@ export class BookingFormComponent implements OnInit {
         routerLink: 'payment'
       },
       {
-        label: 'Thanh toán thành công',
+        label: 'Hoàn thành',
         routerLink: 'payment-done'
       }
     ];

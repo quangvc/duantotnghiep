@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { NzButtonType } from 'ng-zorro-antd/button';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
 import { BookingClientService } from 'src/app/main/services/bookingClient.service';
@@ -52,8 +53,10 @@ export class UserDetailPaymentComponent implements OnInit {
 
   booking: any[] = [];
   booking_details: BookingDetail[] = [];
-
+  booking_status: any;
   rooms: any[] = [];
+  enteredBookingCode: string = '';
+  isConfirmLoading = false;
 
   ngOnInit() {
     this.getDetail();
@@ -67,7 +70,9 @@ export class UserDetailPaymentComponent implements OnInit {
 
         this.booking = res.data;
         this.booking_details = this.booking[0].booking_details;
+        this.booking_status = this.booking[0].status
         console.log(this.booking_details )
+        console.log(this.booking_status )
         this.processBookingDetails();
       },
       error: (err) => {
@@ -100,13 +105,55 @@ export class UserDetailPaymentComponent implements OnInit {
     })
   }
 
-  // asignRoom(event:any,data:any){
-  //   console.log(event.target.value);
-  //   if(event){
+  showCancelConfirmationModal(): void {
+    this.modal.create({
+      nzTitle: 'Xác nhận hủy phòng',
+      nzContent: `
+      <div class="text-center">
+        <h3>Quy định khi hủy phòng</h3>
+        <p>
+          100% số tiền quý khách đặt phòng sẽ được chuyển vào quỹ từ thiện trẻ em khuyết tật!
+          (Tin chuẩn 100%)
+        </p>
+        <p>Đồng ý thì nhập mã vào đây:</p>
+        <input type="text" [(ngModel)]="enteredBookingCode" />
+      </div>
+      `,
+      nzOkText: 'Xác nhận',
+      nzCancelText: 'Hủy',
+      nzOnOk: () => this.cancelBooking(),
+      nzOnCancel: () => {
+        // Optionally, you can reset the enteredBookingCode if the user cancels
+        this.enteredBookingCode = '';
+      },
+    });
+  }
 
-  //   }
-  //   console.log(data);
-  // }
+  cancelBooking() {
+    // Check if the entered booking code matches the actual booking code
+    // if (this.enteredBookingCode !== this.booking[0].booking_number) {
+    //   this.message.error('Mã đơn không trùng khớp. Hủy đơn không thành công.');
+    //   return;
+    // }
+
+    // If the booking code matches, proceed with canceling the booking
+    this.bookingsService.cancelBooking(this.bookingId).subscribe({
+      next: (res) => {
+        console.log(res);
+        this.message.create(ERROR, res);
+        this.isConfirmLoading = true;
+        setTimeout(() => {
+          this.isConfirmLoading = false;
+          this.closeModal.emit();
+        }, 1000);
+      },
+      error: (err) => {
+        this.message.create(ERROR, err.error.message);
+        this.message.create(ERROR, err.message);
+      },
+    });
+  }
+
 
   handleCancel(){
     this.closeModal.emit();

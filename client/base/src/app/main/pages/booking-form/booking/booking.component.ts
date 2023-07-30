@@ -75,7 +75,7 @@ export class BookingComponent implements OnInit {
   hotelRoomTypeData: any[] = [];
   roomTypeData: any[] = [];
   coupons: any[] = []
-  notLogin: boolean;
+  notLogin: boolean = true;
   selectedCoupon: any;
   discountAmount: number = 0;
   selectedCouponId: any;
@@ -110,7 +110,6 @@ export class BookingComponent implements OnInit {
 
   }
   ngOnInit() {
-    this.notLogin = true;
     this.checkLogin();
 
     // Khai báo các trường dữ liệu của form

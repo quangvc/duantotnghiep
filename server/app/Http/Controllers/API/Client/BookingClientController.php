@@ -135,7 +135,7 @@ class BookingClientController extends Controller
         $checkin_date = Carbon::parse($booking->checkin_date);
         if ($checkin_date->diffInDays(now()) >= 7) {
             $booking->update([
-                'status' => BookingStatusEnum::CANCELLED
+                'status' => BookingStatusEnum::WAITINGCANCEL
             ]);
         } else {
             return response(['Bạn không thể hủy vào lúc này!']);

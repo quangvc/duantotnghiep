@@ -52,7 +52,9 @@ export class FilterPageComponent implements OnInit {
   confirmModal?: NzModalRef;
   displayImage: boolean = false;
   originalHotels: any[] = [];
-
+  notLogin: boolean = true;
+  checkin: any;
+  checkout: any;
 
   onPageChange(event: PageEvent) {
     this.first = event.first;
@@ -77,25 +79,25 @@ export class FilterPageComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.getRegions();
     this.route.params.subscribe(params => {
-      const id = params['region_id']; // Lấy giá trị ID từ URL
-      const checkin = params['checkin']; // Lấy giá trị ID từ URL
-      const checkout = params['checkout']; // Lấy giá trị ID từ URL
-      this.getHotelsByFilter(id, checkin, checkout);
+      this.selectedRegion = params['region_id']; // Lấy giá trị ID từ URL
+      this.checkin = params['checkin']; // Lấy giá trị ID từ URL
+      this.checkout = params['checkout']; // Lấy giá trị ID từ URL
+      // this.getHotelsByFilter(id, checkin, checkout);
     });
-    const defaultRegionId = this.route.snapshot.params['region_id'];
-    this.selectedRegion = `regionRadio${defaultRegionId}`;
+    this.checkLogin();
+    this.getRegions();
+    this.getHotelsByFilter();
     this.formStar = new FormGroup({
       value: new FormControl(this.starRating)
     });
   }
-  getHotelsByFilter(id: any, checkin: any, checkout: any) {
-    const obs = this.HotelClientService.findHotels(id, checkin, checkout).subscribe({
+  getHotelsByFilter() {
+    const obs = this.HotelClientService.findHotels(this.selectedRegion, this.checkin, this.checkout).subscribe({
       next: (res) => {
-        this.hotels = res
+        this.hotels = res.data
         console.log(res);
-        this.formStar.controls['value'].setValue(res[0].star_rating);
+        this.formStar.controls['value'].setValue(res.data[0].star_rating);
       },
       error: (err) => {
         {
@@ -106,19 +108,19 @@ export class FilterPageComponent implements OnInit {
     this.subscription.add(obs);
   };
 
-  async getHotelsByRegion(regionId: any) {
-    try {
-      const res = await this.HotelClientService.getHotelsByRegion(regionId).toPromise();
-      console.log(res.data);
-      this.hotels = res.data;
-      this.originalHotels = res.data;
-      this.images = res.data;
-      this.regionName = res.data[0].region.name;
-      this.formStar.controls['value'].setValue(res.data[0].star_rating);
-    } catch (err) {
-      console.error('Đã xảy ra lỗi khi gọi API:', err);
-    }
-  }
+  // async getHotelsByRegion(regionId: any) {
+  //   try {
+  //     const res = await this.HotelClientService.getHotelsByRegion(regionId).toPromise();
+  //     console.log(res.data);
+  //     this.hotels = res.data;
+  //     this.originalHotels = res.data;
+  //     this.images = res.data;
+  //     this.regionName = res.data[0].region.name;
+  //     this.formStar.controls['value'].setValue(res.data[0].star_rating);
+  //   } catch (err) {
+  //     console.error('Đã xảy ra lỗi khi gọi API:', err);
+  //   }
+  // }
 
   getRegions() {
     let obs = this.RegionsClientService.getRegions().subscribe({
@@ -138,7 +140,7 @@ export class FilterPageComponent implements OnInit {
   onRegionSelected(regionId: any) {
     debugger
     this.selectedRegion = regionId;
-    this.getHotelsByRegion(regionId);
+    // this.getHotelsByRegion(regionId);
   }
 
   onSearch(searchQuery: string) {
@@ -168,5 +170,15 @@ export class FilterPageComponent implements OnInit {
       }
     })
     this.subscription.add(obs);
+  }
+  async checkLogin() {
+    let userLogged: any = sessionStorage.getItem('user');
+    let user = JSON.parse(userLogged);
+    if (user) {
+      this.notLogin = false;
+    } else {
+      console.log('Không đăng nhập');
+
+    }
   }
 }

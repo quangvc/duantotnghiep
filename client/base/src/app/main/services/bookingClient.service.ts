@@ -39,6 +39,10 @@ export class BookingClientService {
     const url = `${this.API_URL}/${BOOKINGS}/${id}`;
     return this.http.get<any>(url);
   }
+  cancelBooking(id:any): Observable<any>{
+    const url = `${this.API_URL}/${BOOKINGS}/cancel-booking/${id}`;
+    return this.http.put<any>(url, id);
+  }
 
 
 }
