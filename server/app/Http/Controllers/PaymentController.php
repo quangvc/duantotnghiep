@@ -275,7 +275,7 @@ class PaymentController extends Controller
     }
 
     
-    public function onepayReturn() {
+    public function onepayReturn(Request $request) {
 
     $vpc_Txn_Secure_Hash = $_REQUEST ["vpc_SecureHash"];
     unset ( $_REQUEST ["vpc_SecureHash"] );
@@ -362,15 +362,25 @@ class PaymentController extends Controller
 
     $transStatus = "";
     if($hashValidated=="CORRECT" && $txnResponseCode=="0"){
+        $booking = Booking::where('booking_number', $merchTxnRef)->first();
+        $booking->update([
+            'status' => BookingStatusEnum::RESERVED
+        ]);
+        if ($booking->coupon_id) {
+            $coupon = Coupon::find($booking->coupon_id);
+            $coupon->update([
+                $coupon->decrement('quantity')
+            ]);
+        }
+        Notification::route('mail', $booking->guest_email)->notify(new SendMailPaymentNotification($booking->booking_number));
         $transStatus = "Giao dịch thành công";
     }elseif ($txnResponseCode!="0"){
         $transStatus = "Giao dịch thất bại";
     }elseif ($hashValidated=="INVALID HASH"){
         $transStatus = "Giao dịch Pendding";
     }
-
+    
     function getResponseDescription($responseCode) {
-        
         switch ($responseCode) {
             case "0" :
                 $result = "Giao dịch thành công - Approved";
