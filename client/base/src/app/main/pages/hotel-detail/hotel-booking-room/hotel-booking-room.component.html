@@ -9,7 +9,7 @@
         <p *ngIf="dataTable" class="highlight-text my-auto">Kết quả cho Từ ngày <strong>{{ date_in }}</strong> đến ngày <strong>{{ date_out }}</strong>. Có <strong>{{ roomCount }}</strong> lựa chọn phòng trống.</p>
         <button (click)="onclick()" type="button" class="highlight-button d-flex flex-row">
           <i class="fa fa-search me-3 my-auto" aria-hidden="true"></i>
-          <p class="my-auto">{{ReadMore ? "Thay đổi tìm kiếm" : "Ẩn bộ lọc"}}</p>
+          <p class="my-auto">{{ReadMore ? "Tìm kiếm phòng trống" : "Ẩn bộ lọc"}}</p>
         </button>
       </div>
       <ng-container *ngIf="visible">

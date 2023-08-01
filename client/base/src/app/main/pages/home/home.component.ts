@@ -39,7 +39,7 @@ export class HomeComponent implements OnInit {
     const currentDate = moment();
 
     // Thêm 1 ngày vào ngày hiện tại
-    const nextDay = currentDate.add(1, 'days');
+    const nextDay = currentDate.add(2, 'days');
 
     // Lưu giá trị vào biến minimumDate
     this.minimumDate = nextDay.toDate();
@@ -140,7 +140,7 @@ export class HomeComponent implements OnInit {
   filterHotel() {
     if (this.selectedRegion && this.date_in && this.date_out) {
       debugger
-      if (this.date_in <= this.date_out) {
+      if (this.date_in < this.date_out) {
         sessionStorage.setItem('checkinDate', this.date_in.toString());
         sessionStorage.setItem('checkoutDate', this.date_out.toString());
         this.date_in = moment(this.date_in)?.format('DD-MM-YYYY') || '';

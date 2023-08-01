@@ -42,8 +42,8 @@ export class HotelBookingRoomComponent implements OnInit {
   hotelId: any;
   date_in: string = ''; // Ngày check-in
   date_out: string = ''; // Ngày check-out
-  visible: boolean = false; // Biến để ẩn/hiện phần lọc
-  ReadMore: boolean = true; // Biến để thay đổi nút xem thêm/ẩn bộ lọc
+  visible: boolean = false;
+  ReadMore: boolean = true;
   selectedRoomType!: roomType;
   menus: MenuItem[] = [];
   roomTypeDisplay: boolean[] = [];
@@ -52,8 +52,8 @@ export class HotelBookingRoomComponent implements OnInit {
   total: number = 0;
   selectedRow: any;
   minimumDate: Date;
-  displayDateIn: string = ''; // Ngày check-in
-  displayDateOut: string = ''; // Ngày check-out
+  displayDateIn: string = '';
+  displayDateOut: string = '';
   roomCount: number = 0;
 
   totalQuantity: any;
@@ -84,7 +84,7 @@ export class HotelBookingRoomComponent implements OnInit {
     const currentDate = moment();
 
     // Thêm 1 ngày vào ngày hiện tại
-    const nextDay = currentDate.add(1, 'days');
+    const nextDay = currentDate.add(2, 'days');
 
     // Lưu giá trị vào biến minimumDate
     this.minimumDate = nextDay.toDate();
@@ -121,8 +121,9 @@ export class HotelBookingRoomComponent implements OnInit {
 
   // Hàm lấy danh sách các loại phòng theo ngày đặt và ngày trả
   getRoomType() {
+    debugger
     if (this.date_in && this.date_out) {
-      if (this.date_in <= this.date_out) {
+      if (this.date_in < this.date_out) {
         this.date_in = moment(this.date_in)?.format('DD-MM-YYYY') || '';
         this.date_out = moment(this.date_out)?.format('DD-MM-YYYY') || '';
         const obs = this.roomTypeClientService.findRoomType(this.hotel_id, this.date_in, this.date_out).subscribe({
