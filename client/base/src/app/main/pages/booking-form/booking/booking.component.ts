@@ -93,6 +93,7 @@ export class BookingComponent implements OnInit {
   description: string = '';
 
   filteredBrands: any[] = [];
+  now = moment().format('yyyy-MM-DD')
 
 
   private subscription = new Subscription();
@@ -286,25 +287,6 @@ export class BookingComponent implements OnInit {
     }
   }
 
-  // chạy khi chọn 1 mã
-  // onCouponSelected(event: any) {
-  //   this.selectedCouponId = event.value.id;
-  //   if (this.selectedCouponId) {
-  //     this.selectedCoupon = this.coupons.find(coupon => coupon.id === this.selectedCouponId);
-  //     if (this.selectedCoupon) {
-  //       this.currentTotalAmount = this.calculateTotalPrice(this.selectedCoupon.value, this.selectedCoupon.type);
-  //       this.userform.patchValue({
-  //         'coupon_id': this.selectedCouponId,
-  //         'total_price': this.currentTotalAmount || null,
-  //       });
-  //       this.messageService.add({ severity: 'success', summary: 'Thành công', detail: `Total Price: ${this.currentTotalAmount} VND` });
-  //     }
-  //   } else {
-  //     this.selectedCoupon = null;
-  //     this.messageService.add({ severity: 'warn', summary: 'Cảnh báo', detail: 'Vui lòng chọn mã giảm giá trước khi tính toán.' });
-  //   }
-  // }
-
   // Tính toán số tiền sau khi nhập mã giảm
   calculateTotalPrice(couponValue: number, couponType: string, maxDiscount: number): number {
     let finalPrice = this.totalAmount;
@@ -335,44 +317,29 @@ export class BookingComponent implements OnInit {
     this.showBtnApply = true;
     this.couponCode = '';
   }
-  // Kiểm tra mã giảm giá khi nhấn nút "Kiểm tra"
-  // checkCoupon(couponCode: any) {
-  //   debugger
-  //   this.CouponClientService.findByCode(couponCode).subscribe({
-  //     next: (res) => {
-  //       console.log(res);
-  //       this.coupons = res.data;
-  //       this.discountAmount = this.calculateTotalPrice(res.data.value, res.data.type);
-  //     },
-  //     error: (err) => {
-  //       {
-  //         console.log('Đã xảy ra lỗi khi gọi API:', err);
-  //       }
-  //     }
-  //   });
-  //   this.showCouponInputFlag = false;
-  // }
 
   async checkCoupon(couponCode: any) {
     if (couponCode) {
-      // Xử lý khi form hợp lệ
-
       this.confirmationService.confirm({
         message: 'Bạn có chắc chắn dùng mã giảm giá này?',
         accept: async () => {
-          debugger
           await this.CouponClientService.findByCode(couponCode).subscribe({
             next: (res) => {
               console.log(res);
-              this.selectedCoupon = res.data;
-              this.selectedCouponId = res.data.id;
-              this.currentTotalAmount = this.calculateTotalPrice(res.data.value, res.data.type, res.data.max);
-              this.showCouponInputFlag = false;
-              this.userform.patchValue({
-                'coupon_id': this.selectedCouponId,
-                'total_price': this.currentTotalAmount || null,
-              });
-              this.messageService.add({ severity: 'success', summary: 'Thành công', detail: 'Oke luông (●´ω｀●)' });
+              if (this.hotel_Id == res.data.hotel_id || res.data.end_date === this.now) {
+                this.selectedCoupon = res.data;
+                this.selectedCouponId = res.data.id;
+                this.currentTotalAmount = this.calculateTotalPrice(res.data.value, res.data.type, res.data.max);
+                this.showCouponInputFlag = false;
+                this.userform.patchValue({
+                  'coupon_id': this.selectedCouponId,
+                  'total_price': this.currentTotalAmount || null,
+                });
+                this.messageService.add({ severity: 'success', summary: 'Thành công', detail: 'Oke luông (●´ω｀●)' });
+              } else {
+                this.messageService.add({ severity: 'warn', summary: 'Cảnh báo', detail: 'Mã không khả dụng (╥﹏╥)' });
+              }
+
             },
             error: (err) => {
               {

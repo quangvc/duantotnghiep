@@ -1,13 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { HotelClientService } from '../../services/hotelClient.service';
-import { ERROR } from 'src/app/module/_mShared/model/url.class';
+import { ERROR, WARNING } from 'src/app/module/_mShared/model/url.class';
 import { Subscription } from 'rxjs';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FormControl, FormGroup } from '@angular/forms';
 import { RegionsClientService } from '../../services/regions-client.service';
 import { MenuItem } from 'primeng/api';
 import { NzModalRef } from 'ng-zorro-antd/modal';
+import * as moment from 'moment';
 
 interface Type {
   name: string;
@@ -55,6 +56,11 @@ export class FilterPageComponent implements OnInit {
   notLogin: boolean = true;
   checkin: any;
   checkout: any;
+  ParmaCheckIn: any;
+  ParmaCheckOut: any;
+  visible: boolean = false;
+  ReadMore: boolean = true;
+  minimumDate: Date;
 
   onPageChange(event: PageEvent) {
     this.first = event.first;
@@ -68,7 +74,7 @@ export class FilterPageComponent implements OnInit {
   }
 
   public set isExpanded(value: boolean) {
-     this._isExpanded = value;
+    this._isExpanded = value;
   }
 
   constructor(
@@ -76,14 +82,27 @@ export class FilterPageComponent implements OnInit {
     private RegionsClientService: RegionsClientService,
     private message: NzMessageService,
     private route: ActivatedRoute,
-  ) { }
+    private router: Router
+  ) {
+    // Tạo ngày hiện tại
+    const currentDate = moment();
+
+    // Thêm 1 ngày vào ngày hiện tại
+    const nextDay = currentDate.add(2, 'days');
+
+    // Lưu giá trị vào biến minimumDate
+    this.minimumDate = nextDay.toDate();
+  }
 
   ngOnInit() {
     this.route.params.subscribe(params => {
-      this.selectedRegion = params['region_id']; // Lấy giá trị ID từ URL
-      this.checkin = params['checkin']; // Lấy giá trị ID từ URL
-      this.checkout = params['checkout']; // Lấy giá trị ID từ URL
-      // this.getHotelsByFilter(id, checkin, checkout);
+      this.selectedRegion = params['region_id'];
+      const startDateParam = params['checkin'];
+      const endDateParam = params['checkout'];
+      this.checkin = moment(startDateParam, 'DD-MM-YYYY').toDate();
+      this.checkout = moment(endDateParam, 'DD-MM-YYYY').toDate();
+      console.log('Ngày bắt đầu: ', this.checkin);
+      console.log('Ngày kết thúc: ', this.checkout);
     });
     this.checkLogin();
     this.getRegions();
@@ -92,35 +111,30 @@ export class FilterPageComponent implements OnInit {
       value: new FormControl(this.starRating)
     });
   }
+
   getHotelsByFilter() {
-    const obs = this.HotelClientService.findHotels(this.selectedRegion, this.checkin, this.checkout).subscribe({
-      next: (res) => {
-        this.hotels = res.data
-        console.log(res);
-        this.formStar.controls['value'].setValue(res.data[0].star_rating);
-      },
-      error: (err) => {
-        {
-          console.log('Đã xảy ra lỗi khi gọi API:', err);
+    if (moment(this.checkin).isBefore(this.checkout)) {
+      const dateIn = moment(this.checkin)?.format('DD-MM-YYYY') || '';
+      const dateOut = moment(this.checkout)?.format('DD-MM-YYYY') || '';
+      const obs = this.HotelClientService.findHotels(this.selectedRegion, dateIn, dateOut).subscribe({
+        next: (res) => {
+          this.hotels = res.data
+          console.log(res);
+          this.formStar.controls['value'].setValue(res.data[0].star_rating);
+        },
+        error: (err) => {
+          {
+            console.log('Đã xảy ra lỗi khi gọi API:', err);
+          }
         }
-      }
-    });
-    this.subscription.add(obs);
+      });
+      this.subscription.add(obs);
+    } else {
+      this.message.create(WARNING, 'Vui lòng nhập Ngày nhận phòng < ngày trả phòng');
+    }
+
   };
 
-  // async getHotelsByRegion(regionId: any) {
-  //   try {
-  //     const res = await this.HotelClientService.getHotelsByRegion(regionId).toPromise();
-  //     console.log(res.data);
-  //     this.hotels = res.data;
-  //     this.originalHotels = res.data;
-  //     this.images = res.data;
-  //     this.regionName = res.data[0].region.name;
-  //     this.formStar.controls['value'].setValue(res.data[0].star_rating);
-  //   } catch (err) {
-  //     console.error('Đã xảy ra lỗi khi gọi API:', err);
-  //   }
-  // }
 
   getRegions() {
     let obs = this.RegionsClientService.getRegions().subscribe({
@@ -137,12 +151,24 @@ export class FilterPageComponent implements OnInit {
     })
     this.subscription.add(obs);
   }
+
   onRegionSelected(regionId: any) {
-    debugger
-    this.selectedRegion = regionId;
-    // this.getHotelsByRegion(regionId);
+    const startDate = moment(this.checkin).format('DD-MM-YYYY');
+    const endDate = moment(this.checkout).format('DD-MM-YYYY');
+    this.router.navigate(['/hotels/get', regionId, startDate, endDate]);
+    this.getHotelsByFilter()
+  }
+  onChangeDate() {
+    const startDate = moment(this.checkin).format('DD-MM-YYYY');
+    const endDate = moment(this.checkout).format('DD-MM-YYYY');
+    this.router.navigate(['/hotels/get', this.selectedRegion, startDate, endDate]);
+    this.getHotelsByFilter()
   }
 
+  onclick() {
+    this.ReadMore = !this.ReadMore;
+    this.visible = !this.visible;
+  }
   onSearch(searchQuery: string) {
     if (searchQuery.trim() === '') {
       this.hotels = this.originalHotels;
@@ -153,24 +179,7 @@ export class FilterPageComponent implements OnInit {
     );
     this.hotels = filteredHotels;
   }
-  resetSearch() {
-    let obs = this.HotelClientService.getHotelsByRegion(this.selectedRegion).subscribe({
-      next: (res) => {
-        console.log(res.data);
-        this.hotels = res.data;
-        this.originalHotels = res.data;
-        this.images = res.data;
-        this.regionName = res.data[0].region.name;
-        this.formStar.controls['value'].setValue(res.data[0].star_rating);
-      },
-      error: (err) => {
-        {
-          this.message.create(ERROR, err.message);
-        }
-      }
-    })
-    this.subscription.add(obs);
-  }
+
   async checkLogin() {
     let userLogged: any = sessionStorage.getItem('user');
     let user = JSON.parse(userLogged);
@@ -180,5 +189,32 @@ export class FilterPageComponent implements OnInit {
       console.log('Không đăng nhập');
 
     }
+  }
+
+  // resetSearch() {
+  //   let obs = this.HotelClientService.getHotelsByRegion(this.selectedRegion).subscribe({
+  //     next: (res) => {
+  //       console.log(res.data);
+  //       this.hotels = res.data;
+  //       this.originalHotels = res.data;
+  //       this.images = res.data;
+  //       this.regionName = res.data[0].region.name;
+  //       this.formStar.controls['value'].setValue(res.data[0].star_rating);
+  //     },
+  //     error: (err) => {
+  //       {
+  //         this.message.create(ERROR, err.message);
+  //       }
+  //     }
+  //   })
+  //   this.subscription.add(obs);
+  // }
+
+  resetdate() {
+    this.checkin = '';
+    this.checkout = '';
+
+    // this.firstTable = true;
+    // this.dataTable = false;
   }
 }
