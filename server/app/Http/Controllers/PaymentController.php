@@ -190,27 +190,27 @@ class PaymentController extends Controller
     }
 
     public function onepay_payment(Request $request) {
-
         $vpcURL = 'https://mtf.onepay.vn/onecomm-pay/vpc.op' . "?";
 
-        // Remove the Virtual Payment Client URL from the parameter hash as we 
+        // Remove the Virtual Payment Client URL from the parameter hash as we
         // do not want to send these fields to the Virtual Payment Client.
         // bỏ giá trị url và nút submit ra khỏi mảng dữ liệu
-        // unset($_POST["virtualPaymentClientURL"]); 
+        // unset($_POST["virtualPaymentClientURL"]);
         // unset($_POST["SubButL"]);
-        $booking = Booking::find($request->id);
+        $booking = Booking::find($request[0]);
+
 
         $vpc_Merchant = 'ONEPAY';
         $vpc_AccessCode = 'D67342C2';
         $vpc_MerchTxnRef = $booking->booking_number;
         $vpc_OrderInfo = 'Thanh toan dat phong khach san. ID booking ' . $booking->booking_number;
-        $vpc_Amount = $_POST['total_price'] * 100;
+        $vpc_Amount = $booking->total_price * 100;
         $vpc_ReturnURL = 'http://localhost:4300/booking/payment-done';
         $vpc_Version = '2';
         $vpc_Command = 'pay';
         $vpc_Locale = 'vn';
         $vpc_Currency = 'VND';
-    
+
         $data = array(
             'vpc_Merchant' => $vpc_Merchant,
             'vpc_AccessCode' => $vpc_AccessCode,
@@ -267,14 +267,18 @@ class PaymentController extends Controller
     // ===================================================================
     // chuyển trình duyệt sang cổng thanh toán theo URL được tạo ra
     // header("Location: ".$vpcURL);
-    return redirect()->to($vpcURL);
+    // return redirect()->to($vpcURL);
+    // header('Location: ' . $vpcURL);
+    // $vpcURL = 'hello';
+    // return $vpcURL;
+    return response()->json($vpcURL);
 
     // *******************
     // END OF MAIN PROGRAM
     // *******************
     }
 
-    
+
     public function onepayReturn(Request $request) {
 
     $vpc_Txn_Secure_Hash = $_REQUEST ["vpc_SecureHash"];
@@ -288,7 +292,7 @@ class PaymentController extends Controller
         //$stringHashData = $SECURE_SECRET;
         //*****************************khởi tạo chuỗi mã hóa rỗng*****************************
         $stringHashData = "";
-        
+
         // sort all the incoming vpc response fields and leave out any with no value
         foreach ( $_REQUEST as $key => $value ) {
     //        if ($key != "vpc_SecureHash" or strlen($value) > 0) {
@@ -300,9 +304,9 @@ class PaymentController extends Controller
             }
         }
     //  *****************************Xóa dấu & thừa cuối chuỗi dữ liệu*****************************
-        $stringHashData = rtrim($stringHashData, "&");	
-        
-        
+        $stringHashData = rtrim($stringHashData, "&");
+
+
     //    if (strtoupper ( $vpc_Txn_Secure_Hash ) == strtoupper ( md5 ( $stringHashData ) )) {
     //    *****************************Thay hàm tạo chuỗi mã hóa*****************************
         if (strtoupper ( $vpc_Txn_Secure_Hash ) == strtoupper(hash_hmac('SHA256', $stringHashData, pack('H*',env('SECURE_SECRET'))))) {
@@ -340,7 +344,7 @@ class PaymentController extends Controller
     //$acqResponseCode = null2unknown ( $_REQUEST ["vpc_AcqResponseCode"] );
     $txnResponseCode = null2unknown ( $_REQUEST ["vpc_TxnResponseCode"] );
 
-    // This is the display title for 'Receipt' page 
+    // This is the display title for 'Receipt' page
     //$title = $_REQUEST ["Title"];
 
 
@@ -379,7 +383,7 @@ class PaymentController extends Controller
     }elseif ($hashValidated=="INVALID HASH"){
         $transStatus = "Giao dịch Pendding";
     }
-    
+
     function getResponseDescription($responseCode) {
         switch ($responseCode) {
             case "0" :

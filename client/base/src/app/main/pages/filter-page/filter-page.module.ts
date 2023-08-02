@@ -15,6 +15,7 @@ import { DialogService } from 'primeng/dynamicdialog';
 import { ImagesClientService } from '../../services/images-client.service';
 import { roomTypeClientService } from '../../services/room-type-client.service';
 import { CalendarModule } from 'primeng/calendar';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @NgModule({
   imports: [
@@ -28,7 +29,7 @@ import { CalendarModule } from 'primeng/calendar';
     SliderModule,
     RatingModule,
     ReactiveFormsModule,
-
+    NgxPaginationModule,
     FilterPageRoutes
   ],
   declarations: [FilterPageComponent],

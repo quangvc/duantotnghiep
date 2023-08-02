@@ -61,6 +61,7 @@ export class FilterPageComponent implements OnInit {
   visible: boolean = false;
   ReadMore: boolean = true;
   minimumDate: Date;
+  p: any;
 
   onPageChange(event: PageEvent) {
     this.first = event.first;

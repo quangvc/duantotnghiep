@@ -7,7 +7,8 @@ export const REGIONS = "regions"
 export const REGION = "region"
 export const ROOM_TYPES = "room-types"
 export const ROOMS = "rooms"
-export const PAYMENT = "vnpay-payment"
+export const VN_PAYMENT = "vnpay-payment"
+export const ONE_PAYMENT = "onepay-payment"
 
 
 export const BOOKINGS = "bookings"

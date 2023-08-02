@@ -122,7 +122,7 @@
         </div> -->
         <!-- Start Thông tin -->
 
-        <div class="d-flex justify-content-between mt-4 bg-white border border-1 mb-3" *ngFor="let data of hotels">
+        <div class="d-flex justify-content-between mt-4 bg-white border border-1 mb-3" *ngFor="let data of hotels | paginate: { itemsPerPage: 5, currentPage: p }">
           <div class="col-4 p-0">
             <a href="/hotel/{{ data.id }}">
               <!-- <img style="width: 100%;" src="./../../../assets/image/ks1.jpg" alt=""> -->
@@ -154,8 +154,9 @@
         <!-- End Thông tin -->
 
         <!-- Phân trang start -->
-        <p-paginator (onPageChange)="onPageChange($event)" [first]="first" [rows]="rows" [totalRecords]="120"
-          [rowsPerPageOptions]="[5, 10, 20, 30]"></p-paginator>
+        <pagination-controls (pageChange)="p = $event" class="float-right"></pagination-controls>
+        <!-- <p-paginator (onPageChange)="onPageChange($event)" [first]="first" [rows]="rows" [totalRecords]="120"
+          [rowsPerPageOptions]="[5, 10, 20, 30]"></p-paginator> -->
         <!-- Phân trang end -->
       </div>
     </div>
