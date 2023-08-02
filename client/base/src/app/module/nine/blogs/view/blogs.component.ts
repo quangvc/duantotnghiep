@@ -36,10 +36,12 @@ export class BlogsComponent implements OnInit {
 
   displayViewPost: boolean = false;
 
+  displayComment: boolean = false;
+
   ngOnInit() {
     this.getBlogs();
     this.getOptionEnum();
-    console.log(Auth.User())
+    // console.log(Auth.User())
   }
 
   getOptionEnum(){
@@ -49,14 +51,15 @@ export class BlogsComponent implements OnInit {
   getBlogs(){
     let obs = this.BlogsService.getBlogs().subscribe({
       next: (res) => {
+        // console.log(res)
         this.blogs = res.data;
-        console.log(res)
+
       },
       error: (err) => {{
         this.message.create(ERROR, err.message);
       }}
     })
-    this.subscription.add(obs);
+    // this.subscription.add(obs);
   }
 
   dropdownItemsButton(data:any){
@@ -71,6 +74,12 @@ export class BlogsComponent implements OnInit {
         label: "Xem bài viết",
         command: () => {
           this.viewPost(data);
+        },
+      },
+      {
+        label: "Bình luận",
+        command: () => {
+          this.showComment(data);
         },
       },
       { separator: true},
@@ -88,6 +97,11 @@ export class BlogsComponent implements OnInit {
     this.blogId = null;
   }
 
+  showComment(blog:any){
+    this.displayComment = true;
+    this.blogId = blog.id;
+  }
+
   editBlog(blog:any){
     this.displayCreateUpdateBlog = true;
     this.blogId = blog.id;
@@ -96,6 +110,7 @@ export class BlogsComponent implements OnInit {
   cancel(event:any){
     this.displayCreateUpdateBlog = false;
     this.displayViewPost = false;
+    this.displayComment = false;
     this.getBlogs();
   }
 

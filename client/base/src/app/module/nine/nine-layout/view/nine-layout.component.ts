@@ -50,6 +50,11 @@ export class NineLayoutComponent implements OnInit {
   getMenus(){
     this.menus = [
       {
+        label: "Dashboard",
+        icon: 'dashboard',
+        routerLink: "/nine"
+      },
+      {
         label: "Quản lý người dùng",
         icon: 'user',
         items: [
@@ -117,10 +122,10 @@ export class NineLayoutComponent implements OnInit {
             label: "Quản lý blog",
             routerLink: "blogs",
           },
-          {
-            label: "Quản lý bình luận",
-            routerLink: "comments",
-          },
+          // {
+          //   label: "Quản lý bình luận",
+          //   routerLink: "comments",
+          // },
           {
             label: "Quản lý Feedback",
             routerLink: "feedbacks",

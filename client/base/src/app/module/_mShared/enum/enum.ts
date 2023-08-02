@@ -5,10 +5,11 @@ export enum NineStatus {
 
 export enum StatusBookings {
   Unconfirmed = 1,
-  Confirmed = 3,
-  Using = 4,
-  Clean = 5,
-  Cancel = 6,
-  WaitingCancel = 7,
+  Confirmed = 2,
+  Using = 3,
+  Clean = 4,
+  Cancel = 5,
+  WaitingCancel = 6,
+  Unpaid = 0,
 }
 

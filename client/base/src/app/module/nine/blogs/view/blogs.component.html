@@ -49,3 +49,10 @@
   [blogId]="blogId"
   (closeModal)="cancel($event)"
 ></view-post>
+
+<comments-blog
+  *ngIf="displayComment"
+  [displayComment]="displayComment"
+  [blogId]="blogId"
+  (closeModal)="cancel($event)"
+></comments-blog>

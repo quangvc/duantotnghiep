@@ -31,7 +31,15 @@ findOne(id:any): Observable<any>{
   return this.http.get<any>(url, this.httpOptions);
 }
 
-// confirmConfirm(){}
+confirmBooking(id: any, data:any):Observable<any>{
+  const url = `${this.API_URL}/${BOOKINGS}/${id}/confirm-booking`;
+  return this.http.post<any>(url,data,this.httpOptions);
+}
+
+// getBookingDetail():Observable<any>{
+//   const url = `${this.API_URL}/${BOOKINGS}/${id}/confirm-booking`;
+//   return this.http.post<any>(url,data,this.httpOptions);
+// }
 
 
 }

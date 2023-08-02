@@ -29,7 +29,7 @@ export class NineBookingsComponent implements OnInit {
 
   tabs = [1, 2, 3];
 
-  statusOptions: any[] = [{text: "Tất cả", value: 0}];
+  statusOptions: any[] = [{text: "Tất cả", value: -1}];
 
   bookingId: any;
 
@@ -59,6 +59,9 @@ export class NineBookingsComponent implements OnInit {
 
   convertTextStatus(){
     for (const booking of this.bookingFilters) {
+      if(booking.status == StatusBookings.Unpaid){
+        booking.txtStatus = "Chưa thanh toán"
+      }
       if(booking.status == StatusBookings.Unconfirmed){
         booking.txtStatus = "Đang chờ duyệt"
       }
@@ -86,8 +89,11 @@ export class NineBookingsComponent implements OnInit {
         this.convertTextStatus();
 
         for (const statusOption of this.statusOptions) {
-          if(statusOption.value == 0){
+          if(statusOption.value == -1){
             statusOption.text = "Tất cả"
+          }
+          if(statusOption.value == StatusBookings.Unpaid){
+            statusOption.text = "Chưa thanh toán"
           }
           if(statusOption.value == StatusBookings.Unconfirmed){
             statusOption.text = "Đang chờ duyệt"
@@ -103,6 +109,9 @@ export class NineBookingsComponent implements OnInit {
           }
           if(statusOption.value == StatusBookings.Cancel){
             statusOption.text = "Đã hủy"
+          }
+          if(statusOption.value == StatusBookings.WaitingCancel){
+            statusOption.text = "Đang chờ hủy"
           }
         }
 
@@ -138,7 +147,7 @@ export class NineBookingsComponent implements OnInit {
 
       this.bookingFilters = bookings.filter(bk => bk.status == status);
 
-      if(value == 0){
+      if(value == -1){
         this.bookingFilters = bookings.filter(bk => bk);
       }
 
