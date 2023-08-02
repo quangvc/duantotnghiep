@@ -210,14 +210,6 @@ Route::group(['prefix' => 'admin'], function () {
             Route::delete('/', 'destroy');
         }
     );
-    Route::group(
-        ['prefix' => 'statics', 'controller' => StaticController::class],
-        function () {
-            Route::get('/', 'index');
-            Route::get('/revenueByDay/{date}', 'revenueByDay');
-            Route::get('/revenueByMonth/{date}', 'revenueByMonth');
-        }
-    );
 });
 
 Route::group(['prefix' => 'client'], function () {
