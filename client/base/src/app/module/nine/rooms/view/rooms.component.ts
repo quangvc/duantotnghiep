@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
 import { Subscription, firstValueFrom } from 'rxjs';
@@ -15,6 +15,9 @@ import { RoomsService } from 'src/app/module/_mShared/service/rooms.service';
   styleUrls: ['./rooms.component.scss'],
 })
 export class RoomsComponent implements OnInit, OnDestroy {
+
+  @Input() room: any[] = [];
+
   private subscription = new Subscription();
 
   displayCreateUpdateRoom: boolean = false;
@@ -62,30 +65,18 @@ export class RoomsComponent implements OnInit, OnDestroy {
   }
 
   getRooms() {
-    let obs = this.roomsService.getRooms().subscribe({
-      next: (room) => {
-        this.rooms = room.data;
-        this.viewNameStatus(room.data);
-        console.log(room)
-      },
-      error: (err) => {
-        this.message.create(ERROR, `${err.error.message}`)
-        this.message.create(ERROR, `${err.message}`)
-      },
-    });
-
-    this.subscription.add(obs);
+    // this.viewNameStatus();
   }
 
-  async viewNameStatus(rooms:any){
-    for (const item of rooms) {
-      this.statusOption.forEach((status:any) => {
-        if(item.status == status.value){
-          item.txtStatus = status.text;
-        }
-      });
-    }
-  }
+  // async viewNameStatus(){
+  //   for (const item of this.room) {
+  //     this.statusOption.forEach((status:any) => {
+  //       if(item.status == status.value){
+  //         item.txtStatus = status.text;
+  //       }
+  //     });
+  //   }
+  // }
 
 
   addRoom() {

@@ -67,8 +67,9 @@ class BookingController extends Controller
             $guest_name =  $validated['guest_name'];
             $guest_email =  $validated['guest_email'];
             $guest_phone =  $validated['guest_phone'];
-            $user_id =  null;
+            $user_id =  $validated['user_id'];
         }
+
         // return $request->query('people_quantity');
         $checkin_date = Carbon::parse($validated['checkin_date']);
         $checkout_date = Carbon::parse($validated['checkout_date']);
@@ -107,19 +108,18 @@ class BookingController extends Controller
             if ($count_all_rooms - $count_booked_rooms < $item['quantity']) {
                 return 'room_type_id ' . $item['room_type_id'] . ' hết phòng';
             }
-            
-        }        
-        $booking = new Booking([
+        }
+        $booking = Booking::create([
             'checkin_date' =>  $checkin_date,
             'checkout_date' => $checkout_date,
             'people_quantity' =>  $validated['people_quantity'],
             'user_id' =>  $user_id,
+            'coupon_id' =>  $request->coupon_id,
             'guest_name' =>  $guest_name,
             'guest_email' =>  $guest_email,
             'guest_phone' =>  $guest_phone,
             'total_price' => $validated['total_price'],
         ]);
-        $booking->save();
         $booking->update(['booking_number' => 'HD' . $booking->id . '_' . random_int('10000000', '99999999')]);
 
         foreach ($validated['items'] as $item) {
@@ -131,10 +131,16 @@ class BookingController extends Controller
             }
         }
 
-        return MessageStatusAPI::store();
+        return MessageStatusAPI::store($booking);
     }
 
+    public function update(Request $request, $id)
+    {
+        $booking = Booking::find($id);
+        $booking->update($request->all());
 
+        return MessageStatusAPI::update();
+    }
 
     public function confirmBooking(Request $request, $id)
     {
@@ -144,7 +150,6 @@ class BookingController extends Controller
             // $rooms_id = $request->room_id;
             $items = $request->all();
             $booking_details = BookingDetail::where('booking_id', $id)->get();
-
             foreach ($items as $item) {
                 foreach ($item['room_id'] as $room) {
                     foreach ($booking_details as $booking_detail) {
@@ -156,6 +161,7 @@ class BookingController extends Controller
                         }
                     }
                 }
+                return $item;
             }
             foreach ($booking_details as $booking_detail) {
                 if ($booking_detail->room_id == '') {
@@ -167,8 +173,35 @@ class BookingController extends Controller
                     return 'Lỗi. Xếp phòng thất bại!';
                 }
             }
-            return 'Xếp phòng thành công!';
+            $booking = Booking::find($id);
+            $booking->update([
+                'status' => 2,
 
+            ]);
+            return 'Xếp phòng thành công!';
         }
+    }
+
+    public function checkout($id)
+    {
+        $booking = Booking::find($id);
+        $booking->update([
+            'status' => 4,
+            'checkout_date' => now()
+        ]);
+    }
+    public function deleteExpriredRecords()
+    {
+        $expirationTime = Carbon::now()->subMinutes(5);
+        $bookings = Booking::where([
+            ['created_at', '<=', $expirationTime],
+            ['status', 0]
+        ])->get();
+        foreach ($bookings as $booking) {
+            BookingDetail::where([
+                ['booking_id', $booking->id]
+            ])->delete();
+        }
+        $bookings->delete();
     }
 }

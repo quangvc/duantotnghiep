@@ -14,37 +14,21 @@
 <nz-table #basicTable [nzData]="users">
   <thead>
     <tr>
-      <th style="width: 200px;">Quyền</th>
+      <th>Quyền</th>
       <th>Email</th>
       <th>Giới tính</th>
       <th>Số điện thoại</th>
-      <th>Kích hoạt</th>
+      <th *ngIf="role">Kích hoạt</th>
       <th *ngIf="role">Action</th>
     </tr>
   </thead>
   <tbody>
     <tr *ngFor="let data of basicTable.data">
-      <td style="width: 200px;">
-          <ng-container *ngIf="role">
-
-            <ng-container *ngIf="data.roles[0].name != 'admin'">
-              <select class="form-select" (change)="changeRole($event,data)">
-                <option value="manager" [selected]="data.roles[0].name == 'manager'">Manager</option>
-                <option value="client" [selected]="data.roles[0].name == 'client'">Client</option>
-              </select>
-            </ng-container>
-
-          </ng-container>
-
-          <ng-container *ngIf="data.roles[0].name == 'admin' || !role">
-            {{data.name}}
-          </ng-container>
-
-      </td>
+      <td>{{ data.roles[0].name }}</td>
       <td>{{ data.email }}</td>
       <td>{{ data.gender }}</td>
       <td>{{ data.phone_number }}</td>
-      <td><nz-switch [(ngModel)]="data.active" (ngModelChange)="confirmChangeStatus($event,data)" [disabled]="!role" *ngIf="data.name != 'Admin'"></nz-switch></td>
+      <td *ngIf="role"><nz-switch [(ngModel)]="data.active" (ngModelChange)="confirmChangeStatus($event,data)" [disabled]="!role" *ngIf="data.name != 'Admin'"></nz-switch></td>
       <td *ngIf="role">
         <q-menu
           *ngIf="data.name != 'Admin'"
@@ -66,5 +50,15 @@
     (submitUser)="submitUser()"
     (closeUser)="closeUser()">
   </app-add-user>
+</ng-container>
+
+<ng-container *ngIf="displayPermision">
+  <update-user
+    [userID]="userID"
+    [displayPermision]="displayPermision"
+    [Urole]="Urole"
+    [hotelID]="hotelID"
+    (closeUser)="closeUser()">
+  </update-user>
 </ng-container>
 

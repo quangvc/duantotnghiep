@@ -1,0 +1,14 @@
+<nz-modal
+  [(nzVisible)]="displayXepPhong"
+  nzTitle="Xếp phòng"
+  nzWidth="980px"
+  (nzOnCancel)="handleCancel()"
+  (nzOnOk)="handleOk()">
+  <ng-container *nzModalContent>
+
+    <ng-container *ngFor="let room of listRoom">
+      <button class="btn btn-primary" (click)="chooseRoom(room)">{{room.room_number}}</button>
+    </ng-container>
+
+  </ng-container>
+</nz-modal>

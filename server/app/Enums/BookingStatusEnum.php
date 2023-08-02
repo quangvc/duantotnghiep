@@ -9,6 +9,7 @@ final class BookingStatusEnum
     public const CONFIRMED = 2; // admin xác nhận
     public const COMPLETED = 3; // đã checkout
     public const CANCELLED = 4; // hủy
+    public const WAITINGCANCEL = 7; // chờ đợi hủy
 
     public static function arrEnums()
     {
@@ -18,6 +19,7 @@ final class BookingStatusEnum
             'Confirmed'  => self::CONFIRMED,
             'Completed'  => self::COMPLETED,
             'Cancelled'  => self::CANCELLED,
+            'waitingcancel'  => self::WAITINGCANCEL,
         ];
     }
 }

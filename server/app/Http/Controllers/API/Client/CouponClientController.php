@@ -25,4 +25,12 @@ class CouponClientController extends Controller
         }
         return MessageStatusAPI::show(new CouponResource($couponDetail));
     }
+    public function checkQuantity($name)
+    {
+        $couponDetail = Coupon::where('name', '=', $name)->where('quantity', '>', 0)->first();
+        if (!$couponDetail) {
+            return MessageStatusAPI::notFound();
+        }
+        return MessageStatusAPI::show(new CouponResource($couponDetail));
+    }
 }

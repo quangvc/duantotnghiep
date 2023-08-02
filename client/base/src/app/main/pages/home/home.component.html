@@ -19,18 +19,18 @@
       <div class="row">
         <div class="col">
           <label for="date_in">Ngày nhập phòng</label>
-          <p-calendar class="w-100" [(ngModel)]="date_in" [numberOfMonths]="2" dateFormat="dd-mm-yy" styleClass="prime-input-override"></p-calendar>
+          <p-calendar class="w-100" [(ngModel)]="date_in" [minDate]="minimumDate" [numberOfMonths]="2" dateFormat="dd-mm-yy" styleClass="prime-input-override"></p-calendar>
         </div>
         <div class="col">
           <label for="date_out">Ngày trả phòng</label>
-          <p-calendar class="w-100" [(ngModel)]="date_out" [numberOfMonths]="2" dateFormat="dd-mm-yy" styleClass="prime-input-override"></p-calendar>
+          <p-calendar class="w-100" [(ngModel)]="date_out" [minDate]="minimumDate" [numberOfMonths]="2" dateFormat="dd-mm-yy" styleClass="prime-input-override"></p-calendar>
         </div>
         <div class="col">
           <label for="selectedRegion">Khu vực</label>
           <p-dropdown [(ngModel)]="selectedRegion" [options]="lstRegions" optionLabel="name" placeholder="Chọn khu vực" styleClass="prime-input-override"></p-dropdown>
         </div>
         <div class="col-md-2 " style="margin-top: 35px;">
-          <a (click)="filterHotel()" class="btn btn-primary w-100">Submit</a>
+          <a (click)="filterHotel()" class="btn btn-primary w-100">Tìm kiếm</a>
         </div>
       </div>
     </div>
@@ -53,18 +53,20 @@
           <div class="col-sm-4 wow fadeIn">
             <div class="border rounded p-1">
               <div class="border rounded text-center p-4">
-                <i class="fa fa-hotel fa-2x text-primary mb-2"></i>
-                <h2 class="mb-1" data-toggle="counter-up">1234</h2>
-                <p class="mb-0">Khách sạn</p>
+                <!-- <i class="fa fa-map-marker fa-2x text-primary mb-2"></i> -->
+                <i class="fa fa-globe fa-2x text-primary mb-2"></i>
+
+                <h2 class="mb-1" data-toggle="counter-up">{{ countRegions }}</h2>
+                <p class="mb-0">Tỉnh thành</p>
               </div>
             </div>
           </div>
           <div class="col-sm-4 wow fadeIn" data-wow-delay="0.3s">
             <div class="border rounded p-1">
               <div class="border rounded text-center p-4">
-                <i class="fa fa-users-cog fa-2x text-primary mb-2"></i>
-                <h2 class="mb-1" data-toggle="counter-up">1234</h2>
-                <p class="mb-0">Phòng</p>
+                <i class="fa fa-hotel fa-2x text-primary mb-2"></i>
+                <h2 class="mb-1" data-toggle="counter-up">{{ countHotels }}</h2>
+                <p class="mb-0">Khách sạn</p>
               </div>
             </div>
           </div>
@@ -72,8 +74,8 @@
             <div class="border rounded p-1">
               <div class="border rounded text-center p-4">
                 <i class="fa fa-users fa-2x text-primary mb-2"></i>
-                <h2 class="mb-1" data-toggle="counter-up">1234</h2>
-                <p class="mb-0">Số khách hàng</p>
+                <h2 class="mb-1" data-toggle="counter-up">{{ countUsers }}</h2>
+                <p class="mb-0">Khách hàng</p>
               </div>
             </div>
           </div>
@@ -125,7 +127,7 @@
           <div class="p-4 mt-2 ">
             <div class="text-center">
               <a class="" href="hotels/region/{{ item.id }}">
-                <h5 class="link mb-0">Khách sạn {{ item.name }}</h5>
+                <h5 class="link mb-0">{{ item.name }}</h5>
               </a>
             </div>
           </div>
@@ -145,12 +147,11 @@
     </div>
     <div class="row g-4">
       <div class="col-lg-4 col-md-6" *ngFor="let item of hotels; let i=index">
-        <div class="room-item shadow rounded-4 overflow-hidden mb-3">
+        <div class="room-item room-item-edit shadow rounded-4 overflow-hidden mb-3">
           <div class="position-relative">
             <img style="width: 100%; max-height: 200px;" [src]="'http://127.0.0.1:8000/Images/'+item.images[0]?.path" alt="">
             <small
-              class="position-absolute start-0 top-100 translate-middle-y bg-primary text-white rounded py-1 px-3 ms-4">Khu
-              vực</small>
+              class="position-absolute start-0 top-100 translate-middle-y bg-primary text-white rounded py-1 px-3 ms-4">Khách sạn</small>
           </div>
           <div class="p-4 mt-2">
             <div class="d-flex justify-content-between mb-3">
@@ -169,7 +170,7 @@
               </div>
             </line-clamp> -->
             <div class="d-flex justify-content-between">
-              <a class="btn btn-sm btn-primary rounded py-2 px-4" href="/hotel/{{ item.id }}">View Detail</a>
+              <a class="btn btn-sm btn-primary rounded py-2 px-4" href="/hotel/{{ item.id }}">Xem chi tiết</a>
             </div>
           </div>
         </div>
@@ -205,18 +206,17 @@
   </div>
 </div>
 
-<div class="modal fade" id="videoModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" #videoModal id="videoModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content rounded-0">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">Youtube Video</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="closeModal()"></button>
       </div>
       <div class="modal-body">
         <!-- 16:9 aspect ratio -->
-        <div class="ratio ratio-16x9">
-          <iframe class="embed-responsive-item" src="" id="video" allowfullscreen allowscriptaccess="always"
-            allow="autoplay"></iframe>
+        <div class="ratio ratio-16x9" (click)="openModal()">
+            <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/dQw4w9WgXcQ?&autoplay=1&mute=1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
         </div>
       </div>
     </div>
@@ -250,7 +250,7 @@
 
 
 <!-- Testimonial Start -->
-<div class="container-xxl testimonial my-5 py-5 bg-dark wow zoomIn">
+<!-- <div class="container-xxl testimonial my-5 py-5 bg-dark wow zoomIn">
   <div class="container">
     <div class="owl-carousel testimonial-carousel py-5">
       <div class="testimonial-item position-relative bg-white rounded overflow-hidden">
@@ -294,7 +294,7 @@
       </div>
     </div>
   </div>
-</div>
+</div> -->
 <!-- Testimonial End -->
 
 

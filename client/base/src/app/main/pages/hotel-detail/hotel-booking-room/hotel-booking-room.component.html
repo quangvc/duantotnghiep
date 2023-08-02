@@ -6,10 +6,10 @@
     <hr>
     <div class="">
       <div class="d-flex flex-row justify-content-between">
-        <p class="highlight-text my-auto">Kết quả cho <strong>1</strong> phòng, <strong>1</strong> khách, từ ngày <strong>11 Jun 2023</strong> trong <strong>2</strong> đêm. Có <strong>24</strong> lựa chọn phòng trống.</p>
+        <p *ngIf="dataTable" class="highlight-text my-auto">Kết quả cho Từ ngày <strong>{{ date_in }}</strong> đến ngày <strong>{{ date_out }}</strong>. Có <strong>{{ roomCount }}</strong> lựa chọn phòng trống.</p>
         <button (click)="onclick()" type="button" class="highlight-button d-flex flex-row">
           <i class="fa fa-search me-3 my-auto" aria-hidden="true"></i>
-          <p class="my-auto">{{ReadMore ? "Thay đổi tìm kiếm" : "Ẩn bộ lọc"}}</p>
+          <p class="my-auto">{{ReadMore ? "Tìm kiếm phòng trống" : "Ẩn bộ lọc"}}</p>
         </button>
       </div>
       <ng-container *ngIf="visible">
@@ -17,16 +17,30 @@
           <div class="container-fluid">
             <div class="bg-white shadow" style="padding: 5px;">
               <div class="row px-4">
-                <div class="col-md-10">
+                <div class="col-md-8">
                   <div class="row">
-                    <div class="col">
+                    <!-- <div class="col">
                       <p-calendar [(ngModel)]="rangeDates" selectionMode="range" dateFormat="dd-mm-yy" [touchUI]="true" [showIcon]="true" style="width: 100%;"></p-calendar>
+                    </div> -->
+                    <div class="col">
+                      <label for="date_in">Ngày nhập phòng</label>
+                      <p-calendar class="w-100" [(ngModel)]="date_in" [minDate]="minimumDate" [numberOfMonths]="2" dateFormat="dd-mm-yy" [touchUI]="true" styleClass="prime-input-override"></p-calendar>
+                    </div>
+                    <div class="col">
+                      <label for="date_out">Ngày trả phòng</label>
+                      <p-calendar class="w-100" [(ngModel)]="date_out" [minDate]="minimumDate" [numberOfMonths]="2" dateFormat="dd-mm-yy" [touchUI]="true" styleClass="prime-input-override"></p-calendar>
                     </div>
                   </div>
                 </div>
-                <div class="col-md-2  my-auto">
-                  <button class="btn btn-primary w-100" (click)="getRoomType()">Tìm kiếm</button>
+                <div class="col-md-4 d-flex justify-content-evenly" style="margin-top: 35px;">
+                  <div >
+                    <button class="btn btn-primary w-100" (click)="getRoomType()">Tìm kiếm</button>
+                  </div>
+                  <div>
+                    <button class="btn btn-primary w-100" (click)="resetdate()">Đặt lại</button>
+                  </div>
                 </div>
+
               </div>
             </div>
           </div>

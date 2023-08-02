@@ -34,6 +34,7 @@ use App\Http\Controllers\API\Client\UserClientController;
 use App\Http\Controllers\Api\Client\CommentClientController;
 use App\Http\Controllers\KeywordController;
 use App\Http\Controllers\PaymentController;
+use App\Models\Booking;
 use App\Notifications\SendMailPaymentNotification;
 use Illuminate\Support\Facades\Notification;
 
@@ -61,10 +62,15 @@ Route::post('/reset-password', [AuthController::class, 'updatepass'])->name('pas
 Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logout']);
 Route::middleware('auth:sanctum')->put('/change-password', [AuthController::class, 'changePassword']);
 
-Route::get('/test', function () {
-    Notification::route('mail', 'huyit0811@gmail.com')->notify(new SendMailPaymentNotification('123'));
+Route::get('/sendMail/{booking_number}', function ($booking_number) {
+    $booking = Booking::where('booking_number', '=', $booking_number)->first();
+    Notification::route('mail', $booking->guest_email)->notify(new SendMailPaymentNotification($booking_number));
 });
 Route::post('/vnpay-payment', [PaymentController::class, 'vnpay_payment']);
+Route::get('/payment-return', [PaymentController::class, 'paymentReturn']);
+
+Route::post('/onepay-payment', [PaymentController::class, 'onepay_payment']);
+Route::get('/onepay-return', [PaymentController::class, 'onepayReturn']);
 
 Route::group(['prefix' => 'admin'], function () {
     Route::group(['prefix' => 'users', 'controller' => UserController::class], function () {
@@ -95,6 +101,7 @@ Route::group(['prefix' => 'admin'], function () {
             Route::post('/', 'store')->middleware('permission:add_room');
             Route::put('/changeStatus/{id}', 'changeStatus')->middleware('permission:changeStatus_room');
             Route::get('/{id}', 'show')->middleware('permission:show_room');
+            Route::get('/get/{hotel_id}/{checkin}/{checkout}', 'getRoomNotBooked');
             Route::put('/{id}', 'update')->middleware('permission:edit_room');
             Route::delete('/{id}', 'destroy')->middleware('permission:delete_room');
         }
@@ -159,6 +166,8 @@ Route::group(['prefix' => 'admin'], function () {
             Route::post('/', 'store');
             Route::get('/{id}', 'show');
             Route::post('/{id}/confirm-booking', 'confirmBooking');
+            Route::put('/{id}/checkout', 'checkout');
+            Route::delete('/', 'deleteExpriredRecords');
         }
     );
     Route::group(
@@ -244,6 +253,14 @@ Route::group(['prefix' => 'client'], function () {
    
 
     Route::group(
+        ['prefix' => 'rooms', 'controller' => RoomClientController::class],
+        function () {
+            Route::get('/', 'index');
+            Route::get('/{id}', 'show');
+        }
+    );
+
+    Route::group(
         ['prefix' => 'regions', 'controller' => RegionClientController::class],
         function () {
             Route::get('/', 'index');
@@ -269,9 +286,11 @@ Route::group(['prefix' => 'client'], function () {
     Route::group(
         ['prefix' => 'bookings', 'controller' => BookingClientController::class], // Thêm `prefix` để xác định endpoint chung của API
         function () {
-            Route::get('/{booking_number}', 'index');
+            Route::get('/booking-number/{booking_number}', 'index');
             Route::get('/user/{id_user}', 'userBooking');
+            Route::get('/{id}', 'show');
             Route::post('/', 'store');
+            Route::put('/cancel-booking/{id}', 'cancelBooking');
         }
     );
     Route::group(
@@ -302,6 +321,7 @@ Route::group(['prefix' => 'client'], function () {
         function () {
             Route::get('/', 'index');
             Route::get('/{id}', 'show');
+            Route::get('/check/{id}', 'checkQuantity');
         }
     );
 

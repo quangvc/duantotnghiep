@@ -1,8 +1,0 @@
-<form [formGroup]="assignHotel">
-  <div class="mb-3">
-    <label for="hotel" class="form-label">{{'hotel.name' | translate}}</label>
-    <select class="form-select" (change)="saveAssign($event)" aria-label="Default select example" formControlName="hotel_id">
-      <option [value]="item.id" *ngFor="let item of hotels">{{item.hotel_name}}</option>
-    </select>
-  </div>
-</form>

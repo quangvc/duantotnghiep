@@ -22,7 +22,7 @@ class CommentClientController extends Controller
 
     public function store(CreateCommentRequest $request)
     {
-        if(Auth::check()){
+        if (Auth::check()) {
             $request->validated();
             $validated = request()->all();
 
@@ -32,6 +32,8 @@ class CommentClientController extends Controller
             $comment->blog_id = $validated['blog_id'];
             if ($request->has('cmt_id')) {
                 $comment->parent_id = $request->cmt_id;
+            } else {
+                $comment->parent_id = null;
             }
             $comment->save();
 
@@ -41,7 +43,6 @@ class CommentClientController extends Controller
         } else {
             return abort(401, 'Unauthorized. User is not logged in');
         }
-
     }
 
     public function listReply($parent_id)

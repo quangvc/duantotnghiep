@@ -5,7 +5,7 @@ import { RoomTypeDetailComponent } from './room-type-detail/room-type-detail.com
 import { roomTypeClientService } from 'src/app/main/services/room-type-client.service';
 import * as moment from 'moment';
 import { NzMessageService } from 'ng-zorro-antd/message';
-import { ERROR } from 'src/app/module/_mShared/model/url.class';
+import { ERROR, WARNING } from 'src/app/module/_mShared/model/url.class';
 import { Subscription } from 'rxjs';
 import { SelectItem } from 'primeng/api';
 import { Table } from 'primeng/table';
@@ -26,12 +26,6 @@ interface roomType {
   providers: [PhotoService]
 })
 export class HotelBookingRoomComponent implements OnInit {
-  constructor(
-    private roomTypeClientService: roomTypeClientService,
-    private message: NzMessageService,
-  ) { }
-  private subscription = new Subscription();
-
   @Input('hotelRoomTypeData') RoomTypeData: any[] = [];
   @Input() hotel_id: any;
   @Input() hotel_name: any;
@@ -48,8 +42,8 @@ export class HotelBookingRoomComponent implements OnInit {
   hotelId: any;
   date_in: string = ''; // Ngày check-in
   date_out: string = ''; // Ngày check-out
-  visible: boolean = false; // Biến để ẩn/hiện phần lọc
-  ReadMore: boolean = true; // Biến để thay đổi nút xem thêm/ẩn bộ lọc
+  visible: boolean = false;
+  ReadMore: boolean = true;
   selectedRoomType!: roomType;
   menus: MenuItem[] = [];
   roomTypeDisplay: boolean[] = [];
@@ -57,6 +51,10 @@ export class HotelBookingRoomComponent implements OnInit {
   selectedQuantity: string;
   total: number = 0;
   selectedRow: any;
+  minimumDate: Date;
+  displayDateIn: string = '';
+  displayDateOut: string = '';
+  roomCount: number = 0;
 
   totalQuantity: any;
   totalPrice: any;
@@ -78,7 +76,36 @@ export class HotelBookingRoomComponent implements OnInit {
     }
   ];
 
+  constructor(
+    private roomTypeClientService: roomTypeClientService,
+    private message: NzMessageService,
+  ) {
+    // Tạo ngày hiện tại
+    const currentDate = moment();
+
+    // Thêm 1 ngày vào ngày hiện tại
+    const nextDay = currentDate.add(2, 'days');
+
+    // Lưu giá trị vào biến minimumDate
+    this.minimumDate = nextDay.toDate();
+  }
+  private subscription = new Subscription();
+
   ngOnInit() {
+    // Kiểm tra xem có tồn tại các trường checkinDate và checkoutDate trong sessionStorage hay không
+    const checkinDate = sessionStorage.getItem('checkinDate');
+    const checkoutDate = sessionStorage.getItem('checkoutDate');
+
+    if (checkinDate && checkoutDate) {
+      this.visible = true;
+      // Nếu tồn tại, gán giá trị vào biến date_in và date_out
+      this.date_in = checkinDate;
+      this.date_out = checkoutDate;
+      sessionStorage.removeItem('checkinDate');
+      sessionStorage.removeItem('checkoutDate');
+      // Sau đó gọi hàm lấy dữ liệu roomtype từ backend
+      this.getRoomType();
+    }
   }
 
   // Hàm xử lý sự kiện khi nhấn vào nút Thay đổi tìm kiếm / Ẩn bộ lọc
@@ -94,21 +121,35 @@ export class HotelBookingRoomComponent implements OnInit {
 
   // Hàm lấy danh sách các loại phòng theo ngày đặt và ngày trả
   getRoomType() {
-    this.date_in = moment(this.rangeDates[0])?.format('DD-MM-YYYY') || '';
-    this.date_out = moment(this.rangeDates[this.rangeDates.length - 1])?.format('DD-MM-YYYY') || '';
-    const obs = this.roomTypeClientService.findRoomType(this.hotel_id, this.date_in, this.date_out).subscribe({
-      next: (res) => {
-        console.log(res);
-        this.roomTypes = res;
-        this.firstTable = false;
-        this.dataTable = true;
-        this.resultArray = [];
-      },
-      error: (err) => {
-        this.message.create(ERROR, err.message);
+    debugger
+    if (this.date_in && this.date_out) {
+      if (this.date_in < this.date_out) {
+        this.date_in = moment(this.date_in)?.format('DD-MM-YYYY') || '';
+        this.date_out = moment(this.date_out)?.format('DD-MM-YYYY') || '';
+        const obs = this.roomTypeClientService.findRoomType(this.hotel_id, this.date_in, this.date_out).subscribe({
+          next: (res) => {
+            console.log(res);
+            this.roomTypes = res;
+            for (let index = 0; index < res.length; index++) {
+              this.roomCount += res[index].rooms_count;
+            }
+            console.log(this.roomCount);
+
+            this.firstTable = false;
+            this.dataTable = true;
+            this.resultArray = [];
+          },
+          error: (err) => {
+            this.message.create(ERROR, err.message);
+          }
+        });
+        this.subscription.add(obs);
+      } else {
+        this.message.create(WARNING, 'Vui lòng nhập Ngày nhận phòng < ngày trả phòng');
       }
-    });
-    this.subscription.add(obs);
+    } else {
+      this.message.create(WARNING, 'Vui lòng nhập đày đủ Ngày nhận phòng - ngày trả phòng');
+    }
   }
 
   // Hàm trả về mảng số lượng người dùng cho hiển thị biểu tượng
@@ -178,6 +219,14 @@ export class HotelBookingRoomComponent implements OnInit {
 
     // Điều hướng đến trang thanh toán (thay 'payment' bằng URL của trang thanh toán)
     window.location.href = 'booking';
+  }
+
+  resetdate() {
+    this.date_in = '';
+    this.date_out = '';
+
+    this.firstTable = true;
+    this.dataTable = false;
   }
 
 }

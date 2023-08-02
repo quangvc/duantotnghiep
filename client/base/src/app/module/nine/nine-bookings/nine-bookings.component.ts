@@ -81,6 +81,7 @@ export class NineBookingsComponent implements OnInit {
     let obs = this.bookingService.getBookings().subscribe({
       next: (res) => {
         this.bookingFilters = res.data;
+        console.log(this.bookingFilters)
 
         this.convertTextStatus();
 

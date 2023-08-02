@@ -48,7 +48,7 @@ class RoomTypesClientController extends Controller
             $count_booked_rooms = BookingDetail::join('tbl_bookings', 'tbl_bookings.id', '=', 'booking_id')
                 ->where([
                     ['room_type_id', $roomtype->id],
-                    ['tbl_bookings.status', 1],
+                    ['tbl_bookings.status', '<=', 1],
                 ])
                 ->where(function ($query) use ($checkin_date, $checkout_date) {
                     $query->where([
@@ -66,17 +66,14 @@ class RoomTypesClientController extends Controller
                     ]);
                 })
                 ->count();
-                if ($count_all_rooms - $count_booked_rooms > 0) {
-                    $data[] = [
-                        'room_type' => $roomtype,
-                        'rooms_count' => $count_all_rooms - $count_booked_rooms
-                    ];
-                }            
+            if ($count_all_rooms - $count_booked_rooms > 0) {
+                $data[] = [
+                    'room_type' => $roomtype,
+                    'rooms_count' => $count_all_rooms - $count_booked_rooms
+                ];
+            }
         }
 
         return $data;
     }
-
-
-
 }

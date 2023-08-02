@@ -15,6 +15,7 @@ import { ToastModule } from 'primeng/toast';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { BookingClientService } from 'src/app/main/services/bookingClient.service';
 import { PaymentService } from 'src/app/main/services/payment.service';
+
 @NgModule({
   imports: [
     CommonModule,

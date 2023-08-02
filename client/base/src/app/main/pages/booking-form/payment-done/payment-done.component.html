@@ -16,12 +16,12 @@
 </div> -->
 
 <div class="content">
-  <div class="wrapper-1">
+  <div class="wrapper-1" *ngIf="vnpParams.vnp_ResponseCode == 0">
     <div class="wrapper-2 my-2">
       <h1>Thank you !</h1>
       <p>Cảm ơn quý khách hàng vì đã đặt phòng ở NineHotel.  </p>
-      <p>Bạn sẽ sớm nhận được email xác nhận, kèm theo mã đơn của bạn.  </p>
-      <!-- <p>Mã đơn của bạn là: HD50_79493736. Hãy lưu lại để tìm kiếm đơn đặt của mình.</p> -->
+      <p>Bạn sẽ sớm nhận được email xác nhận và mã đơn của bạn là: {{ vnpParams.vnp_TxnRef }}. </p>
+      <p>Hãy lưu lại để tìm kiếm đơn đặt của mình.</p>
       <br>
       <a class="go-home my-2" href="/">
       Về trang chủ
@@ -29,10 +29,25 @@
     </div>
     <div class="footer-like">
       <p>Không nhận được email?
-       <a href="#">Nhấn vào đây để gửi lại!</a>
+       <a (click)="sendMail(vnpParams.vnp_TxnRef)">Nhấn vào đây để gửi lại!</a>
       </p>
     </div>
-</div>
+  </div>
+  <div class="wrapper-1" *ngIf="vnpParams.vnp_ResponseCode != 0">
+    <div class="wrapper-2 my-2">
+      <h3>Thanh toán không thành công !</h3>
+      <p>Đơn đặt có mã: {{ vnpParams.vnp_TxnRef }} của bạn thanh toán không thành công.  </p>
+      <br>
+      <a class="go-home my-2" href="/">
+      Về trang chủ
+      </a>
+    </div>
+    <div class="footer-like">
+      <p>Muốn thanh toán lại?
+       <a (click)="sendMail(vnpParams.vnp_TxnRef)">Nhấn vào đây để thanh toán lại!</a>
+      </p>
+    </div>
+  </div>
 </div>
 
 

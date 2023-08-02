@@ -11,12 +11,17 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PaginatorModule } from 'primeng/paginator';
 import { SliderModule } from 'primeng/slider';
 import { RatingModule } from 'primeng/rating';
+import { DialogService } from 'primeng/dynamicdialog';
+import { ImagesClientService } from '../../services/images-client.service';
+import { roomTypeClientService } from '../../services/room-type-client.service';
+import { CalendarModule } from 'primeng/calendar';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
-
+    CalendarModule,
     AccordionModule,
     RadioButtonModule,
     CheckboxModule,
@@ -24,9 +29,10 @@ import { RatingModule } from 'primeng/rating';
     SliderModule,
     RatingModule,
     ReactiveFormsModule,
-
+    NgxPaginationModule,
     FilterPageRoutes
   ],
-  declarations: [FilterPageComponent]
+  declarations: [FilterPageComponent],
+  providers: [DialogService, ImagesClientService, roomTypeClientService],
 })
 export class FilterPageModule { }

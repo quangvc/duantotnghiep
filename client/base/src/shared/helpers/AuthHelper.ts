@@ -2,10 +2,10 @@ export class RoleHelper {
   static getAllRoleList(): any[] {
     var lstRoles: any[] = [];
     lstRoles = [
-        { value: RoleValue.All, text: 'Tất cả các quyền' },
-        { value: RoleValue.Admin, text: RoleLabel.Admin },
-        { value: RoleValue.Manager, text: RoleLabel.Manager },
-        { value: RoleValue.Client, text: RoleLabel.Client },
+      { value: RoleValue.All, text: 'Tất cả các quyền' },
+      { value: RoleValue.Admin, text: RoleLabel.Admin },
+      { value: RoleValue.Manager, text: RoleLabel.Manager },
+      { value: RoleValue.Client, text: RoleLabel.Client },
     ];
     return lstRoles;
   }
@@ -29,14 +29,27 @@ export class GenderHelper {
   static getAllGenderList(): any[] {
     var lstGenders: any[] = [];
     lstGenders = [
-        { value: GenderValue.male, text: GenderLabel.male },
-        { value: GenderValue.female, text: GenderLabel.female },
-        { value: GenderValue.gay, text: GenderLabel.gay },
+      { value: GenderValues.male, text: GenderLabel.male },
+      { value: GenderValues.female, text: GenderLabel.female },
+      { value: GenderValues.gay, text: GenderLabel.gay },
     ];
     return lstGenders;
   }
+  static getGenderText(GenderValue: number): string {
+    switch (GenderValue) {
+      case GenderValues.male:
+        return GenderLabel.male;
+      case GenderValues.female:
+        return GenderLabel.female;
+      case GenderValues.gay:
+        return GenderLabel.gay;
+      default:
+        return 'Unknown';
+    }
+  }
 }
-export class GenderValue {
+
+export class GenderValues {
   static male = 1;  // Nam
   static female = 2;  // Nữ
   static gay = 3;  // Hết cứu

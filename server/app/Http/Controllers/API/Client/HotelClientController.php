@@ -96,6 +96,6 @@ class HotelClientController extends Controller
         $hotelId = array_values(array_unique($hotelId));
 
         $hotelFilter = Hotel::find($hotelId)->where('status', '=', '1');
-        return $hotelFilter;
+        return HotelResource::collection($hotelFilter);
     }
 }

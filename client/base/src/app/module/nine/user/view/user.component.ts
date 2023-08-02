@@ -7,7 +7,6 @@ import { MenuItem } from 'src/app/module/_mShared/model/menuItem.class';
 import { ERROR, SUCCESS } from 'src/app/module/_mShared/model/url.class';
 import { UserDto } from 'src/app/module/_mShared/model/userDto.class';
 import { UserService } from 'src/app/module/_mShared/service/user.service';
-import { AssignHotelComponent } from '../assign-hotel/assign-hotel.component';
 
 @Component({
   selector: 'app-user',
@@ -16,8 +15,6 @@ import { AssignHotelComponent } from '../assign-hotel/assign-hotel.component';
 })
 export class UserComponent implements OnInit, OnDestroy {
   private subscription = new Subscription();
-
-  @ViewChild(AssignHotelComponent) hotel: AssignHotelComponent;
 
   constructor(
     private userService: UserService,
@@ -35,6 +32,12 @@ export class UserComponent implements OnInit, OnDestroy {
   users: any;
 
   role: boolean = false;
+
+  displayPermision: boolean = false;
+
+  userID: any;
+  Urole: any;
+  hotelID: any;
 
   ngOnInit() {
     this.getUser();
@@ -79,6 +82,12 @@ export class UserComponent implements OnInit, OnDestroy {
           this.showModalEditUser(data);
         },
       },
+      {
+        label: 'Phân quyền',
+        command: () => {
+          this.showPermision(data);
+        },
+      },
       { separator: true},
       {
         label: 'Xóa',
@@ -111,7 +120,6 @@ export class UserComponent implements OnInit, OnDestroy {
     });
 
   }
-
   changeStatus(data:any){
 
     let obs = this.userService.changeStatus(data.id).subscribe({
@@ -127,76 +135,11 @@ export class UserComponent implements OnInit, OnDestroy {
     this.subscription.add(obs);
   }
 
-  changeRole(event: any,data:any){
-    let role = event.target.value;
-    let rank;
-
-    if(data.roles[0].name != "manager"){
-      rank = "thăng cấp lên manager"
-    }
-    if(data.roles[0].name != "client"){
-      rank = "hạ cấp xuống client"
-    }
-    this.confirmModal = this.modal.confirm({
-      nzTitle: `Bạn có muốn ${data.name} ${rank}`,
-      nzContent: role == "client" ? "Bấm OK để xác nhận !!" : AssignHotelComponent,
-      nzComponentParams: {
-        userId: data.id,
-        txtRole: role
-      },
-      nzOnOk: () =>
-        new Promise(async(resolve, reject) => {
-          this.userService.$hotelId.subscribe( async(hotelId) => {
-            if(role == "manager"){
-              if(hotelId){
-                await this.changeRoleUser(data, role);
-                await this.updateHotelIdForUser(data.id, hotelId);
-              }else{
-                this.message.create(ERROR, `Cập nhật không thành công`);
-              }
-            }
-
-            if(role == "client"){
-                await this.changeRoleUser(data, role);
-                await this.updateHotelIdForUser(data.id, hotelId);
-            }
-
-            this.getUser()
-            setTimeout(0.6 > 0.5 ? resolve : reject, 1000);
-          })
-        }).catch(),
-      nzOnCancel: () => {
-        this.getUser()
-      }
-    });
-  }
-
-  updateHotelIdForUser(userId:any, hotelId:any){
-    let data = {
-      hotel_id: hotelId ? hotelId : 0
-    };
-    console.log(hotelId)
-    this.userService.updateUser(data, userId).subscribe({
-      next: (res) => {
-        this.message.create(SUCCESS, `SUCCESS, Assign hotel for User`);
-      },
-      error: (err) => {
-        this.message.create(ERROR, err.error.message);
-      }
-    })
-  }
-
-  changeRoleUser(data:any, role:any){
-    let obs = this.userService.changeRole(data.id, {role: role}).subscribe({
-      next: (res) => {
-        this.message.create(SUCCESS, `Cập nhật người dùng thành công.`)
-      },
-      error: (err) => {
-        this.message.create(ERROR, err.error.message);
-      }
-    })
-
-    this.subscription.add(obs);
+  showPermision(data: any){
+    this.displayPermision = true;
+    this.userID = data.id;
+    this.Urole = data.roles;
+    this.hotelID = data.hotelId;
   }
 
   submitUser() {
@@ -205,6 +148,8 @@ export class UserComponent implements OnInit, OnDestroy {
 
   closeUser() {
     this.isVisibleUser = false;
+    this.displayPermision = false;
+    this.getUser();
   }
 
   ngOnDestroy(): void {

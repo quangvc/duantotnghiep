@@ -14,6 +14,7 @@ use App\Traits\MessageStatusAPI;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use App\Enums\BookingStatusEnum;
 
 class BookingClientController extends Controller
 {
@@ -23,10 +24,26 @@ class BookingClientController extends Controller
             ->get();
         return BookingResource::collection($bookings);
     }
+
+    public function show($id)
+    {
+        $booking = Booking::with(['booking_details.room_type' => function ($query) {
+            $query->select('id', 'hotel_id', 'name');
+        }, 'booking_details.room_type.hotel' => function ($query) {
+            $query->select('id', 'hotel_name');
+        }])
+            ->where('id', $id)
+            ->get();
+
+        return MessageStatusAPI::show(BookingResource::collection($booking));
+    }
+
     public function userBooking($id_user)
     {
+
         $bookings = Booking::where('user_id', '=', $id_user)
             ->get();
+
         return BookingResource::collection($bookings);
     }
 
@@ -45,7 +62,7 @@ class BookingClientController extends Controller
             $guest_name =  $validated['guest_name'];
             $guest_email =  $validated['guest_email'];
             $guest_phone =  $validated['guest_phone'];
-            $user_id =  null;
+            $user_id =  $validated['user_id'];
         }
         // return $request->query('people_quantity');
         $checkin_date = Carbon::parse($validated['checkin_date']);
@@ -63,7 +80,7 @@ class BookingClientController extends Controller
             $count_booked_rooms = BookingDetail::join('tbl_bookings', 'tbl_bookings.id', '=', 'booking_id')
                 ->where([
                     ['room_type_id', $item['room_type_id']],
-                    ['tbl_bookings.status', 1],
+                    ['tbl_bookings.status', '<=', 1],
                 ])
                 ->where(function ($query) use ($checkin_date, $checkout_date) {
                     $query->where([
@@ -91,6 +108,7 @@ class BookingClientController extends Controller
             'checkout_date' => $checkout_date,
             'people_quantity' =>  $validated['people_quantity'],
             'user_id' =>  $user_id,
+            'coupon_id' =>  $request->coupon_id,
             'guest_name' =>  $guest_name,
             'guest_email' =>  $guest_email,
             'guest_phone' =>  $guest_phone,
@@ -109,5 +127,20 @@ class BookingClientController extends Controller
         }
 
         return MessageStatusAPI::store($booking);
+    }
+
+    public function cancelBooking($id)
+    {
+        $booking = Booking::find($id);
+        $checkin_date = Carbon::parse($booking->checkin_date);
+        if ($checkin_date->diffInDays(now()) >= 7) {
+            $booking->update([
+                'status' => BookingStatusEnum::WAITINGCANCEL
+            ]);
+        } else {
+            return response(['Bạn không thể hủy vào lúc này!']);
+        }
+
+        return MessageStatusAPI::update();
     }
 }

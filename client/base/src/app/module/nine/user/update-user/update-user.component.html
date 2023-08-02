@@ -1,0 +1,28 @@
+<nz-modal [(nzVisible)]="displayPermision" nzTitle="Phân quyền" (nzOnCancel)="cancel()" >
+  <ng-container *nzModalContent>
+      <form [formGroup]="formPermision" >
+
+        <div class="mb-3">
+          <label for="hotel" class="form-label">{{'hotel.name' | translate}}</label>
+          <select class="form-select" formControlName="role">
+            <option value="manager" [selected]="Urole[0].name == 'manager'">Quản lý</option>
+            <option value="client" [selected]="Urole[0].name == 'client'">Thành viên</option>
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label for="hotel" class="form-label">{{'hotel.name' | translate}}</label>
+          <select class="form-select" formControlName="hotel_id">
+            <option value="" >Chọn khách sạn</option>
+            <ng-container *ngFor="let hotel of hotels">
+              <option [value]="hotel.id" [selected]="hotelID == hotel.id">{{hotel.hotel_name}}</option>
+            </ng-container>
+          </select>
+        </div>
+
+      </form>
+  </ng-container>
+  <div *nzModalFooter>
+    <button nz-button nzType="primary" (click)="save()" [nzLoading]="isLoading">Lưu</button>
+  </div>
+</nz-modal>

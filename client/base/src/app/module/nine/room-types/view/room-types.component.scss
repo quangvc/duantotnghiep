@@ -1,0 +1,36 @@
+.item{
+  height: auto;
+  width: 100%;
+  border-radius: 20px;
+  border: 1px solid #ddd;
+  padding: 15px;
+  text-align: center;
+  font-weight: 500;
+  position: relative;
+
+  .count{
+    width: 25px;
+    height: 25px;
+    border-radius: 30px;
+    color: #fff;
+    background: red;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 13px;
+    position: absolute;
+    top: -6px;
+    right: -6px;
+  }
+
+  .room{
+    font-size: 18px;
+  }
+  .status{
+    padding: 7px 0;
+  }
+  .date{
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+}
