@@ -32,7 +32,7 @@ export class PaymentDoneComponent implements OnInit {
 
   }
   paymentDone(baseUrl: any) {
-    this.PaymentService.paymentDone(baseUrl).subscribe({
+    this.PaymentService.vnPayDone(baseUrl).subscribe({
       next: (res) => {
         debugger
         console.log(res);

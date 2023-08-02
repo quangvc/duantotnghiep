@@ -39,6 +39,7 @@ export class PaymentComponent implements OnInit {
 
   paymentData: any;
   paymentForm: FormGroup;
+  bookingId: any;
   banks: any[] = [
     { label: 'Ngan hang NCB', value: 'NCB' },
     { label: 'Ngan hang HDBank', value: 'HDBANK' },
@@ -88,6 +89,7 @@ export class PaymentComponent implements OnInit {
       var paymentObjData = JSON.parse(resData);
       this.paymentData = paymentObjData;
       this.paymentForm.controls['id'].setValue(paymentObjData.id);
+      this.bookingId = paymentObjData.id;
       this.displayDateIn = moment(this.paymentData.checkin_date).format('ddd, DD MMM YYYY');
       this.displayDateOut = moment(this.paymentData.checkout_date).format('ddd, DD MMM YYYY');
       this.totalAmount = totalAmount;
@@ -130,14 +132,38 @@ export class PaymentComponent implements OnInit {
       // Do something with the selected bank value
       console.log('Booking id: ', bookingId);
       console.log('Selected Bank: ', selectedBankValue);
-      let create = this.PaymentService.createPayment(this.paymentForm.value);
+      let create = this.PaymentService.createVnPay(this.paymentForm.value);
       create.subscribe({
         next: (res) => {
           console.log(res);
 
           this.message.create(SUCCESS, `${res.message}`);
           // this.route.navigateByUrl(res.data)
-          window.location.href = res.data
+          // window.location.href = res.data
+        },
+        error: (err) => {
+          this.message.create(ERROR, `${err.error.message}`)
+          this.message.create(ERROR, `${err.message}`)
+        }
+      })
+    }
+  }
+
+  onePaySubmit() {
+    if (this.bookingId) {
+      const bookingId = this.paymentForm.value.id;
+      const id = this.bookingId;
+      console.log('Booking id: ', id);
+      let create = this.PaymentService.createOnePay(id);
+      create.subscribe({
+        next: (res) => {
+          console.log(res);
+          // console.log('abc');
+
+
+          // this.message.create(SUCCESS, `${res.message}`);
+          // this.route.navigateByUrl(res.data)
+          window.location.href = res
         },
         error: (err) => {
           this.message.create(ERROR, `${err.error.message}`)
