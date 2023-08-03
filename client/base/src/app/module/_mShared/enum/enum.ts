@@ -9,7 +9,7 @@ export enum StatusBookings {
   Using = 3,
   Clean = 4,
   Cancel = 5,
-  WaitingCancel = 6,
+  WaitingCancel = 7,
   Unpaid = 0,
 }
 

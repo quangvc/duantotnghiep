@@ -231,24 +231,27 @@ export class ProfileComponent implements OnInit {
     this.statusOptions.push(...Enum.convertEnum(StatusBookings));
   }
 
-  convertTextStatus() {
+  convertTextStatus(){
     for (const booking of this.bookingFilters) {
-      if (booking.status == StatusBookings.Unconfirmed) {
+      if(booking.status == StatusBookings.Unpaid){
+        booking.txtStatus = "Chưa thanh toán"
+      }
+      if(booking.status == StatusBookings.Unconfirmed){
         booking.txtStatus = "Đang chờ duyệt"
       }
-      if (booking.status == StatusBookings.Confirmed) {
+      if(booking.status == StatusBookings.Confirmed){
         booking.txtStatus = "Đã duyệt"
       }
-      if (booking.status == StatusBookings.Using) {
+      if(booking.status == StatusBookings.Using){
         booking.txtStatus = "Đang sử dụng"
       }
-      if (booking.status == StatusBookings.Clean) {
+      if(booking.status == StatusBookings.Clean){
         booking.txtStatus = "Đang dọn dẹp"
       }
-      if (booking.status == StatusBookings.Cancel) {
+      if(booking.status == StatusBookings.Cancel){
         booking.txtStatus = "Đã hủy"
       }
-      if (booking.status == StatusBookings.WaitingCancel) {
+      if(booking.status == StatusBookings.WaitingCancel){
         booking.txtStatus = "Đang chờ hủy"
       }
     }
