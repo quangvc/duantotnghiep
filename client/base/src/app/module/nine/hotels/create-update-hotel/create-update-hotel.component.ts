@@ -28,6 +28,7 @@ export class AddHotelComponent implements OnInit, OnDestroy {
   formHotel!: FormGroup;
 
   role:any;
+  isLoading: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -97,7 +98,7 @@ export class AddHotelComponent implements OnInit, OnDestroy {
   }
 
   async handleOk() {
-
+    this.isLoading = true;
     if (this.formHotel.valid) {
 
       let id = this.hotelId;
@@ -107,10 +108,12 @@ export class AddHotelComponent implements OnInit, OnDestroy {
         let update = this.hotelsService.updateHotel(id,this.formHotel.value);
         await update.subscribe({
           next: (res) => {
+            this.isLoading = false;
             this.closeModal.emit();
             this.message.create(SUCCESS, `Cập nhật thành công!`);
           },
           error: (err) => {
+            this.isLoading = false;
             this.message.create(ERROR, err.error.message);
           }
         })
@@ -122,10 +125,12 @@ export class AddHotelComponent implements OnInit, OnDestroy {
         let create = this.hotelsService.createHotel(newData);
         await create.subscribe({
           next: (res) => {
+            this.isLoading = false;
             this.closeModal.emit();
             this.message.create(SUCCESS, `Thêm mới thành công!`);
           },
           error: (err) => {
+            this.isLoading = false;
             this.message.create(ERROR, err.error.message);
           }
         })

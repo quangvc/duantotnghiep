@@ -3,6 +3,7 @@
   nzTitle="Thêm mới"
   nzWidth="980px"
   (nzOnCancel)="handleCancel()"
+  [nzOkLoading]="isLoading"
   (nzOnOk)="handleOk()">
   <ng-container *nzModalContent>
 

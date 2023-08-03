@@ -40,6 +40,8 @@ export class QImageComponent implements OnInit {
 
   formBanner!: FormGroup
 
+  isLoading: boolean = false;
+
   ngOnInit() {
     this.formBanner = this.fb.group({
       image: [[]]
@@ -107,6 +109,7 @@ export class QImageComponent implements OnInit {
     let files = $('#file').prop('files');
 
     if(this.banner){
+      this.isLoading = true;
       const fileList: FileList = files;
 
       for (let i = 0; i < fileList.length; i++) {
@@ -116,8 +119,14 @@ export class QImageComponent implements OnInit {
       }
 
       this.bannersService.createBanner(formData).subscribe({
-        next: (res) => {this.cancelModal.emit()},
-        error: (err) => {this.message.create(ERROR, err.error.message);}
+        next: (res) => {
+          this.isLoading = false;
+          this.cancelModal.emit()
+        },
+        error: (err) => {
+          this.isLoading = false;
+          this.message.create(ERROR, err.error.message);
+        }
       })
     }
 

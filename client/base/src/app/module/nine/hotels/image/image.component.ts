@@ -22,11 +22,12 @@ export class ImageComponent implements OnInit {
     private modal: NzModalService
     ) { }
 
-
   confirmModal?: NzModalRef;
 
 
   displayMultipleImage: boolean = false;
+
+  isLoading: boolean = false;
 
   allChecked = false;
   indeterminate = true;
@@ -91,13 +92,16 @@ export class ImageComponent implements OnInit {
     const formData = new FormData();
 
     if(file){
+      this.isLoading = true;
       formData.append('path', file[0])
       this.imageService.addImage(this.hotel_id,formData).subscribe({
         next: (res) => {
+          this.isLoading = false;
           this.displayMultipleImage = false;
           this.getImages();
         },
         error: (err) => {
+          this.isLoading = false;
           this.message.create(ERROR, err.error.message);
         },
       });
