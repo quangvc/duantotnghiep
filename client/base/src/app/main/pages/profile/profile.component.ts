@@ -119,7 +119,7 @@ export class ProfileComponent implements OnInit {
     }
   }
   handleUpdate() {
-    debugger
+
     if (this.userForm.invalid) return;
 
     let id = this.auth.id;

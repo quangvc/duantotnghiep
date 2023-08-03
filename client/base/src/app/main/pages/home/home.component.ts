@@ -139,10 +139,10 @@ export class HomeComponent implements OnInit {
 
   filterHotel() {
     if (this.selectedRegion && this.date_in && this.date_out) {
-      debugger
+
       if (this.date_in < this.date_out) {
-        sessionStorage.setItem('checkinDate', this.date_in.toString());
-        sessionStorage.setItem('checkoutDate', this.date_out.toString());
+        // sessionStorage.setItem('checkinDate', this.date_in.toString());
+        // sessionStorage.setItem('checkoutDate', this.date_out.toString());
         this.date_in = moment(this.date_in)?.format('DD-MM-YYYY') || '';
         this.date_out = moment(this.date_out)?.format('DD-MM-YYYY') || '';
         this.selectedRegion = JSON.stringify(this.selectedRegion);

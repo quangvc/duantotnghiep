@@ -144,7 +144,7 @@ export class HotelComponent implements OnInit {
     this.subscription.add(obs);
   }
   onRegionSelected(regionId: any) {
-    debugger
+
     this.selectedRegion = regionId;
     this.getHotelsByRegion(regionId);
   }

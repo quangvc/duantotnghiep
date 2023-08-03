@@ -115,6 +115,8 @@ export class FilterPageComponent implements OnInit {
 
   getHotelsByFilter() {
     if (moment(this.checkin).isBefore(this.checkout)) {
+      sessionStorage.setItem('dateIn', this.checkin.toString());
+      sessionStorage.setItem('dateOut', this.checkout.toString());
       const dateIn = moment(this.checkin)?.format('DD-MM-YYYY') || '';
       const dateOut = moment(this.checkout)?.format('DD-MM-YYYY') || '';
       const obs = this.HotelClientService.findHotels(this.selectedRegion, dateIn, dateOut).subscribe({
