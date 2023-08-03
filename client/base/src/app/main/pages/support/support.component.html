@@ -1,0 +1,75 @@
+
+<div class="wrapper">
+  <section class="contact">
+    <div class="content">
+        <h2>Liên hệ với chúng tôi</h2>
+        <p class="fs-5">Chúng tôi sẽ giải đáp thắc mắc cũng như phản hồi những câu hỏi của bạn về <a href="home" class="text-primary fs-4 fw-4">Nine Hotel</a>.</p>
+    </div>
+    <div class="container">
+        <div class="contactInfo">
+            <div class="box">
+                <div class="icon"><i class="fa fa-map-marker" aria-hidden="true"></i></div>
+                <div class="text">
+                    <h3>Địa chỉ</h3>
+                    <p>Tòa nhà FPT Polytechnic, Cổng số 2,<br>13 P. Trịnh Văn Bô, Xuân Phương,<br>Nam Từ Liêm, Hà Nội</p>
+                </div>
+            </div>
+            <div class="box">
+                <div class="icon"><i class="fa fa-phone" aria-hidden="true"></i></div>
+                <div class="text">
+                    <h3>Số điện thoại</h3>
+                    <p>098 172 58 36</p>
+                </div>
+            </div>
+            <div class="box">
+                <div class="icon"><i class="fa fa-envelope-o" aria-hidden="true"></i></div>
+                <div class="text">
+                    <h3>Email</h3>
+                    <p>ninehotel09@gmail.com</p>
+                </div>
+            </div>
+        </div>
+        <div class="contactForm">
+          <form [formGroup]="contactForm" (ngSubmit)="onSubmit()">
+            <h2>Gửi tin nhắn</h2>
+            <div class="inputBox">
+              <input type="text" formControlName="fullName">
+              <span>Họ Tên</span>
+              <div *ngIf="contactForm.get('fullName')?.invalid && contactForm.get('fullName')?.touched">
+                <small class="text-danger" *ngIf="contactForm.get('fullName')?.hasError('required')">Vui lòng nhập họ tên.</small>
+                <small class="text-danger" *ngIf="contactForm.get('fullName')?.hasError('minlength')">Họ tên ít nhất 3 ký tự.</small>
+                <small class="text-danger" *ngIf="contactForm.get('fullName')?.hasError('maxlength')">Họ tên tối đa 50 ký tự.</small>
+              </div>
+            </div>
+            <div class="inputBox">
+              <input type="text" formControlName="email">
+              <span>Email</span>
+              <div *ngIf="contactForm.get('email')?.invalid && contactForm.get('email')?.touched">
+                <small class="text-danger" *ngIf="contactForm.get('email')?.hasError('required')">Vui lòng nhập địa chỉ email.</small>
+                <small class="text-danger" *ngIf="contactForm.get('email')?.hasError('email')">Vui lòng nhập địa chỉ email hợp lệ.</small>
+              </div>
+            </div>
+            <div class="inputBox">
+              <input type="text" formControlName="phoneNumber">
+              <span>Số điện thoại</span>
+              <div *ngIf="contactForm.get('phoneNumber')?.invalid && contactForm.get('phoneNumber')?.touched">
+                <small class="text-danger" *ngIf="contactForm.get('phoneNumber')?.hasError('required')">Vui lòng nhập số điện thoại.</small>
+                <small class="text-danger" *ngIf="contactForm.get('phoneNumber')?.hasError('pattern')">Số điện thoại phải có 10 hoặc 11 chữ số.</small>
+              </div>
+            </div>
+            <div class="inputBox">
+              <textarea formControlName="message"></textarea>
+              <span>Nhập nội dung cần gửi</span>
+              <div *ngIf="contactForm.get('message')?.invalid && contactForm.get('message')?.touched">
+                <small class="text-danger" *ngIf="contactForm.get('message')?.hasError('required')">Vui lòng nhập nội dung cần gửi.</small>
+                <small class="text-danger" *ngIf="contactForm.get('message')?.hasError('minlength')">Nội dung ít nhất 10 ký tự.</small>
+              </div>
+            </div>
+            <div class="inputBox">
+              <input class="bg-primary" type="submit" [disabled]="contactForm.invalid" value="Gửi">
+            </div>
+          </form>
+        </div>
+    </div>
+  </section>
+</div>

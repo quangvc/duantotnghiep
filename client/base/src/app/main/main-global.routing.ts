@@ -2,6 +2,7 @@ import { RouterModule, Routes } from "@angular/router";
 import { NotFoundComponent } from "../not-found/not-found.component";
 import { MainComponent } from "./main/main.component";
 import { BookingFormComponent } from "./pages/booking-form/booking-form.component";
+import { SupportComponent } from "./pages/support/support.component";
 
 const routes: Routes = [
   {path: '', component: MainComponent, children: [
@@ -29,7 +30,7 @@ const routes: Routes = [
     ]},
 
   ]},
-
+  { path: 'support', component: SupportComponent },
   { path: '**', component: NotFoundComponent },
 
 
