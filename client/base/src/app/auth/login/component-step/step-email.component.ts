@@ -17,7 +17,7 @@ import { ERROR, SUCCESS } from 'src/app/module/_mShared/model/url.class';
           <error-msg [profileForm]="formEmail" key="email" check="required" msg="Vui lòng không để trống."></error-msg>
         </div>
 
-        <button nz-button nzType="primary" [nzSize]="'large'" >Send Mail</button>
+        <button nz-button nzType="primary" [nzSize]="'large'" [nzLoading]="isLoading" >Send Mail</button>
 
       </div>
     </form>
@@ -33,6 +33,8 @@ export class StepEmailComponent implements OnInit {
 
   formEmail!: FormGroup
 
+  isLoading: boolean = false;
+
   ngOnInit() {
     this.createFormEmail();
   }
@@ -44,6 +46,7 @@ export class StepEmailComponent implements OnInit {
   }
 
   sendMail(){
+    this.isLoading = true;
     this.formEmail.markAllAsTouched();
     if(this.formEmail.invalid) return;
 
@@ -53,10 +56,12 @@ export class StepEmailComponent implements OnInit {
 
     this.authService.sendResetLink(formData).subscribe({
       next: (res) => {
+        this.isLoading = false;
         this.message.create(SUCCESS, `Dữ liệu đã được gửi vào trong hòm thư của bạn !!`)
         this.eventEmit.emit();
       },
       error: (err) => {
+        this.isLoading = false;
         this.message.create(ERROR, err.error.message);
       }
     })
