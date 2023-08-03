@@ -138,6 +138,7 @@ export class BookingComponent implements OnInit {
     const totalAmount = sessionStorage.getItem('totalAmount');
     const dateIn = sessionStorage.getItem('dateIn');
     const dateOut = sessionStorage.getItem('dateOut');
+
     const hotelId = sessionStorage.getItem('hotelId');
 
     this.hotel_Id = hotelId;
@@ -146,8 +147,8 @@ export class BookingComponent implements OnInit {
 
     // Kiểm tra và sử dụng dữ liệu
     if (resultArray.length > 0 && totalAmount && dateIn && dateOut && hotelId) {
-      this.displayDateIn = moment(dateIn, 'DD-MM-YYYY').format('ddd, DD MMM YYYY');
-      this.displayDateOut = moment(dateOut, 'DD-MM-YYYY').format('ddd, DD MMM YYYY');
+      this.displayDateIn = moment(dateIn).format('ddd, DD MMM YYYY');
+      this.displayDateOut = moment(dateOut).format('ddd, DD MMM YYYY');
       this.roomTypeData = resultArray;
       this.totalAmount = totalAmount;
       this.currentTotalAmount = this.totalAmount;

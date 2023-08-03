@@ -40,8 +40,8 @@ export class HotelBookingRoomComponent implements OnInit {
   roomType: any;
   selectedImage: string;
   hotelId: any;
-  date_in: string = ''; // Ngày check-in
-  date_out: string = ''; // Ngày check-out
+  date_in: any; // Ngày check-in
+  date_out: any; // Ngày check-out
   visible: boolean = false;
   ReadMore: boolean = true;
   selectedRoomType!: roomType;
@@ -93,14 +93,16 @@ export class HotelBookingRoomComponent implements OnInit {
 
   ngOnInit() {
     // Kiểm tra xem có tồn tại các trường checkinDate và checkoutDate trong sessionStorage hay không
-    const checkinDate = sessionStorage.getItem('checkinDate');
-    const checkoutDate = sessionStorage.getItem('checkoutDate');
+    const checkinDate = sessionStorage.getItem('dateIn');
+    const checkoutDate = sessionStorage.getItem('dateOut');
 
     if (checkinDate && checkoutDate) {
       this.visible = true;
       // Nếu tồn tại, gán giá trị vào biến date_in và date_out
-      this.date_in = checkinDate;
-      this.date_out = checkoutDate;
+      this.date_in = moment(checkinDate).toDate();
+      this.date_out = moment(checkoutDate).toDate();
+      console.log(this.date_in);
+      console.log(this.date_out);
       sessionStorage.removeItem('checkinDate');
       sessionStorage.removeItem('checkoutDate');
       // Sau đó gọi hàm lấy dữ liệu roomtype từ backend
@@ -121,12 +123,14 @@ export class HotelBookingRoomComponent implements OnInit {
 
   // Hàm lấy danh sách các loại phòng theo ngày đặt và ngày trả
   getRoomType() {
-    debugger
+
     if (this.date_in && this.date_out) {
       if (this.date_in < this.date_out) {
-        this.date_in = moment(this.date_in)?.format('DD-MM-YYYY') || '';
-        this.date_out = moment(this.date_out)?.format('DD-MM-YYYY') || '';
-        const obs = this.roomTypeClientService.findRoomType(this.hotel_id, this.date_in, this.date_out).subscribe({
+        const checkIn  = moment(this.date_in)?.format('DD-MM-YYYY') || '';
+        const checkOut = moment(this.date_out)?.format('DD-MM-YYYY') || '';
+        this.displayDateIn = checkIn;
+        this.displayDateOut = checkOut;
+        const obs = this.roomTypeClientService.findRoomType(this.hotel_id, checkIn, checkOut).subscribe({
           next: (res) => {
             console.log(res);
             this.roomTypes = res;

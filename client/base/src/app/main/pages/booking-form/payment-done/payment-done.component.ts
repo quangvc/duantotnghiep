@@ -34,7 +34,7 @@ export class PaymentDoneComponent implements OnInit {
   paymentDone(baseUrl: any) {
     this.PaymentService.vnPayDone(baseUrl).subscribe({
       next: (res) => {
-        debugger
+
         console.log(res);
         if (res.RspCode === '00') {
           this.sendMail(this.vnpParams.vnp_TxnRef)

@@ -142,7 +142,7 @@ export class BlogDetailComponent implements OnInit{
   }
 
   addReply(cmt_id: any) {
-    debugger
+
     console.log(cmt_id);
     this.formComment.controls['cmt_id'].setValue(cmt_id);
     if(this.formComment.valid){
