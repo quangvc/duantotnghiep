@@ -51,24 +51,30 @@ export class FilterPaymentComponent implements OnInit {
   }
 
   convertTextStatus(){
-    for (const booking of this.bookingFilters) {
-      if(booking.status == StatusBookings.Unconfirmed){
-        booking.txtStatus = "Đang chờ duyệt"
+    for (const statusOption of this.statusOptions) {
+      if(statusOption.value == -1){
+        statusOption.text = "Tất cả"
       }
-      if(booking.status == StatusBookings.Confirmed){
-        booking.txtStatus = "Đã duyệt"
+      if(statusOption.value == StatusBookings.Unpaid){
+        statusOption.text = "Chưa thanh toán"
       }
-      if(booking.status == StatusBookings.Using){
-        booking.txtStatus = "Đang sử dụng"
+      if(statusOption.value == StatusBookings.Unconfirmed){
+        statusOption.text = "Đang chờ duyệt"
       }
-      if(booking.status == StatusBookings.Clean){
-        booking.txtStatus = "Đang dọn dẹp"
+      if(statusOption.value == StatusBookings.Confirmed){
+        statusOption.text = "Đã duyệt"
       }
-      if(booking.status == StatusBookings.Cancel){
-        booking.txtStatus = "Đã hủy"
+      if(statusOption.value == StatusBookings.Using){
+        statusOption.text = "Đang sử dụng"
       }
-      if(booking.status == StatusBookings.WaitingCancel){
-        booking.txtStatus = "Đang chờ hủy đơn"
+      if(statusOption.value == StatusBookings.Clean){
+        statusOption.text = "Đang dọn dẹp"
+      }
+      if(statusOption.value == StatusBookings.Cancel){
+        statusOption.text = "Đã hủy"
+      }
+      if(statusOption.value == StatusBookings.WaitingCancel){
+        statusOption.text = "Đang chờ hủy"
       }
     }
   }
