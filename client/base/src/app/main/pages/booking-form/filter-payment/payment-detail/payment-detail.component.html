@@ -85,7 +85,7 @@
   </ng-container>
   <ng-template #modalFooter>
     <button nz-button nzType="default" (click)="handleCancel()">Đóng</button>
-    <button nz-button nzType="primary" *ngIf="booking_status != 7" nzDanger (click)="showCancelConfirmationModal()">
+    <button nz-button nzType="primary" *ngIf="booking_status != 7 && booking_status == 1" nzDanger (click)="showCancelConfirmationModal()">
       Hủy đơn
     </button>
   </ng-template>
