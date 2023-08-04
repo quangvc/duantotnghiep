@@ -13,6 +13,7 @@ use App\Traits\MessageStatusAPI;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\PaymentController;
+use App\Enums\BookingStatusEnum;
 
 class BookingController extends Controller
 {
@@ -184,4 +185,15 @@ class BookingController extends Controller
             'checkout_date' => now()
         ]);
     }
+
+    public function confirmCancel($id)
+    {
+        $booking = Booking::find($id);
+        if ($booking->status == BookingStatusEnum::WAITINGCANCEL) {
+            $booking->update([
+                'status' => BookingStatusEnum::CANCELLED,
+            ]);
+        }        
+    }
+
 }
