@@ -163,8 +163,8 @@ export class BookingComponent implements OnInit {
       });
       this.userform.patchValue({
         'hotel_id': hotelId,
-        'checkin_date': dateIn || null,
-        'checkout_date': dateOut || null,
+        'checkin_date': this.displayDateIn || null,
+        'checkout_date': this.displayDateOut || null,
         'total_price': totalAmount || null,
       });
     } else {
