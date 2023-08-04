@@ -21,6 +21,7 @@ import { NzSwitchModule } from 'ng-zorro-antd/switch';
 import { NzImageModule } from 'ng-zorro-antd/image';
 import { NzDividerModule } from 'ng-zorro-antd/divider';
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
+import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 
 @NgModule({
   imports: [],
@@ -48,7 +49,8 @@ import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
     NzSwitchModule,
     NzImageModule,
     NzDividerModule,
-    NzDropDownModule
+    NzDropDownModule,
+    NzDatePickerModule
   ],
 })
 export class SharedModule {}

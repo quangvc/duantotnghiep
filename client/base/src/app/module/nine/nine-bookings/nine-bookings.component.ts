@@ -145,6 +145,10 @@ export class NineBookingsComponent implements OnInit {
         status = StatusBookings.Cancel;
       }
 
+      if(value == StatusBookings.WaitingCancel){
+        status = StatusBookings.WaitingCancel;
+      }
+
       this.bookingFilters = bookings.filter(bk => bk.status == status);
 
       if(value == -1){

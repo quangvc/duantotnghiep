@@ -1,12 +1,51 @@
+<nz-card class="mb-3" style="width:100%;">
+  <div class="row">
+    <div class="col-4">
+      <p class="text-center">Doanh thu trong 1 tháng gần nhất</p>
+      <p class="text-center" style="font-size: 28px; font-weight: bold;">{{statisticalByLastMonthRevenue}}</p>
+    </div>
+    <div class="col-4">
+      <p class="text-center">Số phòng cho thuê trong 1 tháng gần nhất</p>
+      <p class="text-center" style="font-size: 28px; font-weight: bold;">{{statisticalLastMonthCountRooms}}</p>
+    </div>
+    <div class="col-4">
+      <p class="text-center">Người dùng mới</p>
+      <p class="text-center" style="font-size: 28px; font-weight: bold;">{{statisticalByUser}}</p>
+    </div>
+  </div>
+</nz-card>
+
 <div class="row">
-  <div class="col-6">
+  <div class="col-12">
     <nz-card>
       <p-chart type="bar" [data]="data" [options]="options"></p-chart>
     </nz-card>
   </div>
-  <div class="col-6">
+  <div class="col-12">
     <nz-card>
-      <p-chart type="bar" [data]="data" [options]="options"></p-chart>
+      <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
+        <div class="d-flex">
+          <nz-form-item>
+            <nz-form-label [nzSm]="8" [nzXs]="24">Từ ngày</nz-form-label>
+            <nz-form-control [nzSm]="16" [nzXs]="24">
+              <nz-date-picker formControlName="dateFrom"></nz-date-picker>
+            </nz-form-control>
+          </nz-form-item>
+
+          <nz-form-item>
+            <nz-form-label [nzSm]="8" [nzXs]="24">Đến ngày</nz-form-label>
+            <nz-form-control [nzSm]="16" [nzXs]="24">
+              <nz-date-picker formControlName="dateTo"></nz-date-picker>
+            </nz-form-control>
+          </nz-form-item>
+
+          <button nz-button nzType="primary"><span nz-icon nzType="search"></span></button>
+        </div>
+
+
+      </form>
+
+      <p-chart type="bar" [data]="data2" [options]="options2"></p-chart>
     </nz-card>
   </div>
 </div>

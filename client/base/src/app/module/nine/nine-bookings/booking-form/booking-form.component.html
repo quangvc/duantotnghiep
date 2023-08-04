@@ -78,7 +78,7 @@
                       room.room_type.hotel.id == item.value.room_type.room_type.hotel_id &&
                       room.room_type.id == item.value.room_type.room_type.id"
                     >
-                      <option [value]="room.room_number" [disabled]="room.id == item.value.roomID">
+                      <option [value]="room.room_number" >
                         {{room.room_number}}
                       </option>
                     </ng-container>
@@ -107,9 +107,3 @@
   </div>
 </nz-modal>
 
-<!-- <xep-phong
-  *ngIf="displayXepPhong"
-  [displayXepPhong]="displayXepPhong"
-  [room]="room"
-  (closeModal)="cancelModal($event)"
-></xep-phong> -->
