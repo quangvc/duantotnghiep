@@ -269,9 +269,9 @@ Route::group(['prefix' => 'client'], function () {
     Route::group(
         ['prefix' => 'feedback', 'controller' => FeedbackClientController::class],
         function () {
-            Route::get('/', 'index');
+            Route::get('/hotel/{idHotel}', 'index');
             Route::post('/', 'store');
-            Route::put('/{id}', 'update');
+            Route::get('/{id}', 'show');
         }
     );
     Route::group(

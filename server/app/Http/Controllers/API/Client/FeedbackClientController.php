@@ -14,9 +14,13 @@ use Illuminate\Support\Facades\Auth;
 class FeedbackClientController extends Controller
 {
     //
-    public function index()
+    public function index($idhotel)
     {
-        $feedback = Feedback::all();
+        $feedback = Feedback::with(['booking.booking_details.room_type' => function ($query) {
+            $query->select('id', 'hotel_id', 'name');
+        }])
+            ->where('id', $idhotel)
+            ->get();
         return FeedbackResource::collection($feedback);
     }
     public function store(FeedbackRequest $request)
@@ -26,18 +30,11 @@ class FeedbackClientController extends Controller
             'rating' => 'required|integer|min:1|max:5',
             'booking_id' => 'required|integer|exists:tbl_bookings,id'
         ]);
-
-        $user_id = auth()->user()->id;
         $booking_id = $request->input('booking_id');
-        $booking = Booking::where('user_id', $user_id)->find($booking_id);
-        if (!$booking) {
-            return response()->json(['message' => 'Không thể để lại feedback khi chưa booking'], 403);
-        }
-
         $feedback = new Feedback();
         $feedback->content = $validatedData['content'];
         $feedback->rating = $validatedData['rating'];
-        $feedback->booking_id = $validatedData['booking_id'];
+        $feedback->booking_id = $booking_id;
         $feedback->save();
         return response()->json(['message' => 'feedback created successfully.']);
     }
