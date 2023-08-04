@@ -6,6 +6,7 @@ use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PaymentController;
+use Laravel\Socialite\Facades\Socialite;
 
 
 /*
@@ -36,3 +37,14 @@ Route::get('/admin/dashboard', function () {
     return view('admin.dashboard');
 })->name('admin.dashboard');
 
+Route::get('/private-policy', function () {
+    return '<h1>Chính sách riêng tư</h1>';
+});
+
+Route::get('/auth/facebook', function () {
+    return Socialite::driver('facebook')->redirect();
+});
+
+Route::get('/auth/facebook/callback', function () {
+    return 'Callback Login Facebook';
+});

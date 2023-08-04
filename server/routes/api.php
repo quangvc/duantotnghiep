@@ -71,6 +71,10 @@ Route::get('/payment-return', [PaymentController::class, 'paymentReturn']);
 Route::post('/onepay-payment', [PaymentController::class, 'onepay_payment']);
 Route::get('/onepay-return', [PaymentController::class, 'onepayReturn']);
 
+Route::get('auth/google', function () {
+    return 's';
+});
+
 Route::group(['prefix' => 'admin'], function () {
     Route::group(['prefix' => 'users', 'controller' => UserController::class], function () {
         Route::get('/', 'index');
