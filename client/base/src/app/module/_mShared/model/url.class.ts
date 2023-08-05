@@ -22,6 +22,7 @@ export const COMMENTS = "comments"
 export const REPLY = "reply"
 
 export const FEEDBACK = "feedback"
+export const FEEDBACKS = "feedbacks"
 export const BANNERS = "banners"
 
 export const SUCCESS = "success"

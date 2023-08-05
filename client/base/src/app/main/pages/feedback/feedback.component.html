@@ -1,0 +1,42 @@
+<div class="feedback-page">
+  <div class="feedback-form text-center">
+    <h2 class="">Phản hồi</h2>
+    <p>
+      Cảm ơn bạn vì đã đặt phòng khách của chuỗi Nine Hotel, chúng tôi mong rằng bạn đã có
+      1 kỳ nghỉ chất lượng và để cho chúng tôi có thể nâng cao chất lượng dịch vụ của mình,
+      mong bạn có thể dành vài giây để phản hồi lại cho chúng tôi!
+    </p>
+    <form [formGroup]="feedbackForm" (ngSubmit)="submitForm()">
+      <div class="form-group">
+        <label for="rating">Điểm đánh giá</label>
+        <p-rating id="rating" name="rating" [cancel]="false" [stars]="10"></p-rating>
+        <div *ngIf="feedbackForm.controls['rating'].invalid && feedbackForm.controls['rating'].touched" class="text-danger">
+          Điểm đánh giá là bắt buộc
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="content">Cảm nhận của bạn</label>
+        <textarea id="content" name="content" rows="4" formControlName="content"></textarea>
+        <div *ngIf="feedbackForm.controls['content'].invalid && feedbackForm.controls['content'].touched" class="text-danger">
+          Cảm nhận phải có ít nhất 10 ký tự
+        </div>
+      </div>
+      <!-- <div class="form-group">
+        <label for="bookingId">Booking ID</label>
+        <input type="text" id="bookingId" name="bookingId" formControlName="booking_id">
+        <div *ngIf="feedbackForm.controls['booking_id'].invalid && feedbackForm.controls['booking_id'].touched" class="text-danger">
+          Booking ID là bắt buộc
+        </div>
+      </div> -->
+      <button type="submit" [disabled]="feedbackForm.invalid">Gửi</button>
+      <div class="mt-4">
+        <p>Nội dung đã nhập</p>
+        {{ feedbackForm.value | json }} <!-- Hiển thị giá trị trong form -->
+      </div>
+    </form>
+  </div>
+</div>
+
+
+
+

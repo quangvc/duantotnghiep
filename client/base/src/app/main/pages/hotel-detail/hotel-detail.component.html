@@ -103,13 +103,12 @@
             <h5 style="font-weight: 700;">Xem đánh giá hữu ích từ khách hàng!</h5>
             <h6>Mời bạn xem đánh giá hữu ích từ khách hàng về cơ sở lưu trú này</h6>
           </div>
-          <div class="col-5 m-auto px-5">
-            <div class="comment-content mb-4">
+          <div class="col-5 m-auto px-5" *ngIf="feedbacks.length > 0">
+            <div class="comment-content mb-4" *ngFor="let item of feedbacks">
               <a class="" style="text-decoration: none;" href="">
                 <div class="w-100 h-75 bg-white p-4 rounded-4 border border-2">
-                  <p style="color: black; font-weight: 500;">Khách sạn ở vị trí rất trung tâm, dễ di chuyển đến các điểm
-                    tham quan, Rất sạch sẽ, từ không gian
-                    công cộng đến phòng ở. Nhân viên thân thiện, nhiệt tình.</p>
+                  <p-rating id="rating" name="rating" [cancel]="false" [readonly]="true" [ngModel]="item.rating" [stars]="10"></p-rating>
+                  <p style="color: black; font-weight: 500;">{{ item.content }}.</p>
                   <div>
                     <i class="fa fa-map-marker me-3"></i>
                     <span style="color: black; font-weight: 500;">Duong L.D</span>
@@ -132,6 +131,9 @@
               </button>
 
             </div>
+          </div>
+          <div class="col-5 m-auto px-5 text-center" *ngIf="feedbacks.length <= 0">
+            <h5>Chưa có phản hồi nào</h5>
           </div>
           <div class="col m-auto"></div>
         </div>
