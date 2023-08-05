@@ -323,4 +323,10 @@ Route::group(['prefix' => 'client'], function () {
             Route::get('/check/{id}', 'checkQuantity');
         }
     );
+    Route::group(
+        ['prefix' => 'support', 'controller' => ImageClientController::class],
+        function () {
+            Route::post('/', 'store');
+        }
+    );
 });
