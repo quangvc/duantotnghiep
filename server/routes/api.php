@@ -267,11 +267,12 @@ Route::group(['prefix' => 'client'], function () {
     );
 
     Route::group(
-        ['prefix' => 'feedback', 'controller' => FeedbackClientController::class],
+        ['prefix' => 'feedbacks', 'controller' => FeedbackClientController::class],
         function () {
             Route::get('/hotel/{idHotel}', 'index');
             Route::post('/', 'store');
             Route::get('/{id}', 'show');
+            Route::get('/avg/{id_hotel}', 'avgRating');
         }
     );
     Route::group(
