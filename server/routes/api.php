@@ -19,6 +19,7 @@ use App\Http\Controllers\API\Admin\UserController;
 use App\Http\Controllers\API\Admin\CouponController;
 use App\Http\Controllers\API\Admin\FeedbackController;
 use App\Http\Controllers\API\Admin\BannerController;
+use App\Http\Controllers\API\Admin\SupportController;
 use App\Http\Controllers\API\Client\BannerClientController;
 use App\Http\Controllers\API\Client\BlogClientController;
 use App\Http\Controllers\API\Client\BookingClientController;
@@ -216,6 +217,14 @@ Route::group(['prefix' => 'admin'], function () {
             Route::get('/', 'show');
             Route::post('/', 'store');
             Route::delete('/', 'destroy');
+        }
+    );
+    Route::group( // admin quyết làm
+        ['prefix' => 'support', 'controller' => SupportController::class],
+        function () {
+            Route::get('/', 'index');
+            Route::get('/{id}', 'show');
+            Route::put('/{id}', 'changeStatus');
         }
     );
 });

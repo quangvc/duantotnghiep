@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API\Admin;
 
+use App\Enums\StatusEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SupportRequest;
 use App\Http\Resources\API\SupportResource;
@@ -14,25 +15,40 @@ class SupportController extends Controller
     //
     public function index()
     {
+        $role = auth()->user()->getRoleNames()->first();
+        if ($role == 'client') {
+            return MessageStatusAPI::notFound();
+        }
         $support = Support::all();
         return SupportResource::collection($support);
     }
-    public function store(SupportRequest $request)
+    public function changeStatus($id)
     {
-        $data = $request->all();
-        $support = Support::create($data);
-        return MessageStatusAPI::store($support);
-    }
-    public function update(SupportRequest $request, $id)
-    {
+        $role = auth()->user()->getRoleNames()->first();
+        if ($role == 'client') {
+            return MessageStatusAPI::notFound();
+        }
         $Support = Support::find($id);
-        $Support->update($request->all());
+        if (!$Support) {
+            return MessageStatusAPI::notFound();
+        }
+        if ($Support->status == StatusEnum::DEACTIVE) {
+            $Support->update(['status' => StatusEnum::ACTIVE]);
+        } else {
+            $Support->update(['status' => StatusEnum::DEACTIVE]);
+        }
         return MessageStatusAPI::update();
     }
-    public function destroy($id)
+    public function show($id)
     {
+        $role = auth()->user()->getRoleNames()->first();
+        if ($role == 'client') {
+            return MessageStatusAPI::notFound();
+        }
         $Support = Support::findOrFail($id);
-        $Support->delete();
-        return MessageStatusAPI::destroy();
+        if (!$Support) {
+            return MessageStatusAPI::notFound();
+        }
+        return SupportResource::collection($Support);
     }
 }
