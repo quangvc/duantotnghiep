@@ -7,6 +7,7 @@ import { MainModule } from './main/main.module';
 import { MainGlobalRoutes } from './main-global.routing';
 import { BookingFormModule } from './pages/booking-form/booking-form.module';
 import { SupportModule } from './pages/support/support.module';
+import { FeedbackModule } from './pages/feedback/feedback.module';
 
 
 

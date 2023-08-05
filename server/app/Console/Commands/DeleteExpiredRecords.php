@@ -30,7 +30,8 @@ class DeleteExpiredRecords extends Command
      */
     public function handle()
     {
-        $expirationTime = Carbon::now()->subMinutes(5);
+        // Đoạn đếm thời gian
+        $expirationTime = Carbon::now()->subMinutes(1);
         $bookings = Booking::where([
             ['created_at', '<=', $expirationTime],
             ['status', 0]
