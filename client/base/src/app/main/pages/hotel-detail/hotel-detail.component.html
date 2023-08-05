@@ -59,6 +59,12 @@
                 <i class="fa fa-map-marker text-primary me-3"></i>
                 <span>{{ hotel.hotel_address }}</span>
               </div>
+
+              <div class="mb-2">
+                <span class="me-1 text-primary">Điểm đánh giá trung bình của khách sạn: </span>
+                <span>{{ rating }}</span>
+              </div>
+
             </div>
             <!-- End Thông tin -->
 
@@ -104,8 +110,8 @@
             <h6>Mời bạn xem đánh giá hữu ích từ khách hàng về cơ sở lưu trú này</h6>
           </div>
           <div class="col-5 m-auto px-5" *ngIf="feedbacks.length > 0">
-            <div class="comment-content mb-4" *ngFor="let item of feedbacks">
-              <a class="" style="text-decoration: none;" href="">
+            <div class="comment-content mb-4" >
+              <a class="" style="text-decoration: none;" href="" *ngFor="let item of feedbacks">
                 <div class="w-100 h-75 bg-white p-4 rounded-4 border border-2">
                   <p-rating id="rating" name="rating" [cancel]="false" [readonly]="true" [ngModel]="item.rating" [stars]="10"></p-rating>
                   <p style="color: black; font-weight: 500;">{{ item.content }}.</p>

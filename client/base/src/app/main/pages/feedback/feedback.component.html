@@ -9,7 +9,7 @@
     <form [formGroup]="feedbackForm" (ngSubmit)="submitForm()">
       <div class="form-group">
         <label for="rating">Điểm đánh giá</label>
-        <p-rating id="rating" name="rating" [cancel]="false" [stars]="10"></p-rating>
+        <p-rating id="rating" name="rating" formControlName="rating" [cancel]="false" [stars]="10"></p-rating>
         <div *ngIf="feedbackForm.controls['rating'].invalid && feedbackForm.controls['rating'].touched" class="text-danger">
           Điểm đánh giá là bắt buộc
         </div>
