@@ -12,7 +12,7 @@ use App\Traits\MessageStatusAPI;
 class SupportClientController extends Controller
 {
 
-    public function store(SupportRequest $request)
+    public function store(Request $request)
     {
         $data = $request->all();
         $support = Support::create($data);
