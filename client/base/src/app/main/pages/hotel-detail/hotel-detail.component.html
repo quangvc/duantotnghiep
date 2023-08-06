@@ -7,7 +7,8 @@
         <ol class="breadcrumb justify-content-center text-uppercase">
           <li class="breadcrumb-item"><a href="#">Trang chủ</a></li>
           <li class="breadcrumb-item"><a href="hotels/region/{{ region_id }}">{{ region_name }}</a></li>
-          <li class="breadcrumb-item" aria-current="page"><a href="detail" class="text-primary">Khách sạn {{ hotel_name }}</a></li>
+          <li class="breadcrumb-item" aria-current="page"><a href="detail" class="text-primary">Khách sạn {{ hotel_name
+              }}</a></li>
         </ol>
       </nav>
     </div>
@@ -44,14 +45,14 @@
         <div class="row">
           <div class="col">
             <!-- Start Thông tin -->
-            <div class="p-5" >
+            <div class="p-5">
               <h3><strong>{{ hotel.hotel_name }}</strong></h3>
               <div class="d-flex mb-2">
                 <small class="bg-primary text-white rounded-5 py-1 px-3 me-3"><strong>Hotel</strong>
                 </small>
                 <div class="flex justify-content-center">
-                  <form [formGroup]="formStar" >
-                      <p-rating class="my-auto" formControlName="value" [cancel]="false" [readonly]="true"></p-rating>
+                  <form [formGroup]="formStar">
+                    <p-rating class="my-auto" formControlName="value" [cancel]="false" [readonly]="true"></p-rating>
                   </form>
                 </div>
               </div>
@@ -78,7 +79,8 @@
                 <span class="fs-3 text-primary"><strong>{{ minPrice | currency: 'VND' }} VND</strong></span>
               </div>
               <div class="d-flex justify-content-between">
-                <a class="btn btn-md btn-dark rounded-3 bg-primary border-primary py-2 px-4" (click)="scrollToSection('booking-section')">Đặt ngay</a>
+                <a class="btn btn-md btn-dark rounded-3 bg-primary border-primary py-2 px-4"
+                  (click)="scrollToSection('booking-section')">Đặt ngay</a>
               </div>
             </div>
             <!-- End Giá - Đặt -->
@@ -94,54 +96,53 @@
                     </div>
                 </ng-template>
             </p-galleria> -->
-            <p-galleria [value]="hotel.images" [numVisible]="5" [circular]="true" [showItemNavigators]="true" [showThumbnails]="false" [responsiveOptions]="responsiveOptions" [containerStyle]="{ 'max-width': '640px' }">
+            <p-galleria [value]="hotel.images" [numVisible]="5" [circular]="true" [showItemNavigators]="true"
+              [showThumbnails]="false" [responsiveOptions]="responsiveOptions"
+              [containerStyle]="{ 'max-width': '640px' }">
               <ng-template pTemplate="item" let-item>
-                  <img [src]="'http://127.0.0.1:8000/Images/'+ item.path" style="width: 100%; display: block;" />
+                <img [src]="'http://127.0.0.1:8000/Images/'+ item.path" style="width: 100%; display: block;" />
               </ng-template>
             </p-galleria>
-        </div>
+          </div>
         </div>
         <hr>
 
         <!-- Comment start -->
-        <div class="comment-section row">
-          <div class="col m-auto px-5">
-            <h5 style="font-weight: 700;">Xem đánh giá hữu ích từ khách hàng!</h5>
-            <h6>Mời bạn xem đánh giá hữu ích từ khách hàng về cơ sở lưu trú này</h6>
-          </div>
-          <div class="col-5 m-auto px-5" *ngIf="feedbacks.length > 0">
-            <div class="comment-content mb-4" >
-              <a class="" style="text-decoration: none;" href="" *ngFor="let item of feedbacks">
-                <div class="w-100 h-75 bg-white p-4 rounded-4 border border-2">
-                  <p-rating id="rating" name="rating" [cancel]="false" [readonly]="true" [ngModel]="item.rating" [stars]="10"></p-rating>
-                  <p style="color: black; font-weight: 500;">{{ item.content }}.</p>
-                  <div>
-                    <i class="fa fa-map-marker me-3"></i>
-                    <span style="color: black; font-weight: 500;">{{ item.booking.guest_name }}</span>
-                  </div>
+        <div class="comment-section py-2">
+          <div class="row">
+            <div class="col m-auto px-5">
+              <h5 style="font-weight: 700;">Xem Khách nói gì về kỳ nghỉ của họ!</h5>
+              <h6>Mời bạn xem đánh giá hữu ích từ khách hàng về cơ sở lưu trú này</h6>
+              <a class="fs-5 fw-bold" (click)="scrollToSection('feedback-section')">Xem thêm đánh giá ></a>
+            </div>
+            <p-carousel *ngIf="feedbacks.length > 0" class="col-7 m-auto px-5" [value]="feedbacks" [numVisible]="1"
+              [numScroll]="3" [circular]="true" [responsiveOptions]="responsiveOptions" autoPlayInterval="3000">
+              <ng-template class="border-1 surface-border border-round text-center" let-feedback pTemplate="item">
+                <div class="mx-2">
+                  <a class="" style="text-decoration: none;" (click)="scrollToSection('feedback-section')">
+                    <div class="w-100 h-75 bg-white p-4 rounded-4 border border-2">
+                      <div class="d-flex justify-content-between mb-2">
+                        <p-rating id="rating" name="rating" [cancel]="false" [readonly]="true" [ngModel]="feedback.rating"
+                          [stars]="10"></p-rating>
+                        <div>
+                          <i class="fa fa-user me-3"></i>
+                          <span style="color: gray; font-weight: 500;">{{ feedback.booking.guest_name }}</span>
+                        </div>
+                      </div>
+                      <!-- <div>{{ truncateText(feedback.content, 3) }}</div> -->
+                      <p appEllipsis style="color: black; font-weight: 500; margin: 0;">{{ feedback.content }}</p>
+
+                    </div>
+                  </a>
                 </div>
-              </a>
-            </div>
-            <div class="comment-interact d-flex flex-row justify-content-between">
 
-              <button class="comment-section-prev rounded-circle " type="button" data-bs-target="#header-carousel"
-                data-bs-slide="prev">
-                <i class="fa fa-arrow-circle-left" aria-hidden="true"></i>
-                <span class="visually-hidden">Previous</span>
-              </button>
-              <a href="" class="m-auto"><strong>Xem tất cả đánh giá</strong></a>
-              <button class="comment-section-next rounded-circle " type="button" data-bs-target="#header-carousel"
-                data-bs-slide="next">
-                <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
-                <span class="visually-hidden">Next</span>
-              </button>
-
+              </ng-template>
+            </p-carousel>
+            <div class="col-7 m-auto px-5 text-center" *ngIf="feedbacks.length <= 0">
+              <h5>Chưa có đánh giá</h5>
             </div>
           </div>
-          <div class="col-5 m-auto px-5 text-center" *ngIf="feedbacks.length <= 0">
-            <h5>Chưa có phản hồi nào</h5>
-          </div>
-          <div class="col m-auto"></div>
+
         </div>
         <!-- Comment end -->
 
@@ -177,8 +178,8 @@
 
       <!-- Start Detail -->
       <!-- <div class="room-item shadow rounded-4 overflow-hidden mb-3 p-5 "> -->
-        <!-- Start Thông tin khu vực -->
-        <!-- <h4><strong>Thông tin khu vực</strong></h4>
+      <!-- Start Thông tin khu vực -->
+      <!-- <h4><strong>Thông tin khu vực</strong></h4>
         <div class="mb-2">
           <i class="fa fa-map-marker text-primary me-3"></i>
           <span>146 Giang Vo Str, Ba Dinh, Hanoi City., Giảng Võ, Quận Ba Đình, Hà Nội, Việt Nam, 100000</span>
@@ -191,8 +192,8 @@
         </div> -->
 
 
-        <!--  Location near -->
-        <!-- <div class="map row mt-5 w-100">
+      <!--  Location near -->
+      <!-- <div class="map row mt-5 w-100">
           <div class="col-5">
             <h5 style="font-weight: bold;">Địa điểm lân cận</h5>
             <div class="d-flex flex-row justify-content-between py-2">
@@ -341,22 +342,28 @@
           <span style="color: #687176; font-weight: 500;">Khoảng cách hiển thị dựa trên đường chim bay. Khoảng cách di
             chuyển thực tế có thể khác. </span>
         </div> -->
-        <!-- End Thông tin -->
-        <!-- <hr> -->
+      <!-- End Thông tin -->
+      <!-- <hr> -->
       <!-- </div> -->
       <!-- End Detail -->
 
 
       <!-- Book room start -->
-      <app-hotel-booking-room id="booking-section" class="section" [hotelRoomTypeData]=hotelRoomTypeData [hotel_id]=hotel_id [hotel_name]=hotel_name></app-hotel-booking-room>
+      <app-hotel-booking-room id="booking-section" class="section" [hotelRoomTypeData]=hotelRoomTypeData
+        [hotel_id]=hotel_id [hotel_name]=hotel_name></app-hotel-booking-room>
       <!-- Book room end -->
+
+      <!-- Hotel feedback start -->
+      <hotel-feedback id="feedback-section"></hotel-feedback>
+      <!-- Hotel feedback end -->
 
       <!-- Start Policy -->
       <app-hotel-policy [hotel_name]=hotel_name></app-hotel-policy>
       <!-- End Policy -->
 
       <!-- Start Hotel Amenities -->
-      <app-hotel-detail-amenities id="amenities-section" class="section" [hotel_name]=hotel_name></app-hotel-detail-amenities>
+      <app-hotel-detail-amenities id="amenities-section" class="section"
+        [hotel_name]=hotel_name></app-hotel-detail-amenities>
       <!-- End Hotel Amenities -->
     </div>
   </div>

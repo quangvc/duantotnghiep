@@ -4,7 +4,7 @@ import { FeedbackComponent } from './feedback.component';
 import { FeedbackRoutes } from './feedback.routing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {RatingModule} from 'primeng/rating';
-
+import { ToastModule } from 'primeng/toast';
 
 @NgModule({
   declarations: [FeedbackComponent],
@@ -14,6 +14,7 @@ import {RatingModule} from 'primeng/rating';
     ReactiveFormsModule,
     FormsModule,
     RatingModule,
+    ToastModule,
   ]
 })
 export class FeedbackModule { }
