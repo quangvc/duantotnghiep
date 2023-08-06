@@ -63,19 +63,19 @@ export class NineBookingsComponent implements OnInit {
         booking.txtStatus = "Chưa thanh toán"
       }
       if(booking.status == StatusBookings.Unconfirmed){
-        booking.txtStatus = "Đang chờ duyệt"
+        booking.txtStatus = "Đã thanh toán"
       }
       if(booking.status == StatusBookings.Confirmed){
-        booking.txtStatus = "Đã duyệt"
+        booking.txtStatus = "Check in"
       }
       if(booking.status == StatusBookings.Using){
-        booking.txtStatus = "Đang sử dụng"
-      }
-      if(booking.status == StatusBookings.Clean){
-        booking.txtStatus = "Đang dọn dẹp"
+        booking.txtStatus = "Check out"
       }
       if(booking.status == StatusBookings.Cancel){
         booking.txtStatus = "Đã hủy"
+      }
+      if(booking.status == StatusBookings.WaitingCancel){
+        booking.txtStatus = "Đang chờ hủy"
       }
     }
   }
@@ -96,16 +96,13 @@ export class NineBookingsComponent implements OnInit {
             statusOption.text = "Chưa thanh toán"
           }
           if(statusOption.value == StatusBookings.Unconfirmed){
-            statusOption.text = "Đang chờ duyệt"
+            statusOption.text = "Đã thanh toán"
           }
           if(statusOption.value == StatusBookings.Confirmed){
-            statusOption.text = "Đã duyệt"
+            statusOption.text = "Check in"
           }
           if(statusOption.value == StatusBookings.Using){
-            statusOption.text = "Đang sử dụng"
-          }
-          if(statusOption.value == StatusBookings.Clean){
-            statusOption.text = "Đang dọn dẹp"
+            statusOption.text = "Check out"
           }
           if(statusOption.value == StatusBookings.Cancel){
             statusOption.text = "Đã hủy"
@@ -137,9 +134,6 @@ export class NineBookingsComponent implements OnInit {
       }
       if(value == StatusBookings.Using){
         status = StatusBookings.Using;
-      }
-      if(value == StatusBookings.Clean){
-        status = StatusBookings.Clean;
       }
       if(value == StatusBookings.Cancel){
         status = StatusBookings.Cancel;

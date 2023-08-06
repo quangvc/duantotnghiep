@@ -140,6 +140,10 @@ export class NineLayoutComponent implements OnInit {
             label: "Quản lý banner",
             routerLink: "banners",
           },
+          {
+            label: "Hỗ trợ",
+            routerLink: "support",
+          },
         ]
       },
     ]
