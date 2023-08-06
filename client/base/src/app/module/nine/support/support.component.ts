@@ -30,6 +30,7 @@ export class SupportComponent implements OnInit {
     this.supportService.getSupport().subscribe({
       next: (res) => {
         this.supports = res.data;
+        this.supports = this.supports.reverse();
       },
       error: (err) => {
         this.message.create(ERROR, err.error.message);
