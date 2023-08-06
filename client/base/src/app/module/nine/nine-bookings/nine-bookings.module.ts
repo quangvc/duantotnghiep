@@ -8,12 +8,14 @@ import { NzTabsModule } from 'ng-zorro-antd/tabs';
 import { NzTagModule } from 'ng-zorro-antd/tag';
 import { CreateBookingComponent } from './create-booking/create-booking.component';
 import { XepPhongComponent } from './xep-phong/xep-phong.component';
+import { ErrorMsgModule } from '../../_mShared/error-msg/error-msg.module';
 
 @NgModule({
   imports: [
     SharedModule,
     NzTabsModule,
     NzTagModule,
+    ErrorMsgModule,
     NineBookingsRoutes
   ],
   declarations: [NineBookingsComponent, BookingFormComponent,CreateBookingComponent,XepPhongComponent]
