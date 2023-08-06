@@ -21,7 +21,9 @@ import { FormsModule } from '@angular/forms';
 import { TableModule } from 'primeng/table';
 import { RatingModule } from 'primeng/rating';
 import { ReactiveFormsModule } from '@angular/forms';
-
+import { CarouselModule } from 'primeng/carousel';
+import { FeedbackComponent } from './feedback/feedback.component';
+import { EllipsisDirective } from './../../share/ellipsis.directive';
 
 @NgModule({
   imports: [
@@ -40,14 +42,17 @@ import { ReactiveFormsModule } from '@angular/forms';
     HotelBookingRoomModule,
     TableModule,
     RatingModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    CarouselModule,
   ],
   declarations: [
     HotelDetailComponent,
     HotelBookingRoomComponent,
     HotelDetailAmenitiesComponent,
     HotelPolicyComponent,
-    RoomTypeDetailComponent
+    RoomTypeDetailComponent,
+    FeedbackComponent,
+    EllipsisDirective,
   ],
   exports: [
     HotelDetailComponent,

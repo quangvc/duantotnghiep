@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FeedbackClientService } from '../../services/feedback-client.service';
 import { ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MessageService } from 'primeng/api';
 
 interface FeedbackData {
   rating: number;
@@ -22,7 +23,8 @@ export class FeedbackComponent implements OnInit {
     private feedbackClientService: FeedbackClientService,
     private bookingService: BookingClientService,
     private route: ActivatedRoute,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private messageService: MessageService,
   ) {
     this.feedbackForm = this.formBuilder.group({
       rating: [0, Validators.required],
@@ -59,11 +61,16 @@ export class FeedbackComponent implements OnInit {
       const formData = this.feedbackForm.value; // Lấy dữ liệu từ FormGroup
       this.feedbackClientService.createFeedback(formData).subscribe(
         (response) => {
+          this.messageService.add({ severity: 'success', summary: 'Thành công', detail: 'Cảm ơn đã phản hồi cho chúng tôi!' });
           console.log('Feedback created successfully:', response);
-          window.location.href = '/';
+
+          setTimeout(() => {
+            window.location.href = '/';
+          }, 2000);
         },
         (error) => {
           console.error('Error creating feedback:', error);
+          this.messageService.add({ severity: 'warn', summary: 'Cảnh báo', detail: 'Bạn đã phản hồi rồi!' });
         }
       );
     }

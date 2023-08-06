@@ -7,6 +7,8 @@ import { ImagesService } from 'src/app/module/_mShared/service/images.service';
 import { ImagesClientService } from '../../services/images-client.service';
 import { FormControl, FormGroup } from '@angular/forms';
 import { FeedbackClientService } from '../../services/feedback-client.service';
+import { EllipsisDirective } from './../../share/ellipsis.directive';
+
 @Component({
   selector: 'app-hotel-detail',
   templateUrl: './hotel-detail.component.html',
