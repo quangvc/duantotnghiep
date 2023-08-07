@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { MenuItem } from 'src/app/module/_mShared/model/menuItem.class';
 import { PhotoService } from '../../../services/photoservice.service';
 import { RoomTypeDetailComponent } from './room-type-detail/room-type-detail.component';
@@ -9,7 +9,9 @@ import { ERROR, WARNING } from 'src/app/module/_mShared/model/url.class';
 import { Subscription } from 'rxjs';
 import { SelectItem } from 'primeng/api';
 import { Table } from 'primeng/table';
+import { ngxLoadingAnimationTypes } from 'ngx-loading';
 
+const PrimaryWhite = '#ffffff';
 interface roomType {
   hotel_id: number;
   name: string;
@@ -26,6 +28,9 @@ interface roomType {
   providers: [PhotoService]
 })
 export class HotelBookingRoomComponent implements OnInit {
+  public ngxLoadingAnimationTypes = ngxLoadingAnimationTypes;
+  public primaryColour = PrimaryWhite;
+  public loadingTemplate!: TemplateRef<any>;
   @Input('hotelRoomTypeData') RoomTypeData: any[] = [];
   @Input() hotel_id: any;
   @Input() hotel_name: any;
@@ -60,6 +65,8 @@ export class HotelBookingRoomComponent implements OnInit {
   totalPrice: any;
   totalAmount: any;
   resultArray: any[] = []; // Mảng lưu trữ kết quả tính toán
+
+  public loading = false;
 
   responsiveOptions: any[] = [
     {
@@ -123,7 +130,7 @@ export class HotelBookingRoomComponent implements OnInit {
 
   // Hàm lấy danh sách các loại phòng theo ngày đặt và ngày trả
   getRoomType() {
-
+    this.loading = true;
     if (this.date_in && this.date_out) {
       if (this.date_in < this.date_out) {
         const checkIn  = moment(this.date_in)?.format('DD-MM-YYYY') || '';
@@ -132,6 +139,7 @@ export class HotelBookingRoomComponent implements OnInit {
         this.displayDateOut = checkOut;
         const obs = this.roomTypeClientService.findRoomType(this.hotel_id, checkIn, checkOut).subscribe({
           next: (res) => {
+            this.loading = false;
             console.log(res);
             this.roomTypes = res;
             for (let index = 0; index < res.length; index++) {
@@ -144,6 +152,7 @@ export class HotelBookingRoomComponent implements OnInit {
             this.resultArray = [];
           },
           error: (err) => {
+            this.loading = false;
             this.message.create(ERROR, err.message);
           }
         });
