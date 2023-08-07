@@ -14,7 +14,9 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { PaginatorModule } from 'primeng/paginator';
 import { SliderModule } from 'primeng/slider';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
+import { NgxPaginationModule } from 'ngx-pagination';
+import { ngxLoadingAnimationTypes } from 'ngx-loading';
+import { NgxLoadingModule } from 'ngx-loading';
 @NgModule({
   imports: [
     CommonModule,
@@ -27,6 +29,17 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     CheckboxModule,
     PaginatorModule,
     SliderModule,
+    NgxPaginationModule,
+    NgxLoadingModule,
+    NgxLoadingModule.forRoot({
+      animationType: ngxLoadingAnimationTypes.wanderingCubes,
+      backdropBackgroundColour: 'rgba(0,0,0,0.5)',
+      backdropBorderRadius: '4px',
+      primaryColour: '#ffffff',
+      secondaryColour: '#ffffff',
+      tertiaryColour: '#ffffff',
+      fullScreenBackdrop: false,
+    }),
   ],
   declarations: [
     HotelComponent,

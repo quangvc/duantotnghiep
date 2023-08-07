@@ -1,5 +1,5 @@
 import { HotelClientService } from '../../services/hotelClient.service';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, TemplateRef } from '@angular/core';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzModalRef } from 'ng-zorro-antd/modal';
 import { Subscription, firstValueFrom } from 'rxjs';
@@ -7,9 +7,11 @@ import { MenuItem } from 'src/app/module/_mShared/model/menuItem.class';
 import { ERROR, URL_IMAGE } from 'src/app/module/_mShared/model/url.class';
 import { ImagesService } from 'src/app/module/_mShared/service/images.service';
 import { RegionsClientService } from '../../services/regions-client.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FormControl, FormGroup } from '@angular/forms';
+import { ngxLoadingAnimationTypes } from 'ngx-loading';
 
+const PrimaryWhite = '#ffffff';
 interface Type {
   name: string;
   code: string;
@@ -26,13 +28,16 @@ interface PageEvent {
   styleUrls: ['./hotel.component.scss']
 })
 export class HotelComponent implements OnInit {
+  public ngxLoadingAnimationTypes = ngxLoadingAnimationTypes;
+  public primaryColour = PrimaryWhite;
+  public loadingTemplate!: TemplateRef<any>;
   sortRadio!: string;
   selectedType!: Type;
   types: Type[] = [];
   rangeValues: number[] = [0, 100];
   // Phân trang
   first: number = 0;
-  rows: number = 5;
+  rows: number = 3;
   // Dữ liệu filter
   date_in: any;
   date_out: any;
@@ -52,12 +57,11 @@ export class HotelComponent implements OnInit {
   confirmModal?: NzModalRef;
   displayImage: boolean = false;
   originalHotels: any[] = [];
+  totalRecords: number = 0;
+  p: any;
+  public loading = false;
 
 
-  onPageChange(event: PageEvent) {
-    this.first = event.first;
-    this.rows = event.rows;
-  }
 
   private _isExpanded = false;
   private subscription = new Subscription();
@@ -77,18 +81,17 @@ export class HotelComponent implements OnInit {
     private HotelClientService: HotelClientService,
     private RegionsClientService: RegionsClientService,
     private route: ActivatedRoute,
+    private router: Router,
     private message: NzMessageService,
   ) { }
 
   ngOnInit() {
     this.getRegions();
     this.route.params.subscribe(params => {
-      const id = params['region_id']; // Lấy giá trị ID từ URL
+      this.selectedRegion = params['region_id']; // Lấy giá trị ID từ URL
       // Gọi getHotelsByRegion với ID khu vực đã chọn
-      this.getHotelsByRegion(id);
+      this.getHotelsByRegion();
     });
-    const defaultRegionId = this.route.snapshot.params['region_id'];
-    this.selectedRegion = `regionRadio${defaultRegionId}`;
     this.formStar = new FormGroup({
       value: new FormControl(this.starRating)
     });
@@ -114,9 +117,13 @@ export class HotelComponent implements OnInit {
   //   });
   // }
 
-  async getHotelsByRegion(regionId: any) {
+  async getHotelsByRegion() {
     try {
-      const res = await this.HotelClientService.getHotelsByRegion(regionId).toPromise();
+      this.loading = true;
+      const res = await this.HotelClientService.getHotelsByRegion(this.selectedRegion).toPromise();
+      if (res) {
+        this.loading = false;
+      }
       console.log(res.data);
       this.hotels = res.data;
       this.originalHotels = res.data;
@@ -124,6 +131,7 @@ export class HotelComponent implements OnInit {
       this.regionName = res.data[0].region.name;
       this.formStar.controls['value'].setValue(res.data[0].star_rating);
     } catch (err) {
+      this.loading = false;
       console.error('Đã xảy ra lỗi khi gọi API:', err);
     }
   }
@@ -145,8 +153,8 @@ export class HotelComponent implements OnInit {
   }
   onRegionSelected(regionId: any) {
 
-    this.selectedRegion = regionId;
-    this.getHotelsByRegion(regionId);
+    this.router.navigate(['/hotels/region/', regionId]);
+    this.getHotelsByRegion()
   }
 
   onSearch(searchQuery: string) {

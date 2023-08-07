@@ -89,7 +89,12 @@
     </p-table>
   </div>
 
-  <div class="" *ngIf="dataTable">
+  <div class="loading" *ngIf="dataTable">
+    <ngx-loading [show]="loading" [config]="{
+      animationType: ngxLoadingAnimationTypes.circle,
+      primaryColour: primaryColour,
+      backdropBorderRadius: '3px'
+    }" [template]="loadingTemplate"></ngx-loading>
     <p-table class=""
       [value]="roomTypes"
     >

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef } from '@angular/core';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { HotelClientService } from '../../services/hotelClient.service';
 import { ERROR, WARNING } from 'src/app/module/_mShared/model/url.class';
@@ -9,7 +9,9 @@ import { RegionsClientService } from '../../services/regions-client.service';
 import { MenuItem } from 'primeng/api';
 import { NzModalRef } from 'ng-zorro-antd/modal';
 import * as moment from 'moment';
+import { ngxLoadingAnimationTypes } from 'ngx-loading';
 
+const PrimaryWhite = '#ffffff';
 interface Type {
   name: string;
   code: string;
@@ -27,6 +29,9 @@ interface PageEvent {
   styleUrls: ['./filter-page.component.scss']
 })
 export class FilterPageComponent implements OnInit {
+  public ngxLoadingAnimationTypes = ngxLoadingAnimationTypes;
+  public primaryColour = PrimaryWhite;
+  public loadingTemplate!: TemplateRef<any>;
   sortRadio!: string;
   selectedType!: Type;
   types: Type[] = [];
@@ -62,11 +67,15 @@ export class FilterPageComponent implements OnInit {
   ReadMore: boolean = true;
   minimumDate: Date;
   p: any;
-
+  totalRecords: number = 0;
   onPageChange(event: PageEvent) {
     this.first = event.first;
     this.rows = event.rows;
+    const lastIndex = this.first + this.rows;
+    this.hotels = this.originalHotels.slice(this.first, lastIndex);
   }
+  public loading = false;
+
 
   private _isExpanded = false;
   private subscription = new Subscription();
@@ -114,6 +123,7 @@ export class FilterPageComponent implements OnInit {
   }
 
   getHotelsByFilter() {
+    this.loading = true;
     if (moment(this.checkin).isBefore(this.checkout)) {
       sessionStorage.setItem('dateIn', this.checkin.toString());
       sessionStorage.setItem('dateOut', this.checkout.toString());
@@ -121,12 +131,15 @@ export class FilterPageComponent implements OnInit {
       const dateOut = moment(this.checkout)?.format('DD-MM-YYYY') || '';
       const obs = this.HotelClientService.findHotels(this.selectedRegion, dateIn, dateOut).subscribe({
         next: (res) => {
+          this.loading = false;
           this.hotels = res.data
+          this.totalRecords = res.data.length;
           console.log(res);
           this.formStar.controls['value'].setValue(res.data[0].star_rating);
         },
         error: (err) => {
           {
+            this.loading = false;
             console.log('Đã xảy ra lỗi khi gọi API:', err);
           }
         }
