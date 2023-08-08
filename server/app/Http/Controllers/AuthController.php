@@ -12,6 +12,7 @@ use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 use Spatie\Permission\Models\Role;
 use App\Traits\MessageStatusAPI;
+use Illuminate\Auth\Events\Registered;
 
 class AuthController extends Controller
 {
@@ -72,6 +73,7 @@ class AuthController extends Controller
 
         $this->assignRoleClient($user); // add role user
         $token = $user->createToken('authToken')->plainTextToken;
+        event(new Registered($user));
 
         return response([
             'user' => $user,
