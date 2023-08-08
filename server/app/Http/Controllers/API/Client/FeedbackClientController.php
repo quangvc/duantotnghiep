@@ -16,10 +16,10 @@ class FeedbackClientController extends Controller
 
     public function index($idhotel)
     {
-        $feedback = Feedback::whereHas('booking.booking_details.room_type', function ($query) use ($idhotel) {            
-                $query->where('hotel_id', $idhotel);            
+        $feedback = Feedback::whereHas('booking.booking_details.room_type', function ($query) use ($idhotel) {
+                $query->where('hotel_id', $idhotel);
         })
-        // ->with('booking.booking_details.room_type')
+        ->with('booking.booking_details.room_type')
         ->get();
 
         return $feedback;
@@ -28,8 +28,8 @@ class FeedbackClientController extends Controller
 
     public function avgRating($idhotel)
     {
-        $avg = Feedback::whereHas('booking.booking_details.room_type', function ($query) use ($idhotel) {            
-                $query->where('hotel_id', $idhotel);            
+        $avg = Feedback::whereHas('booking.booking_details.room_type', function ($query) use ($idhotel) {
+                $query->where('hotel_id', $idhotel);
         })
         // ->with('booking.booking_details.room_type')
         ->avg('rating');

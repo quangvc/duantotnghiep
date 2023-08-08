@@ -1,21 +1,16 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SupportComponent } from './support.component';
 import { SupportRoutes } from './support.routing';
-import { ToastModule } from 'primeng/toast';
-
-
+import { SharedModule } from 'src/app/_shared/shared/shared.module';
+import { NzTagModule } from 'ng-zorro-antd/tag';
 @NgModule({
-  declarations: [
-    SupportComponent
-  ],
   imports: [
     CommonModule,
-    ReactiveFormsModule,
-    SupportRoutes,
-    FormsModule,
-    ToastModule
+    SharedModule,
+    NzTagModule,
+    SupportRoutes
   ],
+  declarations: [SupportComponent]
 })
 export class SupportModule { }

@@ -71,7 +71,7 @@
               <!-- <button class="btn btn-primary" (click)="roomList(data)">
                 Xếp phòng
               </button> -->
-                <select class="form-select" formControlName="room_id">
+                <select class="form-select" formControlName="room_id" (change)="changeRoomDetail($event)">
                   <option [value]="null" >Chọn</option>
                   <ng-container *ngFor="let room of rooms">
                     <ng-container *ngIf="
@@ -83,7 +83,6 @@
                       </option>
                     </ng-container>
                   </ng-container>
-
                 </select>
             </td>
             <td>{{ item.value.room_type.room_type.name }}</td>
@@ -103,7 +102,7 @@
   <div *nzModalFooter>
     <button nz-button nzType="default" (click)="handleCancel()">Cancel</button>
     <button nz-button nzType="primary" (click)="refuseCancel()" nzDanger>Refuse</button>
-    <button nz-button nzType="primary" (click)="handleOk()">Accept</button>
+    <button nz-button nzType="primary" (click)="handleOk()" [disabled]="formGroup.invalid || validRoom">Accept</button>
   </div>
 </nz-modal>
 

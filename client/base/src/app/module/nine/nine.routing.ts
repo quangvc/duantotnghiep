@@ -16,7 +16,8 @@ const routes: Routes = [
     { path: 'bookings', loadChildren: () => import('./nine-bookings/nine-bookings.module').then(m => m.NineBookingsModule)},
     // { path: 'comments', loadChildren: () => import('./comments/comments.module').then(m => m.CommentsModule)},
     { path: 'feedbacks', loadChildren: () => import('./feedbacks/feedbacks.module').then(m => m.FeedbacksModule)},
-    { path: 'account', loadChildren: () => import('./update-user-account/update-user-account.module').then(m => m.UpdateUserAccountModule)}
+    { path: 'account', loadChildren: () => import('./update-user-account/update-user-account.module').then(m => m.UpdateUserAccountModule)},
+    { path: 'support', loadChildren: () => import('./support/support.module').then(m => m.SupportModule)}
   ]}
 ];
 

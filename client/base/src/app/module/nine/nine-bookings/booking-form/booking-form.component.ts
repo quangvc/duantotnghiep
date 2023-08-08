@@ -107,6 +107,20 @@ export class BookingFormComponent implements OnInit {
         }).catch()
     });
   }
+  validRoom: boolean = false;
+  changeRoomDetail(event:any){
+    console.log(event.target.value);
+    let room = event.target.value;
+
+    let res = this.roomItems.controls.filter(x => x.value.room_id == room);
+    console.log(res);
+    if (res.length > 1) {
+      this.message.create(ERROR, `Phòng ${room} đã được chọn rồi!!`);
+      this.validRoom = true
+    }else{
+      this.validRoom = false;
+    }
+  }
 
   refuseCancel(){
     this.confirmModal = this.modal.confirm({

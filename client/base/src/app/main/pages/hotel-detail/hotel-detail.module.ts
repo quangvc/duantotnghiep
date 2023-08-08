@@ -21,8 +21,11 @@ import { FormsModule } from '@angular/forms';
 import { TableModule } from 'primeng/table';
 import { RatingModule } from 'primeng/rating';
 import { ReactiveFormsModule } from '@angular/forms';
-
-
+import { CarouselModule } from 'primeng/carousel';
+import { FeedbackComponent } from './feedback/feedback.component';
+import { EllipsisDirective } from './../../share/ellipsis.directive';
+import { ngxLoadingAnimationTypes } from 'ngx-loading';
+import { NgxLoadingModule } from 'ngx-loading';
 @NgModule({
   imports: [
     CommonModule,
@@ -40,14 +43,27 @@ import { ReactiveFormsModule } from '@angular/forms';
     HotelBookingRoomModule,
     TableModule,
     RatingModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    CarouselModule,
+    NgxLoadingModule,
+    NgxLoadingModule.forRoot({
+      animationType: ngxLoadingAnimationTypes.wanderingCubes,
+      backdropBackgroundColour: 'rgba(0,0,0,0.5)',
+      backdropBorderRadius: '4px',
+      primaryColour: '#ffffff',
+      secondaryColour: '#ffffff',
+      tertiaryColour: '#ffffff',
+      fullScreenBackdrop: false,
+    }),
   ],
   declarations: [
     HotelDetailComponent,
     HotelBookingRoomComponent,
     HotelDetailAmenitiesComponent,
     HotelPolicyComponent,
-    RoomTypeDetailComponent
+    RoomTypeDetailComponent,
+    FeedbackComponent,
+    EllipsisDirective,
   ],
   exports: [
     HotelDetailComponent,

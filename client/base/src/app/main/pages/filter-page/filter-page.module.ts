@@ -16,6 +16,8 @@ import { ImagesClientService } from '../../services/images-client.service';
 import { roomTypeClientService } from '../../services/room-type-client.service';
 import { CalendarModule } from 'primeng/calendar';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { ngxLoadingAnimationTypes } from 'ngx-loading';
+import { NgxLoadingModule } from 'ngx-loading';
 
 @NgModule({
   imports: [
@@ -30,7 +32,17 @@ import { NgxPaginationModule } from 'ngx-pagination';
     RatingModule,
     ReactiveFormsModule,
     NgxPaginationModule,
-    FilterPageRoutes
+    FilterPageRoutes,
+    NgxLoadingModule,
+    NgxLoadingModule.forRoot({
+      animationType: ngxLoadingAnimationTypes.wanderingCubes,
+      backdropBackgroundColour: 'rgba(0,0,0,0.5)',
+      backdropBorderRadius: '4px',
+      primaryColour: '#ffffff',
+      secondaryColour: '#ffffff',
+      tertiaryColour: '#ffffff',
+      fullScreenBackdrop: false,
+    }),
   ],
   declarations: [FilterPageComponent],
   providers: [DialogService, ImagesClientService, roomTypeClientService],

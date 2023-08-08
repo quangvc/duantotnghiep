@@ -54,7 +54,8 @@
             <div class="">
               <div class="d-flex flex-column gap-3">
                 <div *ngFor="let region of regions">
-                  <p-radioButton name="regionOption" [value]="region.id" [(ngModel)]="selectedRegion" (onClick)="onRegionSelected(region.id)"></p-radioButton>
+                  <p-radioButton name="regionOption" [value]="region.id" [(ngModel)]="selectedRegion"
+                    (onClick)="onRegionSelected(region.id)"></p-radioButton>
                   <label>{{ region.name }}</label>
                 </div>
               </div>
@@ -183,6 +184,7 @@
 
       <!-- Right -->
       <div class="col-lg wow fadeInUp" data-wow-delay="0.3s">
+
         <div class="d-flex flex-row border border-1 rounded-4 p-3 mb-3 bg-white">
           <img src="./../../../assets/image/gift.png" alt="" class="me-3">
           <div class="my-auto">
@@ -202,40 +204,50 @@
           </div>
         </div>
         <!-- Start Thông tin -->
-
-        <div class="d-flex justify-content-between mt-4 bg-white border border-1 mb-3" *ngFor="let data of hotels">
-          <div class="col-4 p-0">
-            <a href="/hotel/{{ data.id }}">
-              <!-- <img style="width: 100%;" src="./../../../assets/image/ks1.jpg" alt=""> -->
-              <img *ngIf="data.images[0]" style="width: 100%;" [src]="'http://127.0.0.1:8000/Images/'+data.images[0].path" alt="">
-            </a>
-          </div>
-          <div class="col">
-            <a href="/hotel/{{ data.id }}">
-              <h5><strong>Khách sạn {{ data.hotel_name }}</strong></h5>
-            </a>
-
-            <h6><strong>{{ data.hotel_name }}</strong></h6>
-            <div class="d-flex mb-2">
-              <small class="bg-primary text-white rounded-5 py-1 px-3"><strong>Hotel</strong>
-              </small>
-              <div class="ps-2">
-                <form [formGroup]="formStar">
-                  <p-rating class="my-auto" formControlName="value" [cancel]="false" [readonly]="true"></p-rating>
-                </form>
-              </div>
+        <div class="loading">
+          <ngx-loading [show]="loading" [config]="{
+            animationType: ngxLoadingAnimationTypes.circle,
+            primaryColour: primaryColour,
+            backdropBorderRadius: '3px'
+          }" [template]="loadingTemplate"></ngx-loading>
+          <div class="d-flex justify-content-between mt-4 bg-white border border-1 mb-3"
+            *ngFor="let data of hotels | paginate: { itemsPerPage: 5, currentPage: p }">
+            <div class="col-4 p-0">
+              <a href="/hotel/{{ data.id }}">
+                <!-- <img style="width: 100%;" src="./../../../assets/image/ks1.jpg" alt=""> -->
+                <img *ngIf="data.images[0]" style="width: 100%;"
+                  [src]="'http://127.0.0.1:8000/Images/'+data.images[0].path" alt="">
+              </a>
             </div>
-            <div class="mb-2">
-              <i class="fa fa-map-marker text-primary me-3"></i>
-              <span>{{ data.hotel_address }}</span>
+            <div class="col">
+              <a href="/hotel/{{ data.id }}">
+                <h5><strong>Khách sạn {{ data.hotel_name }}</strong></h5>
+              </a>
+
+              <h6><strong>{{ data.hotel_name }}</strong></h6>
+              <div class="d-flex mb-2">
+                <small class="bg-primary text-white rounded-5 py-1 px-3"><strong>Hotel</strong>
+                </small>
+                <div class="ps-2">
+                  <form [formGroup]="formStar">
+                    <p-rating class="my-auto" formControlName="value" [cancel]="false" [readonly]="true"></p-rating>
+                  </form>
+                </div>
+              </div>
+              <div class="mb-2">
+                <i class="fa fa-map-marker text-primary me-3"></i>
+                <span>{{ data.hotel_address }}</span>
+              </div>
             </div>
           </div>
         </div>
+
         <!-- End Thông tin -->
 
         <!-- Phân trang start -->
-        <p-paginator (onPageChange)="onPageChange($event)" [first]="first" [rows]="rows" [totalRecords]="120"
-          [rowsPerPageOptions]="[5, 10, 20, 30]"></p-paginator>
+        <pagination-controls class="my-pagination" (pageChange)="p = $event" class="float-right"></pagination-controls>
+        <!-- <p-paginator [first]="first" [rows]="rows" [totalRecords]="totalRecords"
+          ></p-paginator> -->
         <!-- Phân trang end -->
       </div>
     </div>

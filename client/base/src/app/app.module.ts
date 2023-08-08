@@ -29,6 +29,7 @@ import { StepEmailComponent } from './auth/login/component-step/step-email.compo
 import { StepCodeComponent } from './auth/login/component-step/step-code.component';
 import { StepPasswordComponent } from './auth/login/component-step/step-password.component';
 import { ResetPasswordComponent } from './auth/reset-password/reset-password.component';
+import { NgxLoadingModule } from "ngx-loading";
 
 registerLocaleData(en);
 
@@ -59,7 +60,7 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     SharedModule,
     FormsModule,
     NzStepsModule,
-
+    NgxLoadingModule.forRoot({}),
     ErrorMsgModule
   ],
   providers: [

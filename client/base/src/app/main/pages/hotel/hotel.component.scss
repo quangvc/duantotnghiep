@@ -7,3 +7,20 @@
   margin-top: 14px;
   margin-bottom: 14px;
 }
+:host ::ng-deep .ngx-pagination {
+  width: 100%;
+  text-align: center;
+  padding: 15px;
+}
+:host ::ng-deep .ngx-pagination > li {
+  margin-left: 20px;
+  margin-right: 20px;
+  border-radius: 100%;
+}
+
+:host ::ng-deep .ngx-pagination > li > a:hover {
+  border-radius: 100%;
+}
+.loading {
+  position: relative;
+}

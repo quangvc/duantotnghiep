@@ -1,21 +1,20 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FeedbackComponent } from './feedback.component';
+import { FeedbackRoutes } from './feedback.routing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { SupportComponent } from './support.component';
-import { SupportRoutes } from './support.routing';
+import {RatingModule} from 'primeng/rating';
 import { ToastModule } from 'primeng/toast';
 
-
 @NgModule({
-  declarations: [
-    SupportComponent
-  ],
+  declarations: [FeedbackComponent],
   imports: [
     CommonModule,
+    FeedbackRoutes,
     ReactiveFormsModule,
-    SupportRoutes,
     FormsModule,
-    ToastModule
-  ],
+    RatingModule,
+    ToastModule,
+  ]
 })
-export class SupportModule { }
+export class FeedbackModule { }

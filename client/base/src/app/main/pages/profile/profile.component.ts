@@ -237,16 +237,13 @@ export class ProfileComponent implements OnInit {
         booking.txtStatus = "Chưa thanh toán"
       }
       if(booking.status == StatusBookings.Unconfirmed){
-        booking.txtStatus = "Đang chờ duyệt"
+        booking.txtStatus = "Đã thanh toán"
       }
       if(booking.status == StatusBookings.Confirmed){
-        booking.txtStatus = "Đã duyệt"
+        booking.txtStatus = "Check in"
       }
       if(booking.status == StatusBookings.Using){
-        booking.txtStatus = "Đang sử dụng"
-      }
-      if(booking.status == StatusBookings.Clean){
-        booking.txtStatus = "Đang dọn dẹp"
+        booking.txtStatus = "Check out"
       }
       if(booking.status == StatusBookings.Cancel){
         booking.txtStatus = "Đã hủy"

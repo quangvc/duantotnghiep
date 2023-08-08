@@ -8,6 +8,7 @@ import { roomTypeClientService } from '../../../services/room-type-client.servic
   declarations: [],
   imports: [
     CommonModule,
+
   ],
   providers: [DialogService, ImagesClientService, roomTypeClientService],
 })

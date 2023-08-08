@@ -6,6 +6,9 @@ import { HotelClientService } from '../../services/hotelClient.service';
 import { ImagesService } from 'src/app/module/_mShared/service/images.service';
 import { ImagesClientService } from '../../services/images-client.service';
 import { FormControl, FormGroup } from '@angular/forms';
+import { FeedbackClientService } from '../../services/feedback-client.service';
+import { EllipsisDirective } from './../../share/ellipsis.directive';
+
 @Component({
   selector: 'app-hotel-detail',
   templateUrl: './hotel-detail.component.html',
@@ -20,7 +23,7 @@ export class HotelDetailComponent implements OnInit {
     private ImagesClientService: ImagesClientService,
     private route: ActivatedRoute,
     private HotelClientService: HotelClientService,
-
+    private FeedbackClientService: FeedbackClientService,
   ) { }
   @Input() value: any[] = [];
   images: any[] = [];
@@ -32,6 +35,8 @@ export class HotelDetailComponent implements OnInit {
   hotel_name: any;
   region_id: any;
   region_name: any;
+  feedbacks: any[] = [];
+  rating: any;
 
   minPrice: number;
   starRating: number;
@@ -79,12 +84,10 @@ export class HotelDetailComponent implements OnInit {
     });
     // this.PhotoService.getImages().then((images) => (this.images = images));
     this.route.params.subscribe(params => {
-      const id = params['id']; // Lấy giá trị ID từ URL
+      const id = params['id'];
       this.HotelClientService.findOne(id).subscribe({
-
         next: (res) => {
           console.log(res);
-
           this.hotels = res.data;
           this.hotel_id = res.data[0].id;
           this.hotel_name = res.data[0].hotel_name;
@@ -92,8 +95,6 @@ export class HotelDetailComponent implements OnInit {
           this.region_name = res.data[0].region.name;
           console.log(this.region_id);
           console.log(this.region_name);
-
-
           this.hotelRoomTypeData = res.data[0].room_type;
           let minNumber = Infinity;
 
@@ -104,6 +105,25 @@ export class HotelDetailComponent implements OnInit {
             }
           }
           this.formStar.controls['value'].setValue(res.data[0].star_rating);
+        },
+        error: (err) => {{
+          console.log('Đã xảy ra lỗi khi gọi API:', err);
+        }}
+      });
+
+      this.FeedbackClientService.getFeedbackByHotel(id).subscribe({
+        next: (res) => {
+          console.log(res);
+          this.feedbacks = res;
+        },
+        error: (err) => {{
+          console.log('Đã xảy ra lỗi khi gọi API:', err);
+        }}
+      });
+      this.FeedbackClientService.getHotelRating(id).subscribe({
+        next: (res) => {
+          console.log(res);
+          this.rating = res;
         },
         error: (err) => {{
           console.log('Đã xảy ra lỗi khi gọi API:', err);

@@ -19,6 +19,7 @@ use App\Http\Controllers\API\Admin\UserController;
 use App\Http\Controllers\API\Admin\CouponController;
 use App\Http\Controllers\API\Admin\FeedbackController;
 use App\Http\Controllers\API\Admin\BannerController;
+use App\Http\Controllers\API\Admin\SupportController;
 use App\Http\Controllers\API\Client\BannerClientController;
 use App\Http\Controllers\API\Client\BlogClientController;
 use App\Http\Controllers\API\Client\BookingClientController;
@@ -31,6 +32,7 @@ use App\Http\Controllers\API\Client\RoomClientController;
 use App\Http\Controllers\API\Client\RoomTypesClientController;
 use App\Http\Controllers\API\Client\UserClientController;
 use App\Http\Controllers\Api\Client\CommentClientController;
+use App\Http\Controllers\API\Client\SupportClientController;
 use App\Http\Controllers\KeywordController;
 use App\Http\Controllers\PaymentController;
 use App\Models\Booking;
@@ -218,6 +220,14 @@ Route::group(['prefix' => 'admin'], function () {
             Route::delete('/', 'destroy');
         }
     );
+    Route::group( // admin quyết làm
+        ['prefix' => 'support', 'controller' => SupportController::class],
+        function () {
+            Route::get('/', 'index');
+            Route::get('/{id}', 'show');
+            Route::put('/{id}', 'changeStatus');
+        }
+    );
 });
 
 Route::group(['prefix' => 'client'], function () {
@@ -321,6 +331,12 @@ Route::group(['prefix' => 'client'], function () {
             Route::get('/', 'index');
             Route::get('/{id}', 'show');
             Route::get('/check/{id}', 'checkQuantity');
+        }
+    );
+    Route::group(
+        ['prefix' => 'support', 'controller' => SupportClientController::class],
+        function () {
+            Route::post('/', 'store');
         }
     );
 });
