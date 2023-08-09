@@ -1,0 +1,43 @@
+<nz-modal
+  [(nzVisible)]="displayImage"
+  nzTitle="{{'hotel.image' | translate}}"
+  nzWidth="980px"
+  [nzOkLoading]="isLoading"
+  (nzOnCancel)="handleCancel()"
+  (nzOnOk)="handleOk()">
+  <ng-container *nzModalContent>
+
+    <div class="mb-3">
+      <button nz-button [nzSize]="'large'" nzType="primary" (click)="addImage()" >{{'button.add_new' | translate}}</button>
+    </div>
+    <nz-table #basicTable [nzData]="images">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Ảnh</th>
+          <th>{{'room_type.name' | translate}}</th>
+          <th>{{ 'action' | translate }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of basicTable.data; let i = index">
+          <td>{{ i + 1 }}</td>
+          <td><img [src]="'http://127.0.0.1:8000/Images/'+data.path" width="100" alt=""></td>
+          <td>{{data.room_type_id}}</td>
+          <td>
+            <button nz-button nzType="primary" [nzSize]="'large'" nzShape="circle" (click)="showConfirmDelete(data.id)" nzDanger><span nz-icon nzType="delete" nzTheme="outline"></span></button>
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
+
+  </ng-container>
+</nz-modal>
+
+<q-image
+  *ngIf="displayMultipleImage"
+  [displayMultipleImage]="displayMultipleImage"
+  [roomType]="roomTypeId"
+  (closeModal)="saveImage($event)"
+  (cancelModal)="cancelModal($event)"
+></q-image>

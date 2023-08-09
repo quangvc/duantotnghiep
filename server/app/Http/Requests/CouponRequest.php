@@ -3,6 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\Enums\CouponTypeEnum;
+use Illuminate\Validation\Rule;
 
 class CouponRequest extends FormRequest
 {
@@ -15,7 +17,7 @@ class CouponRequest extends FormRequest
     {
         return [
             'name' => 'bail|required|string|max:50',
-            'type' => 'bail|required|max:255',
+            'type' => ['required', Rule::in(CouponTypeEnum::arrEnums())],
             'value' => 'bail|required|',
             'min' => 'bail|required|min:0|numeric',
             'max' => 'bail|numeric',
@@ -34,7 +36,6 @@ class CouponRequest extends FormRequest
             'name.max'   => 'Vui lòng nhập dưới 50 ký tự',
 
             'type.required'   => $required,
-            'type.max'   => 'Vui lòng nhập dưới 255 ký tự',
 
             'value.required'   => $required,
 

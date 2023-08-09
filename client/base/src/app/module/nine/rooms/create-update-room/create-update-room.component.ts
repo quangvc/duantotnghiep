@@ -3,6 +3,7 @@ import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angu
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { Subscription } from 'rxjs';
+import { Auth } from 'src/app/auth/_aShared/auth.class';
 import { ERROR, SUCCESS } from 'src/app/module/_mShared/model/url.class';
 import { HotelsService } from 'src/app/module/_mShared/service/hotels.service';
 import { RoomTypeService } from 'src/app/module/_mShared/service/room_type.service';
@@ -37,14 +38,13 @@ export class CreateUpdateRoomComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.createFormRoom();
-    this.getHotels();
+    // this.getHotels();
     this.getRoomTypes();
     this.getRoom();
   }
 
   private createFormRoom(){
     this.formRoom = this.fb.group({
-      hotel_id: [null,Validators.required],
       room_type_id: [null,Validators.required],
       room_number: [null,Validators.required],
       status: [1]
@@ -57,38 +57,33 @@ export class CreateUpdateRoomComponent implements OnInit, OnDestroy {
         next: (res) => {
           let room = res.data;
           this.formRoom.patchValue({
-            hotel_id: room.hotel.idHotel,
             room_type_id: room.room_type.id,
             room_number: room.room_number
           });
         },
         error: (err) => {
-          this.message.create(ERROR, err.error.message);
+          this.message.create(ERROR, `${err.error.message}`)
+          this.message.create(ERROR, `${err.message}`)
         }
       })
     }
-  }
-
-  getHotels(){
-    let obs = this.hotelsService.getHotels().subscribe({
-      next: (hotel) => {
-        this.hotels = hotel.data;
-      },
-      error: (err) => {
-        this.message.create(ERROR, err.error.message);
-      }
-    })
-
-    this.subscription.add(obs);
   }
 
   getRoomTypes(){
     let obs = this.roomTypeService.getRoomTypes().subscribe({
       next: (roomType) => {
         this.roomTypes = roomType.data;
+        let hotelId = Auth.Hotel();
+
+        if(hotelId){
+          this.roomTypesFilter = this.roomTypes.filter(rm => rm.hotel.id == hotelId);
+        }else{
+          this.roomTypesFilter = roomType.data;
+        }
       },
       error: (err) => {
-        this.message.create(ERROR, err.error.message);
+        this.message.create(ERROR, `${err.error.message}`)
+        this.message.create(ERROR, `${err.message}`)
       }
     })
 
@@ -115,16 +110,17 @@ export class CreateUpdateRoomComponent implements OnInit, OnDestroy {
           this.message.create(SUCCESS, `${id ? "Cập nhật" : "Thêm mới"} thành công`);
         },
         error: (err:any) => {
-          this.message.create(ERROR, err.error.message);
+          this.message.create(ERROR, `${err.error.message}`)
+          this.message.create(ERROR, `${err.message}`)
         }
       })
     }
   }
 
-  async changeHotel(event:any){
-    let hotelId = event.target.value;
-    this.roomTypesFilter = await this.roomTypes.filter(rt => rt.hotel.id == hotelId);
-  }
+  // async changeHotel(event:any){
+  //   let hotelId = event.target.value;
+  //   this.roomTypesFilter = await this.roomTypes.filter(rt => rt.hotel.id == hotelId);
+  // }
 
   handleCancel(){
     this.closeModal.emit();

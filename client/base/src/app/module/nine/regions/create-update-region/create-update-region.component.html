@@ -2,6 +2,7 @@
   [(nzVisible)]="displayCreateUpdateRegion"
   nzTitle="Thêm mới"
   nzWidth="980px"
+  [nzOkLoading]="isLoading"
   (nzOnCancel)="handleCancel()"
   (nzOnOk)="handleOk()">
   <ng-container *nzModalContent>
@@ -12,6 +13,13 @@
           <div class="mb-3">
             <label for="name" class="form-label">{{'region.name' | translate}}</label>
             <input type="text" class="form-control" id="name" formControlName="name">
+          </div>
+        </div>
+
+        <div class="col-12">
+          <div class="mb-3">
+            <label for="file" class="form-label">{{'blog.image' | translate}}</label>
+            <input class="form-control" type="file" id="file">
           </div>
         </div>
 

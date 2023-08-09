@@ -16,7 +16,6 @@ return new class extends Migration
         Schema::create('tbl_bookings', function (Blueprint $table) {
             $table->id();
             $table->integer('user_id');
-            $table->dateTime('booking_date');
             $table->dateTime('checkin_date');
             $table->dateTime('checkout_date');
             $table->integer('people_quantity');
@@ -27,7 +26,7 @@ return new class extends Migration
             $table->string('guest_phone')->nullable();
             $table->integer('total_price')->nullable();
             $table->integer('comment_id');
-            $table->tinyInteger('status')->default(1);
+            $table->tinyInteger('status')->default(0);
             $table->timestamps();
         });
     }

@@ -2,12 +2,13 @@
   [(nzVisible)]="displayImage"
   nzTitle="{{'hotel.image' | translate}}"
   nzWidth="980px"
+  [nzOkLoading]="isLoading"
   (nzOnCancel)="handleCancel()"
   (nzOnOk)="handleOk()">
   <ng-container *nzModalContent>
 
     <div class="mb-3">
-      <button nz-button [nzSize]="'large'" nzType="primary" >{{'button.add_new' | translate}}</button>
+      <button nz-button [nzSize]="'large'" nzType="primary" (click)="addImage()" >{{'button.add_new' | translate}}</button>
     </div>
     <nz-table #basicTable [nzData]="images">
       <thead>
@@ -15,7 +16,6 @@
           <th>#</th>
           <th>Ảnh</th>
           <th>{{'hotel.name' | translate}}</th>
-          <th>Room Type</th>
           <th>{{ 'action' | translate }}</th>
         </tr>
       </thead>
@@ -23,13 +23,10 @@
         <tr *ngFor="let data of basicTable.data; let i = index">
           <td>{{ i + 1 }}</td>
           <td><img [src]="'http://127.0.0.1:8000/Images/'+data.path" width="100" alt=""></td>
-          <td>{{data.hotel.name}}</td>
-          <td></td>
+          <td>{{data.hotel_id}}</td>
           <td>
-            <!-- <q-menu
-              [model]="menus"
-              (buttonItem)="dropdownItemsButton(data)">
-            </q-menu> -->
+            <!-- <button nz-button nzType="primary" [nzSize]="'large'" nzShape="circle" (click)="editImage(data)"><span nz-icon nzType="edit" nzTheme="outline"></span></button> -->
+            <button nz-button nzType="primary" [nzSize]="'large'" nzShape="circle" (click)="showConfirmDelete(data.id)" nzDanger><span nz-icon nzType="delete" nzTheme="outline"></span></button>
           </td>
         </tr>
       </tbody>
@@ -37,3 +34,12 @@
 
   </ng-container>
 </nz-modal>
+
+<q-image
+  *ngIf="displayMultipleImage"
+  [displayMultipleImage]="displayMultipleImage"
+  [hotel]="hotel_id"
+  [imageId]="imageId"
+  (closeModal)="saveImage($event)"
+  (cancelModal)="cancelModal($event)"
+></q-image>

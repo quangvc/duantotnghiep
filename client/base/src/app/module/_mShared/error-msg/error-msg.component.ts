@@ -21,5 +21,18 @@ export class ErrorMsgComponent implements OnInit {
   ngOnInit() {
   }
 
+  // @Input() entityControl: AbstractControl;
+  // @Input() keyTranslate: string;
+  // @Input() validationMessages: any;
+
+
+  // constructor() { }
+
+  // ngOnInit() {
+  //   this.validationMessages.forEach((element:any) => {
+  //     console.log(element)
+  //   });
+  // }
+
 
 }

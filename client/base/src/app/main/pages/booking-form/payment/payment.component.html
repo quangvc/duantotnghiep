@@ -1,0 +1,124 @@
+<div class="cart-body mt-5">
+  <form class="form-horizontal row" method="post" action="">
+    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 col-md-pull-6 col-sm-pull-6">
+      <h5>Thanh toán VnPay</h5>
+      <form [formGroup]="paymentForm" (ngSubmit)="onSubmit()">
+        <p-dropdown
+          styleClass="prime-input-override"
+          formControlName="bank_code"
+          [options]="banks"
+          placeholder="Select a bank"
+        ></p-dropdown>
+        <!-- <button class="btn btn-primary btn-submit-fix" (click)="paymentTransaction()">Đặt Phòng</button> -->
+        <button class="btn btn-primary btn-submit-fix mt-5" type="submit" >Thanh toán</button>
+      </form>
+      <button class="btn btn-primary btn-submit-fix mt-5" (click)="onePaySubmit()">Thanh toán OnePay</button>
+    </div>
+
+    <div class="col bg-white rounded-4 p-0 border border-1 h-fit" *ngIf="paymentData">
+      <!-- Thông tin đơn hàng -->
+      <div class="d-flex flex-row p-3">
+        <img src="./../../../assets/image/hotelvsg.svg" class="me-4 my-auto" alt="">
+        <div class="my-auto">
+          <h5 class="fw-bold" style="font-size: 15px;">Khách sạn {{ hotel_name }}</h5>
+          <h5 class="" style="font-size: 14px;">{{ hotel_name }}</h5>
+        </div>
+      </div>
+      <div class="py-3 px-3" style="background-color: #f7f9fa;">
+        <div class="date-in-out row">
+          <div class="col">
+            <p class="gray-text">Ngày nhận phòng:</p>
+          </div>
+          <div class="col">
+            <p>{{ displayDateIn }}, Từ 14:00</p>
+          </div>
+        </div>
+        <div class="date-in-out row">
+          <div class="col">
+            <p class="gray-text">Ngày trả phòng:</p>
+          </div>
+          <div class="col">
+            <p>{{ displayDateOut }}, Trước 12:00</p>
+          </div>
+        </div>
+      </div>
+      <div class="p-3">
+        <div class="my-auto">
+          <div *ngFor="let item of roomTypeData; let i = index">
+            <h5 class="fw-bold" style="font-size: 15px;">({{ item.quantity }}x) {{ item.roomType_name }}</h5>
+            <div class="">
+              <div class="date-in-out row">
+                <div class="col">
+                  <p class="gray-text">Tổng giá loại phòng:</p>
+                </div>
+                <div class="col">
+                  <p>{{ item.totalPrice | currency: 'VND' }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <hr>
+          <div>
+            <div class="date-in-out row" *ngIf="CouponId">
+              <div class="col">
+                <p class="gray-text">Giảm giá:</p>
+              </div>
+              <div class="col">
+                <p>
+                  <Del class="text-green-500">-{{ discountAmount | currency: 'VND' }}</Del>
+                </p>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="date-in-out row">
+              <div class="col">
+                <p class="gray-text">Tổng tiền</p>
+              </div>
+              <div class="col text-primary fw-bold fs-5">
+                <p>{{ totalAmount | currency: 'VND' }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Thông tin khách hàng -->
+      <div class="d-flex flex-row p-3">
+        <img src="./../../../assets/image/guest.svg" class="me-4 my-auto" style="width: 30px;" alt="">
+        <div class="my-auto">
+          <h5 class="fw-bold my-auto" style="font-size: 15px;">Thông tin khách hàng</h5>
+        </div>
+      </div>
+      <div class="py-3 px-3" style="background-color: #f7f9fa;">
+        <div class="date-in-out row">
+          <div class="col">
+            <p class="gray-text">Tên khách hàng: </p>
+          </div>
+          <div class="col">
+            <p>{{ paymentData.guest_name }}</p>
+          </div>
+        </div>
+        <div class="date-in-out row">
+          <div class="col">
+            <p class="gray-text">Email: </p>
+          </div>
+          <div class="col">
+            <p>{{ paymentData.guest_email }}</p>
+          </div>
+        </div>
+        <div class="date-in-out row">
+          <div class="col">
+            <p class="gray-text">Số điện thoại: </p>
+          </div>
+          <div class="col">
+            <p>{{ paymentData.guest_phone }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+  </form>
+</div>

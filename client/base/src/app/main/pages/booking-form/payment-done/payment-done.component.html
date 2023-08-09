@@ -1,0 +1,55 @@
+<!-- <h1 class="abc">payment-done works!</h1> -->
+<!-- <div *ngIf="vnpParams">
+  <h2>Thông tin thanh toán:</h2>
+  <p><strong>Amount:</strong> {{ vnpParams.vnp_Amount }}</p>
+  <p><strong>BankCode:</strong> {{ vnpParams.vnp_BankCode }}</p>
+  <p><strong>BankTranNo:</strong> {{ vnpParams.vnp_BankTranNo }}</p>
+  <p><strong>CardType:</strong> {{ vnpParams.vnp_CardType }}</p>
+  <p><strong>OrderInfo:</strong> {{ vnpParams.vnp_OrderInfo }}</p>
+  <p><strong>PayDate:</strong> {{ vnpParams.vnp_PayDate }}</p>
+  <p><strong>ResponseCode:</strong> {{ vnpParams.vnp_ResponseCode }}</p>
+  <p><strong>TmnCode:</strong> {{ vnpParams.vnp_TmnCode }}</p>
+  <p><strong>TransactionNo:</strong> {{ vnpParams.vnp_TransactionNo }}</p>
+  <p><strong>TransactionStatus:</strong> {{ vnpParams.vnp_TransactionStatus }}</p>
+  <p><strong>TxnRef:</strong> {{ vnpParams.vnp_TxnRef }}</p>
+  <p><strong>SecureHash:</strong> {{ vnpParams.vnp_SecureHash }}</p>
+</div> -->
+
+<div class="content">
+  <div class="wrapper-1" *ngIf="vnpParams.vnp_ResponseCode == 0">
+    <div class="wrapper-2 my-2">
+      <h1>Thank you !</h1>
+      <p>Cảm ơn quý khách hàng vì đã đặt phòng ở NineHotel.  </p>
+      <p>Bạn sẽ sớm nhận được email xác nhận và mã đơn của bạn là: {{ vnpParams.vnp_TxnRef }}. </p>
+      <p>Hãy lưu lại để tìm kiếm đơn đặt của mình.</p>
+      <br>
+      <a class="go-home my-2" href="/">
+      Về trang chủ
+      </a>
+    </div>
+    <div class="footer-like">
+      <p>Không nhận được email?
+       <a (click)="sendMail(vnpParams.vnp_TxnRef)">Nhấn vào đây để gửi lại!</a>
+      </p>
+    </div>
+  </div>
+  <div class="wrapper-1" *ngIf="vnpParams.vnp_ResponseCode != 0">
+    <div class="wrapper-2 my-2">
+      <h3>Thanh toán không thành công !</h3>
+      <p>Đơn đặt có mã: {{ vnpParams.vnp_TxnRef }} của bạn thanh toán không thành công.  </p>
+      <br>
+      <a class="go-home my-2" href="/">
+      Về trang chủ
+      </a>
+    </div>
+    <div class="footer-like">
+      <p>Muốn thanh toán lại?
+       <a (click)="sendMail(vnpParams.vnp_TxnRef)">Nhấn vào đây để thanh toán lại!</a>
+      </p>
+    </div>
+  </div>
+</div>
+
+
+
+<link href="https://fonts.googleapis.com/css?family=Kaushan+Script|Source+Sans+Pro" rel="stylesheet">

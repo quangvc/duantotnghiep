@@ -1,0 +1,92 @@
+<p>payment-detail works!</p>
+<nz-modal
+  [(nzVisible)]="displayBookingForm"
+  nzTitle="Duyệt sản phẩm"
+  nzWidth="980px"
+  [nzFooter]="modalFooter"
+>
+  <ng-container *nzModalContent>
+
+    <nz-divider nzText="Thông tin chung" nzOrientation="left"></nz-divider>
+    <nz-table nzTemplateMode>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>{{'bookings.booking_number' | translate}}</th>
+          <th>{{'bookings.checkin_date' | translate}}</th>
+          <th>{{'bookings.checkout_date' | translate}}</th>
+          <th>{{'bookings.coupon_id' | translate}}</th>
+          <th>{{'bookings.total_price' | translate}}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of booking; let i = index">
+          <td>{{ i + 1 }}</td>
+          <td>{{ data.booking_number }}</td>
+          <td>{{ data.checkin_date }}</td>
+          <td>{{ data.checkout_date }}</td>
+          <td>{{ data.people_quantity }}</td>
+          <td>{{ data.coupon }}</td>
+          <td><b>{{ data.total_price | currency: 'VND' }}</b></td>
+        </tr>
+      </tbody>
+    </nz-table>
+
+    <nz-divider nzText="Thông tin khách hàng" nzOrientation="left"></nz-divider>
+    <nz-table nzTemplateMode>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>{{'bookings.guest_email' | translate}}</th>
+          <th>{{'bookings.user' | translate}}</th>
+          <th>{{'bookings.guest_phone' | translate}}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of booking; let i = index">
+          <td>{{ i + 1 }}</td>
+          <td>{{ data.guest_email }}</td>
+          <td>{{ data.guest_name }}</td>
+          <td>{{ data.guest_phone }}</td>
+      </tbody>
+    </nz-table>
+
+    <nz-divider nzText="Chi tiết" nzOrientation="left"></nz-divider>
+    <nz-table nzTemplateMode>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>{{'hotel.name' | translate}}</th>
+          <th>{{'Số lượng phòng' | translate}}</th>
+          <th>{{'room_type.name' | translate}}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of booking_details; let i = index">
+          <td>{{ i + 1 }}</td>
+          <td>{{ data.room_type.hotel.hotel_name }}</td>
+          <td>
+            {{ data.count }}
+          </td>
+          <td>{{ data.room_type.name }}</td>
+        </tr>
+      </tbody>
+    </nz-table>
+
+    <ng-container *ngIf="booking_status != 7">
+      <nz-divider nzText="Ghi chú" nzOrientation="left"></nz-divider>
+      <textarea class="form-control" id="exampleFormControlTextarea1" rows="5" [disabled]="true">{{booking[0].note}}</textarea>
+    </ng-container>
+
+    <ng-container *ngIf="booking_status == 7">
+      <nz-divider nzText="Ghi chú" nzOrientation="left"></nz-divider>
+      <textarea class="form-control text-red-500" id="exampleFormControlTextarea1" rows="2" [disabled]="true">Đơn này đang chờ để hủy</textarea>
+    </ng-container>
+  </ng-container>
+  <ng-template #modalFooter>
+    <button nz-button nzType="default" (click)="handleCancel()">Đóng</button>
+    <button nz-button nzType="primary" *ngIf="booking_status != 7 && booking_status == 1" nzDanger (click)="showCancelConfirmationModal()">
+      Hủy đơn
+    </button>
+  </ng-template>
+</nz-modal>

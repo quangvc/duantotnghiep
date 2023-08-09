@@ -1,0 +1,203 @@
+<!-- Page Header Start -->
+<div class="container-fluid page-header mb-5 p-0" style="background-image: url(../../../assets/image/carousel-1.jpg);">
+  <div class="container-fluid page-header-inner py-5">
+    <div class="container text-center pb-5">
+      <h1 class="display-3 text-white mb-3 animated slideInDown">BLOG</h1>
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb justify-content-center text-uppercase">
+          <li class="breadcrumb-item"><a href="#">Home</a></li>
+          <li class="breadcrumb-item"><a href="blogs">Blogs</a></li>
+          <li class="breadcrumb-item" aria-current="page"><a href="blog-detail" class="text-primary">Blog Detail</a>
+          </li>
+        </ol>
+      </nav>
+    </div>
+  </div>
+</div>
+<!-- Page Header End -->
+<div class="offset-md-1 col-md-10 padding-2xlarge  text-center " *ngIf="blog">
+  <span class="blog-date text-uppercase">Tạo bởi <b>{{ blog.user_name }} </b>vào {{ blog.created_at | date: 'dd/MM/yyyy'
+    }}</span>
+  <h3 class="display-5 mt-3">{{ blog.title }}</h3>
+</div>
+<section class="jarallax">
+
+  <!-- <div id="jarallax-container-0" style="width: 100%; height: 100%; text-align: center;">
+    <img [src]="'http://127.0.0.1:8000/Images/blog/'+ blog.image" alt="" class="jarallax-img title-img"
+      style="width: 80%; height: 80%;">
+  </div> -->
+</section>
+
+<section id="blog-single-content">
+  <div class="container banner-content">
+    <div class="">
+
+      <p [innerHTML]="blog.content"></p>
+    </div>
+
+    <div class="offset-md-1 col-md-10 d-flex justify-content-center ">
+      <figure>
+        <a href="./../../../../assets/image/ks1.jpg" title="Skin Care Product" class="image-link"><img
+            [src]="'http://127.0.0.1:8000/Images/blog/'+ blog.image" class="img-fluid" alt=""></a>
+        <!-- <figcaption class="text-center">Khách sạn đẹp vãi lòi</figcaption> -->
+      </figure>
+    </div>
+
+
+  </div>
+</section>
+
+<section id="blog-navigation">
+  <div class=" container d-flex justify-content-between ">
+    <div class="col-md-4">
+      <a href=""><span class="text-primary text-uppercase">Previous</span></a>
+      <h6 class="blog-nav-heading py-3"><a href="" class="text-primary">ak Ties' Can be Strength to
+          Relationships</a></h6>
+    </div>
+
+    <div class="col-md-4 offset-md-4 text-end">
+      <a href=""><span class="text-primary text-uppercase">Next</span></a>
+      <h6 class="blog-nav-heading py-3"><a href="" class="text-primary">What It's Really Like to Date While
+          Fat</a></h6>
+    </div>
+  </div>
+</section>
+
+
+
+<!-- Start Comment -->
+<div class="my-5">
+  <h5>Bình luận</h5>
+</div>
+
+<section class="comments" style="background-color: #fff; margin-top: 20px; margin-bottom: 200px;">
+  <div class="">
+
+    <!-- <div class="p-1 mb-4" *ngFor="let item of comments">
+        <div class="">
+          <div class="d-flex flex-start align-items-center">
+            <img class="rounded-circle shadow-1-strong me-3" src="./../../../../assets/image/avt1.jpg" alt="avatar"
+              width="60" height="60" />
+            <div class="me-3">
+              <h6 class="fw-bold text-primary mb-1">{{ item.user }}</h6>
+              <p class="text-muted small mb-0">
+                Tạo lúc {{ item.created_at | date: 'dd/MM/yyyy, h:mm a' }}
+              </p>
+            </div>
+            <button class="rounded-circle replyIcon" (click)="item.isReplying = !item.isReplying"><i class="pi pi-reply"></i></button>
+          </div>
+          <p class="mt-3 mb-4 pb-2">
+            {{ item.content }}
+          </p>
+        </div>
+        <div class="d-flex flex-row">
+
+          <div class="col-8 container-fluid mx-0 border-0  mb-4" *ngIf="item.isReplying">
+            <div class="d-flex flex-start w-100">
+              <form class="form-outline w-100" [formGroup]="formComment">
+                <input type="number" id="blog_id" formControlName="blog_id" style="display: none;">
+                <textarea class="form-control" id="content" formControlName="content" rows="4"
+                  placeholder="Viết 1 câu gì đó vào đây..." style="background: #fff;"></textarea>
+              </form>
+            </div>
+            <div class="float-end mt-2 pt-1">
+              <button type="button" class="btn btn-primary btn-sm" (click)="addReply(item.id)">Reply</button>
+              <button type="button" class="btn btn-outline-primary btn-sm" (click)="item.isReplying = !item.isReplying">Cancel</button>
+            </div>
+          </div>
+        </div>
+
+    </div> -->
+
+    <div class="p-1 mb-4" *ngFor="let item of comments">
+      <!-- Nội dung bình luận -->
+      <div class="">
+        <!-- Thông tin bình luận -->
+        <div class="d-flex flex-start align-items-center">
+          <!-- Avatar người dùng (thay thế bằng hình ảnh avatar người dùng thực) -->
+          <img [src]="'http://127.0.0.1:8000/Images/avatars/'+item.user.avatar" alt="Admin"
+                  class="rounded-circle" width="150">
+          <!-- <img class="rounded-circle shadow-1-strong me-3" src="./../../../../assets/image/avt1.jpg" alt="avatar"
+            width="60" height="60" /> -->
+          <div class="me-3">
+            <h6 class="fw-bold text-primary mb-1">{{ item.user.name }}</h6>
+            <p class="text-muted small mb-0">
+              Tạo lúc {{ item.created_at | date: 'dd/MM/yyyy, h:mm a' }}
+            </p>
+          </div>
+          <!-- Nút Trả lời -->
+          <button class="rounded-circle replyIcon" *ngIf="!note" (click)="item.isReplying = !item.isReplying"><i class="pi pi-reply"></i></button>
+        </div>
+        <!-- Nội dung bình luận -->
+        <p class="mt-3 mb-4 pb-2">{{ item.content }}</p>
+
+        <!-- Biểu mẫu thêm câu trả lời -->
+        <div class="col-8 container-fluid mx-0 border-0  mb-4" *ngIf="item.isReplying">
+          <div class="d-flex flex-start w-100">
+            <form class="form-outline w-100" [formGroup]="formComment">
+              <input type="number" id="blog_id" formControlName="blog_id" style="display: none;">
+              <!-- Parent ID là ID của bình luận mà người dùng đang trả lời -->
+              <input type="number" id="cmt_id" formControlName="cmt_id" [value]="item.id" style="display: none;">
+              <textarea class="form-control" id="content" formControlName="content" rows="4"
+                placeholder="Viết 1 câu gì đó vào đây..." style="background: #fff;"></textarea>
+            </form>
+          </div>
+          <div class="float-end mt-2 pt-1">
+            <button type="button" class="btn btn-primary btn-sm" (click)="addReply(item.id)">Trả lời</button>
+            <button type="button" class="btn btn-outline-primary btn-sm" (click)="item.isReplying = !item.isReplying">Hủy</button>
+          </div>
+        </div>
+
+        <!-- Hiển thị các câu trả lời cho bình luận này -->
+        <div class="mb-3 px-5" *ngIf="item.replies && item.replies.length > 0">
+          <div class="d-flex flex-column">
+            <div *ngFor="let reply of item.replies">
+              <!-- Avatar người dùng trả lời (thay thế bằng hình ảnh avatar người dùng thực) -->
+              <div class="d-flex flex-start align-items-center">
+                <!-- <img class="rounded-circle shadow-1-strong me-3" src="./../../../../assets/image/avt1.jpg" alt="avatar"
+                width="60" height="60" /> -->
+                <img [src]="'http://127.0.0.1:8000/Images/avatars/'+reply.user.avatar" alt="Admin"
+                  class="rounded-circle" width="150">
+              <div class="me-3">
+                <h6 class="fw-bold text-primary mb-1">{{ reply.user.name }}</h6>
+                <p class="text-muted small mb-0">
+                  Trả lời lúc {{ reply.created_at | date: 'dd/MM/yyyy, h:mm a' }}
+                </p>
+              </div>
+              </div>
+              <p class="mt-2 mb-3 pb-2">{{ reply.content }}</p>
+            </div>
+            <!-- Nội dung câu trả lời -->
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAGINATOR ADD COMMENT -->
+    <div class="mb-4" *ngIf="isCommentsArrayEmpty">
+      <p-paginator (onPageChange)="onPageChange($event)" [first]="first" [rows]="rows"
+        [totalRecords]="120"></p-paginator>
+    </div>
+    <div class="card-footer py-3 border-0" *ngIf="commentForm">
+      <div class="d-flex flex-start w-100">
+        <img class="rounded-circle shadow-1-strong me-3" src="./../../../../assets/image/avt1.jpg" alt="avatar"
+          width="40" height="40" />
+        <form class="form-outline w-100" [formGroup]="formComment">
+          <input type="number" id="blog_id" formControlName="blog_id" style="display: none;">
+          <textarea class="form-control" id="content" formControlName="content" rows="4"
+            placeholder="Viết 1 câu gì đó vào đây..." style="background: #fff;"></textarea>
+          <!-- <label class="form-label" for="textAreaExample">Message</label> -->
+        </form>
+      </div>
+      <div class="float-end mt-2 pt-1">
+        <button type="button" class="btn btn-primary btn-sm" (click)="addComment()">Post comment</button>
+        <button type="button" class="btn btn-outline-primary btn-sm">Cancel</button>
+      </div>
+    </div>
+    <div class="card-footer py-3 border-0" *ngIf="note">
+      <h5>Đăng nhập để được bình luận bài viết này nhé bro!</h5>
+    </div>
+  </div>
+</section>
+<!-- End Comment -->

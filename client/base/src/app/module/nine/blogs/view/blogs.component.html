@@ -6,11 +6,10 @@
     <tr>
       <th>#</th>
       <th>{{'blog.title' | translate}}</th>
-      <th>{{'blog.content' | translate}}</th>
       <th>{{'blog.image' | translate}}</th>
       <th>{{'blog.user_id' | translate}}</th>
       <th>{{'blog.slug' | translate}}</th>
-      <!-- <th>{{'status' | translate}}</th> -->
+      <th>{{'status' | translate}}</th>
       <th>{{'action' | translate}}</th>
     </tr>
   </thead>
@@ -18,17 +17,15 @@
     <tr *ngFor="let data of basicTable.data; let i = index">
       <td>{{ i + 1 }}</td>
       <td>{{ data.title }}</td>
-      <td>{{ data.content }}</td>
       <td>
         <img nz-image width="100px" height="100px"
-          [nzSrc]="data.image"
+          [nzSrc]="'http://127.0.0.1:8000/Images/blog/'+data.image"
           alt=""
         />
       </td>
       <td>{{ data.user_name }}</td>
       <td>{{ data.slug }}</td>
-      <!-- <td></td> -->
-      <!-- <td><nz-switch [(ngModel)]="data.status" (ngModelChange)="confirmChangeStatus($event,data)"></nz-switch></td> -->
+      <td><nz-switch [(ngModel)]="data.active" (ngModelChange)="confirmChangeStatus($event,data)"></nz-switch></td>
       <td>
         <q-menu
           [model]="menus"
@@ -43,5 +40,19 @@
   *ngIf="displayCreateUpdateBlog"
   [displayCreateUpdateBlog]="displayCreateUpdateBlog"
   [blogId]="blogId"
-  (closeModal)="cancel($event)">
-</create-update-blog>
+  (closeModal)="cancel($event)"
+></create-update-blog>
+
+<view-post
+  *ngIf="displayViewPost"
+  [displayViewPost]="displayViewPost"
+  [blogId]="blogId"
+  (closeModal)="cancel($event)"
+></view-post>
+
+<comments-blog
+  *ngIf="displayComment"
+  [displayComment]="displayComment"
+  [blogId]="blogId"
+  (closeModal)="cancel($event)"
+></comments-blog>

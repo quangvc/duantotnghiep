@@ -4,6 +4,8 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 import { ERROR } from '../model/url.class';
 import { HttpClient } from '@angular/common/http';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { ImagesService } from '../service/images.service';
+import { NineStatus } from '../enum/enum';
 
 declare let $: any;
 @Component({
@@ -12,20 +14,33 @@ declare let $: any;
   styleUrls: ['./q-image.component.scss']
 })
 export class QImageComponent implements OnInit {
-  @Input() displayAddBanner: boolean;
-  @Output() closeModal = new EventEmitter<any>();
+  @Input() displayMultipleImage: boolean;
+  @Input() hotel: any;
+  @Input() imageId: any;
+  @Input() banner: any
 
-  constructor( private bannersService: BannersService,private message: NzMessageService, private fb: FormBuilder) { }
+  @Input() roomType: any;
+  @Output() closeModal = new EventEmitter<any>();
+  @Output() cancelModal = new EventEmitter<any>();
+
+  constructor(
+      private message: NzMessageService,
+      private fb: FormBuilder,
+      private imageService: ImagesService,
+      private bannersService: BannersService
+    ){ }
+
+  @ViewChild('fileUploader') fileUploader:ElementRef;
 
   selectedOption:any[] = [];
 
   checkOptionsOne: any[] = [];
 
-  selectedFiles: File[];
+  selectedFiles: File[] = [];
 
   formBanner!: FormGroup
 
-  selectedFile: any;
+  isLoading: boolean = false;
 
   ngOnInit() {
     this.formBanner = this.fb.group({
@@ -64,55 +79,73 @@ export class QImageComponent implements OnInit {
     }
   }
 
-  // @ViewChild('fileUploader') fileUploader:ElementRef;
+
 
   onFileChange(event:any){
 
-    // this.selectedFiles = event.target.files;
-    // if(event.target.files){
-      const imageFiles: FileList = event.target.files;
-    //   const formData = new FormData();
-    //   this.closeModal.emit(imageFiles);
+    // if(this.banner){
+    //   this.selectedFiles.push(event.target.files);
+    //   if(event.target.files){
+    //     for (let i = 0; i < File.length; i++) {
+    //       const reader = new FileReader();
+    //       reader.readAsDataURL(event.target.files[i]);
+    //       reader.onload = (events: any) =>  {
+    //         let dataImage = {
+    //           url: events.target.result,
+    //           checked: false
+    //         }
+    //         this.checkOptionsOne.push(dataImage);
+    //         this.fileUploader.nativeElement.value = null;
+    //       }
 
-      // for (let i = 0; i < File.length; i++) {
-      //   const reader = new FileReader();
-      //   reader.readAsDataURL(event.target.files[i]);
-      //   reader.onload = (events: any) =>  {
-      //     let dataImage = {
-      //       url: events.target.result,
-      //       checked: false
-      //     }
-      //     this.checkOptionsOne.push(dataImage);
-      //     this.fileUploader.nativeElement.value = null;
-      //   }
-
+    //     }
     //   }
     // }
   }
 
-
-
   handleOk(){
     const formData = new FormData();
-    let newData:any[] = [];
-    let file = $('#file').prop('files');
+    let file = $('#fileSingle').prop('files');
+    let files = $('#file').prop('files');
 
-    const fileList: FileList = file;
+    if(this.banner){
+      this.isLoading = true;
+      const fileList: FileList = files;
 
-    for (let i = 0; i < fileList.length; i++) {
-      const file: File = fileList[i];
-      formData.append(`image[${i}]`, file);
+      for (let i = 0; i < fileList.length; i++) {
+        const file: File = fileList[i];
+        formData.append(`image[${i}]`, file);
+        formData.append('status', String(NineStatus.Active));
+      }
+
+      this.bannersService.createBanner(formData).subscribe({
+        next: (res) => {
+          this.isLoading = false;
+          this.cancelModal.emit()
+        },
+        error: (err) => {
+          this.isLoading = false;
+          this.message.create(ERROR, err.error.message);
+        }
+      })
     }
 
-    this.bannersService.createBanner(formData).subscribe({
-      next: (res) => {this.closeModal.emit()},
-      error: (err) => {this.message.create(ERROR, err.error.message);}
-    })
+    if(this.hotel){
+      if(file){
+        this.closeModal.emit(file)
+      }
+    }
+
+    if(this.roomType){
+      if(file){
+        this.closeModal.emit(file)
+      }
+    }
 
   }
 
   handleCancel(){
-
+    this.cancelModal.emit();
   }
 
 }

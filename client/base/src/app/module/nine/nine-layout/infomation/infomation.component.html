@@ -1,0 +1,44 @@
+<nz-modal
+  [(nzVisible)]="displayInf"
+  nzTitle="Thông tin cá nhân"
+  nzWidth="600px"
+>
+  <ng-container *nzModalContent>
+    <div class="row">
+
+      <div class="col-6">
+        <img nz-image width="200px" height="200px"
+            nzSrc="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
+            alt=""
+        />
+      </div>
+
+      <div class="col-6">
+        <p>
+          <b>Email: </b>
+          <span>{{auth.email}}</span>
+        </p>
+
+        <p>
+          <b>Tên người dùng: </b>
+          <span>{{auth.name}}</span>
+        </p>
+
+        <p>
+          <b>Giới tính: </b>
+          <span>{{auth.gender}}</span>
+        </p>
+
+        <p>
+          <b>Số điện thoại: </b>
+          <span>{{auth.phone_number}}</span>
+        </p>
+      </div>
+
+    </div>
+  </ng-container>
+  <div *nzModalFooter>
+    <button nz-button nzType="primary" (click)="handleOk()">Chỉnh sửa thông tin</button>
+    <button nz-button nzType="default" (click)="handleCancel()">{{'cancel' | translate}}</button>
+  </div>
+</nz-modal>

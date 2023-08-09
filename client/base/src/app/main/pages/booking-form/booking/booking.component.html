@@ -1,0 +1,238 @@
+<p-toast></p-toast>
+<p-confirmDialog></p-confirmDialog>
+<div class="container-fluid" style="background-color: #f7f9fa;">
+  <div class="container p-5">
+    <div>
+      <h4 class="fw-bold">Đặt phòng khách sạn</h4>
+      <p class="fw-bold" style="color: #687176; font-size: 14px;">Hãy chắc chắn rằng tất cả thông tin trên trang này là
+        chính xác trước khi tiến hành thanh toán.</p>
+    </div>
+
+
+    <div class="content d-flex flex-row justify-content-between">
+      <!-- Left Columm -->
+      <div class="col p-0 me-4">
+        <div class="d-flex flex-row bg-white rounded-4 p-3 mb-3" *ngIf="notLogin">
+          <img src="./../../../assets/image/gift.png" alt="" class="me-3">
+          <div class="my-auto">
+            <p class="fw-bold">Đăng nhập hoặc Đăng ký và tận hưởng ưu đãi dành riêng cho thành viên</p>
+            <a href="login" class="fw-bold">Đăng nhập hoặc đăng ký</a>
+          </div>
+        </div>
+        <form class="" [formGroup]="userform" (ngSubmit)="onSubmit()">
+          <!-- Info form start -->
+
+          <div class="mb-3">
+            <h5 *ngIf="notLogin">Nhập thông tin của bạn vào đây</h5>
+            <h5 *ngIf="!notLogin">Thông tin của bạn</h5>
+            <div class="p-inputgroup formDiv">
+              <span class="p-inputgroup-addon">
+                <i class="pi pi-user"></i>
+              </span>
+              <input class="formInput" pInputText placeholder="Username" formControlName="guest_name" />
+              <!-- Hiển thị lỗi nếu trường fullname không hợp lệ -->
+
+            </div>
+            <div *ngIf="userform.get('fullname')?.invalid && userform.get('fullname')?.touched">
+              <small class="text-danger">Vui lòng nhập tên đầy đủ.</small>
+            </div>
+            <div class="p-inputgroup formDiv">
+              <span class="p-inputgroup-addon">
+                <i class="pi pi-at"></i>
+              </span>
+              <input class="formInput" pInputText placeholder="Email" formControlName="guest_email" />
+              <!-- Hiển thị lỗi nếu trường email không hợp lệ -->
+
+            </div>
+            <div *ngIf="userform.get('email')?.invalid && userform.get('email')?.touched">
+              <small class="text-danger">Vui lòng nhập địa chỉ email hợp lệ.</small>
+            </div>
+            <div class="p-inputgroup formDiv">
+              <span class="p-inputgroup-addon">
+                <i class="pi pi-phone"></i>
+              </span>
+              <input class="formInput" pInputText placeholder="Phone number" formControlName="guest_phone" />
+              <!-- Hiển thị lỗi nếu trường phoneNumber không hợp lệ -->
+
+            </div>
+            <div *ngIf="userform.get('phoneNumber')?.invalid && userform.get('phoneNumber')?.touched">
+              <small class="text-danger">Vui lòng nhập số điện thoại hợp lệ.</small>
+            </div>
+          </div>
+
+          <!-- Detail price start -->
+          <div class="mb-3">
+            <h5 class="fw-bold">Chi tiết giá</h5>
+            <p-accordion [activeIndex]="0">
+              <p-accordionTab>
+                <ng-template pTemplate="header">
+                  <div class="bg-white rounded-4 p-3">
+                    <div class="d-flex flex-row justify-content-between mb-3">
+                      <p class="my-auto" style="font-size: 14px; font-weight: 500;">Thành tiền</p>
+                      <h5 class="fw-bold text-primary">{{ currentTotalAmount | currency: 'VND' }} VND</h5>
+                    </div>
+                    <div class="blue-text d-flex flex-row">
+                      <i class="fa fa-exclamation-circle me-3 fs-3" aria-hidden="true"></i>
+                      <p>Thuế và phí là các khoản được Nine Hotel chuyển trả cho khách sạn. Mọi thắc mắc về thuế và hóa
+                        đơn, vui
+                        lòng tham khảo Điều khoản và Điều kiện của Nine Hotel để được giải đáp</p>
+                    </div>
+                  </div>
+                </ng-template>
+                <ng-template pTemplate="content">
+                  <div *ngFor="let item of roomTypeData; let i = index">
+                    <div class="d-flex flex-row justify-content-between mb-3">
+                      <h5 class="">({{ item.quantity }}x) {{ item.roomType_name }}</h5>
+                      <h5 class="">{{ item.totalPrice | currency: 'VND' }}</h5>
+                    </div>
+                  </div>
+                  <div>
+                    <div *ngIf="discountAmount" class="d-flex flex-row justify-content-between mb-3">
+                      <h5 class="">Giảm giá:</h5>
+                      <h5 class="">- {{ discountAmount | currency: 'VND' }}</h5>
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="d-flex flex-row justify-content-between mb-3">
+                    <h5 class="">Tổng tất cả: </h5>
+                    <h5 class="fw-bold text-primary">{{ currentTotalAmount | currency: 'VND' }} VND</h5>
+                  </div>
+
+                </ng-template>
+
+              </p-accordionTab>
+            </p-accordion>
+          </div>
+          <!-- Detail price end -->
+
+          <!-- Confirm start -->
+          <div>
+            <div class="d-flex flex-row justify-content-between mb-3">
+              <p class="fw-bold">Khi nhấn vào nút này bạn
+                công nhận mình đã đọc và
+                đồng ý với các <span class="text-primary">Điều khoản & Điều kiện</span> và
+                <span class="text-primary">Chính sách quyền riêng tư</span> của NineHotel
+              </p>
+              <h6 class="ml-5">
+                <button type="submit" class="py-1 px-4 bg-primary rounded-3 border-0 fw-bold" pButton
+                  label="Tiếp tục"></button>
+              </h6>
+            </div>
+          </div>
+          <!-- Confirm end -->
+        </form>
+      </div>
+
+
+      <!-- Right Columm -->
+      <div class=" bg-white rounded-4 p-0 border border-1 h-fit">
+        <div class="d-flex flex-row p-3">
+          <img src="./../../../assets/image/hotelvsg.svg" class="me-4 my-auto" alt="">
+          <div class="my-auto">
+            <h5 class="fw-bold" style="font-size: 15px;">Khách sạn {{ hotel_name }}</h5>
+            <h5 class="" style="font-size: 14px;">{{ hotel_name }}</h5>
+          </div>
+        </div>
+        <div class="py-3 px-3" style="background-color: #f7f9fa;">
+          <div class="date-in-out row">
+            <div class="col">
+              <p class="gray-text">Ngày nhận phòng:</p>
+            </div>
+            <div class="col">
+              <p>{{ displayDateIn }}, Từ 14:00</p>
+            </div>
+          </div>
+          <div class="date-in-out row">
+            <div class="col">
+              <p class="gray-text">Ngày trả phòng:</p>
+            </div>
+            <div class="col">
+              <p>{{ displayDateOut }}, Trước 12:00</p>
+            </div>
+          </div>
+        </div>
+        <div class="p-3">
+          <div class="my-auto">
+            <div *ngFor="let item of roomTypeData; let i = index">
+              <h5 class="fw-bold" style="font-size: 15px;">({{ item.quantity }}x) {{ item.roomType_name }}</h5>
+              <div class="">
+                <div class="date-in-out row">
+                  <div class="col">
+                    <p class="gray-text">Tổng giá loại phòng:</p>
+                  </div>
+                  <div class="col">
+                    <p>{{ item.totalPrice | currency: 'VND' }}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- <div class="date-in-out row" *ngIf="!notLogin">
+                <div class="col">
+                  <p class="gray-text">Mã giảm giá:</p>
+                </div>
+                <div class="col" >
+                  <p-dropdown [options]="coupons" (onChange)="onCouponSelected($event)" optionLabel="name"></p-dropdown>
+                </div>
+              </div> -->
+
+            <!-- Button "Áp dụng mã giảm giá" -->
+            <div *ngIf="!notLogin && showBtnApply" class="mt-4">
+              <button type="button" class="py-1 px-4 bg-primary rounded-3 border-0 fw-bold" pButton
+                label="Áp dụng mã giảm giá" (click)="showCouponInput()"></button>
+            </div>
+
+            <!-- Input và nút kiểm tra mã giảm giá -->
+            <div *ngIf="showCouponInputFlag" class="mt-4">
+              <div class="p-inputgroup formDiv">
+                <input class="formInput" pInputText placeholder="Nhập mã giảm giá" [(ngModel)]="couponCode" />
+                <button type="button" class="py-1 px-4 bg-primary rounded-3 border-0 fw-bold" pButton
+                  (click)="checkCoupon(couponCode)">Áp dụng mã</button>
+                <button type="button" class="py-1 px-4 bg-danger rounded-3 border-0 fw-bold ms-2 text-white" pButton
+                  (click)="cancelCouponInput()">Thôi</button>
+              </div>
+            </div>
+            <hr>
+          </div>
+          <div *ngIf="selectedCoupon">
+            <div class="date-in-out row">
+              <div class="col-5">
+                <p class="gray-text">Tên mã giảm giá:</p>
+              </div>
+              <div class="col-5">
+                <p>{{ selectedCoupon.name }}</p>
+              </div>
+            </div>
+            <div class="date-in-out row">
+              <div class="col-5">
+                <p class="gray-text">Loại giảm giá:</p>
+              </div>
+              <div class="col-5">
+                <p>{{ selectedCoupon.type }}</p>
+              </div>
+            </div>
+            <div class="date-in-out row">
+              <div class="col-5">
+                <p class="gray-text">Giảm giá:</p>
+              </div>
+              <div class="col-5">
+                <p>{{ discountAmount | currency: 'VND' }}</p>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="currentTotalAmount && selectedCouponId">
+            <div class="date-in-out row">
+              <div class="col-5">
+                <p class="gray-text">Tổng giá trị sau giảm giá:</p>
+              </div>
+              <div class="col-5">
+                <p>{{ currentTotalAmount | currency: 'VND' }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+</div>

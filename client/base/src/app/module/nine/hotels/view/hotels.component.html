@@ -11,7 +11,7 @@
       <th>{{'hotel.rate' | translate}}</th>
       <th>{{'hotel.region' | translate}}</th>
       <th>{{'status' | translate}}</th>
-      <th>{{'action' | translate}}</th>
+      <th *ngIf="role">{{'action' | translate}}</th>
     </tr>
   </thead>
   <tbody>
@@ -22,8 +22,8 @@
       <td>{{ data.hotel_phone }}</td>
       <td>{{ data.star_rating }}</td>
       <td>{{ data.region.name }}</td>
-      <td><nz-switch [(ngModel)]="data.status" (ngModelChange)="confirmChangeStatus($event,data)"></nz-switch></td>
-      <td>
+      <td><nz-switch [(ngModel)]="data.status" (ngModelChange)="confirmChangeStatus($event,data)" [disabled]="!role"></nz-switch></td>
+      <td *ngIf="role">
         <q-menu
           [model]="menus"
           (buttonItem)="dropdownItemsButton(data)">
@@ -46,3 +46,13 @@
   [hotel_id]="hotelId"
   (closeModal)="cancel($event)">
 </hotel-image>
+
+<detail-hotel
+  *ngIf="displayDetail"
+  [displayDetail]="displayDetail"
+  [hotelId]="hotelId"
+  [hotel_name]="hotel_name"
+  [roomTypes]="roomTypes"
+  (closeModal)="cancel($event)"
+></detail-hotel>
+

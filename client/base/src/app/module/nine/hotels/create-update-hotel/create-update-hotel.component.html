@@ -2,6 +2,7 @@
   [(nzVisible)]="displayCreateUpdateHotel"
   nzTitle="Thêm mới"
   nzWidth="980px"
+  [nzOkLoading]="isLoading"
   (nzOnCancel)="handleCancel()"
   (nzOnOk)="handleOk()">
   <ng-container *nzModalContent>
@@ -25,7 +26,7 @@
         <div class="col-6">
           <div class="mb-3">
             <label for="phone" class="form-label">{{'hotel.phone_number' | translate}}</label>
-            <input type="number" class="form-control" id="phone" formControlName="hotel_phone">
+            <input type="text" class="form-control" id="phone" formControlName="hotel_phone">
           </div>
         </div>
 
@@ -37,13 +38,6 @@
                 <option [value]="region.id">{{region.name}}</option>
               </ng-container>
             </select>
-          </div>
-        </div>
-
-        <div class="col-6">
-          <div class="mb-3">
-            <label for="file" class="form-label">Ảnh khách sạn</label>
-            <input class="form-control" type="file" (change)="onSelectFile($event)" id="file">
           </div>
         </div>
 

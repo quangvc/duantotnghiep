@@ -1,0 +1,29 @@
+<nz-table #basicTable [nzData]="supports">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Tên người dùng</th>
+      <th>Địa chỉ Email</th>
+      <th>Sô điện thoại</th>
+      <th>Nội dung</th>
+      <th>Trạng thái</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let data of basicTable.data; let i = index">
+      <td>{{ i + 1 }}</td>
+      <td>{{ data.name }}</td>
+      <td>{{ data.email }}</td>
+      <td>{{ data.phone }}</td>
+      <td>{{ data.content }}</td>
+      <td>
+          <ng-container *ngIf="data.status">
+            <span nz-icon nzType="check" style="cursor: pointer;" nzTheme="outline" (click)="confirmChangeStatus(data)"></span>
+          </ng-container>
+          <ng-container *ngIf="!data.status">
+            <nz-tag [nzColor]="'#87d068'">Đã xử lý</nz-tag>
+          </ng-container>
+      </td>
+    </tr>
+  </tbody>
+</nz-table>

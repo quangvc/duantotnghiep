@@ -14,8 +14,6 @@ import { HotelsService } from 'src/app/module/_mShared/service/hotels.service';
 import { ImagesService } from 'src/app/module/_mShared/service/images.service';
 import { RegionsService } from 'src/app/module/_mShared/service/regions.service';
 
-declare let $: any;
-
 @Component({
   selector: 'create-update-hotel',
   templateUrl: './create-update-hotel.component.html',
@@ -30,13 +28,13 @@ export class AddHotelComponent implements OnInit, OnDestroy {
   formHotel!: FormGroup;
 
   role:any;
+  isLoading: boolean = false;
 
   constructor(
     private fb: FormBuilder,
     private regionsService: RegionsService,
     private hotelsService: HotelsService,
-    private message: NzMessageService,
-    private imagesService: ImagesService
+    private message: NzMessageService
   ) {}
 
   regionOptions: any[] = [];
@@ -57,7 +55,7 @@ export class AddHotelComponent implements OnInit, OnDestroy {
       region_id: [, Validators.required],
       star_rating: [5],
       description: [null],
-      status: [-1],
+      status: [1],
     });
   }
 
@@ -100,55 +98,26 @@ export class AddHotelComponent implements OnInit, OnDestroy {
   }
 
   async handleOk() {
-
+    this.isLoading = true;
     if (this.formHotel.valid) {
 
       let id = this.hotelId;
-      let file = $('#file').prop('files');
       const formData = new FormData();
 
       if (id) {
-        if (file) {
-          formData.append('path', file[0]);
-        }
         let update = this.hotelsService.updateHotel(id,this.formHotel.value);
-        let getImage:any[] = await firstValueFrom(this.hotelsService.getImage());
-        let findImage = getImage.find(x => x.hotel_id == id)
-
-        if(findImage){
-          if (file) {
-            await this.imagesService.updateImage(findImage.id,formData).subscribe({
-              next: (res) => {},
-              error: (err) => {
-                this.message.create(ERROR, err.error.message);
-              }
-            })
-          }
-        }else{
-          if (file) {
-            await this.imagesService.addImage(id, formData).subscribe({
-              next: (res) => {console.log(res)},
-              error: (err) => {
-                this.message.create(ERROR, err.error.message);
-                console.log(err)
-              },
-            });
-          }
-        }
-
         await update.subscribe({
           next: (res) => {
+            this.isLoading = false;
             this.closeModal.emit();
             this.message.create(SUCCESS, `Cập nhật thành công!`);
           },
           error: (err) => {
+            this.isLoading = false;
             this.message.create(ERROR, err.error.message);
           }
         })
       }else{
-        if (file) {
-          formData.append('path', file[0]);
-        }
         let newData = {
           ...this.formHotel.value,
           hotel_phone: String(this.formHotel.value.hotel_phone)
@@ -156,10 +125,12 @@ export class AddHotelComponent implements OnInit, OnDestroy {
         let create = this.hotelsService.createHotel(newData);
         await create.subscribe({
           next: (res) => {
+            this.isLoading = false;
             this.closeModal.emit();
             this.message.create(SUCCESS, `Thêm mới thành công!`);
           },
           error: (err) => {
+            this.isLoading = false;
             this.message.create(ERROR, err.error.message);
           }
         })

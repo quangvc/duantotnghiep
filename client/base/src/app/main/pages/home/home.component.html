@@ -1,0 +1,306 @@
+<!-- Spinner Start -->
+<!-- <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+      <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+          <span class="sr-only">Loading...</span>
+      </div>
+  </div> -->
+<!-- Spinner End -->
+
+
+
+
+<app-carousel></app-carousel>
+
+
+<!-- Booking Start -->
+<div class="container-fluid booking pb-5 wow fadeIn">
+  <div class="container">
+    <div class="bg-white shadow px-3 py-1">
+      <div class="row">
+        <div class="col">
+          <label for="date_in">Ngày nhập phòng</label>
+          <p-calendar class="w-100" [(ngModel)]="date_in" [minDate]="minimumDate" [numberOfMonths]="2" dateFormat="dd-mm-yy" styleClass="prime-input-override"></p-calendar>
+        </div>
+        <div class="col">
+          <label for="date_out">Ngày trả phòng</label>
+          <p-calendar class="w-100" [(ngModel)]="date_out" [minDate]="minimumDate" [numberOfMonths]="2" dateFormat="dd-mm-yy" styleClass="prime-input-override"></p-calendar>
+        </div>
+        <div class="col">
+          <label for="selectedRegion">Khu vực</label>
+          <p-dropdown [(ngModel)]="selectedRegion" [options]="lstRegions" optionLabel="name" placeholder="Chọn khu vực" styleClass="prime-input-override"></p-dropdown>
+        </div>
+        <div class="col-md-2 " style="margin-top: 35px;">
+          <a (click)="filterHotel()" class="btn btn-primary w-100">Tìm kiếm</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Booking End -->
+
+
+<!-- About Start -->
+<div class="container-xxl py-5">
+  <div class="container">
+    <div class="row g-5 align-items-center">
+      <div class="col-lg-6">
+        <h6 class="section-title text-start text-primary text-uppercase">Về chúng tôi</h6>
+        <h1 class="mb-4">Chào mừng đến với <br> <span class="text-primary text-uppercase">Nine Holter</span></h1>
+        <p class="mb-4">Nơi mà có những bãi biển dài, bờ cát trăng gió thổi vi vu là nơi nào ấy chứ. Chứ
+          chúng tôi chỉ là khách sạn đẳng cấp 5 sao michelin thôi!
+        </p>
+        <div class="row g-3 pb-4">
+          <div class="col-sm-4 wow fadeIn">
+            <div class="border rounded p-1">
+              <div class="border rounded text-center p-4">
+                <!-- <i class="fa fa-map-marker fa-2x text-primary mb-2"></i> -->
+                <i class="fa fa-globe fa-2x text-primary mb-2"></i>
+
+                <h2 class="mb-1" data-toggle="counter-up">{{ countRegions }}</h2>
+                <p class="mb-0">Tỉnh thành</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-4 wow fadeIn" data-wow-delay="0.3s">
+            <div class="border rounded p-1">
+              <div class="border rounded text-center p-4">
+                <i class="fa fa-hotel fa-2x text-primary mb-2"></i>
+                <h2 class="mb-1" data-toggle="counter-up">{{ countHotels }}</h2>
+                <p class="mb-0">Khách sạn</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-4 wow fadeIn" data-wow-delay="0.5s">
+            <div class="border rounded p-1">
+              <div class="border rounded text-center p-4">
+                <i class="fa fa-users fa-2x text-primary mb-2"></i>
+                <h2 class="mb-1" data-toggle="counter-up">{{ countUsers }}</h2>
+                <p class="mb-0">Khách hàng</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <a class="btn btn-primary py-3 px-5 mt-2" href="about">Khám phá thêm</a>
+      </div>
+      <div class="col-lg-6">
+        <div class="row g-3">
+          <div class="col-6 text-end">
+            <img class="img-fluid rounded w-75 wow zoomIn" src="../../../assets/image/about-1.jpg"
+              style="margin-top: 25%;">
+          </div>
+          <div class="col-6 text-start">
+            <img class="img-fluid rounded w-100 wow zoomIn" data-wow-delay="0.3s"
+              src="../../../assets/image/about-2.jpg">
+          </div>
+          <div class="col-6 text-end">
+            <img class="img-fluid rounded w-50 wow zoomIn" data-wow-delay="0.5s"
+              src="../../../assets/image/about-3.jpg">
+          </div>
+          <div class="col-6 text-start">
+            <img class="img-fluid rounded w-75 wow zoomIn" data-wow-delay="0.7s"
+              src="../../../assets/image/about-4.jpg">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- About End -->
+
+
+<!-- Region Start -->
+<div class="container-xxl py-5">
+  <div class="container">
+    <div class="text-center wow fadeInUp">
+      <!-- <h6 class="section-title text-center text-primary text-uppercase">Our Hotel</h6> -->
+      <h1 class="mb-5">Các điểm đến <span class="text-primary text-uppercase">Ngon bổ rẻ</span></h1>
+    </div>
+    <div class="row g-4">
+      <div class="col-lg-4 col-md-6" *ngFor="let item of regions; let i=index">
+        <div class="room-item shadow rounded-4 overflow-hidden mb-3">
+          <div class="position-relative">
+            <img style="width: 100%; max-height: 200px;" [src]="'http://127.0.0.1:8000/Images/regions/'+item.image" alt="">
+            <small
+              class="position-absolute start-0 top-100 translate-middle-y bg-primary text-white rounded py-1 px-3 ms-4">Khu
+              vực</small>
+          </div>
+          <div class="p-4 mt-2 ">
+            <div class="text-center">
+              <a class="" href="hotels/region/{{ item.id }}">
+                <h5 class="link mb-0">{{ item.name }}</h5>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Region End -->
+
+<!-- Hotel start -->
+<div id="booking-section" class="container-xxl py-5">
+  <div class="container">
+    <div class="text-center wow fadeInUp">
+      <!-- <h6 class="section-title text-center text-primary text-uppercase">Our Hotel</h6> -->
+      <h1 class="mb-5">Các khách sạn <span class="text-primary text-uppercase">nổi bật</span></h1>
+    </div>
+    <div class="row g-4">
+      <div class="col-lg-4 col-md-6" *ngFor="let item of hotels; let i=index">
+        <div class="room-item room-item-edit shadow rounded-4 overflow-hidden mb-3">
+          <div class="position-relative">
+            <img style="width: 100%; max-height: 200px;" [src]="'http://127.0.0.1:8000/Images/'+item.images[0]?.path" alt="">
+            <small
+              class="position-absolute start-0 top-100 translate-middle-y bg-primary text-white rounded py-1 px-3 ms-4">Khách sạn</small>
+          </div>
+          <div class="p-4 mt-2">
+            <div class="d-flex justify-content-between mb-3">
+              <h5 class="mb-0">{{ item.hotel_name }}</h5>
+              <div class="flex justify-content-center">
+                <p-rating [(ngModel)]="item.star_rating" [cancel]="false" [readonly]="true"></p-rating>
+              </div>
+            </div>
+            <div class="d-flex mb-3">
+              <i class="fa fa-map-marker text-primary mt-1 me-3"></i>
+              <p class="text-body mb-3">{{ item.hotel_address }}</p>
+            </div>
+            <!-- <line-clamp [row]="3">
+              <div #content>
+                <p class="text-body mb-3">{{ item.description }}.</p>
+              </div>
+            </line-clamp> -->
+            <div class="d-flex justify-content-between">
+              <a class="btn btn-sm btn-primary rounded py-2 px-4" href="/hotel/{{ item.id }}">Xem chi tiết</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Hotel end -->
+
+
+<!-- Video Start -->
+<div class="container-xxl py-5 px-0 wow zoomIn">
+  <div class="row g-0">
+    <div class="col-md-6 bg-dark d-flex align-items-center">
+      <div class="p-5">
+        <h6 class="section-title text-start text-white text-uppercase mb-3">Cuộc sống sang trọng</h6>
+        <h1 class="text-white mb-4">Khám phá một khách sạn sang trọng và đẳng cấp</h1>
+        <p class="text-white mb-4">Biết khách sạn NineHotel không? Bạn đang thắc mắc là chữ hotel trong Ninehotel có nghĩ
+          là khách sạn rồi mà chúng tôi vẫn gọi là khách sạn NineHotel? Bạn muốn biết ư, đặt phòng đi rồi tôi xem cho bạn biết
+        </p>
+        <a href="" class="btn btn-primary py-md-3 px-md-5 me-3">Khách sạn của chúng tôi</a>
+        <a class="btn btn-light py-md-3 px-md-5" (click)="scrollToSection('booking-section')">Đặt phòng</a>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="video">
+        <button type="button" class="btn-play" data-bs-toggle="modal"
+          data-src="https://www.youtube.com/embed/DWRcNpR6Kdc" data-bs-target="#videoModal">
+          <span></span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" #videoModal id="videoModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content rounded-0">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Youtube Video</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body">
+        <!-- 16:9 aspect ratio -->
+        <div class="ratio ratio-16x9" (click)="openModal()">
+            <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/dQw4w9WgXcQ?&autoplay=1&mute=1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Video Start -->
+
+
+<!-- Blog Start -->
+<div class="container-xxl py-5">
+  <div class="container">
+    <div class="text-center">
+      <h1 class="mb-5">Khám phá những <span class="text-primary text-uppercase">Bài viết thú vị</span></h1>
+    </div>
+    <div class="row g-4">
+      <div class="col-lg-4 col-md-6" *ngFor="let blog of blogs; let i=index">
+        <a class="service-item rounded" href="blogs/{{ blog.slug }}" *ngIf="i < 3">
+          <div class="service-icon bg-transparent border rounded p-1">
+            <div class="w-100 h-100 border rounded d-flex align-items-center justify-content-center">
+              <img [src]="'http://127.0.0.1:8000/Images/blog/'+ blog.image" style="width: 100%;">
+            </div>
+          </div>
+          <h5 class="overflow-text mb-3 mx-auto">{{ blog.title }}</h5>
+          <!-- <p class="text-body mb-0">{{ blog.desc }}</p> -->
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Blog End -->
+
+
+<!-- Testimonial Start -->
+<!-- <div class="container-xxl testimonial my-5 py-5 bg-dark wow zoomIn">
+  <div class="container">
+    <div class="owl-carousel testimonial-carousel py-5">
+      <div class="testimonial-item position-relative bg-white rounded overflow-hidden">
+        <p>Tempor stet labore dolor clita stet diam amet ipsum dolor duo ipsum rebum stet dolor amet diam stet. Est stet
+          ea lorem amet est kasd kasd et erat magna eos</p>
+        <div class="d-flex align-items-center">
+          <img class="img-fluid flex-shrink-0 rounded" src="../../../assets/image/testimonial-1.jpg"
+            style="width: 45px; height: 45px;">
+          <div class="ps-3">
+            <h6 class="fw-bold mb-1">Client Name</h6>
+            <small>Profession</small>
+          </div>
+        </div>
+        <i class="fa fa-quote-right fa-3x text-primary position-absolute end-0 bottom-0 me-4 mb-n1"></i>
+      </div>
+      <div class="testimonial-item position-relative bg-white rounded overflow-hidden">
+        <p>Tempor stet labore dolor clita stet diam amet ipsum dolor duo ipsum rebum stet dolor amet diam stet. Est stet
+          ea lorem amet est kasd kasd et erat magna eos</p>
+        <div class="d-flex align-items-center">
+          <img class="img-fluid flex-shrink-0 rounded" src="../../../assets/image/testimonial-2.jpg"
+            style="width: 45px; height: 45px;">
+          <div class="ps-3">
+            <h6 class="fw-bold mb-1">Client Name</h6>
+            <small>Profession</small>
+          </div>
+        </div>
+        <i class="fa fa-quote-right fa-3x text-primary position-absolute end-0 bottom-0 me-4 mb-n1"></i>
+      </div>
+      <div class="testimonial-item position-relative bg-white rounded overflow-hidden">
+        <p>Tempor stet labore dolor clita stet diam amet ipsum dolor duo ipsum rebum stet dolor amet diam stet. Est stet
+          ea lorem amet est kasd kasd et erat magna eos</p>
+        <div class="d-flex align-items-center">
+          <img class="img-fluid flex-shrink-0 rounded" src="../../../assets/image/testimonial-3.jpg"
+            style="width: 45px; height: 45px;">
+          <div class="ps-3">
+            <h6 class="fw-bold mb-1">Client Name</h6>
+            <small>Profession</small>
+          </div>
+        </div>
+        <i class="fa fa-quote-right fa-3x text-primary position-absolute end-0 bottom-0 me-4 mb-n1"></i>
+      </div>
+    </div>
+  </div>
+</div> -->
+<!-- Testimonial End -->
+
+
+
+
+
+
+
+<!-- Back to Top -->

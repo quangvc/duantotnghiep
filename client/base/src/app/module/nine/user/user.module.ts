@@ -4,6 +4,7 @@ import { UserRoutes } from './user.routing';
 import { SharedModule } from 'src/app/_shared/shared/shared.module';
 import { QMenuModule } from '../../_mShared/q-menu/q-menu.module';
 import { AddUserComponent } from './add/add-user.component';
+import { UpdateUserComponent } from './update-user/update-user.component';
 
 @NgModule({
   imports: [
@@ -12,6 +13,6 @@ import { AddUserComponent } from './add/add-user.component';
 
     QMenuModule,
   ],
-  declarations: [UserComponent,AddUserComponent]
+  declarations: [UserComponent,AddUserComponent, UpdateUserComponent]
 })
 export class UserModule { }

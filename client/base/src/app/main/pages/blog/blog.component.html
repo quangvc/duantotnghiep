@@ -1,0 +1,61 @@
+<!-- Page Header Start -->
+<div class="container-fluid page-header mb-5 p-0" style="background-image: url(../../../assets/image/carousel-1.jpg);">
+  <div class="container-fluid page-header-inner py-5">
+      <div class="container text-center pb-5">
+          <h1 class="display-3 text-white mb-3 animated slideInDown">BLOGS</h1>
+          <nav aria-label="breadcrumb">
+              <ol class="breadcrumb justify-content-center text-uppercase">
+                  <li class="breadcrumb-item"><a href="#">Home</a></li>
+                  <li class="breadcrumb-item"><a href="#">Pages</a></li>
+                  <li class="breadcrumb-item text-primary" aria-current="page"><a href="blogs">Blogs</a></li>
+              </ol>
+          </nav>
+      </div>
+  </div>
+</div>
+<!-- Page Header End -->
+<div class="row">
+  <div class="leftcolumn">
+    <div class="card" *ngFor="let data of blogs;">
+      <a href="blogs/{{ data.slug }}" ><h3 class="link">{{ data.title }}</h3></a>
+      <h6>{{ data.user_name }}, {{ data.created_at | date: 'dd/MM/yyyy' }}</h6>
+      <a href="blogs/{{ data.slug }}">
+        <img [src]="'http://127.0.0.1:8000/Images/blog/'+ data.image" class="fakeimg border border-1 mb-4" style="height:300px; object-fit: cover">
+      </a>
+      <line-clamp [row]="3">
+        <div #content>
+          <p [innerHTML]="data.content">.</p>
+        </div>
+      </line-clamp>
+
+    </div>
+    <!-- <div class="card">
+      <a href="blog-detail"><h3>TITLE HEADING</h3></a>
+      <h6>Title description, Dec 7, 2017</h6>
+      <a href="blog-detail">
+        <div class="fakeimg" style="height:200px;">Image</div>
+      </a>
+      <p>Some text..</p>
+      <p>Sunt in culpa qui officia deserunt mollit anim id est laborum consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.</p>
+    </div> -->
+  </div>
+  <div class="rightcolumn">
+    <div class="card">
+      <h3>Về NINENIGHT</h3>
+      <div class="fakeimg" style="height:100px;">Image</div>
+      <p>Some text about me in culpa qui officia deserunt mollit anim..</p>
+    </div>
+    <div class="card">
+      <h3>Popular Post</h3>
+      <div class="fakeimg" *ngFor="let data of blogs;">
+        <img [src]="'http://127.0.0.1:8000/Images/blog/'+ data.image" class="fakeimg">
+        <a href="blogs/{{ data.slug }}"><h6 class="link">{{ data.title }}</h6></a>
+        <hr>
+      </div>
+    </div>
+    <!-- <div class="card">
+      <h3>Follow Me</h3>
+      <p>Some text..</p>
+    </div> -->
+  </div>
+</div>

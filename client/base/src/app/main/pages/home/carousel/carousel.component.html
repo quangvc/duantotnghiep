@@ -1,0 +1,38 @@
+<!-- Carousel Start -->
+<div class="carousel-edit container-fluid p-0 mb-5">
+  <div >
+    <div id="header-carousel" class="carousel slide" data-bs-ride="carousel">
+
+      <div class="carousel-inner" >
+        <div *ngIf="loading" class="text-center my-auto">
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Đang tải...</span>
+          </div>
+        </div>
+        <ng-container *ngFor="let item of banners; let i = index">
+          <div class="carousel-item" [class.active]="i === 0">
+            <!-- Ảnh trong carousel sẽ có kích thước cố định là 100% chiều rộng và 300px chiều cao -->
+            <img *ngIf="!loading" class="w-100" [src]="'http://127.0.0.1:8000/Images/banners/' + item.image" alt="Image">
+            <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
+              <div class="p-3" style="max-width: 700px;">
+                <h6 class="section-title text-white text-uppercase mb-3 animated slideInDown">Cuộc sống sang trọng</h6>
+                <h1 class="display-3 text-white mb-4 animated slideInDown">Khám phá các khách sạn sang trọng và đẳng cấp</h1>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+      <button class="carousel-control-prev" type="button" data-bs-target="#header-carousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+
+      <button class="carousel-control-next" type="button" data-bs-target="#header-carousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
+    </div>
+  </div>
+
+</div>
+<!-- Carousel End -->

@@ -1,7 +1,6 @@
 /*** Service ***/
 .service-item {
   height: 320px;
-  padding: 30px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -17,8 +16,6 @@
 
 .service-item .service-icon {
   margin: 0 auto 30px auto;
-  width: 65px;
-  height: 65px;
   transition: .5s;
 }
 

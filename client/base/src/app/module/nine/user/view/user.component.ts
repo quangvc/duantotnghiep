@@ -1,7 +1,8 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
 import { Subscription } from 'rxjs';
+import { Auth } from 'src/app/auth/_aShared/auth.class';
 import { MenuItem } from 'src/app/module/_mShared/model/menuItem.class';
 import { ERROR, SUCCESS } from 'src/app/module/_mShared/model/url.class';
 import { UserDto } from 'src/app/module/_mShared/model/userDto.class';
@@ -30,13 +31,35 @@ export class UserComponent implements OnInit, OnDestroy {
 
   users: any;
 
+  role: boolean = false;
+
+  displayPermision: boolean = false;
+
+  userID: any;
+  Urole: any;
+  hotelID: any;
+
   ngOnInit() {
     this.getUser();
+    this.checkRole();
+  }
+
+  checkRole(){
+    let role = Auth.User('role');
+    switch (role) {
+      case "admin":
+        return this.role = true;
+        break;
+      default:
+        return this.role = false;
+        break;
+    }
   }
 
   getUser() {
     let obs = this.userService.getUsers().subscribe((res) => {
       this.users = res.data;
+
       for (const item of this.users) {
         if(item.active == "Active"){
           item.active = true;
@@ -45,6 +68,7 @@ export class UserComponent implements OnInit, OnDestroy {
         }
 
         }
+        console.log(this.users)
     });
 
     this.subscription.add(obs);
@@ -58,11 +82,17 @@ export class UserComponent implements OnInit, OnDestroy {
           this.showModalEditUser(data);
         },
       },
-      { separator: true },
+      {
+        label: 'Phân quyền',
+        command: () => {
+          this.showPermision(data);
+        },
+      },
+      { separator: true},
       {
         label: 'Xóa',
         command: () => {
-          console.log(3);
+
         },
       },
     ];
@@ -85,12 +115,11 @@ export class UserComponent implements OnInit, OnDestroy {
       nzOnOk: () =>
         new Promise((resolve, reject) => {
           this.changeStatus(data);
-          setTimeout(Math.random() > 0.5 ? resolve : reject, 1000);
+          setTimeout(0.6 > 0.5 ? resolve : reject, 1000);
         }).catch(() => console.log('Oops errors!'))
     });
 
   }
-
   changeStatus(data:any){
 
     let obs = this.userService.changeStatus(data.id).subscribe({
@@ -106,12 +135,21 @@ export class UserComponent implements OnInit, OnDestroy {
     this.subscription.add(obs);
   }
 
+  showPermision(data: any){
+    this.displayPermision = true;
+    this.userID = data.id;
+    this.Urole = data.roles;
+    this.hotelID = data.hotelId;
+  }
+
   submitUser() {
     this.isVisibleUser = false;
   }
 
   closeUser() {
     this.isVisibleUser = false;
+    this.displayPermision = false;
+    this.getUser();
   }
 
   ngOnDestroy(): void {

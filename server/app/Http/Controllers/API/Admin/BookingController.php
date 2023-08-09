@@ -5,7 +5,6 @@ namespace App\Http\Controllers\API\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\BookingRequest;
 use App\Http\Resources\API\BookingResource;
-use App\Http\Resources\API\RoomResource;
 use App\Models\Booking;
 use App\Models\BookingDetail;
 use App\Models\Room;
@@ -13,33 +12,47 @@ use App\Models\RoomType;
 use App\Traits\MessageStatusAPI;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use App\Http\Controllers\PaymentController;
+use App\Enums\BookingStatusEnum;
 
 class BookingController extends Controller
 {
     public function index()
     {
         $role = auth()->user()->getRoleNames()->first();
-        $hotel_id = auth()->user()->hotel_id ?? '';
         if ($role != 'client') {
-            
-            $bookings = Booking::leftJoin('tbl_booking_details', 'tbl_bookings.id', 'booking_id')
-                ->leftJoin('tbl_room_types', 'tbl_room_types.id', '=', 'room_type_id')
-                ->leftJoin('tbl_hotels', 'tbl_hotels.id', '=', 'hotel_id')
-                ->where(function($query) {
+            $bookings = Booking::with(['booking_details.room_type' => function ($query) {
+                $query->select('id', 'hotel_id', 'name');
+            }, 'booking_details.room_type.hotel' => function ($query) {
+                $query->select('id', 'hotel_name');
+            }])
+                ->whereHas('booking_details.room_type', function ($query) {
                     if (auth()->user()->hotel_id) {
-                        $query->where('tbl_hotels.id', auth()->user()->hotel_id);
+                        $query->where('tbl_room_types.hotel_id', auth()->user()->hotel_id);
                     }
                 })
-                ->select('tbl_bookings.*', 'tbl_room_types.name', 'tbl_hotels.hotel_name')
-                // ->groupBy('booking_number', 'user_id', 'booking_date', 'checkin_date', 'checkout_date', 'people_quantity', 'coupon_id', 'note', )
-                // ->having('booking_number', '>', 1)
+                ->get();
+        }
+        return MessageStatusAPI::show(BookingResource::collection($bookings));
+    }
+
+    public function show($id)
+    {
+        $role = auth()->user()->getRoleNames()->first();
+        if ($role != 'client') {
+
+            $booking = Booking::with(['booking_details.room_type' => function ($query) {
+                $query->select('id', 'hotel_id', 'name');
+            }, 'booking_details.room_type.hotel' => function ($query) {
+                $query->select('id', 'hotel_name');
+            }])
+                ->where('id', $id)
                 ->get();
 
-                return BookingResource::collection($bookings);
+            return MessageStatusAPI::show(BookingResource::collection($booking));
         }
-
     }
-    
+
     public function store(BookingRequest $request)
     {
         $request->validated();
@@ -57,8 +70,7 @@ class BookingController extends Controller
             $guest_phone =  $validated['guest_phone'];
             $user_id =  null;
         }
-                
-        // $hotel_id = $validated['hotel_id'];
+        // return $request->query('people_quantity');
         $checkin_date = Carbon::parse($validated['checkin_date']);
         $checkout_date = Carbon::parse($validated['checkout_date']);
 
@@ -72,86 +84,116 @@ class BookingController extends Controller
 
             // đếm số phòng đã được đặt trong khoảng thời gian mà khách chọn theo loại
             $count_booked_rooms = BookingDetail::join('tbl_bookings', 'tbl_bookings.id', '=', 'booking_id')
-            ->where('room_type_id', $item['room_type_id'])
-            ->where(function ($query) use ($checkin_date, $checkout_date) {
-                $query->where([
-                    ['checkin_date', '>=', $checkin_date],
-                    ['checkout_date', '<=', $checkout_date],
-                ])->orWhere([
-                    ['checkin_date', '<=', $checkin_date],
-                    ['checkout_date', '>=', $checkout_date],
-                ])->orWhere([
-                    ['checkin_date', '>', $checkin_date],
-                    ['checkin_date', '<', $checkout_date],
-                ])->orWhere([
-                    ['checkout_date', '>', $checkin_date],
-                    ['checkout_date', '<', $checkout_date],
-                ]);
-            })
-            ->count();
+                ->where([
+                    ['room_type_id', $item['room_type_id']],
+                    ['tbl_bookings.status', 1],
+                ])
+                ->where(function ($query) use ($checkin_date, $checkout_date) {
+                    $query->where([
+                        ['checkin_date', '>=', $checkin_date],
+                        ['checkout_date', '<=', $checkout_date],
+                    ])->orWhere([
+                        ['checkin_date', '<=', $checkin_date],
+                        ['checkout_date', '>=', $checkout_date],
+                    ])->orWhere([
+                        ['checkin_date', '>', $checkin_date],
+                        ['checkin_date', '<', $checkout_date],
+                    ])->orWhere([
+                        ['checkout_date', '>', $checkin_date],
+                        ['checkout_date', '<', $checkout_date],
+                    ]);
+                })
+                ->count();
 
-            if ($count_all_rooms - $count_booked_rooms < $item['quantity'] ) {
-                return 'room_type_id '.$item['room_type_id'].' hết phòng';
+            if ($count_all_rooms - $count_booked_rooms < $item['quantity']) {
+                return 'room_type_id ' . $item['room_type_id'] . ' hết phòng';
             }
         }
-
         $booking = new Booking([
             'checkin_date' =>  $checkin_date,
             'checkout_date' => $checkout_date,
             'people_quantity' =>  $validated['people_quantity'],
             'user_id' =>  $user_id,
+            'coupon_id' => $request->coupon_id,
             'guest_name' =>  $guest_name,
             'guest_email' =>  $guest_email,
             'guest_phone' =>  $guest_phone,
+            'total_price' => $validated['total_price'],
         ]);
         $booking->save();
         $booking->update(['booking_number' => 'HD' . $booking->id . '_' . random_int('10000000', '99999999')]);
 
         foreach ($validated['items'] as $item) {
-            for ($i=0; $i < $item['quantity']; $i++) { 
+            for ($i = 0; $i < $item['quantity']; $i++) {
                 BookingDetail::create([
                     'booking_id' => $booking->id,
                     'room_type_id' => $item['room_type_id'],
-                ]);   
-            }   
+                ]);
+            }
         }
 
         return MessageStatusAPI::store();
     }
 
-    public function destroy($id)
+
+
+    public function confirmBooking(Request $request, $id)
+    {
+        $role = auth()->user()->getRoleNames()->first();
+        if ($role != 'client') {
+            // $validated = $request->all();
+            // $rooms_id = $request->room_id;
+            $items = $request->all();
+            $booking_details = BookingDetail::where('booking_id', $id)->get();
+            foreach ($items as $item) {
+                foreach ($item['room_id'] as $room) {
+                    foreach ($booking_details as $booking_detail) {
+                        if ($item['room_type_id'] == $booking_detail->room_type_id && $booking_detail->room_id == '') {
+                            $booking_detail->update([
+                                'room_id' => $room
+                            ]);
+                            break;
+                        }
+                    }
+                }
+                // return $item;
+            }
+            foreach ($booking_details as $booking_detail) {
+                if ($booking_detail->room_id == '') {
+                    foreach ($booking_details as $booking_detail2) {
+                        $booking_detail2->update([
+                            'room_id' => null
+                        ]);
+                    }
+                    return 'Lỗi. Xếp phòng thất bại!';
+                }
+            }
+            $booking = Booking::find($id);
+            $booking->update([
+                'status' => 2,
+
+            ]);
+            return response(['Xếp phòng thành công!']);
+        }
+    }
+
+    public function checkout($id)
     {
         $booking = Booking::find($id);
-
-        if ($booking) {
-            $booking->delete();
-            return MessageStatusAPI::destroy();
-        } else {
-            return MessageStatusAPI::notFound();
-        }
-    }
-
-    public function update(BookingRequest $request, $id)
-    {
-        $validated = $request->validated();
-        $booking = Booking::findOrFail($id);
-        if (!$booking) {
-            return MessageStatusAPI::displayInvalidInput($booking);
-        }
         $booking->update([
-            'booking_date' =>  $validated['booking_date'],
-            'checkin_date' =>  $validated['checkin_date'],
-            'checkout_date' =>  $validated['checkout_date'],
-            'people_quantity' =>  $validated['people_quantity'],
-            'coupon_id' =>  $validated['coupon_id'],
-            'user_id' =>  $validated['user_id'],
-            'guest_name' =>  $validated['guest_name'],
-            'guest_email' =>  $validated['guest_email'],
-            'guest_phone' =>  $validated['guest_phone'],
-            'note' =>  $validated['note'],
-            'comment_id' =>  $validated['comment_id'],
-            'status' =>  $validated['status'],
+            'status' => 4,
+            'checkout_date' => now()
         ]);
-        return MessageStatusAPI::update();
     }
+
+    public function confirmCancel($id)
+    {
+        $booking = Booking::find($id);
+        if ($booking->status == BookingStatusEnum::WAITINGCANCEL) {
+            $booking->update([
+                'status' => BookingStatusEnum::CANCELLED,
+            ]);
+        }        
+    }
+
 }

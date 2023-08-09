@@ -1,7 +1,8 @@
 <nz-modal
-  [(nzVisible)]="displayAddBanner"
+  [(nzVisible)]="displayMultipleImage"
   nzTitle="Thêm mới"
   nzWidth="980px"
+  [nzOkLoading]="isLoading"
   (nzOnCancel)="handleCancel()"
   (nzOnOk)="handleOk()">
     <ng-container *nzModalContent>
@@ -26,10 +27,8 @@
             </div>
           </ng-container>
           <div class="item">
-            <form [formGroup]="formBanner" enctype="multipart/form-data">
-              <input id="file" type="file" class="upload" multiple placeholder="Upload"/>
-            </form>
-
+            <input #fileUploader id="file" type="file" class="upload" multiple placeholder="Upload" *ngIf="banner"/>
+            <input id="fileSingle" type="file" class="upload" placeholder="Upload" *ngIf="hotel || roomType"/>
           </div>
         </div>
       </nz-checkbox-wrapper>

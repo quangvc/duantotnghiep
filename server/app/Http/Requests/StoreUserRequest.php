@@ -3,6 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\Enums\StatusEnum;
+use Illuminate\Validation\Rule;
 
 class StoreUserRequest extends FormRequest
 {
@@ -35,6 +37,7 @@ class StoreUserRequest extends FormRequest
             'email' => 'required_without:phone|email|unique:tbl_users,email',
             'phone_number' => 'required_without:email|unique:tbl_users,phone_number|numeric|digits_between:9,12',
             'password' => 'required|confirmed',
+            'active' =>  [Rule::in(StatusEnum::arrEnums())],
         ];
     }
 

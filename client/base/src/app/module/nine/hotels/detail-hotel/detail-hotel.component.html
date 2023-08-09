@@ -1,0 +1,14 @@
+<nz-modal
+  [(nzVisible)]="displayDetail"
+  [nzTitle]="hotel_name"
+  nzWidth="1400px"
+  (nzOnCancel)="handleCancel()"
+>
+  <ng-container *nzModalContent>
+
+    <app-room-types
+      [idHotel]="idHotel"
+    ></app-room-types>
+
+  </ng-container>
+</nz-modal>

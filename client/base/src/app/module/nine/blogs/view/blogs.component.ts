@@ -4,10 +4,11 @@ import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
 import { Observable, Subscription, firstValueFrom } from 'rxjs';
 import { NineStatus } from 'src/app/module/_mShared/enum/enum';
 import { MenuItem } from 'src/app/module/_mShared/model/menuItem.class';
-import { ERROR, SUCCESS } from 'src/app/module/_mShared/model/url.class';
-import { Enum } from 'src/app/module/_mShared/service/enum.service';
+import { ERROR, SUCCESS, WARNING } from 'src/app/module/_mShared/model/url.class';
+import { Enum } from 'src/app/module/_mShared/service/static/enum.service';
 
 import { BlogsService } from 'src/app/module/_mShared/service/blogs.service';
+import { Auth } from 'src/app/auth/_aShared/auth.class';
 
 @Component({
   selector: 'app-blogs',
@@ -28,15 +29,19 @@ export class BlogsComponent implements OnInit {
 
   blogs: any[] = [];
   blogId: any;
-  slug: any;
   menus: MenuItem[] = [];
   statusOption: any;
 
   confirmModal?: NzModalRef;
 
+  displayViewPost: boolean = false;
+
+  displayComment: boolean = false;
+
   ngOnInit() {
     this.getBlogs();
     this.getOptionEnum();
+    // console.log(Auth.User())
   }
 
   getOptionEnum(){
@@ -46,14 +51,15 @@ export class BlogsComponent implements OnInit {
   getBlogs(){
     let obs = this.BlogsService.getBlogs().subscribe({
       next: (res) => {
+        // console.log(res)
         this.blogs = res.data;
-        console.log(res)
+
       },
       error: (err) => {{
         this.message.create(ERROR, err.message);
       }}
     })
-    this.subscription.add(obs);
+    // this.subscription.add(obs);
   }
 
   dropdownItemsButton(data:any){
@@ -62,6 +68,18 @@ export class BlogsComponent implements OnInit {
         label: "Chỉnh sửa",
         command: () => {
           this.editBlog(data);
+        },
+      },
+      {
+        label: "Xem bài viết",
+        command: () => {
+          this.viewPost(data);
+        },
+      },
+      {
+        label: "Bình luận",
+        command: () => {
+          this.showComment(data);
         },
       },
       { separator: true},
@@ -76,17 +94,23 @@ export class BlogsComponent implements OnInit {
 
   addBlog(){
     this.displayCreateUpdateBlog = true;
+    this.blogId = null;
+  }
+
+  showComment(blog:any){
+    this.displayComment = true;
+    this.blogId = blog.id;
   }
 
   editBlog(blog:any){
-    debugger
     this.displayCreateUpdateBlog = true;
     this.blogId = blog.id;
-    this.slug = blog.slug;
   };
 
   cancel(event:any){
     this.displayCreateUpdateBlog = false;
+    this.displayViewPost = false;
+    this.displayComment = false;
     this.getBlogs();
   }
 
@@ -97,7 +121,7 @@ export class BlogsComponent implements OnInit {
       nzOnOk: () =>
         new Promise((resolve, reject) => {
           this.deleteBlog(data);
-          setTimeout(Math.random() > 0.5 ? resolve : reject, 1000);
+          setTimeout(0.6 > 0.5 ? resolve : reject, 1000);
         }).catch(() => console.log('Oops errors!'))
     });
   }
@@ -112,6 +136,47 @@ export class BlogsComponent implements OnInit {
         this.message.create(ERROR, `${err.message}`)
       }
     })
+  }
+
+  viewPost(data:any){
+    this.displayViewPost = true;
+    this.blogId = data.id
+  }
+
+  confirmChangeStatus(event:any, data:any){
+
+    if(Auth.User('role') != 'client')
+    this.confirmModal = this.modal.confirm({
+      nzTitle: `Xác thực sự kiện !!`,
+      nzContent: 'Xác nhận thay đổi trạng thái ?',
+      nzOnOk: () =>
+        new Promise((resolve, reject) => {
+          this.changeStatus(data);
+          setTimeout(0.6 > 0.5 ? resolve : reject, 1000);
+        }),
+      nzOnCancel: () => {
+        this.getBlogs();
+      }
+    });
+
+    else this.message.create(WARNING, `Bạn không đủ quyền truy cập!`);
+
+  }
+
+  changeStatus(data:any){
+
+    let obs = this.BlogsService.changeStatus(data.id).subscribe({
+      next: (res) => {
+        this.message.create(SUCCESS, "Cập nhật thành công !!");
+        this.getBlogs();
+      },
+      error: (err) => {
+        this.getBlogs();
+        this.message.create(ERROR, err.error.message);
+        this.message.create(ERROR, err.message);
+      }
+    })
+    this.subscription.add(obs);
   }
 
   }

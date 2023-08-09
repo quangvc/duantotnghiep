@@ -1,0 +1,213 @@
+<div class="container">
+  <div class="container-fluid page-header mb-5 p-0"
+    style="background-image: url(../../../assets/image/carousel-1.jpg);">
+    <div class="container-fluid page-header-inner py-5">
+      <div class="container text-center pb-5">
+        <h3 class="display-3 text-white mb-3 animated slideInDown">Thông tin tài khoản của bạn</h3>
+        <!-- <nav aria-label="breadcrumb">
+                <ol class="breadcrumb justify-content-center text-uppercase">
+                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item"><a href="#">Pages</a></li>
+                    <li class="breadcrumb-item text-white active" aria-current="page">About</li>
+                </ol>
+            </nav> -->
+      </div>
+    </div>
+  </div>
+  <div class="main-body">
+
+    <div class="row gutters-sm">
+      <div class="col-md-4 mb-3">
+        <div class="card">
+          <div class="card-body">
+            <form [formGroup]="userForm">
+              <div class="d-flex flex-column align-items-center text-center">
+                <img [src]="'http://127.0.0.1:8000/Images/avatars/'+userForm.get('avatar')?.value" alt="Admin"
+                  class="rounded-circle" width="150">
+                <div class="mt-3">
+                  <h4>{{ userForm.get('name')?.value }}</h4>
+                  <!-- <p class="text-secondary mb-1">Full Stack Developer</p>
+                    <p class="text-muted font-size-sm">Thôn Cành Lá, Xã Cành Cây, Huyện Gió Mây, Tỉnh Đồi Núi</p>
+                    <button class="btn btn-primary">Follow</button>
+                    <button class="btn btn-outline-primary">Message</button> -->
+                </div>
+                <div>
+                  <p-confirmDialog></p-confirmDialog>
+                  <div class="mb-2">
+                    <a href="home" class="btn btn-primary">Trở về trang chủ</a>
+                    <a href="nine" *ngIf="hasPermisson" class="btn btn-primary ml-2">Vào trang quản lý</a>
+                  </div>
+                  <button (click)="confirmDialog()" class="btn btn-danger ml-2">Đăng xuất</button>
+                  <!-- <button pButton type="button" label="Hiển thị Confirm" (click)="confirmDialog()"></button> -->
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-8">
+        <div class="card mb-3">
+          <!-- view -->
+          <div class="card-body" *ngIf="showViewDiv">
+            <form [formGroup]="userForm">
+              <div class="row">
+                <div class="col-sm-3">
+                  <h6 class="mb-0">Tên đầy đủ</h6>
+                </div>
+                <div class="col-sm-9 text-secondary">
+                  {{ userForm.get('name')?.value }}
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-sm-3">
+                  <h6 class="mb-0">Email</h6>
+                </div>
+                <div class="col-sm-9 text-secondary">
+                  {{ userForm.get('email')?.value }}
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-sm-3">
+                  <h6 class="mb-0">Số điện thoại</h6>
+                </div>
+                <div class="col-sm-9 text-secondary">
+                  {{ userForm.get('phone_number')?.value }}
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-sm-3">
+                  <h6 class="mb-0">Giới tính</h6>
+                </div>
+                <div class="col-sm-9 text-secondary">
+                  {{ displayGender }}
+                </div>
+              </div>
+              <!-- <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <h6 class="mb-0">Address</h6>
+              </div>
+              <div class="col-sm-9 text-secondary">
+                Thôn Cành Lá, Xã Cành Cây, Huyện Gió Mây, Tỉnh Đồi Núi
+              </div>
+            </div> -->
+              <hr>
+              <div class="row">
+                <div class="col-sm-12">
+                  <a class="btn btn-info " target="__blank" (click)="showDiv()" *ngIf="!showButton2">Sửa</a>
+                </div>
+              </div>
+            </form>
+          </div>
+
+          <!-- Edit -->
+          <div class="card-body" *ngIf="showEditDiv">
+            <form [formGroup]="userForm">
+              <div class="row mb-3">
+                <div class="col-sm-3">
+                  <h6 class="mb-0">Tên đầy đủ</h6>
+                </div>
+                <div class="col-sm-9 text-secondary">
+                  <input type="text" class="form-control" id="name" formControlName="name">
+                </div>
+              </div>
+              <div class="row mb-3">
+                <div class="col-sm-3">
+                  <h6 class="mb-0">Email</h6>
+                </div>
+                <div class="col-sm-9 text-secondary">
+                  <input type="text" class="form-control" id="email" formControlName="email">
+                </div>
+              </div>
+              <div class="row mb-3">
+                <div class="col-sm-3">
+                  <h6 class="mb-0">Số điện thoại</h6>
+                </div>
+                <div class="col-sm-9 text-secondary">
+                  <input type="text" class="form-control" id="phone_number" formControlName="phone_number">
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-3">
+                  <h6 class="mb-0">Giới tính</h6>
+                </div>
+                <div class="col-sm-9 text-secondary">
+                  <p-dropdown [options]="ltsGenders" id="gender" formControlName="gender"
+                    optionLabel="text"></p-dropdown>
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-sm-3"></div>
+                <div class="col-sm-9 text-secondary">
+                  <input type="button" class="btn btn-primary px-4" value="Lưu thay đổi" (click)="handleUpdate()">
+                  <button class="btn btn-danger" (click)="hideDiv()" *ngIf="showButton2">Hủy</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+
+    <div class="card mb-3">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-sm-3">
+            <h6 class="mb-0">Hóa đơn của bạn</h6>
+          </div>
+        </div>
+        <hr>
+        <div *ngIf="showTable" class="my-4">
+          <nz-table #basicTable [nzData]="bookingFilters">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>{{'bookings.booking_number' | translate}}</th>
+                <th>{{'bookings.user' | translate}}</th>
+                <th>{{'bookings.checkin_date' | translate}}</th>
+                <th>{{'bookings.checkout_date' | translate}}</th>
+                <th>{{'bookings.coupon_id' | translate}}</th>
+                <th>{{'bookings.note' | translate}}</th>
+                <th>{{'status' | translate}}</th>
+                <th>{{'action' | translate}}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let data of basicTable.data; let i = index">
+                <td>{{ i + 1 }}</td>
+                <td>{{ data.booking_number }}</td>
+                <td>{{ data.guest_name }}</td>
+                <td>{{ data.checkin_date }}</td>
+                <td>{{ data.checkout_date }}</td>
+                <td>{{ data.coupon.name || "Không áp dụng" }}</td>
+                <td>{{ data.note }}</td>
+                <td><nz-tag [nzColor]="'#f50'">{{data.txtStatus}}</nz-tag></td>
+                <td>
+                  <button nz-button nzType="primary" [nzSize]="'large'" nzShape="circle"
+                    (click)="updateStatus(data.id)">
+                    <span nz-icon nzType="edit" nzTheme="outline"></span>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </nz-table>
+          <user-detail-payment
+            *ngIf="displayBookingForm"
+            [displayBookingForm]="displayBookingForm"
+            [bookingId]="bookingId"
+            (closeModal)="eventSubmit($event)">
+          </user-detail-payment>
+          <div *ngIf="bookingFilters && bookingFilters.length === 0" class="my-5">
+            Bạn chưa đặt đơn hàng nào hoặc web đang bị lỗi, who care, who ask.
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>

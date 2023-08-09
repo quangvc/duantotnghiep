@@ -1,0 +1,58 @@
+<div class="mb-3" *ngIf="role">
+  <button nz-button [nzSize]="'large'" nzType="primary" (click)="createBooking()" >Tạo đơn đặt phòng</button>
+</div>
+<div class="mb-3" *ngIf="role">
+  <nz-tabset nzType="card">
+    <nz-tab *ngFor="let tab of statusOptions" [nzTitle]="tab.text" (nzClick)="valueFilter(tab.value)">
+
+      <nz-table #basicTable [nzData]="bookingFilters">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>{{'bookings.booking_number' | translate}}</th>
+            <th>{{'bookings.user' | translate}}</th>
+            <th>{{'bookings.checkin_date' | translate}}</th>
+            <th>{{'bookings.checkout_date' | translate}}</th>
+            <th>{{'bookings.coupon_id' | translate}}</th>
+            <th>{{'bookings.note' | translate}}</th>
+            <th>{{'status' | translate}}</th>
+            <th *ngIf="role">{{'action' | translate}}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of basicTable.data; let i = index">
+            <td>{{ i + 1 }}</td>
+            <td>{{ data.booking_number }}</td>
+            <td>{{ data.guest_name }}</td>
+            <td>{{ data.checkin_date }}</td>
+            <td>{{ data.checkout_date }}</td>
+            <td>{{ data.coupon }}</td>
+            <td>{{ data.note }}</td>
+            <td><nz-tag [nzColor]="'#f50'">{{data.txtStatus}}</nz-tag></td>
+            <td *ngIf="role">
+              <button nz-button nzType="primary" [nzSize]="'large'" nzShape="circle" (click)="updateStatus(data.id)">
+                <span nz-icon nzType="edit" nzTheme="outline"></span>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </nz-table>
+
+    </nz-tab>
+  </nz-tabset>
+</div>
+
+<booking-form
+  *ngIf="displayBookingForm"
+  [displayBookingForm]="displayBookingForm"
+  [bookingId]="bookingId"
+  (closeModal)="eventSubmit($event)"
+>
+</booking-form>
+
+<create-booking
+  *ngIf="displayCreateBooking"
+  [displayCreateBooking]="displayCreateBooking"
+  (closeModal)="emitEvent($event)"
+>
+</create-booking>
