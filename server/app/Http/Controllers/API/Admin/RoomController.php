@@ -184,9 +184,18 @@ class RoomController extends Controller
                     'rooms_booked' => $booked_rooms,
                 ];
             }
+            if ($booked_rooms[0] == null) {
+                $roomItem = Room::where('room_type_id', $roomtype->id)->get();
+                $true = 'null';
+            } else {
+                $true = 'k null';
+                $roomItem = Room::where('room_type_id', $roomtype->id)
+                    ->whereNotIn('room_number', $booked_rooms)->get();
+            }
             $room[] = [
+                'true' => $true,
                 'room_type' => $roomtype->id,
-                'item' => Room::where('room_type_id', $roomtype->id)->whereNotIn('room_number', $booked_rooms)->get()
+                'item' => $roomItem
             ];
         }
         return $room;
