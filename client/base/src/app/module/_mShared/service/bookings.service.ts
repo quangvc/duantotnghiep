@@ -37,9 +37,14 @@ confirmBooking(id: any, data:any):Observable<any>{
   return this.http.post<any>(url,data,this.httpOptions);
 }
 
+cancelBooking(id: any, data:any):Observable<any>{
+  const url = `${this.API_URL}/${BOOKINGS}/${id}/confirm-cancel`;
+  return this.http.post<any>(url,data,this.httpOptions);
+}
+
 countRoom(id:any,dataFrom:any, dateTo:any){
   const url = `${this.API_URL}/${ROOMS}/get/${id}/${dataFrom}/${dateTo}`;
-  return this.http.get<any>(url);
+  return this.http.get<any>(url, this.httpOptions);
 }
 
 // getBookingDetail():Observable<any>{

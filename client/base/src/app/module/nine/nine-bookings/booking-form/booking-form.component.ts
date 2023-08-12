@@ -43,11 +43,10 @@ export class BookingFormComponent implements OnInit {
     return this.formGroup.get("items") as FormArray;
   }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.createFormArray();
+    await this.getRooms();
     this.getDetail();
-    this.getRooms();
-    // console.log(this.dataDetail)
   }
 
   private createFormArray(){
@@ -73,55 +72,25 @@ export class BookingFormComponent implements OnInit {
   }
 
   getDetail(){
-    // this.bookingsService.findOne(this.bookingId).subscribe({
-    //   next: (res) => {
-    //     this.booking = res.data;
-    //     this.booking_details = this.booking[0].booking_details;
-    //     this.booking_details.forEach(d => {
-    //       this.addItem(d)
-    //     });
-    //   },
-    //   error: (err) => {
-    //     this.message.create(ERROR, err.error.message);
-    //     this.message.create(ERROR, err.message);
-    //   }
-    // })
+    const formArray = this.formGroup.get("items") as FormArray;
+    console.log(formArray)
+  }
+
+  getRooms(){
     let idHotel = Auth.User('user').hotel_id;
 
     this.bookingsService.countRoom(idHotel,this.dataDetail.checkin_date,this.dataDetail.checkout_date).subscribe(res => {
-      console.log(res)
-      console.log(this.dataDetail);
       for (const bookingDetail of this.dataDetail.booking_details) {
         for (const rooms of res) {
-          // console.log(rooms)
           if(bookingDetail.room_type_id == rooms.room_type){
             bookingDetail.roomItems = rooms.item;
-            console.log(rooms);
-            console.log(bookingDetail)
           }
         }
-        // console.log(this.dataDetail.booking_details)
       }
 
       this.dataDetail.booking_details.forEach((d:any) => {
         this.addItem(d)
       });
-    })
-  }
-
-  getBookingDetail(){
-
-  }
-
-  getRooms2(){
-
-  }
-
-  getRooms(){
-    this.roomService.getRooms().subscribe({
-      next: (res) => {
-        this.rooms = res.data;
-      }
     })
   }
 

@@ -71,7 +71,7 @@
               <!-- <button class="btn btn-primary" (click)="roomList(data)">
                 Xếp phòng
               </button> -->
-                <select class="form-select" formControlName="room_id" (change)="changeRoomDetail($event,item.value)">
+                <select class="form-select" formControlName="room_id" (change)="changeRoomDetail($event,item.value)" *ngIf="!item.value.room_id">
                   <option [value]="null" >Chọn</option>
                   <ng-container *ngFor="let room of item.value.roomItems">
                     <option [value]="room.room_number" >
@@ -79,6 +79,10 @@
                     </option>
                   </ng-container>
                 </select>
+
+                <ng-container *ngIf="item.value.room_id">
+                  {{item.value.room_id}}
+                </ng-container>
             </td>
             <td>{{ item.value.room_type.room_type.name }}</td>
           </tr>

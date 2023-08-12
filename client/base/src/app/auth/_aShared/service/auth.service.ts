@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -10,7 +11,7 @@ export class AuthService {
   sessionUser:any = sessionStorage.getItem('user');
   user:any = JSON.parse(this.sessionUser);
 
-  private API_URL = 'http://127.0.0.1:8000/api';
+  private API_URL = `${environment.api}/api`;
 
   private httpOptions = {
     headers: new HttpHeaders({
@@ -20,9 +21,9 @@ export class AuthService {
 
   constructor(private http: HttpClient) { }
 
-  URL2 = 'http://127.0.0.1:8000/api/users';
-  URL_LOGIN = 'http://127.0.0.1:8000/api/login';
-  URL_LOGOUT = 'http://127.0.0.1:8000/api/logout';
+  URL2 = `${environment.api}/api/users`;
+  URL_LOGIN = `${environment.api}/api/login`;
+  URL_LOGOUT = `${environment.api}/api/logout`;
 
   // getUser() {
   //   return this.http.get(this.URL);
