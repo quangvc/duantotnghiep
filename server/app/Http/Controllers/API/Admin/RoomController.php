@@ -125,11 +125,11 @@ class RoomController extends Controller
 
     public function getRoomNotBooked($hotel_id, $checkin_date, $checkout_date)
     {
-        $roomtypes = RoomType::where('hotel_id', $hotel_id)->get();
+        $roomtypes = RoomType::where('hotel_id', $hotel_id)
+            ->get();
 
         $checkin_date = Carbon::parse($checkin_date);
         $checkout_date = Carbon::parse($checkout_date);
-        $data = [];
 
         foreach ($roomtypes as $roomtype) {
             $count_all_rooms = Room::where([
@@ -177,16 +177,20 @@ class RoomController extends Controller
                         ['checkout_date', '<', $checkout_date],
                     ]);
                 })->pluck('room_id');
-            if ($count_all_rooms - $count_booked_rooms > 0) {
-                $data[] = [
-                    'room_type' => $roomtype,
-                    'count_booked_rooms' => $count_booked_rooms,
-                    'rooms_booked' => $booked_rooms,
-                ];
+
+            $booked_roomsArray = array_filter($booked_rooms->toArray());
+            if (empty($booked_roomsArray)) {
+                $roomItem = Room::where('room_type_id', $roomtype->id)->get();
+            } else {
+                $roomItem = Room::where('room_type_id', $roomtype->id)
+                    ->whereNotIn('room_number', $booked_rooms)->get();
+                // $true = true;
+                // $roomItem = Room::where('room_type_id', $roomtype->id)
+                //     ->whereNotIn('room_number', $booked_rooms)->get();
             }
             $room[] = [
                 'room_type' => $roomtype->id,
-                'item' => Room::where('room_type_id', $roomtype->id)->whereNotIn('room_number', $booked_rooms)->get()
+                'item' => $roomItem
             ];
         }
         return $room;

@@ -47,7 +47,7 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     //step
     StepEmailComponent,
     StepCodeComponent,
-    StepPasswordComponent
+    StepPasswordComponent,
   ],
   imports: [
     BrowserModule,

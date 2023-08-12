@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ADMIN, HOTELS, IMAGE } from '../model/url.class';
 import { Auth } from 'src/app/auth/_aShared/auth.class';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,7 @@ export class HotelsService {
 
   token = Auth.User('token');
 
-  private API_URL = `http://127.0.0.1:8000/api`;
+  private API_URL = `${environment.api}/api`;
   private httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json',

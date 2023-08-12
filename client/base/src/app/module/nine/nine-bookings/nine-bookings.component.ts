@@ -4,7 +4,8 @@ import { BookingsService } from '../../_mShared/service/bookings.service';
 import { Enum } from '../../_mShared/service/static/enum.service';
 import { StatusBookings } from '../../_mShared/enum/enum';
 import { NzMessageService } from 'ng-zorro-antd/message';
-import { ERROR } from '../../_mShared/model/url.class';
+import { ERROR, SUCCESS } from '../../_mShared/model/url.class';
+import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
 
 @Component({
   selector: 'app-nine-bookings',
@@ -16,10 +17,15 @@ export class NineBookingsComponent implements OnInit {
   constructor(
     private bookingService: BookingsService,
     private message: NzMessageService,
+    private modal: NzModalService
   ) { }
+
+  confirmModal?: NzModalRef;
 
   displayBookingForm: boolean = false;
   displayCreateBooking: boolean = false;
+
+  dataDetail:any;
 
   bookings: any[] = [];
 
@@ -84,7 +90,6 @@ export class NineBookingsComponent implements OnInit {
     let obs = this.bookingService.getBookings().subscribe({
       next: (res) => {
         this.bookingFilters = res.data;
-        console.log(this.bookingFilters)
 
         this.convertTextStatus();
 
@@ -147,6 +152,7 @@ export class NineBookingsComponent implements OnInit {
 
       if(value == -1){
         this.bookingFilters = bookings.filter(bk => bk);
+        console.log(this.bookingFilters)
       }
 
       this.convertTextStatus();
@@ -154,9 +160,38 @@ export class NineBookingsComponent implements OnInit {
 
   }
 
-  updateStatus(value:any){
+  updateStatus(value:any,data:any){
     this.displayBookingForm = true;
     this.bookingId = value;
+    this.dataDetail = data;
+  }
+
+  confirmCancel(data:any){
+    console.log(data)
+    this.confirmModal = this.modal.confirm({
+      nzTitle: `Xác nhận thay đổi?`,
+      nzContent: `Bạn có muốn xóa ${data.booking_number} không?`,
+      nzOnOk: () =>
+        new Promise((resolve, reject) => {
+          this.deleteBooking(data);
+          setTimeout(0.6 > 0.5 ? resolve : reject, 1000);
+        }).catch()
+    });
+  }
+
+  deleteBooking(data:any){
+    if(data.status == StatusBookings.WaitingCancel){
+      this.bookingService.cancelBooking(data.id,data.status).subscribe({
+        next: (res) => {
+          this.message.create(SUCCESS, `Hủy ${data.booking_number} thành công.`)
+          this.getBookings();
+        },
+        error: (err) => {
+          this.message.create(ERROR, err.error.message);
+        }
+      })
+    }
+
   }
 
   eventSubmit(event:any){
