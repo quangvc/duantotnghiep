@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { CLIENT, HOTELS, IMAGE, REGION } from 'src/app/module/_mShared/model/url.class'
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,7 @@ export class HotelClientService {
   // sessionUser:any = sessionStorage.getItem('user');
   // user:any = JSON.parse(this.sessionUser);
 
-  private API_URL = `http://127.0.0.1:8000/api`;
+  private API_URL = `${environment.api}/api`;
   // private httpOptions = {
   //   headers: new HttpHeaders({
   //     'Content-Type': 'application/json',

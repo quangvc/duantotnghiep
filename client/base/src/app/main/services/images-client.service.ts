@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { CLIENT, IMAGE } from 'src/app/module/_mShared/model/url.class';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,7 @@ constructor(
 
 public $image = new BehaviorSubject<any>(null);
 
-private API_URL = `http://127.0.0.1:8000/api`;
+private API_URL = `${environment.api}/api`;
 
 
 // sessionUser:any = sessionStorage.getItem('user');

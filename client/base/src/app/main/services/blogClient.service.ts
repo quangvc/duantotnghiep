@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { CLIENT, BLOGS, IMAGE } from 'src/app/module/_mShared/model/url.class'
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,7 @@ export class BlogClientService {
   // sessionUser:any = sessionStorage.getItem('user');
   // user:any = JSON.parse(this.sessionUser);
 
-  private API_URL = `http://127.0.0.1:8000/api/${CLIENT}`;
+  private API_URL = `${environment.api}/api/${CLIENT}`;
 
   // private httpOptions = {
   //   headers: new HttpHeaders({

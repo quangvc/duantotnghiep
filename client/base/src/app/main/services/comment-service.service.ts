@@ -2,13 +2,14 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { CLIENT, COMMENTS, REPLY } from 'src/app/module/_mShared/model/url.class';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CommentServiceService {
 
-  private API_URL = `http://127.0.0.1:8000/api/${CLIENT}`;
+  private API_URL = `${environment.api}/api/${CLIENT}`;
 
   //Phải kiểm tra xem user có đăng nhập hay không
   // sessionUser:any = sessionStorage.getItem('user');

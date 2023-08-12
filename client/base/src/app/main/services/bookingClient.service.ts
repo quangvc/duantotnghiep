@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Auth } from 'src/app/auth/_aShared/auth.class';
 import { BOOKINGS, CLIENT, USERS } from 'src/app/module/_mShared/model/url.class';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,7 @@ export class BookingClientService {
   //   })
   // }
 
-  private API_URL = `http://127.0.0.1:8000/api/${CLIENT}`;
+  private API_URL = `${environment.api}/api/${CLIENT}`;
 
 
   constructor(private http: HttpClient) { }

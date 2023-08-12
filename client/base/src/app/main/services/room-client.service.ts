@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { CLIENT, ROOMS } from 'src/app/module/_mShared/model/url.class';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +10,7 @@ import { CLIENT, ROOMS } from 'src/app/module/_mShared/model/url.class';
 export class RoomClientService {
 
 
-  private API_URL = `http://127.0.0.1:8000/api/${CLIENT}`;
+  private API_URL = `${environment.api}/api/${CLIENT}`;
 
 
   constructor(private http: HttpClient) {}
