@@ -79,6 +79,7 @@ export class NineLayoutComponent implements OnInit {
           {
             label: "Quản lý khu vực",
             routerLink: "regions",
+            visible: Auth.User('role') != 'admin'
           },
           {
             label: "Quản lý khách sạn",
