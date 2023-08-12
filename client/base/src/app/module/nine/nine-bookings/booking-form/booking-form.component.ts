@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
+import { Auth } from 'src/app/auth/_aShared/auth.class';
 import { ERROR, SUCCESS } from 'src/app/module/_mShared/model/url.class';
 import { BookingsService } from 'src/app/module/_mShared/service/bookings.service';
 import { RoomsService } from 'src/app/module/_mShared/service/rooms.service';
@@ -13,6 +14,7 @@ import { RoomsService } from 'src/app/module/_mShared/service/rooms.service';
 export class BookingFormComponent implements OnInit {
 
   @Input() bookingId: any;
+  @Input() dataDetail: any;
   @Input() displayBookingForm: boolean;
   @Output() closeModal = new EventEmitter<any>();
 
@@ -45,6 +47,7 @@ export class BookingFormComponent implements OnInit {
     this.createFormArray();
     this.getDetail();
     this.getRooms();
+    // console.log(this.dataDetail)
   }
 
   private createFormArray(){
@@ -59,6 +62,7 @@ export class BookingFormComponent implements OnInit {
       room_type_id: [detailRoom.room_type_id],
       room_id: [detailRoom.room_id, Validators.required],
       room_type: [detailRoom],
+      roomItems: [detailRoom.roomItems]
     })
   }
 
@@ -69,22 +73,47 @@ export class BookingFormComponent implements OnInit {
   }
 
   getDetail(){
-    this.bookingsService.findOne(this.bookingId).subscribe({
-      next: (res) => {
-        this.booking = res.data;
-        this.booking_details = this.booking[0].booking_details;
-        this.booking_details.forEach(d => {
-          this.addItem(d)
-        });
-      },
-      error: (err) => {
-        this.message.create(ERROR, err.error.message);
-        this.message.create(ERROR, err.message);
+    // this.bookingsService.findOne(this.bookingId).subscribe({
+    //   next: (res) => {
+    //     this.booking = res.data;
+    //     this.booking_details = this.booking[0].booking_details;
+    //     this.booking_details.forEach(d => {
+    //       this.addItem(d)
+    //     });
+    //   },
+    //   error: (err) => {
+    //     this.message.create(ERROR, err.error.message);
+    //     this.message.create(ERROR, err.message);
+    //   }
+    // })
+    let idHotel = Auth.User('user').hotel_id;
+
+    this.bookingsService.countRoom(idHotel,this.dataDetail.checkin_date,this.dataDetail.checkout_date).subscribe(res => {
+      console.log(res)
+      console.log(this.dataDetail);
+      for (const bookingDetail of this.dataDetail.booking_details) {
+        for (const rooms of res) {
+          // console.log(rooms)
+          if(bookingDetail.room_type_id == rooms.room_type){
+            bookingDetail.roomItems = rooms.item;
+            console.log(rooms);
+            console.log(bookingDetail)
+          }
+        }
+        // console.log(this.dataDetail.booking_details)
       }
+
+      this.dataDetail.booking_details.forEach((d:any) => {
+        this.addItem(d)
+      });
     })
   }
 
   getBookingDetail(){
+
+  }
+
+  getRooms2(){
 
   }
 
@@ -108,18 +137,20 @@ export class BookingFormComponent implements OnInit {
     });
   }
   validRoom: boolean = false;
-  changeRoomDetail(event:any){
-    console.log(event.target.value);
-    let room = event.target.value;
+  changeRoomDetail(event:any, roomType:any){
+    // console.log(event.target.value);
+    // let room = event.target.value;
 
-    let res = this.roomItems.controls.filter(x => x.value.room_id == room);
-    console.log(res);
-    if (res.length > 1) {
-      this.message.create(ERROR, `Phòng ${room} đã được chọn rồi!!`);
-      this.validRoom = true
-    }else{
-      this.validRoom = false;
-    }
+    // let res = this.roomItems.controls.filter(x => x.value.room_id == room);
+    // console.log(res);
+    // if (res.length > 1) {
+    //   this.message.create(ERROR, `Phòng ${room} đã được chọn rồi!!`);
+    //   this.validRoom = true
+    // }else{
+    //   this.validRoom = false;
+    // }
+    // this.bookingsService.countRoom(,)
+
   }
 
   refuseCancel(){

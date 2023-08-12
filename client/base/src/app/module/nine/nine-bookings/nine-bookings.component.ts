@@ -21,6 +21,8 @@ export class NineBookingsComponent implements OnInit {
   displayBookingForm: boolean = false;
   displayCreateBooking: boolean = false;
 
+  dataDetail:any;
+
   bookings: any[] = [];
 
   bookingFilters: any[] = [...this.bookings]
@@ -84,7 +86,7 @@ export class NineBookingsComponent implements OnInit {
     let obs = this.bookingService.getBookings().subscribe({
       next: (res) => {
         this.bookingFilters = res.data;
-        console.log(this.bookingFilters)
+        console.log(res)
 
         this.convertTextStatus();
 
@@ -147,6 +149,7 @@ export class NineBookingsComponent implements OnInit {
 
       if(value == -1){
         this.bookingFilters = bookings.filter(bk => bk);
+        console.log(this.bookingFilters)
       }
 
       this.convertTextStatus();
@@ -154,9 +157,10 @@ export class NineBookingsComponent implements OnInit {
 
   }
 
-  updateStatus(value:any){
+  updateStatus(value:any,data:any){
     this.displayBookingForm = true;
     this.bookingId = value;
+    this.dataDetail = data;
   }
 
   eventSubmit(event:any){
