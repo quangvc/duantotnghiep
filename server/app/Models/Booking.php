@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Booking extends Model
 {
@@ -36,4 +37,10 @@ class Booking extends Model
     {
         return $this->belongsTo(Coupon::class);
     }
+
+    public function feedback(): HasOne
+    {
+        return $this->hasOne(Feedback::class);
+    }
+    
 }

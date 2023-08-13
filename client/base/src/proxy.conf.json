@@ -1,0 +1,6 @@
+{
+    "/api": {
+        "target": "http://laravel.nine09booking.site/",
+        "secure": false
+    }
+}

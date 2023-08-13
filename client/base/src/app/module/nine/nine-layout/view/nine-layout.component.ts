@@ -50,6 +50,11 @@ export class NineLayoutComponent implements OnInit {
   getMenus(){
     this.menus = [
       {
+        label: "Dashboard",
+        icon: 'dashboard',
+        routerLink: "/nine"
+      },
+      {
         label: "Quản lý người dùng",
         icon: 'user',
         items: [
@@ -74,6 +79,7 @@ export class NineLayoutComponent implements OnInit {
           {
             label: "Quản lý khu vực",
             routerLink: "regions",
+            visible: Auth.User('role') != 'admin'
           },
           {
             label: "Quản lý khách sạn",
@@ -117,10 +123,10 @@ export class NineLayoutComponent implements OnInit {
             label: "Quản lý blog",
             routerLink: "blogs",
           },
-          {
-            label: "Quản lý bình luận",
-            routerLink: "comments",
-          },
+          // {
+          //   label: "Quản lý bình luận",
+          //   routerLink: "comments",
+          // },
           {
             label: "Quản lý Feedback",
             routerLink: "feedbacks",
@@ -134,6 +140,10 @@ export class NineLayoutComponent implements OnInit {
           {
             label: "Quản lý banner",
             routerLink: "banners",
+          },
+          {
+            label: "Hỗ trợ",
+            routerLink: "support",
           },
         ]
       },

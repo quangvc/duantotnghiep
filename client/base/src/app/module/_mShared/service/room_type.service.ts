@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ADMIN, CLIENT, ROOM_TYPES } from '../model/url.class';
 import { Auth } from 'src/app/auth/_aShared/auth.class';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -11,8 +12,8 @@ export class RoomTypeService {
 
   token = Auth.User('token');
 
-  private API_URL = `http://127.0.0.1:8000/api/${ADMIN}`;
-  private API_URL_CLIENT = `http://127.0.0.1:8000/api/${CLIENT}`;
+  private API_URL = `${environment.api}/api/${ADMIN}`;
+  private API_URL_CLIENT = `${environment.api}/api/${CLIENT}`;
 
   private httpOptions = {
     headers: new HttpHeaders({

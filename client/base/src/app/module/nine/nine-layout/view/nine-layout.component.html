@@ -9,22 +9,28 @@
     <ul nz-menu nzTheme="dark" nzMode="inline">
       <ng-container *ngFor="let menu of menus">
         <ng-container *ngIf="menu.items">
-          <li nz-submenu nzTitle="{{ menu.label }}" nzIcon="{{ menu.icon }}">
-            <ul *ngIf="menu.items">
-              <ng-container *ngFor="let submenu of menu.items">
-                <li routerLink="{{ submenu.routerLink }}" nz-menu-item>
-                  {{ submenu.label }}
-                </li>
-              </ng-container>
-            </ul>
-          </li>
+          <ng-container *ngIf="!menu.visible">
+            <li nz-submenu nzTitle="{{ menu.label }}" nzIcon="{{ menu.icon }}">
+              <ul *ngIf="menu.items">
+                <ng-container *ngFor="let submenu of menu.items">
+                  <ng-container *ngIf="!submenu.visible">
+                    <li routerLink="{{ submenu.routerLink }}" nz-menu-item>
+                      {{ submenu.label }}
+                    </li>
+                  </ng-container>
+                </ng-container>
+              </ul>
+            </li>
+          </ng-container>
         </ng-container>
 
         <ng-container *ngIf="!menu.items">
-          <li routerLink="{{ menu.routerLink }}" nz-menu-item>
-            <span nz-icon nzType="{{ menu.icon }}"></span>
-            <span>{{ menu.label }}</span>
-          </li>
+          <ng-container *ngIf="!menu.visible">
+            <li routerLink="{{ menu.routerLink }}" nz-menu-item>
+              <span nz-icon nzType="{{ menu.icon }}"></span>
+              <span>{{ menu.label }}</span>
+            </li>
+          </ng-container>
         </ng-container>
       </ng-container>
       <!-- <li nz-submenu nzTitle="Team" nzIcon="team">
@@ -59,6 +65,7 @@
             <nz-dropdown-menu #menu="nzDropdownMenu" >
               <ul nz-menu>
                 <li nz-menu-item (click)="viewInf()">Thông tin cá nhân</li>
+                <li nz-menu-item routerLink="/">Về trang chủ</li>
                 <li nz-menu-divider></li>
                 <li nz-menu-item
                     nz-popconfirm

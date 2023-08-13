@@ -30,7 +30,10 @@
             <td>{{ data.note }}</td>
             <td><nz-tag [nzColor]="'#f50'">{{data.txtStatus}}</nz-tag></td>
             <td *ngIf="role">
-              <button nz-button nzType="primary" [nzSize]="'large'" nzShape="circle" (click)="updateStatus(data.id)">
+              <button nz-button nzType="primary" nzDanger [nzSize]="'large'" nzShape="circle" (click)="confirmCancel(data)" *ngIf="data.status == 7 && data.status != 4">
+                <span nz-icon nzType="delete" nzTheme="outline"></span>
+              </button>
+              <button nz-button nzType="primary" [nzSize]="'large'" nzShape="circle" (click)="updateStatus(data.id,data)" *ngIf="data.status != 7 && data.status != 0 && data.status != 4">
                 <span nz-icon nzType="edit" nzTheme="outline"></span>
               </button>
             </td>
@@ -46,6 +49,7 @@
   *ngIf="displayBookingForm"
   [displayBookingForm]="displayBookingForm"
   [bookingId]="bookingId"
+  [dataDetail]="dataDetail"
   (closeModal)="eventSubmit($event)"
 >
 </booking-form>

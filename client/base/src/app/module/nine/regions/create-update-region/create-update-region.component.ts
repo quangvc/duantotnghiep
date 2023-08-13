@@ -22,6 +22,8 @@ export class CreateUpdateRegionComponent implements OnInit, OnDestroy {
 
   formRegion!: FormGroup;
 
+  isLoading: boolean = false;
+
   constructor(
     private fb: FormBuilder,
     private regionService: RegionsService,
@@ -58,7 +60,7 @@ export class CreateUpdateRegionComponent implements OnInit, OnDestroy {
   }
 
   handleOk(){
-
+    this.isLoading = true;
     if(this.formRegion.valid){
 
       const formData = new FormData();
@@ -81,10 +83,12 @@ export class CreateUpdateRegionComponent implements OnInit, OnDestroy {
 
       createUpdate.subscribe({
         next: (res) => {
+          this.isLoading = false;
           this.closeModal.emit();
           this.message.create(SUCCESS, `${res.message}`);
         },
         error: (err) => {
+          this.isLoading = false;
           this.message.create(ERROR, `${err.error.message}`)
           this.message.create(ERROR, `${err.message}`)
         }

@@ -1,0 +1,54 @@
+<nz-modal
+  [(nzVisible)]="displayComment"
+  nzTitle="Bình luận"
+  nzWidth="1400px"
+  (nzOnCancel)="handleCancel()"
+  >
+  <ng-container *nzModalContent>
+
+    <nz-table #nzTable [nzData]="comments" nzTableLayout="fixed">
+      <thead>
+        <tr>
+          <th style="width: 70px;">#</th>
+          <th style="width: 150px;">{{'comments.user_name' | translate}}</th>
+          <th>{{'comments.content' | translate}}</th>
+          <th>{{'created_at' | translate}}</th>
+          <th>{{'action' | translate}}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <ng-container *ngFor="let data of nzTable.data; let i = index">
+          <tr>
+            <td style="width: 70px;" [nzExpand]="expandSet.has(data.id)" (nzExpandChange)="onExpandChange(data.id, $event)"></td>
+            <td style="width: 150px;"><b>{{ data.user.name }}</b></td>
+            <td><b>{{ data.content }}</b></td>
+            <td>{{ data.created_at | date: 'dd/MM/yyyy'}}</td>
+            <td></td>
+          </tr>
+          <tr [nzExpand]="expandSet.has(data.id)">
+            <ng-container *ngFor="let rep of replyComments">
+              <div class="row">
+                <div class="col-2" style="padding-left: 5rem;">
+                  {{ rep.parent_id == data.id ? rep.user.name : "" }}
+                </div>
+                <div class="col-3">
+                  {{ rep.parent_id == data.id ? rep.content : "" }}
+                </div>
+                <div class="col-2" style="padding-left: 3rem;">
+                  {{ rep.parent_id == data.id ? (data.created_at | date: 'dd/MM/yyyy') : "" }}
+                </div>
+                <div class="col">
+                  {{ rep.parent_id == data.id ? "Xóa" : "" }}
+                </div>
+              </div>
+            </ng-container>
+          </tr>
+        </ng-container>
+      </tbody>
+    </nz-table>
+
+  </ng-container>
+  <div *nzModalFooter>
+    <button nz-button nzType="default" (click)="handleCancel()">Đóng</button>
+  </div>
+</nz-modal>

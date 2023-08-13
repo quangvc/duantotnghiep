@@ -2,6 +2,7 @@
   [(nzVisible)]="displayCreateUpdateCoupon"
   nzTitle="Thêm mới"
   nzWidth="980px"
+  [nzOkLoading]="isLoading"
   (nzOnCancel)="handleCancel()"
   (nzOnOk)="handleOk()">
   <ng-container *nzModalContent>

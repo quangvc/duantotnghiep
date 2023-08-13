@@ -29,25 +29,6 @@
   <button nz-button [nzSize]="'large'" nzType="primary" (click)="addRoomType()" >{{'button.add_new' | translate}}</button>
 </div>
 
-<!-- <div class="row">
-  <ng-container *ngFor="let item of roomTypes">
-    <div class="col-md-2">
-      <div class="item">
-        <div class="count">{{item.rooms_count}}</div>
-        <div class="roomType">{{item.room_type.name}}</div>
-        <div class="room">Phòng VIP 1234</div>
-        <div class="status">Trống</div>
-        <div class="date">
-          <div class="checkin">Từ: 24/07/2023</div>
-          <div class="checkout">Đến: 25/07/2023</div>
-        </div>
-        <button class="btn btn-primary w-full mb-2">Đặt</button>
-        <button class="btn btn-info w-full mb-2">Checkin</button>
-      </div>
-    </div>
-  </ng-container>
-</div> -->
-
 <nz-table #basicTable [nzData]="roomTypes">
   <thead>
     <tr>

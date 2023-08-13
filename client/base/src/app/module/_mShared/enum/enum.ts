@@ -4,11 +4,12 @@ export enum NineStatus {
 }
 
 export enum StatusBookings {
-  Unconfirmed = 1,
-  Confirmed = 3,
-  Using = 4,
-  Clean = 5,
-  Cancel = 6,
-  WaitingCancel = 7,
+  Unpaid = 0, // đang đặt, chưa thanh toán
+  Unconfirmed = 1, // đã thanh toán - chưa xếp phòng
+  Confirmed = 2, // admin xác nhận - đã xếp phòng
+  Using = 3, // đã checkout
+  Cancel = 4, // hủy
+  WaitingCancel = 7, // chờ đợi hủy
+  Clean = 99,
 }
 

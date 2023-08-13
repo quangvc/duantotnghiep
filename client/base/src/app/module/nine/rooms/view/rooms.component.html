@@ -1,7 +1,7 @@
 <div class="mb-3">
   <button nz-button [nzSize]="'large'" nzType="primary" (click)="addRoom()" >{{'button.add_new' | translate}}</button>
 </div>
-<nz-table #basicTable [nzData]="room">
+<!-- <nz-table #basicTable [nzData]="room">
   <thead>
     <tr>
       <th>#</th>
@@ -23,7 +23,21 @@
       </td>
     </tr>
   </tbody>
-</nz-table>
+</nz-table> -->
+
+<div class="row">
+  <ng-container *ngFor="let data of room; let i = index">
+    <div class="col-2" (click)="editRoom(data)">
+      <nz-card [ngClass]="[
+        data.status == 1 ? 'background-blue' : '',
+        data.status == 1 ? 'color-white' : 'dark-color',
+        'border-style']"
+        >
+        Phòng {{data.room_number}}
+      </nz-card>
+    </div>
+  </ng-container>
+</div>
 
 <create-update-room
   *ngIf="displayCreateUpdateRoom"

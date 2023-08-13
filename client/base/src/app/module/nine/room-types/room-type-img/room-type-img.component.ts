@@ -25,6 +25,8 @@ export class RoomTypeImgComponent implements OnInit {
 
   displayMultipleImage: boolean = false;
 
+  isLoading: boolean = false;
+
   images:any[] = [];
 
   ngOnInit() {
@@ -54,14 +56,17 @@ export class RoomTypeImgComponent implements OnInit {
     const formData = new FormData();
 
     if(file){
+      this.isLoading = true;
       formData.append('path', file[0])
       this.imageService.addImageRoomType(this.roomTypeId,formData).subscribe({
         next: (res) => {
+          this.isLoading = false;
           this.message.create(SUCCESS, "Thêm mới thành công!!");
           this.displayMultipleImage = false;
           this.getImages();
         },
         error: (err) => {
+          this.isLoading = false;
           this.message.create(ERROR, err.error.message);
         },
       });

@@ -44,7 +44,7 @@ class CouponController extends Controller
         }
 
         $coupon = Coupon::firstOrCreate([
-            'name' =>  "HOTEL" . $id_hotel . '_' . $validated['name'],
+            'name' =>   $validated['name'],
             'type' =>  $validated['type'],
             'value' =>  $validated['value'],
             'min' =>  $validated['min'],

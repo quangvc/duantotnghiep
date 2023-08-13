@@ -1,6 +1,6 @@
 <nz-modal
   [(nzVisible)]="displayCreateUpdateRoom"
-  nzTitle="Thêm mới"
+  [nzTitle]="roomId ? 'Chỉnh sửa' : 'Thêm mới'"
   nzWidth="980px"
   (nzOnCancel)="handleCancel()"
   (nzOnOk)="handleOk()">

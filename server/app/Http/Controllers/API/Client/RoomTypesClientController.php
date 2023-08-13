@@ -48,7 +48,7 @@ class RoomTypesClientController extends Controller
             $count_booked_rooms = BookingDetail::join('tbl_bookings', 'tbl_bookings.id', '=', 'booking_id')
                 ->where([
                     ['room_type_id', $roomtype->id],
-                    ['tbl_bookings.status', '<=', 1],
+                    ['tbl_bookings.status', '<=', 2],
                 ])
                 ->where(function ($query) use ($checkin_date, $checkout_date) {
                     $query->where([

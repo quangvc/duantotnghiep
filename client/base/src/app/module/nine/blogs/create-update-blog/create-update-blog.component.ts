@@ -25,6 +25,7 @@ export class CreateUpdateBlogComponent implements OnInit, OnDestroy {
 
   title: string;
   slug: any;
+  isLoading: boolean = false;
 
   content: string
 
@@ -78,18 +79,6 @@ export class CreateUpdateBlogComponent implements OnInit, OnDestroy {
 
       this.subscription.add(obs);
     }
-    // if( this.blogId ){
-    //   let obs = this.blogsService.findOne(this.slug).subscribe({
-    //     next: (res) => {
-    //       this.formBlog.patchValue(res.data);
-    //       console.log("detail: " + res)
-    //     },
-    //     error: (err) => {
-    //       this.message.create(ERROR, err.error.message);
-    //     }
-    //   })
-    //   this.subscription.add(obs);
-    // }
   }
 
   onSelectFile(event: any) {
@@ -97,7 +86,7 @@ export class CreateUpdateBlogComponent implements OnInit, OnDestroy {
   }
 
   handleOk() {
-
+    this.isLoading = true;
     if (this.formBlog.valid) {
 
       let createUpdate;
@@ -133,10 +122,12 @@ export class CreateUpdateBlogComponent implements OnInit, OnDestroy {
 
       createUpdate.subscribe({
         next: (res) => {
+          this.isLoading = false;
           this.closeModal.emit();
           this.message.create(SUCCESS, `${res.message}`)
         },
         error: (err) => {
+          this.isLoading = false;
           this.message.create(ERROR, err.error.message);
         }
       })

@@ -30,6 +30,7 @@ export class CreateUpdateCouponComponent implements OnInit, OnDestroy {
   ) { }
 
   hotels: any[] = [];
+  isLoading: boolean = false;
 
   ngOnInit() {
     this.createFormBuildCoupon();
@@ -88,6 +89,7 @@ export class CreateUpdateCouponComponent implements OnInit, OnDestroy {
   }
 
   handleOk(){
+    this.isLoading = true;
     let a = this.formCoupon.get('min')!;
     this.formCoupon.markAllAsTouched();
     console.log(a)
@@ -114,10 +116,12 @@ export class CreateUpdateCouponComponent implements OnInit, OnDestroy {
       }
       createUpdate.subscribe({
         next: (cou:any) => {
+          this.isLoading = false;
           this.closeModal.emit();
           this.message.create(SUCCESS, `${id ? "Cập nhật" : "Thêm mới"} thành công`);
         },
         error: (err:any) => {
+          this.isLoading = false;
           this.message.create(ERROR, err.error.message);
         }
       })
