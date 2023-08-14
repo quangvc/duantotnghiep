@@ -89,13 +89,13 @@ export class RegionsComponent implements OnInit, OnDestroy {
           this.editRegion(data);
         },
       },
-      { separator: true},
-      {
-        label: "Xóa",
-        command: () => {
-          this.showConfirm(data);
-        },
-      },
+      // { separator: true},
+      // {
+      //   label: "Xóa",
+      //   command: () => {
+      //     this.showConfirm(data);
+      //   },
+      // },
     ]
   }
 

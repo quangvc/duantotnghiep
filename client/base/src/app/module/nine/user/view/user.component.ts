@@ -88,13 +88,13 @@ export class UserComponent implements OnInit, OnDestroy {
           this.showPermision(data);
         },
       },
-      { separator: true},
-      {
-        label: 'Xóa',
-        command: () => {
+      // { separator: true},
+      // {
+      //   label: 'Xóa',
+      //   command: () => {
 
-        },
-      },
+      //   },
+      // },
     ];
   }
 

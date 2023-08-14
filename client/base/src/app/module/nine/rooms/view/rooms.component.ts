@@ -54,13 +54,13 @@ export class RoomsComponent implements OnInit, OnDestroy {
           this.editRoom(data);
         },
       },
-      { separator: true},
-      {
-        label: "Xóa",
-        command: () => {
-          this.confirmDelete(data);
-        },
-      },
+      // { separator: true},
+      // {
+      //   label: "Xóa",
+      //   command: () => {
+      //     this.confirmDelete(data);
+      //   },
+      // },
     ]
   }
 

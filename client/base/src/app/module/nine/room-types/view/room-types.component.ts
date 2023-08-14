@@ -79,13 +79,13 @@ export class RoomTypesComponent implements OnInit, OnDestroy {
           this.showSettingImage(data);
         },
       },
-      { separator: true},
-      {
-        label: "Xóa",
-        command: () => {
-          this.confirmDelete(data);
-        },
-      },
+      // { separator: true},
+      // {
+      //   label: "Xóa",
+      //   command: () => {
+      //     this.confirmDelete(data);
+      //   },
+      // },
     ]
   }
 

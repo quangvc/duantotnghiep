@@ -119,13 +119,13 @@ export class HotelsComponent implements OnInit, OnDestroy {
           this.showModalImg(data);
         },
       },
-      { separator: true},
-      {
-        label: "Xóa",
-        command: () => {
-          this.showConfirm(data);
-        },
-      },
+      // { separator: true},
+      // {
+      //   label: "Xóa",
+      //   command: () => {
+      //     this.showConfirm(data);
+      //   },
+      // },
     ]
   }
 
