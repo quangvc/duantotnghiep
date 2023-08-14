@@ -8,6 +8,7 @@ import { ImagesClientService } from '../../services/images-client.service';
 import { FormControl, FormGroup } from '@angular/forms';
 import { FeedbackClientService } from '../../services/feedback-client.service';
 import { EllipsisDirective } from './../../share/ellipsis.directive';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-hotel-detail',
@@ -43,6 +44,8 @@ export class HotelDetailComponent implements OnInit {
   formStar!: FormGroup;
 
   position: string = 'bottom';
+
+  urlRouter = `${environment.api}/Images`;
 
   positionOptions = [
     {

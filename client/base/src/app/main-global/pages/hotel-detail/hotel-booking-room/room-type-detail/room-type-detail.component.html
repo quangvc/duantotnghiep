@@ -4,7 +4,7 @@
     <div class="col-6">
       <p-galleria [value]="images" [numVisible]="5" [autoPlay]="true" [circular]="true" [showItemNavigators]="true" [showThumbnails]="false" [responsiveOptions]="responsiveOptions" [containerStyle]="{ 'max-width': '640px' }">
         <ng-template pTemplate="item" let-item>
-            <img [src]="'http://127.0.0.1:8000/Images/'+item.path" style="width: 100%; max-height: 400px; display: block;" />
+            <img [src]="urlRouter+'/'+item.path" style="width: 100%; max-height: 400px; display: block;" />
         </ng-template>
       </p-galleria>
     </div>

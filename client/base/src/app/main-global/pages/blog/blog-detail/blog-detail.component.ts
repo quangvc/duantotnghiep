@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { BlogClientService } from 'src/app/main-global/services/blogClient.service';
+import { environment } from 'src/environments/environment';
 
 interface PageEvent {
   first: number;
@@ -27,6 +28,7 @@ export class BlogDetailComponent implements OnInit{
   isCommentsArrayEmpty: boolean
   commentForm: any;
   note: any;
+  urlRouter = `${environment.api}/Images`;
 
   onPageChange(event: PageEvent) {
       this.first = event.first;

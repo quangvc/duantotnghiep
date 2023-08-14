@@ -270,7 +270,8 @@ export class BookingComponent implements OnInit {
               }
 
               this.message.create(SUCCESS, `Đăng ký thành công!`);
-              window.location.href = 'booking/payment'
+              this.router.navigate(['/booking/payment'])
+              // window.location.href = 'booking/payment'
 
             },
             error: (err) => {

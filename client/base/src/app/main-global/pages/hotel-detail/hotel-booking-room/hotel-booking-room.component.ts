@@ -10,6 +10,7 @@ import { SelectItem } from 'primeng/api';
 import { Table } from 'primeng/table';
 import { ngxLoadingAnimationTypes } from 'ngx-loading';
 import { roomTypeClientService } from 'src/app/main-global/services/room-type-client.service';
+import { Router } from '@angular/router';
 
 const PrimaryWhite = '#ffffff';
 interface roomType {
@@ -86,6 +87,7 @@ export class HotelBookingRoomComponent implements OnInit {
   constructor(
     private _roomTypeClientService: roomTypeClientService,
     private message: NzMessageService,
+    private router: Router,
   ) {
     // Tạo ngày hiện tại
     const currentDate = moment();
@@ -231,7 +233,8 @@ export class HotelBookingRoomComponent implements OnInit {
 
 
     // Điều hướng đến trang thanh toán (thay 'payment' bằng URL của trang thanh toán)
-    window.location.href = 'booking';
+    // window.location.href = 'booking';
+    this.router.navigate(['booking'])
   }
 
   resetdate() {

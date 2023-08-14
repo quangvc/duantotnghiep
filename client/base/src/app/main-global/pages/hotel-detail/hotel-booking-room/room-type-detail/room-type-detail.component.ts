@@ -5,6 +5,7 @@ import { DynamicDialogRef } from 'primeng/dynamicdialog';
 import { Subscription } from 'rxjs';
 import { ERROR } from 'src/app/module/_mShared/model/url.class';
 import { ImagesClientService } from 'src/app/main-global/services/images-client.service';
+import { environment } from 'src/environments/environment';
 
 interface RoomTypeDetailData {
   id: number;
@@ -43,6 +44,7 @@ export class RoomTypeDetailComponent implements OnInit {
       numVisible: 1
     }
   ];
+  urlRouter = `${environment.api}/Images`;
 
   // http://127.0.0.1:8000/api/client/image/room-type/1
 

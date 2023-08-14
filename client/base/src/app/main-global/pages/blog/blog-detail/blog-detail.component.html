@@ -38,7 +38,7 @@
     <div class="offset-md-1 col-md-10 d-flex justify-content-center ">
       <figure>
         <a href="./../../../../assets/image/ks1.jpg" title="Skin Care Product" class="image-link"><img
-            [src]="'http://127.0.0.1:8000/Images/blog/'+ blog.image" class="img-fluid" alt=""></a>
+            [src]="urlRouter+'/Images/blog/'+ blog.image" class="img-fluid" alt=""></a>
         <!-- <figcaption class="text-center">Khách sạn đẹp vãi lòi</figcaption> -->
       </figure>
     </div>
@@ -115,7 +115,7 @@
         <!-- Thông tin bình luận -->
         <div class="d-flex flex-start align-items-center">
           <!-- Avatar người dùng (thay thế bằng hình ảnh avatar người dùng thực) -->
-          <img [src]="'http://127.0.0.1:8000/Images/avatars/'+item.user.avatar" alt="Admin"
+          <img [src]="urlRouter+'/Images/avatars/'+item.user.avatar" alt="Admin"
                   class="rounded-circle" width="150">
           <!-- <img class="rounded-circle shadow-1-strong me-3" src="./../../../../assets/image/avt1.jpg" alt="avatar"
             width="60" height="60" /> -->
@@ -156,7 +156,7 @@
               <div class="d-flex flex-start align-items-center">
                 <!-- <img class="rounded-circle shadow-1-strong me-3" src="./../../../../assets/image/avt1.jpg" alt="avatar"
                 width="60" height="60" /> -->
-                <img [src]="'http://127.0.0.1:8000/Images/avatars/'+reply.user.avatar" alt="Admin"
+                <img [src]="urlRouter+'/avatars/'+reply.user.avatar" alt="Admin"
                   class="rounded-circle" width="150">
               <div class="me-3">
                 <h6 class="fw-bold text-primary mb-1">{{ reply.user.name }}</h6>
