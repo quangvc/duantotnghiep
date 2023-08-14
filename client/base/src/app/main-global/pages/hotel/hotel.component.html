@@ -6,12 +6,30 @@
       <div class="col-lg-3">
         <!-- Sort start -->
         <div class="rounded-3 border border-3 overflow-hidden p-2 mb-3 bg-white">
-          <div>
+          <!-- <div>
             <h5 class="fw-bold">Sắp xếp kết quả</h5>
             <h6>Sắp xếp kết quả theo lựa chọn</h6>
           </div>
+          <hr> -->
+          <!-- Start Khu vực -->
+          <div>
+            <h5 class="fw-bold">Khu vực</h5>
+            <h6>Hiển thị khách sạn theo khu vực</h6>
+          </div>
           <hr>
           <div>
+            <div class="">
+              <div class="d-flex flex-column gap-3">
+                <div *ngFor="let region of regions">
+                  <p-radioButton name="regionOption" [value]="region.id" [(ngModel)]="selectedRegion"
+                    (onClick)="onRegionSelected(region.id)"></p-radioButton>
+                  <label>{{ region.name }}</label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- End Khu vực -->
+          <!-- <div>
             <div class="">
               <div class="d-flex flex-column gap-3">
                 <div class="flex align-items-center">
@@ -39,30 +57,11 @@
                 </div>
               </div>
             </div>
-          </div>
+          </div> -->
         </div>
         <!-- Sort start -->
 
-        <!-- Start Khu vực -->
-        <div class="rounded-3 border border-3 overflow-hidden p-2 mb-3 bg-white">
-          <div>
-            <h5 class="fw-bold">Khu vực</h5>
-            <h6>Hiển thị khách sạn theo khu vực</h6>
-          </div>
-          <hr>
-          <div>
-            <div class="">
-              <div class="d-flex flex-column gap-3">
-                <div *ngFor="let region of regions">
-                  <p-radioButton name="regionOption" [value]="region.id" [(ngModel)]="selectedRegion"
-                    (onClick)="onRegionSelected(region.id)"></p-radioButton>
-                  <label>{{ region.name }}</label>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- End Khu vực -->
+
 
         <!-- Filter start -->
         <!-- <div class="room-item rounded-3 border border-3 overflow-hidden mb-3 bg-white">
@@ -185,7 +184,7 @@
       <!-- Right -->
       <div class="col-lg wow fadeInUp" data-wow-delay="0.3s">
 
-        <div class="d-flex flex-row border border-1 rounded-4 p-3 mb-3 bg-white">
+        <div class="d-flex flex-row border border-1 rounded-4 p-3 mb-3 bg-white" *ngIf="!notLogin">
           <img src="./../../../assets/image/gift.png" alt="" class="me-3">
           <div class="my-auto">
             <p class="fw-bold">Đăng nhập hoặc Đăng ký và tận hưởng ưu đãi dành riêng cho thành viên</p>
@@ -215,8 +214,7 @@
             <div class="col-4 p-0">
               <a routerLink="/hotel/{{ data.id }}">
                 <!-- <img style="width: 100%;" src="./../../../assets/image/ks1.jpg" alt=""> -->
-                <img *ngIf="data.images[0]" style="width: 100%;"
-                  [src]="urlRouter+'/'+data.images[0].path" alt="">
+                <img *ngIf="data.images[0]" style="width: 100%;" [src]="urlRouter+'/'+data.images[0].path" alt="">
               </a>
             </div>
             <div class="col">

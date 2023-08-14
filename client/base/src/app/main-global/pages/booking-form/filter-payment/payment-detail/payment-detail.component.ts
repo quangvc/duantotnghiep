@@ -4,7 +4,7 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
 import { BookingClientService } from 'src/app/main-global/services/bookingClient.service';
 import { RoomClientService } from 'src/app/main-global/services/room-client.service';
-import { ERROR } from 'src/app/module/_mShared/model/url.class';
+import { ERROR, SUCCESS } from 'src/app/module/_mShared/model/url.class';
 import { BookingsService } from 'src/app/module/_mShared/service/bookings.service';
 
 interface Hotel {
@@ -109,13 +109,7 @@ export class PaymentDetailComponent implements OnInit {
       nzTitle: 'Xác nhận hủy phòng',
       nzContent: `
       <div class="text-center">
-        <h3>Quy định khi hủy phòng</h3>
-        <p>
-          100% số tiền quý khách đặt phòng sẽ được chuyển vào quỹ từ thiện trẻ em khuyết tật!
-          (Tin chuẩn 100%)
-        </p>
-        <p>Đồng ý thì nhập mã vào đây:</p>
-        <input type="text" [(ngModel)]="enteredBookingCode" />
+      <h3>Bạn có thực sự muốn hủy đơn hay không???</h3>
       </div>
       `,
       nzOkText: 'Xác nhận',
@@ -137,9 +131,18 @@ export class PaymentDetailComponent implements OnInit {
 
     // If the booking code matches, proceed with canceling the booking
     this.bookingsService.cancelBooking(this.bookingId).subscribe({
+
       next: (res) => {
         console.log(res);
-        this.message.create(ERROR, res);
+
+        if (res.length > 0) {
+          this.message.create(ERROR, res);
+
+        } else {
+
+          this.message.create(SUCCESS, res.message);
+        }
+
         this.isConfirmLoading = true;
         setTimeout(() => {
           this.isConfirmLoading = false;

@@ -16,19 +16,20 @@
 <!-- Page Header End -->
 <div class="row">
   <div class="leftcolumn">
-    <div class="card" *ngFor="let data of blogs;">
+    <div class="card" *ngFor="let data of blogs | paginate: { itemsPerPage: 5, currentPage: p }">
       <a [routerLink]="'/blogs/'+ data.slug" ><h3 class="link">{{ data.title }}</h3></a>
       <h6>{{ data.user_name }}, {{ data.created_at | date: 'dd/MM/yyyy' }}</h6>
       <a [routerLink]="'/blogs/'+ data.slug">
         <img [src]="urlRouter + data.image" class="fakeimg border border-1 mb-4" style="height:300px; object-fit: cover">
       </a>
-      <line-clamp [row]="3">
+      <!-- <line-clamp [row]="3">
         <div #content>
           <p [innerHTML]="data.content">.</p>
         </div>
-      </line-clamp>
+      </line-clamp> -->
 
     </div>
+    <pagination-controls class="my-pagination" (pageChange)="p = $event" class="float-right"></pagination-controls>
     <!-- <div class="card">
       <a href="blog-detail"><h3>TITLE HEADING</h3></a>
       <h6>Title description, Dec 7, 2017</h6>
@@ -42,13 +43,15 @@
   <div class="rightcolumn">
     <div class="card">
       <h3>Về NINENIGHT</h3>
-      <div class="fakeimg" style="height:100px;">Image</div>
-      <p>Some text about me in culpa qui officia deserunt mollit anim..</p>
+      <img src="https://www.peninsula.com/-/media/homepage---andy/exterior-2_1920.jpg" class="fakeimg" style="height:150px;">
+
+      <p>Nơi mà có những bãi biển dài, bờ cát trăng gió thổi vi vu là nơi nào ấy chứ. Chứ
+        chúng tôi chỉ là khách sạn đẳng cấp 5 sao michelin thôi!</p>
     </div>
     <div class="card">
       <h3>Popular Post</h3>
-      <div class="fakeimg" *ngFor="let data of blogs;">
-        <img [src]="urlRouter + data.image" class="fakeimg">
+      <div class="fakeimg" *ngFor="let data of newBlog;">
+        <img [src]="urlRouter + data.image" class="fakeimg" style="height:150px;">
         <a [routerLink]="'/blogs/'+ data.slug"><h6 class="link">{{ data.title }}</h6></a>
         <hr>
       </div>

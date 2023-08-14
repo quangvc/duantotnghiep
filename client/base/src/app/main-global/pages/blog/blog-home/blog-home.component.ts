@@ -21,9 +21,11 @@ export class BlogComponent implements OnInit{
     private message: NzMessageService,
     ) { }
   blogs: any[] = [];
+  newBlog: any[] = [];
   blogId: any;
   slug: any;
   menus: MenuItem[] = [];
+  p: any;
 
   urlRouter = `${environment.api}/Images/blog/`;
 
@@ -37,6 +39,7 @@ export class BlogComponent implements OnInit{
     let obs = this.blogClientService.getBlogs().subscribe({
       next: (res) => {
         this.blogs = res.data;
+        this.newBlog = res.data.slice(0, 5);
         console.log(res)
       },
       error: (err) => {{
