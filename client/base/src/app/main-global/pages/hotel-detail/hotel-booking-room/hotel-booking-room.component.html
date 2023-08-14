@@ -70,6 +70,7 @@
         <tr>
           <td>
             <a (click)="openDialog(roomType)">{{ roomType.name }}</a>
+            <button class="bg-primary ml-2 border-0" (click)="openDialog(roomType)">Xem chi tiết</button>
             <room-type-detail #dialog>
             </room-type-detail>
           </td>
