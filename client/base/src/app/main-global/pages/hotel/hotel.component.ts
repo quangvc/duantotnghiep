@@ -60,6 +60,7 @@ export class HotelComponent implements OnInit {
   originalHotels: any[] = [];
   totalRecords: number = 0;
   p: any;
+  notLogin: boolean = true;
 
   urlRouter = `${environment.api}/Images`;
 
@@ -135,6 +136,18 @@ export class HotelComponent implements OnInit {
     } catch (err) {
       this.loading = false;
       console.error('Đã xảy ra lỗi khi gọi API:', err);
+    }
+  }
+
+  // Kiểm tra đăng nhập (nếu không đăng nhập thì không có mã giảm)
+  async checkLogin() {
+    let userLogged: any = sessionStorage.getItem('user');
+    let user = JSON.parse(userLogged);
+    if (user) {
+      this.notLogin = false;
+    } else {
+      console.log('Không đăng nhập');
+
     }
   }
 

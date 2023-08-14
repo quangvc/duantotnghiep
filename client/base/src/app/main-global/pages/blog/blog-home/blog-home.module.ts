@@ -5,6 +5,7 @@ import { BlogRoutes } from './blog-home.routing';
 import { BlogsService } from 'src/app/module/_mShared/service/blogs.service';
 import { BlogClientService } from 'src/app/main-global/services/blogClient.service';
 import { LineClampComponent } from 'src/app/main-global/share/line-clamp/line-clamp.component';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 
 
@@ -12,11 +13,12 @@ import { LineClampComponent } from 'src/app/main-global/share/line-clamp/line-cl
 @NgModule({
   declarations: [
     LineClampComponent,
-    BlogComponent
+    BlogComponent,
   ],
   imports: [
     CommonModule,
-    BlogRoutes
+    BlogRoutes,
+    NgxPaginationModule
   ],
   providers: [BlogClientService, BlogsService]
 })

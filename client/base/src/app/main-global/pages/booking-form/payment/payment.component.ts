@@ -138,7 +138,7 @@ export class PaymentComponent implements OnInit {
           console.log(res);
 
           this.message.create(SUCCESS, `${res.message}`);
-          this.route.navigateByUrl(res.data)
+          // this.route.navigateByUrl(res.data)
           window.location.href = res.data
         },
         error: (err) => {

@@ -126,7 +126,7 @@
           </div>
           <div class="p-4 mt-2 ">
             <div class="text-center">
-              <a class="" [routerLink]="'hotels/region/' + item.id">
+              <a class="" [routerLink]="'/hotels/region/' + item.id">
                 <h5 class="link mb-0">{{ item.name }}</h5>
               </a>
             </div>
@@ -233,10 +233,10 @@
     </div>
     <div class="row g-4">
       <div class="col-lg-4 col-md-6" *ngFor="let blog of blogs; let i=index">
-        <a class="service-item rounded" [routerLink]="'blogs/' + blog.slug" *ngIf="i < 3">
-          <div class="service-icon bg-transparent border rounded p-1">
-            <div class="w-100 h-100 border rounded d-flex align-items-center justify-content-center">
-              <img [src]="urlRouter + '/blog/' + blog.image" style="width: 100%;">
+        <a class="service-item rounded" [routerLink]="'/blogs/' + blog.slug" *ngIf="i < 3">
+          <div class="bg-transparent border rounded p-1 m-3">
+            <div class="w-100 h-100 border rounded d-flex align-items-center justify-content-center" style="width: 100%;">
+              <img [src]="urlRouter + '/blog/' + blog.image" style="width: 100%; height: 200px;">
             </div>
           </div>
           <h5 class="overflow-text mb-3 mx-auto">{{ blog.title }}</h5>

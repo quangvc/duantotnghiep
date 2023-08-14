@@ -44,9 +44,23 @@
 }
 
 /* Responsive layout - when the screen is less than 800px wide, make the two columns stack on top of each other instead of next to each other */
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 1200px) {
   .leftcolumn, .rightcolumn {
     width: 100%;
     padding: 0;
   }
+}
+:host ::ng-deep .ngx-pagination {
+  width: 100%;
+  text-align: center;
+  padding: 15px;
+}
+:host ::ng-deep .ngx-pagination > li {
+  margin-left: 20px;
+  margin-right: 20px;
+  border-radius: 100%;
+}
+
+:host ::ng-deep .ngx-pagination > li > a:hover {
+  border-radius: 100%;
 }

@@ -25,8 +25,7 @@
           <td>{{ data.booking_number }}</td>
           <td>{{ data.checkin_date }}</td>
           <td>{{ data.checkout_date }}</td>
-          <td>{{ data.people_quantity }}</td>
-          <td>{{ data.coupon }}</td>
+          <td>{{ data.coupon.name }}</td>
           <td><b>{{ data.total_price | currency: 'VND' }}</b></td>
         </tr>
       </tbody>

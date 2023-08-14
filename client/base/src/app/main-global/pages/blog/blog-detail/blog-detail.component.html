@@ -47,7 +47,7 @@
   </div>
 </section>
 
-<section id="blog-navigation">
+<!-- <section id="blog-navigation">
   <div class=" container d-flex justify-content-between ">
     <div class="col-md-4">
       <a href=""><span class="text-primary text-uppercase">Previous</span></a>
@@ -61,7 +61,7 @@
           Fat</a></h6>
     </div>
   </div>
-</section>
+</section> -->
 
 
 
@@ -115,7 +115,7 @@
         <!-- Thông tin bình luận -->
         <div class="d-flex flex-start align-items-center">
           <!-- Avatar người dùng (thay thế bằng hình ảnh avatar người dùng thực) -->
-          <img [src]="urlRouter+'/Images/avatars/'+item.user.avatar" alt="Admin"
+          <img class="rounded-circle shadow-1-strong me-3 bg-black" src="https://pixsector.com/cache/50fcb576/av0cc3f7b41cb8510e35c.png" alt="Admin"
                   class="rounded-circle" width="150">
           <!-- <img class="rounded-circle shadow-1-strong me-3" src="./../../../../assets/image/avt1.jpg" alt="avatar"
             width="60" height="60" /> -->
@@ -156,7 +156,7 @@
               <div class="d-flex flex-start align-items-center">
                 <!-- <img class="rounded-circle shadow-1-strong me-3" src="./../../../../assets/image/avt1.jpg" alt="avatar"
                 width="60" height="60" /> -->
-                <img [src]="urlRouter+'/avatars/'+reply.user.avatar" alt="Admin"
+                <img class="rounded-circle shadow-1-strong me-3 bg-primary" src="https://pixsector.com/cache/50fcb576/av0cc3f7b41cb8510e35c.png" alt="Admin"
                   class="rounded-circle" width="150">
               <div class="me-3">
                 <h6 class="fw-bold text-primary mb-1">{{ reply.user.name }}</h6>
@@ -181,7 +181,7 @@
     </div>
     <div class="card-footer py-3 border-0" *ngIf="commentForm">
       <div class="d-flex flex-start w-100">
-        <img class="rounded-circle shadow-1-strong me-3" src="./../../../../assets/image/avt1.jpg" alt="avatar"
+        <img class="rounded-circle shadow-1-strong me-3 bg-white" src="https://pixsector.com/cache/50fcb576/av0cc3f7b41cb8510e35c.png" alt="avatar"
           width="40" height="40" />
         <form class="form-outline w-100" [formGroup]="formComment">
           <input type="number" id="blog_id" formControlName="blog_id" style="display: none;">
