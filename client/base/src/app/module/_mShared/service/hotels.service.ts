@@ -51,9 +51,9 @@ export class HotelsService {
     return this.http.delete(url, this.httpOptions)
   }
 
-  changeStatus(id:any, data?:any): Observable<any>{
+  changeStatus(id:any): Observable<any>{
     const url = `${this.API_URL}/${ADMIN}/${HOTELS}/changeStatus/${id}`;
-    return this.http.put(url,data,this.httpOptions)
+    return this.http.put(url,id,this.httpOptions)
   }
 
   getImage(): Observable<any>{

@@ -2,6 +2,8 @@ import { Routes, RouterModule } from '@angular/router';
 import { MainGlobalComponent } from './main-global.component';
 import { NotFoundComponent } from '../not-found/not-found.component';
 import { LoginComponent } from '../auth/login/view/login.component';
+import { RegisterComponent } from '../auth/register/view/register.component';
+import { ResetPasswordComponent } from '../auth/reset-password/reset-password.component';
 
 
 
@@ -33,6 +35,8 @@ const routes: Routes = [
   ]},
 
   {path: 'login', component: LoginComponent},
+  {path: 'register', component: RegisterComponent},
+  {path: 'reset-password', component: ResetPasswordComponent},
 
   { path: 'nine' , loadChildren: () => import('../module/nine/nine-layout/nine-layout.module').then(m => m.NineLayoutModule)},
 

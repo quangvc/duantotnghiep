@@ -19,13 +19,13 @@
       <td>{{ data.title }}</td>
       <td>
         <img nz-image width="100px" height="100px"
-          [nzSrc]="'http://127.0.0.1:8000/Images/blog/'+data.image"
+          [nzSrc]="urlApi+'blog/'+data.image"
           alt=""
         />
       </td>
       <td>{{ data.user_name }}</td>
       <td>{{ data.slug }}</td>
-      <td><nz-switch [(ngModel)]="data.active" (ngModelChange)="confirmChangeStatus($event,data)"></nz-switch></td>
+      <td><nz-switch [(ngModel)]="data.txtActive" (ngModelChange)="confirmChangeStatus($event,data)"></nz-switch></td>
       <td>
         <q-menu
           [model]="menus"

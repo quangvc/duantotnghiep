@@ -9,6 +9,7 @@ import { Enum } from 'src/app/module/_mShared/service/static/enum.service';
 
 import { BlogsService } from 'src/app/module/_mShared/service/blogs.service';
 import { Auth } from 'src/app/auth/_aShared/auth.class';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-blogs',
@@ -38,6 +39,8 @@ export class BlogsComponent implements OnInit {
 
   displayComment: boolean = false;
 
+  urlApi = `${environment.api}/Images/`
+
   ngOnInit() {
     this.getBlogs();
     this.getOptionEnum();
@@ -53,7 +56,13 @@ export class BlogsComponent implements OnInit {
       next: (res) => {
         // console.log(res)
         this.blogs = res.data;
-
+        for (const iterator of this.blogs) {
+          if(iterator.active == 0){
+            iterator.txtActive = false;
+          }else{
+            iterator.txtActive = true;
+          }
+      }
       },
       error: (err) => {{
         this.message.create(ERROR, err.message);
