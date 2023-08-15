@@ -9,6 +9,7 @@ import { Enum } from '../../_mShared/service/static/enum.service';
 import { NineStatus } from '../../_mShared/enum/enum';
 import { Subscription } from 'rxjs';
 import { Auth } from 'src/app/auth/_aShared/auth.class';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-banners',
@@ -36,6 +37,8 @@ export class BannersComponent implements OnInit,OnDestroy {
 
   displayMultipleImage: boolean = false;
 
+  urlApi = `${environment.api}/Images/`
+
   // dataImage: any[] = [];
   formData = new FormData();
 
@@ -58,11 +61,11 @@ export class BannersComponent implements OnInit,OnDestroy {
         console.log(res)
 
         for (const banner of this.banners) {
-          this.statusOption.forEach((status: any) => {
-            if(status.value == banner.status){
-              banner.txtStatus = status.text;
-            }
-          })
+          if(banner.status == 0){
+            banner.txtStatus = false;
+          }else{
+            banner.txtStatus = true;
+          }
         }
 
       },

@@ -3,6 +3,7 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
 import { ERROR, SUCCESS } from 'src/app/module/_mShared/model/url.class';
 import { ImagesService } from 'src/app/module/_mShared/service/images.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'hotel-image',
@@ -23,6 +24,7 @@ export class ImageComponent implements OnInit {
     ) { }
 
   confirmModal?: NzModalRef;
+  urlApi = `${environment.api}/Images/`
 
   displayMultipleImage: boolean = false;
 

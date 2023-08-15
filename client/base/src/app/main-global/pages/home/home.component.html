@@ -149,7 +149,7 @@
       <div class="col-lg-4 col-md-6" *ngFor="let item of hotels; let i=index">
         <div class="room-item room-item-edit shadow rounded-4 overflow-hidden mb-3">
           <div class="position-relative">
-            <img style="width: 100%; max-height: 200px;" [src]="urlRouter+item.images[0]?.path" alt="">
+            <img style="width: 100%; max-height: 200px;" [src]="urlRouter+'/'+item.images[0]?.path" alt="">
             <small
               class="position-absolute start-0 top-100 translate-middle-y bg-primary text-white rounded py-1 px-3 ms-4">Khách sạn</small>
           </div>

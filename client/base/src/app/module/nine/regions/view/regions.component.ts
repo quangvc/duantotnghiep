@@ -9,6 +9,7 @@ import { Enum } from 'src/app/module/_mShared/service/static/enum.service';
 import { RegionsService } from 'src/app/module/_mShared/service/regions.service';
 import { Auth } from 'src/app/auth/_aShared/auth.class';
 import { HotelsService } from 'src/app/module/_mShared/service/hotels.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-regions',
@@ -37,6 +38,8 @@ export class RegionsComponent implements OnInit, OnDestroy {
   statusOption: any;
 
   role: boolean = false;
+
+  urlApi = `${environment.api}/Images/`
 
   ngOnInit() {
     this.getRegion();

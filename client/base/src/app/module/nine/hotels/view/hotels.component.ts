@@ -75,8 +75,14 @@ export class HotelsComponent implements OnInit, OnDestroy {
     let obs = this.hotelsService.getHotels().subscribe({
       next: (res) => {
         this.hotels = res.data;
-        console.log(this.hotels)
         this.getImage();
+        for (const iterator of this.hotels) {
+            if(iterator.status == 0){
+              iterator.txtStatus = false;
+            }else{
+              iterator.txtStatus = true;
+            }
+        }
       },
       error: (err) => {{
         this.message.create(ERROR, err.error.message);
@@ -151,21 +157,22 @@ export class HotelsComponent implements OnInit, OnDestroy {
   // status
   confirmChangeStatus(event:any, data:any){
 
-    if(Auth.User('role') == 'admin')
-    this.confirmModal = this.modal.confirm({
-      nzTitle: `Xác thực sự kiện !!`,
-      nzContent: 'Xác nhận thay đổi trạng thái ?',
-      nzOnOk: () =>
-        new Promise((resolve, reject) => {
-          this.changeStatus(data);
-          setTimeout(0.6 > 0.5 ? resolve : reject, 1000);
-        }),
-      nzOnCancel: () => {
-        this.getHotels();
-      }
-    });
-
-    else this.message.create(WARNING, `Bạn không đủ quyền truy cập!`);
+    if(Auth.User('role') == 'admin'){
+      this.confirmModal = this.modal.confirm({
+        nzTitle: `Xác thực sự kiện !!`,
+        nzContent: 'Xác nhận thay đổi trạng thái ?',
+        nzOnOk: () =>
+          new Promise((resolve, reject) => {
+            this.changeStatus(data);
+            setTimeout(0.6 > 0.5 ? resolve : reject, 1000);
+          }),
+        nzOnCancel: () => {
+          this.getHotels();
+        }
+      });
+    }else{
+      this.message.create(WARNING, `Bạn không đủ quyền truy cập!`);
+    }
 
   }
 
@@ -175,6 +182,7 @@ export class HotelsComponent implements OnInit, OnDestroy {
       next: (res) => {
         this.message.create(SUCCESS, "Cập nhật thành công !!");
         this.getHotels();
+        console.log(res)
       },
       error: (err) => {
         this.getHotels();

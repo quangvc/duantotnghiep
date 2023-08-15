@@ -22,7 +22,7 @@
       <td>{{ data.hotel_phone }}</td>
       <td>{{ data.star_rating }}</td>
       <td>{{ data.region.name }}</td>
-      <td><nz-switch [(ngModel)]="data.status" (ngModelChange)="confirmChangeStatus($event,data)" [disabled]="!role"></nz-switch></td>
+      <td><nz-switch [(ngModel)]="data.txtStatus" (ngModelChange)="confirmChangeStatus($event,data)" [disabled]="!role"></nz-switch></td>
       <td *ngIf="role">
         <q-menu
           [model]="menus"
