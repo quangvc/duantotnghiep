@@ -182,6 +182,48 @@ export class HotelBookingRoomComponent implements OnInit {
   }
 
   // Hàm tính tổng giá tiền cho toàn bộ bảng
+  // calculateTotal(roomType: any, $event: any) {
+  //   console.log(roomType);
+  //   console.log(($event.target as HTMLInputElement).value);
+
+  //   // Cái này có dạng chuỗi '1 phòng - Giá: ₫200,000'
+  //   this.selectedQuantity = ($event.target as HTMLInputElement).value;
+  //   // chuyển đổi số lượng phòng -> number
+  //   const quantityRegex = /(\d+)/;
+  //   const quantityMatch = this.selectedQuantity.match(quantityRegex);
+  //   const quantity = quantityMatch ? parseInt(quantityMatch[0], 10) : 0;
+
+  //   console.log(quantity);
+
+
+  //   this.totalQuantity = quantity; // Tổng số lượng
+  //   this.totalPrice = roomType.price_per_night * quantity; // Tổng giá phòng
+
+
+  //   //this.totalAmount += this.totalPrice; // Tổng số tiền
+
+  //   // Kiểm tra xem kết quả đã tồn tại trong resultArray hay chưa
+  //   const existingResult = this.resultArray.find((result) => result.roomType_Id === roomType.id);
+  //   console.log(existingResult);
+
+  //   if (existingResult) {
+  //     existingResult.quantity = quantity;
+  //     existingResult.totalPrice = this.totalPrice;
+  //   } else {
+  //     this.resultArray.push({
+  //       roomType_Id: roomType.id,
+  //       roomType_name: roomType.name,
+  //       quantity: quantity,
+  //       totalPrice: this.totalPrice
+  //     });
+  //   }
+  //   this.totalAmount = this.resultArray.reduce((total, result) => total + result.totalPrice, 0);
+
+  //   console.log("Loại phòng: " + roomType.name);
+  //   console.log("Số lượng: " + quantity);
+  //   console.log("Tổng giá loại phòng: " + this.totalPrice);
+  // }
+
   calculateTotal(roomType: any, $event: any) {
     console.log(roomType);
     console.log(($event.target as HTMLInputElement).value);
@@ -193,31 +235,42 @@ export class HotelBookingRoomComponent implements OnInit {
     const quantityMatch = this.selectedQuantity.match(quantityRegex);
     const quantity = quantityMatch ? parseInt(quantityMatch[0], 10) : 0;
 
-    this.totalQuantity = quantity; // Tổng số lượng
-    this.totalPrice = roomType.price_per_night * quantity; // Tổng giá phòng
+    console.log(quantity);
 
-
-    //this.totalAmount += this.totalPrice; // Tổng số tiền
-
-    // Kiểm tra xem kết quả đã tồn tại trong resultArray hay chưa
-    const existingResult = this.resultArray.find((result) => result.roomType_Id === roomType.id);
-    if (existingResult) {
-      existingResult.quantity = quantity;
-      existingResult.totalPrice = this.totalPrice;
+    if (quantity === 0) {
+      // Xóa dữ liệu của room type nếu quantity = 0
+      const existingResultIndex = this.resultArray.findIndex((result) => result.roomType_Id === roomType.id);
+      if (existingResultIndex !== -1) {
+        this.resultArray.splice(existingResultIndex, 1);
+      }
     } else {
-      this.resultArray.push({
-        roomType_Id: roomType.id,
-        roomType_name: roomType.name,
-        quantity: quantity,
-        totalPrice: this.totalPrice
-      });
+      this.totalQuantity = quantity; // Tổng số lượng
+      this.totalPrice = roomType.price_per_night * quantity; // Tổng giá phòng
+
+      // Kiểm tra xem kết quả đã tồn tại trong resultArray hay chưa
+      const existingResult = this.resultArray.find((result) => result.roomType_Id === roomType.id);
+      console.log(existingResult);
+
+      if (existingResult) {
+        existingResult.quantity = quantity;
+        existingResult.totalPrice = this.totalPrice;
+      } else {
+        this.resultArray.push({
+          roomType_Id: roomType.id,
+          roomType_name: roomType.name,
+          quantity: quantity,
+          totalPrice: this.totalPrice
+        });
+      }
     }
+
     this.totalAmount = this.resultArray.reduce((total, result) => total + result.totalPrice, 0);
 
     console.log("Loại phòng: " + roomType.name);
     console.log("Số lượng: " + quantity);
     console.log("Tổng giá loại phòng: " + this.totalPrice);
-  }
+}
+
 
   // Lưu dữ liệu lên sessionStorage + chuyển trang thanh toán
   goToPaymentPage() {
