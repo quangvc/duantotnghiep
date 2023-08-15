@@ -83,7 +83,10 @@
             {{ roomType.price_per_night | currency: 'VND'  }}
           </td>
           <td>
-            Lọc để hiển thị các phòng còn trống
+            Nhấn tìm kiếm để hiển thị các phòng còn trống
+          </td>
+          <td>
+            <button class="bg-primary ml-2 border-0" (click)="openDialog(roomType)">Xem chi tiết</button>
           </td>
           <td>
             <button class="bg-primary me-2 border-0" (click)="openDialog(roomType)">Xem chi tiết</button>
@@ -129,7 +132,8 @@
           <td>
             <select (change)="calculateTotal(roomType.room_type, $event)">
               <ng-container *ngIf="roomType.room_type">
-                <option value="" selected>Hãy chọn số phòng</option>
+                <option value="" disabled selected>Hãy chọn số lượng phòng</option>
+                <option value="">0</option>
                 <option *ngFor="let room of getCapacitysArray(roomType.rooms_count); let i=index" [ngValue]="i + 1">
                   {{ i + 1 }} phòng - Giá: {{ roomType.room_type.price_per_night * (i + 1) | currency: 'VND' }}
                 </option>
@@ -137,7 +141,7 @@
             </select>
           </td>
           <td>
-            <button class="bg-primary me-2 border-0" (click)="openDialog(roomType)">Xem chi tiết</button>
+            <button class="bg-primary ml-2 border-0" (click)="openDialog(roomType)">Xem chi tiết</button>
           </td>
         </tr>
       </ng-template>
