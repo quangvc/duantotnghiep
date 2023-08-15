@@ -170,6 +170,8 @@ export class ProfileComponent implements OnInit {
   confirmDialog() {
     this.confirmationService.confirm({
       message: 'Bạn có muốn đăng xuất?',
+      acceptLabel: 'Có',
+      rejectLabel: 'Không',
       accept: () => {
         this.logOut();
       },

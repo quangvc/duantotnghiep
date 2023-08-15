@@ -253,6 +253,8 @@ export class BookingComponent implements OnInit {
       console.log(formValue);
       this.confirmationService.confirm({
         message: 'Bạn có chắc chắn thông tin đã đúng chứ?',
+        acceptLabel: 'Có',
+        rejectLabel: 'Không',
         accept: async () => {
           let newData = this.userform.value;
           let create = this.bookingClientService.createBooking(newData);
@@ -324,6 +326,8 @@ export class BookingComponent implements OnInit {
     if (couponCode) {
       this.confirmationService.confirm({
         message: 'Bạn có chắc chắn dùng mã giảm giá này?',
+        acceptLabel: 'Có',
+        rejectLabel: 'Không',
         accept: async () => {
           await this.CouponClientService.findByCode(couponCode).subscribe({
             next: (res) => {

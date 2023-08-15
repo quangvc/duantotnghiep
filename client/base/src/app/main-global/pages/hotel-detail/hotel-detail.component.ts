@@ -37,6 +37,7 @@ export class HotelDetailComponent implements OnInit {
   region_id: any;
   region_name: any;
   feedbacks: any[] = [];
+  allFeedbacks: any[] = [];
   rating: any;
 
   minPrice: number;
@@ -117,7 +118,7 @@ export class HotelDetailComponent implements OnInit {
       this.FeedbackClientService.getFeedbackByHotel(id).subscribe({
         next: (res) => {
           console.log(res);
-          this.feedbacks = res;
+          this.feedbacks = res.slice(0, 3);
         },
         error: (err) => {{
           console.log('Đã xảy ra lỗi khi gọi API:', err);

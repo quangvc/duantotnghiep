@@ -2,7 +2,7 @@
 <div class="room-item shadow rounded-4 overflow-hidden mb-3 p-5">
   <h5 class="mb-5"><strong>Xem thêm đánh giá từ khách khác</strong></h5>
   <div *ngIf="feedbacks.length > 0">
-    <div class="row rounded-4 border border-1 p-2 mb-2" *ngFor="let feedback of feedbacks">
+    <div class="row rounded-4 border border-1 p-2 mb-2" *ngFor="let feedback of feedbacks | paginate: { itemsPerPage: 5, currentPage: p }">
       <div class="feedback-user col">
         <div class="feedback-user-item">
           <div class="feedback-user-icon rounded-circle bg-gray-200 me-3">
@@ -21,6 +21,7 @@
         <p style="color: black; font-weight: 500;">{{ feedback.content }}.</p>
       </div>
     </div>
+    <pagination-controls (pageChange)="p = $event" class="float-right"></pagination-controls>
   </div>
 
   <div class="row mt-5 rounded-4 border border-1 text-center" *ngIf="feedbacks.length <= 0">

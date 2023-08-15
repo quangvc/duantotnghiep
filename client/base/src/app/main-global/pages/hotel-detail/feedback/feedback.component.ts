@@ -10,6 +10,7 @@ import { FeedbackClientService } from 'src/app/main-global/services/feedback-cli
 export class FeedbackComponent implements OnInit {
   feedbacks: any[];
   rating: any;
+  p: any;
 
   constructor(
     private feedbackClientService: FeedbackClientService,

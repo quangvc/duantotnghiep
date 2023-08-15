@@ -26,6 +26,7 @@ import { FeedbackComponent } from './feedback/feedback.component';
 import { EllipsisDirective } from './../../share/ellipsis.directive';
 import { ngxLoadingAnimationTypes } from 'ngx-loading';
 import { NgxLoadingModule } from 'ngx-loading';
+import { NgxPaginationModule } from 'ngx-pagination';
 @NgModule({
   imports: [
     CommonModule,
@@ -45,6 +46,7 @@ import { NgxLoadingModule } from 'ngx-loading';
     RatingModule,
     ReactiveFormsModule,
     CarouselModule,
+    NgxPaginationModule,
     NgxLoadingModule,
     NgxLoadingModule.forRoot({
       animationType: ngxLoadingAnimationTypes.wanderingCubes,
