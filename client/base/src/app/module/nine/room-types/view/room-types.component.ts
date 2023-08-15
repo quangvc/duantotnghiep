@@ -31,7 +31,7 @@ export class RoomTypesComponent implements OnInit, OnDestroy {
 
   formFilter!: FormGroup;
 
-  roomTypes:any[] = [];
+  roomTypes:RoomTypeModel[] = [];
 
   menus: MenuItem[] = [];
 
@@ -96,10 +96,6 @@ export class RoomTypesComponent implements OnInit, OnDestroy {
         if(this.idHotel){
           this.roomTypes = this.roomTypes.filter(type => type.hotelId == this.idHotel);
         }
-        console.log(this.roomTypes)
-        // for (const item of this.roomTypes) {
-        //   // item.room_count = res.rooms_count;
-        // }
       },
       error: (err) => {
         this.message.create(ERROR, `${err.error.message}`)
@@ -132,7 +128,7 @@ export class RoomTypesComponent implements OnInit, OnDestroy {
         new Promise((resolve, reject) => {
           this.deleteRoomType(roomType);
           setTimeout(0.6 > 0.5 ? resolve : reject, 1000);
-        }).catch(() => console.log('Oops errors!'))
+        }).catch()
     });
   }
 
@@ -152,12 +148,12 @@ export class RoomTypesComponent implements OnInit, OnDestroy {
   }
 
   kCheckin(event:any){
-    console.log(event.target.value)
+
 
   }
 
   kCheckout(event:any){
-    console.log(event.target.value)
+
   }
 
   submitCheck(){
@@ -167,11 +163,22 @@ export class RoomTypesComponent implements OnInit, OnDestroy {
 
     this.roomTypeService.filterRoomType(id,checkin,checkout).subscribe({
       next: (res) => {
-        this.roomTypes = res;
-        console.log(res)
-        // for (const item of this.roomTypes) {
-        //   item.room_count = res.rooms_count;
-        // }
+        let newArray = [];
+        for (const iterator of res) {
+          let newRt:RoomTypeModel = {
+            id: iterator.room_type.id,
+            name: iterator.room_type.name,
+            price_per_night: iterator.room_type.price_per_night,
+            description: iterator.room_type.description,
+            capacity: iterator.room_type.capacity,
+            hotelId: iterator.room_type.hotel_id,
+            created_at: iterator.room_type.created_at,
+            updated_at: iterator.room_type.updated_at,
+            quantity_room: iterator.rooms_count,
+          }
+          newArray.push(newRt);
+        }
+        this.roomTypes = newArray;
       },
       error: (err) => {
         this.message.create(ERROR, err.error.message);
@@ -199,6 +206,14 @@ export class RoomTypesComponent implements OnInit, OnDestroy {
 
 }
 
-// interface RoomTypeDto{
-
-// }
+interface RoomTypeModel{
+  id: any;
+  name: string;
+  price_per_night: number;
+  description: string;
+  capacity: number;
+  hotelId: number;
+  created_at: any;
+  updated_at: any;
+  quantity_room: number;
+}
