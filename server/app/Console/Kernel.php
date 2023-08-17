@@ -16,7 +16,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command(BookingStatusCommand::class)->dailyAt('13:00');
+        $schedule->command('command:booking_checkStatus')->dailyAt('13:00');
         $schedule->command('records:delete-expired')->everyMinute();
     }
 

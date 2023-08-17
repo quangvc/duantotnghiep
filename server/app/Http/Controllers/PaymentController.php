@@ -15,7 +15,7 @@ class PaymentController extends Controller
     public function vnpay_payment(Request $request)
     {
 
-        $vnp_Returnurl = "http://localhost:4300/booking/payment-done"; //trang trả về sau khi thanh toán xong
+        $vnp_Returnurl = "http://nine09booking.site/booking/payment-done"; //trang trả về sau khi thanh toán xong
         $vnp_TmnCode = "ENZCQ3F2";
         $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
 
@@ -205,7 +205,7 @@ class PaymentController extends Controller
         $vpc_MerchTxnRef = $booking->booking_number;
         $vpc_OrderInfo = 'Thanh toan dat phong khach san. ID booking ' . $booking->booking_number;
         $vpc_Amount = $booking->total_price * 100;
-        $vpc_ReturnURL = 'http://localhost:4300/booking/payment-done';
+        $vpc_ReturnURL = 'http://nine09booking.site/booking/payment-done';
         $vpc_Version = '2';
         $vpc_Command = 'pay';
         $vpc_Locale = 'vn';
