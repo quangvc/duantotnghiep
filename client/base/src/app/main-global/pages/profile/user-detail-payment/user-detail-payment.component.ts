@@ -7,7 +7,6 @@ import { RoomClientService } from 'src/app/main-global/services/room-client.serv
 import { ERROR, SUCCESS } from 'src/app/module/_mShared/model/url.class';
 import { BookingsService } from 'src/app/module/_mShared/service/bookings.service';
 
-
 interface Hotel {
   id: number;
   hotel_name: string;
@@ -31,10 +30,9 @@ interface BookingDetail {
 @Component({
   selector: 'user-detail-payment',
   templateUrl: './user-detail-payment.component.html',
-  styleUrls: ['./user-detail-payment.component.scss']
+  styleUrls: ['./user-detail-payment.component.scss'],
 })
 export class UserDetailPaymentComponent implements OnInit {
-
   @Input() bookingId: any;
   @Input() displayBookingForm: boolean;
   @Output() closeModal = new EventEmitter<any>();
@@ -45,11 +43,9 @@ export class UserDetailPaymentComponent implements OnInit {
     private modal: NzModalService,
     private message: NzMessageService,
     private roomService: RoomClientService
-  ) { }
-
+  ) {}
 
   confirmModal?: NzModalRef;
-
 
   booking: any[] = [];
   booking_details: BookingDetail[] = [];
@@ -63,46 +59,51 @@ export class UserDetailPaymentComponent implements OnInit {
     this.getRooms();
   }
 
-  getDetail(){
+  getDetail() {
     this.bookingsService.findOne(this.bookingId).subscribe({
       next: (res) => {
         console.log(res);
 
         this.booking = res.data;
         this.booking_details = this.booking[0].booking_details;
-        this.booking_status = this.booking[0].status
-        console.log(this.booking_details )
-        console.log(this.booking_status )
+        this.booking_status = this.booking[0].status;
+        console.log(this.booking_details);
+        console.log(this.booking_status);
         this.processBookingDetails();
       },
       error: (err) => {
         this.message.create(ERROR, err.error.message);
         this.message.create(ERROR, err.message);
-      }
-    })
+      },
+    });
   }
 
   processBookingDetails() {
-    const mergedBookingDetails: BookingDetail[] = this.booking_details.reduce((acc, cur) => {
-      const existingEntry = acc.find((entry) => entry.room_type_id === cur.room_type_id);
-      if (existingEntry) {
-        existingEntry.count! += 1;
-      } else {
-        acc.push({ ...cur, count: 1 });
-      }
-      return acc;
-    }, [] as BookingDetail[]);
+    const mergedBookingDetails: BookingDetail[] = this.booking_details.reduce(
+      (acc, cur) => {
+        const existingEntry = acc.find(
+          (entry) => entry.room_type_id === cur.room_type_id
+        );
+        if (existingEntry) {
+          existingEntry.count! += 1;
+        } else {
+          acc.push({ ...cur, count: 1 });
+        }
+        return acc;
+      },
+      [] as BookingDetail[]
+    );
 
     this.booking_details = mergedBookingDetails;
   }
 
-  getRooms(){
+  getRooms() {
     this.roomService.getRooms().subscribe({
       next: (res) => {
         console.log(res);
         this.rooms = res.data;
-      }
-    })
+      },
+    });
   }
 
   showCancelConfirmationModal(): void {
@@ -110,7 +111,8 @@ export class UserDetailPaymentComponent implements OnInit {
       nzTitle: 'Xác nhận hủy phòng',
       nzContent: `
       <div class="text-center">
-        <h3>Bạn có thực sự muốn hủy đơn hay không???</h3>
+        <h4>Bạn có thực sự muốn hủy đơn hay không?</h4>
+        <p style="color:red;" class="fst-italic">*Đơn đặt chỉ được hủy trước 7 ngày tính từ ngày checkin</p>
       </div>
       `,
       nzOkText: 'Xác nhận',
@@ -136,9 +138,7 @@ export class UserDetailPaymentComponent implements OnInit {
         console.log(res);
         if (res.length > 0) {
           this.message.create(ERROR, res);
-
         } else {
-
           this.message.create(SUCCESS, res.message);
         }
 
@@ -155,9 +155,7 @@ export class UserDetailPaymentComponent implements OnInit {
     });
   }
 
-
-  handleCancel(){
+  handleCancel() {
     this.closeModal.emit();
   }
-
 }
