@@ -42,6 +42,7 @@ class BookingClientController extends Controller
     {
 
         $bookings = Booking::where('user_id', '=', $id_user)
+            ->where('status', '!=', 0)
             ->get();
 
         return BookingResource::collection($bookings);
