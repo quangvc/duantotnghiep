@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  api: 'http://127.0.0.1:8000'
+  api: 'https://laravel.nine09booking.site'
   // api: 'https://laravel.nine09booking.site'
 
 };

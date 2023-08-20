@@ -73,13 +73,13 @@ export class BookingFormComponent implements OnInit {
 
   getDetail(){
     const formArray = this.formGroup.get("items") as FormArray;
-    console.log(formArray)
   }
 
   getRooms(){
     let idHotel = Auth.User('user').hotel_id;
 
     this.bookingsService.countRoom(idHotel,this.dataDetail.checkin_date,this.dataDetail.checkout_date).subscribe(res => {
+      console.log(res);
       for (const bookingDetail of this.dataDetail.booking_details) {
         for (const rooms of res) {
           if(bookingDetail.room_type_id == rooms.room_type){

@@ -1,7 +1,7 @@
 
 export class Auth{
   static User(value?:any){
-    let sessionUser:any = sessionStorage.getItem('user');
+    let sessionUser:any = localStorage.getItem('user');
     let user:any = JSON.parse(sessionUser);
 
     switch (value) {

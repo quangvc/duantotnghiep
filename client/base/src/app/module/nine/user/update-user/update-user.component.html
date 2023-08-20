@@ -3,7 +3,7 @@
       <form [formGroup]="formPermision" >
 
         <div class="mb-3">
-          <label for="hotel" class="form-label">{{'hotel.name' | translate}}</label>
+          <label for="hotel" class="form-label">Phân quyền</label>
           <select class="form-select" formControlName="role">
             <option value="manager" [selected]="Urole[0].name == 'manager'">Quản lý</option>
             <option value="client" [selected]="Urole[0].name == 'client'">Thành viên</option>

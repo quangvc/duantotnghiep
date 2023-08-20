@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../_aShared/service/auth.service';
 import { Router } from '@angular/router';
@@ -11,6 +11,9 @@ import { ERROR, SUCCESS } from 'src/app/module/_mShared/model/url.class';
   styleUrls: ['./register.component.scss']
 })
 export class RegisterComponent implements OnInit {
+
+  @Input() displayRegister: boolean = false;
+  @Output() closeModal = new EventEmitter<any>();
 
   constructor(
     private fb: FormBuilder,
@@ -51,21 +54,36 @@ export class RegisterComponent implements OnInit {
       password_confirmation: this.formRegister.value.password_confirmation,
     }
 
-    this.authService.register(register).subscribe({
-      next: (res) => {
-        this.message.create(SUCCESS, "Tạo tài khoản thành công !!");
-        console.log(res)
-      },
-      error: (err) => {
-        this.message.create(ERROR, err.error.message);
-      }
-    })
+    if(this.formRegister.value.password != this.formRegister.value.password_confirmation){
+      this.message.create(ERROR, "Mật khẩu không khớp");
+    }else{
+      this.authService.register(register).subscribe({
+        next: (res) => {
+          this.message.create(SUCCESS, "Tạo tài khoản thành công !!");
+          this.closeModal.emit();
+
+        },
+        error: (err) => {
+          this.message.create(ERROR, err.error.message);
+        }
+      })
+    }
+
+
     // if(this.formRegister.valid){
     //   this.authService.register(this.formRegister.value).subscribe(res => {
     //     alert('thanh cong!');
     //     this.router.navigate(['login']);
     //   })
     // }
+  }
+
+  registerNow(){
+    this.save()
+  }
+
+  handleCancel(){
+    this.displayRegister = false;
   }
 
 }

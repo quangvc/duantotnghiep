@@ -20,14 +20,14 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let data of booking; let i = index">
-          <td>{{ i + 1 }}</td>
-          <td>{{ data.booking_number }}</td>
-          <td>{{ data.checkin_date }}</td>
-          <td>{{ data.checkout_date }}</td>
-          <td>{{ data.people_quantity }}</td>
-          <td>{{ data.coupon }}</td>
-          <td><b>{{ data.total_price | currency: 'VND' }}</b></td>
+        <tr>
+          <td>1</td>
+          <td>{{ dataDetail.booking_number }}</td>
+          <td>{{ dataDetail.checkin_date }}</td>
+          <td>{{ dataDetail.checkout_date }}</td>
+          <td>{{ dataDetail.people_quantity }}</td>
+          <td>{{ dataDetail.coupon }}</td>
+          <td><b>{{ dataDetail.total_price | currency: 'VND' }}</b></td>
         </tr>
       </tbody>
     </nz-table>
@@ -43,11 +43,11 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let data of booking; let i = index">
-          <td>{{ i + 1 }}</td>
-          <td>{{ data.guest_email }}</td>
-          <td>{{ data.guest_name }}</td>
-          <td>{{ data.guest_phone }}</td>
+        <tr>
+          <td>1</td>
+          <td>{{ dataDetail.guest_email }}</td>
+          <td>{{ dataDetail.guest_name }}</td>
+          <td>{{ dataDetail.guest_phone }}</td>
       </tbody>
     </nz-table>
 

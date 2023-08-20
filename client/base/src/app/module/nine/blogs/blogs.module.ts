@@ -9,7 +9,6 @@ import { EditorModule, TINYMCE_SCRIPT_SRC } from '@tinymce/tinymce-angular';
 import { ViewPostComponent } from './view-post/view-post.component';
 import { CommentsBlogComponent } from './comments-blog/comments-blog.component';
 
-
 @NgModule({
   imports: [
     SharedModule,

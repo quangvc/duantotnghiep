@@ -27,7 +27,7 @@ export class CreateUpdateBlogComponent implements OnInit, OnDestroy {
   slug: any;
   isLoading: boolean = false;
 
-  content: string
+  content: string;
 
   image: string;
   user_id: number;

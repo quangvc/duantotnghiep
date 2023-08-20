@@ -35,7 +35,7 @@ const routes: Routes = [
   ]},
 
   {path: 'login', component: LoginComponent},
-  {path: 'register', component: RegisterComponent},
+  // {path: 'register', component: RegisterComponent},
   {path: 'reset-password', component: ResetPasswordComponent},
 
   { path: 'nine' , loadChildren: () => import('../module/nine/nine-layout/nine-layout.module').then(m => m.NineLayoutModule)},

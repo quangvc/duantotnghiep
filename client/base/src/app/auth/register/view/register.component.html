@@ -1,6 +1,13 @@
-<div class="card mid">
-      <h3>{{'auth.register' | translate}}</h3><br>
-      <form nz-form [formGroup]="formRegister" class="login-form" (ngSubmit)="save()">
+<nz-modal
+  [(nzVisible)]="displayRegister"
+  nzTitle="Đăng ký"
+  nzWidth="400px"
+  (nzOnCancel)="handleCancel()"
+>
+  <ng-container *nzModalContent>
+<!-- <div class="card mid"> -->
+      <!-- <h3>{{'auth.register' | translate}}</h3><br> -->
+      <form nz-form [formGroup]="formRegister" class="login-form">
 
         <nz-form-item>
           <nz-form-control nzErrorTip="{{'auth.name' | translate}}!">
@@ -47,7 +54,13 @@
           </nz-form-control>
         </nz-form-item>
 
-        <button nz-button class="login-form-button login-form-margin" [nzType]="'primary'">{{'auth.register' | translate}}</button>
+        <!-- <button nz-button class="login-form-button login-form-margin" [nzType]="'primary'">{{'auth.register' | translate}}</button> -->
       </form>
-      <button nz-button class="login-form-button login-form-margin" [nzType]="'primary'" (click)="linkToLogin()" >{{'auth.login' | translate}} ngay!</button>
-  </div>
+      <!-- <button nz-button class="login-form-button login-form-margin" [nzType]="'primary'" (click)="linkToLogin()" >{{'auth.login' | translate}} ngay!</button> -->
+  <!-- </div> -->
+
+  </ng-container>
+  <ng-container *nzModalFooter>
+    <button nz-button nzType="primary" (click)="registerNow()" >Đăng ký</button>
+  </ng-container>
+</nz-modal>

@@ -61,7 +61,8 @@ export class ResetPasswordComponent implements OnInit {
 
     this.authService.updatePass(reset,httpOptions).subscribe({
       next: (res) => {
-        this.message.create(SUCCESS, "Tạo tài khoản thành công !!");
+        this.message.create(SUCCESS, "Thay đổi mật khẩu thành công !!");
+        this.router.navigate(['/home']);
       },
       error: (err) => {
         this.message.create(ERROR, err.error.message);

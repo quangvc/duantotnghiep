@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../_aShared/service/auth.service';
 import { Router } from '@angular/router';
@@ -7,7 +7,6 @@ import { ERROR } from 'src/app/module/_mShared/model/url.class';
 import { MessageService } from 'primeng/api';
 import { Auth } from '../../_aShared/auth.class';
 import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
-
 
 @Component({
   selector: 'app-login',
@@ -36,9 +35,16 @@ export class LoginComponent implements OnInit {
 
   displayForgotPassword: boolean = false;
 
-  ngOnInit() {
+  displayRegister: boolean = false;
+
+  async ngOnInit() {
     this.formBuildLogin();
+    let user = await Auth.User();
+    if(user){
+      this.router.navigate(['/nine']);
+    }
     this.loadAccountFromRemember();
+
   }
 
   private formBuildLogin(){
@@ -50,7 +56,7 @@ export class LoginComponent implements OnInit {
   }
 
   loadAccountFromRemember(){
-    let sessionRemember:any = sessionStorage.getItem('remember');
+    let sessionRemember:any = localStorage.getItem('remember');
     let hasAccount:any = JSON.parse(sessionRemember);
     let accounts: any[] = hasAccount.remember;
 
@@ -82,6 +88,7 @@ export class LoginComponent implements OnInit {
           // Lưu thông tin User
           const myJSON = JSON.stringify(res);
           await sessionStorage.setItem('user', myJSON);
+          await localStorage.setItem('user', myJSON);
 
           // Lưu ghi nhớ tài khoản
           let myLocal = JSON.stringify({});
@@ -89,10 +96,11 @@ export class LoginComponent implements OnInit {
             myLocal = JSON.stringify({remember: [account]});
           }
           await sessionStorage.setItem('remember', myLocal);
+          await localStorage.setItem('remember', myLocal);
 
           // Check quyền
-          // this.checkLogin();
-          window.history.back();
+          this.checkLogin();
+
         },
         error: (err) => {
           this.message.create(ERROR, err.error.message);
@@ -102,7 +110,9 @@ export class LoginComponent implements OnInit {
   }
 
   async checkLogin(){
+
     let role = await Auth.User('role');
+    window.history.back();
     if(role){
       if(role === "admin"){
         this.router.navigate(['nine'])
@@ -122,11 +132,13 @@ export class LoginComponent implements OnInit {
   }
 
   register(){
-    this.router.navigate(['/register']);
+    this.displayRegister = true;
+    // this.router.navigate(['/register']);
   }
 
   emitEvent(event:any){
     this.displayForgotPassword = false;
+    this.displayRegister = false;
   }
 
 

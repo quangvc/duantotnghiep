@@ -79,18 +79,18 @@ export class BlogsComponent implements OnInit {
           this.editBlog(data);
         },
       },
-      {
-        label: "Xem bài viết",
-        command: () => {
-          this.viewPost(data);
-        },
-      },
-      {
-        label: "Bình luận",
-        command: () => {
-          this.showComment(data);
-        },
-      },
+      // {
+      //   label: "Xem bài viết",
+      //   command: () => {
+      //     this.viewPost(data);
+      //   },
+      // },
+      // {
+      //   label: "Bình luận",
+      //   command: () => {
+      //     this.showComment(data);
+      //   },
+      // },
       { separator: true},
       {
         label: "Xóa",

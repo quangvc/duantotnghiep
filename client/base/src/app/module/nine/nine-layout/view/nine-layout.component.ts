@@ -160,6 +160,7 @@ export class NineLayoutComponent implements OnInit {
     }
     await firstValueFrom(this.authService.createLogout(httpOptions));
     await sessionStorage.removeItem('user');
+    await localStorage.removeItem('user');
     this.router.navigate(['login'])
   }
 
