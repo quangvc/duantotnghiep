@@ -39,7 +39,7 @@ class BookingStatusNotification extends Notification
      */
     public function toMail($notifiable)
     {
-        $url = 'http://localhost:4300/feedback' . '?booking_number=' . $this->booking_number;
+        $url = env('APP_URL').'/feedback' . '?booking_number=' . $this->booking_number;
         return (new MailMessage)
             ->subject('Send Email Payment')
             ->greeting('Đơn của bạn đã checkOut' . '!')

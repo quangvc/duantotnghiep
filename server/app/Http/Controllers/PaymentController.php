@@ -15,7 +15,7 @@ class PaymentController extends Controller
     public function vnpay_payment(Request $request)
     {
 
-        $vnp_Returnurl = "http://nine09booking.site/booking/payment-done"; //trang trả về sau khi thanh toán xong
+        $vnp_Returnurl = env('APP_URL')."/booking/payment-done"; //trang trả về sau khi thanh toán xong
         $vnp_TmnCode = "ENZCQ3F2";
         $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
 

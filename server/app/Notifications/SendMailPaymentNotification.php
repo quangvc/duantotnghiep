@@ -40,7 +40,7 @@ class SendMailPaymentNotification extends Notification
      */
     public function toMail($notifiable)
     {
-        $url = 'http://localhost:4300/' . '&booking_number=' . $this->booking_number;
+        $url = 'https://nine09booking.site/' . '&booking_number=' . $this->booking_number;
         return (new MailMessage)
             ->subject('Send Email Payment')
             ->greeting('Đơn đã thanh toán' . '!')
