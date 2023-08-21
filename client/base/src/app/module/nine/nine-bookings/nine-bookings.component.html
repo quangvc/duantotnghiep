@@ -1,10 +1,20 @@
-<div class="mb-3" *ngIf="role">
+<!-- <div class="mb-3" *ngIf="role">
   <button nz-button [nzSize]="'large'" nzType="primary" (click)="createBooking()" >Tạo đơn đặt phòng</button>
-</div>
+</div> -->
 <div class="mb-3" *ngIf="role">
   <nz-tabset nzType="card">
     <nz-tab *ngFor="let tab of statusOptions" [nzTitle]="tab.text" (nzClick)="valueFilter(tab.value)">
 
+      <div class="row mb-3">
+        <div class="col-3">
+          <nz-input-group [nzSuffix]="suffixIconSearch">
+            <input type="text" nz-input placeholder="Tìm kiếm đơn hàng" (keyup.enter)="filterKey($event,tab.value)" />
+          </nz-input-group>
+          <ng-template #suffixIconSearch>
+            <span nz-icon nzType="search"></span>
+          </ng-template>
+        </div>
+      </div>
       <nz-table #basicTable [nzData]="bookingFilters">
         <thead>
           <tr>
@@ -31,7 +41,7 @@
             <td><nz-tag [nzColor]="'#f50'">{{data.txtStatus}}</nz-tag></td>
             <td *ngIf="role">
               <button nz-button nzType="primary" nzDanger [nzSize]="'large'" nzShape="circle" (click)="confirmCancel(data)" *ngIf="data.status == 7 && data.status != 4">
-                <span nz-icon nzType="delete" nzTheme="outline"></span>
+                <span nz-icon nzType="close" nzTheme="outline"></span>
               </button>
               <button nz-button nzType="primary" [nzSize]="'large'" nzShape="circle" (click)="updateStatus(data.id,data)" *ngIf="data.status != 7 && data.status != 0 && data.status != 4">
                 <span nz-icon nzType="edit" nzTheme="outline"></span>

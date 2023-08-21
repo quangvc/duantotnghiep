@@ -16,7 +16,6 @@
     <tr>
       <th>Quyền</th>
       <th>Email</th>
-      <th>Giới tính</th>
       <th>Số điện thoại</th>
       <th *ngIf="role">Kích hoạt</th>
       <th *ngIf="role">Action</th>
@@ -26,7 +25,6 @@
     <tr *ngFor="let data of basicTable.data">
       <td>{{ data.roles[0].name }}</td>
       <td>{{ data.email }}</td>
-      <td>{{ data.gender }}</td>
       <td>{{ data.phone_number }}</td>
       <td *ngIf="role"><nz-switch [(ngModel)]="data.active" (ngModelChange)="confirmChangeStatus($event,data)" [disabled]="!role" *ngIf="data.name != 'Admin'"></nz-switch></td>
       <td *ngIf="role">

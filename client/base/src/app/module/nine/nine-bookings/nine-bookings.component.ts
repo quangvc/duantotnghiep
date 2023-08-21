@@ -6,6 +6,7 @@ import { StatusBookings } from '../../_mShared/enum/enum';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { ERROR, SUCCESS } from '../../_mShared/model/url.class';
 import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-nine-bookings',
@@ -30,6 +31,7 @@ export class NineBookingsComponent implements OnInit {
   bookings: any[] = [];
 
   bookingFilters: any[] = [...this.bookings]
+  bookingFiltersss: any[] = [...this.bookings]
 
   role:any;
 
@@ -60,7 +62,8 @@ export class NineBookingsComponent implements OnInit {
   }
 
   getOption(){
-    this.statusOptions.push(...Enum.convertEnum(StatusBookings));
+    let cle = Enum.convertEnum(StatusBookings).filter(x => x.value != 0 && x.value != 99);
+    this.statusOptions.push(...cle);
   }
 
   convertTextStatus(){
@@ -125,6 +128,28 @@ export class NineBookingsComponent implements OnInit {
     })
   }
 
+  async filterKey(event:any, status:any){
+
+    let getBack:any = await firstValueFrom(this.bookingService.getBookings());
+    let value = event.target.value;
+    let data:any[] = getBack.data;
+
+    if(status == -1){
+      this.bookingFilters = this.bookingFilters.filter(x => x.booking_number == value);
+      if(value == null || value == ""){
+        this.bookingFilters = data;
+        this.convertTextStatus();
+      }
+    }else{
+      this.bookingFilters = this.bookingFilters.filter(x => x.status == status && x.booking_number == value);
+      if(value == null || value == ""){
+        this.bookingFilters = data.filter(x => x.status == status);
+        this.convertTextStatus();
+      }
+    }
+
+  }
+
   valueFilter(value:any){
     let obs = this.bookingService.getBookings().subscribe((res) => {
       let bookings:any[] = res.data;
@@ -170,7 +195,7 @@ export class NineBookingsComponent implements OnInit {
     console.log(data)
     this.confirmModal = this.modal.confirm({
       nzTitle: `Xác nhận thay đổi?`,
-      nzContent: `Bạn có muốn xóa ${data.booking_number} không?`,
+      nzContent: `Bạn có muốn hủy ${data.booking_number} không?`,
       nzOnOk: () =>
         new Promise((resolve, reject) => {
           this.deleteBooking(data);

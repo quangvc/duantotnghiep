@@ -62,14 +62,14 @@ export class NineLayoutComponent implements OnInit {
             label: "Danh sách người dùng",
             routerLink: "user",
           },
-          {
-            label: "Danh sách quyền",
-            routerLink: "role",
-          },
-          {
-            label: "Phân quyền",
-            routerLink: "user-role",
-          }
+          // {
+          //   label: "Danh sách quyền",
+          //   routerLink: "role",
+          // },
+          // {
+          //   label: "Phân quyền",
+          //   routerLink: "user-role",
+          // }
         ]
       },
       {

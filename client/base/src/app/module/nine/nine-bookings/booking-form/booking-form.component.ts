@@ -106,19 +106,18 @@ export class BookingFormComponent implements OnInit {
     });
   }
   validRoom: boolean = false;
-  changeRoomDetail(event:any, roomType:any){
-    // console.log(event.target.value);
-    // let room = event.target.value;
+  changeRoomDetail(event:any, roomType:any, index:any){
+    let room = event.target.value;
 
-    // let res = this.roomItems.controls.filter(x => x.value.room_id == room);
-    // console.log(res);
-    // if (res.length > 1) {
-    //   this.message.create(ERROR, `Phòng ${room} đã được chọn rồi!!`);
-    //   this.validRoom = true
-    // }else{
-    //   this.validRoom = false;
-    // }
-    // this.bookingsService.countRoom(,)
+    let res = this.roomItems.controls.filter(x => x.value.room_id == room);
+    if (res.length > 1) {
+      this.message.create(ERROR, `Phòng ${room} đã được chọn rồi!!`);
+      this.validRoom = true
+    }else if(this.formGroup.value.items[index].room_id == null || this.formGroup.value.items[index].room_id == "null"){
+      this.validRoom = true
+    }else{
+      this.validRoom = false;
+    }
 
   }
 

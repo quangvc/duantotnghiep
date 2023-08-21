@@ -14,7 +14,6 @@
           <th>{{'bookings.booking_number' | translate}}</th>
           <th>{{'bookings.checkin_date' | translate}}</th>
           <th>{{'bookings.checkout_date' | translate}}</th>
-          <th>{{'bookings.people_quantity' | translate}}</th>
           <th>{{'bookings.coupon_id' | translate}}</th>
           <th>{{'bookings.total_price' | translate}}</th>
         </tr>
@@ -25,7 +24,6 @@
           <td>{{ dataDetail.booking_number }}</td>
           <td>{{ dataDetail.checkin_date }}</td>
           <td>{{ dataDetail.checkout_date }}</td>
-          <td>{{ dataDetail.people_quantity }}</td>
           <td>{{ dataDetail.coupon }}</td>
           <td><b>{{ dataDetail.total_price | currency: 'VND' }}</b></td>
         </tr>
@@ -71,7 +69,7 @@
               <!-- <button class="btn btn-primary" (click)="roomList(data)">
                 Xếp phòng
               </button> -->
-                <select class="form-select" formControlName="room_id" (change)="changeRoomDetail($event,item.value)" *ngIf="!item.value.room_id">
+                <select class="form-select" formControlName="room_id" (change)="changeRoomDetail($event,item.value,i)" *ngIf="dataDetail.status == 1">
                   <option [value]="null" >Chọn</option>
                   <ng-container *ngFor="let room of item.value.roomItems">
                     <option [value]="room.room_number" >
@@ -80,7 +78,7 @@
                   </ng-container>
                 </select>
 
-                <ng-container *ngIf="item.value.room_id">
+                <ng-container *ngIf="dataDetail.status == 2 && item.value.room_id">
                   {{item.value.room_id}}
                 </ng-container>
             </td>
@@ -100,7 +98,7 @@
 
   <div *nzModalFooter>
     <button nz-button nzType="default" (click)="handleCancel()">Cancel</button>
-    <button nz-button nzType="primary" (click)="refuseCancel()" nzDanger>Refuse</button>
+    <button nz-button nzType="primary" (click)="refuseCancel()" nzDanger *ngIf="dataDetail.status == 7">Refuse</button>
     <button nz-button nzType="primary" (click)="handleOk()" [disabled]="formGroup.invalid || validRoom">Accept</button>
   </div>
 </nz-modal>

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Auth } from 'src/app/auth/_aShared/auth.class';
-import { ADMIN, FEEDBACK } from '../model/url.class';
+import { ADMIN, CLIENT, FEEDBACK, FEEDBACKS, HOTELS } from '../model/url.class';
 import { Observable } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
@@ -13,6 +13,7 @@ export class FeedbacksService {
   token = Auth.User('token');
 
   private API_URL = `${environment.api}/api/${ADMIN}`;
+  private API_URL_CLIENT = `${environment.api}/api/${CLIENT}`;
 
   private httpOptions = {
     headers: new HttpHeaders({
@@ -22,8 +23,8 @@ export class FeedbacksService {
 
   constructor(private http: HttpClient){}
 
-  getFeedbacks(): Observable<any>{
-    const url = `${this.API_URL}/${FEEDBACK}`;
+  getFeedbacks(hotelId:any): Observable<any>{
+    const url = `${this.API_URL_CLIENT}/${FEEDBACKS}/hotel/${hotelId}`;
     return this.http.get<any>(url, this.httpOptions);
   }
 

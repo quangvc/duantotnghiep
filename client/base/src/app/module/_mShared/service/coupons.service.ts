@@ -33,7 +33,7 @@ export class CouponsService {
   }
 
   createCoupon(data: any): Observable<any>{
-    const url = `http://127.0.0.1:8000/api/admin/coupons`;
+    const url = `${this.API_URL}/${COUPONS}`;
     return this.http.post<any>(url, data, this.httpOptions);
   }
 

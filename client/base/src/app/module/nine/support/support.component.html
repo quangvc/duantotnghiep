@@ -17,10 +17,10 @@
       <td>{{ data.phone }}</td>
       <td>{{ data.content }}</td>
       <td>
-          <ng-container *ngIf="data.status">
-            <span nz-icon nzType="check" style="cursor: pointer;" nzTheme="outline" (click)="confirmChangeStatus(data)"></span>
+          <ng-container *ngIf="data.status && data.status == 1">
+            <span style="cursor: pointer; color: rgb(0, 84, 218); font-weight: bold;" nzTheme="outline" (click)="confirmChangeStatus(data)">Sử lý</span>
           </ng-container>
-          <ng-container *ngIf="!data.status">
+          <ng-container *ngIf="data.status && data.status != 1">
             <nz-tag [nzColor]="'#87d068'">Đã xử lý</nz-tag>
           </ng-container>
       </td>
