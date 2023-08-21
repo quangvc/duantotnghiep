@@ -1,21 +1,31 @@
 <!-- Bắt đầu phần đặt phòng -->
 <div id="booking-room" class="shadow rounded-4 overflow-hidden mb-3 p-5">
-  <h3>Những phòng còn trống tại Khách sạn {{hotel_name}}</h3>
+  <h3>Những phòng còn trống tại Khách sạn {{ hotel_name }}</h3>
   <!-- Bắt đầu phần Lọc -->
   <div class="container bg-white rounded-3 px-2 py-1 mb-5">
-    <hr>
+    <hr />
     <div class="">
       <div class="d-flex flex-row justify-content-between">
-        <p *ngIf="dataTable" class="highlight-text my-auto">Kết quả cho Từ ngày <strong>{{ displayDateIn }}</strong> đến ngày <strong>{{ displayDateOut }}</strong>. Có <strong>{{ roomCount }}</strong> lựa chọn phòng trống.</p>
-        <button (click)="onclick()" type="button" class="highlight-button d-flex flex-row">
+        <p *ngIf="dataTable" class="highlight-text my-auto">
+          Kết quả cho Từ ngày <strong>{{ displayDateIn }}</strong> đến ngày
+          <strong>{{ displayDateOut }}</strong
+          >. Có <strong>{{ roomCount }}</strong> lựa chọn phòng trống.
+        </p>
+        <button
+          (click)="onclick()"
+          type="button"
+          class="highlight-button d-flex flex-row"
+        >
           <i class="fa fa-search me-3 my-auto" aria-hidden="true"></i>
-          <p class="my-auto">{{ReadMore ? "Tìm kiếm phòng trống" : "Ẩn bộ lọc"}}</p>
+          <p class="my-auto">
+            {{ ReadMore ? "Tìm kiếm phòng trống" : "Ẩn bộ lọc" }}
+          </p>
         </button>
       </div>
       <ng-container *ngIf="visible">
         <div class="container-fluid my-4">
           <div class="container-fluid">
-            <div class="bg-white shadow" style="padding: 5px;">
+            <div class="bg-white shadow" style="padding: 5px">
               <div class="row px-4">
                 <div class="col-md-8">
                   <div class="row">
@@ -24,23 +34,48 @@
                     </div> -->
                     <div class="col">
                       <label for="date_in">Ngày nhập phòng</label>
-                      <p-calendar class="w-100" [(ngModel)]="date_in" [minDate]="minimumDate" [numberOfMonths]="2" dateFormat="dd-mm-yy" [touchUI]="true" styleClass="prime-input-override"></p-calendar>
+                      <p-calendar
+                        class="w-100"
+                        [(ngModel)]="date_in"
+                        [minDate]="minimumDate"
+                        [numberOfMonths]="2"
+                        dateFormat="dd-mm-yy"
+                        [touchUI]="true"
+                        styleClass="prime-input-override"
+                      ></p-calendar>
                     </div>
                     <div class="col">
                       <label for="date_out">Ngày trả phòng</label>
-                      <p-calendar class="w-100" [(ngModel)]="date_out" [minDate]="minimumDate" [numberOfMonths]="2" dateFormat="dd-mm-yy" [touchUI]="true" styleClass="prime-input-override"></p-calendar>
+                      <p-calendar
+                        class="w-100"
+                        [(ngModel)]="date_out"
+                        [minDate]="minimumDate"
+                        [numberOfMonths]="2"
+                        dateFormat="dd-mm-yy"
+                        [touchUI]="true"
+                        styleClass="prime-input-override"
+                      ></p-calendar>
                     </div>
                   </div>
                 </div>
-                <div class="col-md-4 d-flex justify-content-evenly" style="margin-top: 35px;">
-                  <div >
-                    <button class="btn btn-primary w-100" (click)="getRoomType()">Tìm kiếm</button>
+                <div
+                  class="col-md-4 d-flex justify-content-evenly"
+                  style="margin-top: 35px"
+                >
+                  <div>
+                    <button
+                      class="btn btn-primary w-100"
+                      (click)="getRoomType()"
+                    >
+                      Tìm kiếm
+                    </button>
                   </div>
                   <div>
-                    <button class="btn btn-primary w-100" (click)="resetdate()">Đặt lại</button>
+                    <button class="btn btn-primary w-100" (click)="resetdate()">
+                      Đặt lại
+                    </button>
                   </div>
                 </div>
-
               </div>
             </div>
           </div>
@@ -51,7 +86,8 @@
   <!-- Kết thúc phần Lọc -->
   <!-- Bắt đầu phần Bảng -->
   <div class="row" *ngIf="firstTable">
-    <p-table class=""
+    <p-table
+      class=""
       [value]="RoomTypeData"
       selectionMode="multiple"
       [(selection)]="selectedRoomType"
@@ -71,8 +107,7 @@
         <tr>
           <td>
             <a (click)="openDialog(roomType)">{{ roomType.name }}</a>
-            <room-type-detail #dialog>
-            </room-type-detail>
+            <room-type-detail #dialog> </room-type-detail>
           </td>
           <td class="d-flex flex-row">
             <div *ngFor="let user of getCapacitysArray(roomType.capacity)">
@@ -80,13 +115,13 @@
             </div>
           </td>
           <td>
-            {{ roomType.price_per_night | currency: 'VND'  }}
+            {{ roomType.price_per_night | currency : "VND" }}
           </td>
+          <td>Nhấn tìm kiếm để hiển thị các phòng còn trống</td>
           <td>
-            Nhấn tìm kiếm để hiển thị các phòng còn trống
-          </td>
-          <td>
-            <button class="bg-primary ml-2 border-0" (click)="openDialog(roomType)">Xem chi tiết</button>
+            <a class="bg-primary ml-2 border-0" (click)="openDialog(roomType)"
+              >Xem chi tiết</a
+            >
           </td>
         </tr>
       </ng-template>
@@ -94,14 +129,16 @@
   </div>
 
   <div class="loading" *ngIf="dataTable">
-    <ngx-loading [show]="loading" [config]="{
-      animationType: ngxLoadingAnimationTypes.circle,
-      primaryColour: primaryColour,
-      backdropBorderRadius: '3px'
-    }" [template]="loadingTemplate"></ngx-loading>
-    <p-table class=""
-      [value]="roomTypes"
-    >
+    <ngx-loading
+      [show]="loading"
+      [config]="{
+        animationType: ngxLoadingAnimationTypes.circle,
+        primaryColour: primaryColour,
+        backdropBorderRadius: '3px'
+      }"
+      [template]="loadingTemplate"
+    ></ngx-loading>
+    <p-table class="" [value]="roomTypes">
       <ng-template pTemplate="header">
         <tr>
           <th>Loại phòng</th>
@@ -114,31 +151,53 @@
       <ng-template pTemplate="body" let-roomType let-i="index">
         <tr [pSelectableRow]="roomType" [pSelectableRowIndex]="i">
           <td>
-            <a (click)="openDialog(roomType.room_type)">{{ roomType.room_type.name }}</a>
-            <room-type-detail #dialog>
-            </room-type-detail>
+            <a (click)="openDialog(roomType.room_type)">{{
+              roomType.room_type.name
+            }}</a>
+            <room-type-detail #dialog> </room-type-detail>
           </td>
           <td class="d-flex flex-row">
-            <div *ngFor="let user of getCapacitysArray(roomType.room_type.capacity)">
+            <div
+              *ngFor="
+                let user of getCapacitysArray(roomType.room_type.capacity)
+              "
+            >
               <i class="pi pi-user"></i>
             </div>
           </td>
           <td>
-            {{ roomType.room_type.price_per_night | currency: 'VND'  }}
+            {{ roomType.room_type.price_per_night | currency : "VND" }}
           </td>
           <td>
             <select (change)="calculateTotal(roomType.room_type, $event)">
               <ng-container *ngIf="roomType.room_type">
-                <option value="" disabled selected>Hãy chọn số lượng phòng</option>
+                <option value="" disabled selected>
+                  Hãy chọn số lượng phòng
+                </option>
                 <option value="">0</option>
-                <option *ngFor="let room of getCapacitysArray(roomType.rooms_count); let i=index" [ngValue]="i + 1">
-                  {{ i + 1 }} phòng - Giá: {{ roomType.room_type.price_per_night * (i + 1) | currency: 'VND' }}
+                <option
+                  *ngFor="
+                    let room of getCapacitysArray(roomType.rooms_count);
+                    let i = index
+                  "
+                  [ngValue]="i + 1"
+                >
+                  {{ i + 1 }} phòng - Giá:
+                  {{
+                    roomType.room_type.price_per_night * (i + 1)
+                      | currency : "VND"
+                  }}
                 </option>
               </ng-container>
             </select>
           </td>
           <td>
-            <button class="bg-primary ml-2 border-0" (click)="openDialog(roomType)">Xem chi tiết</button>
+            <button
+              class="bg-primary ml-2 border-0"
+              (click)="openDialog(roomType)"
+            >
+              Xem chi tiết
+            </button>
           </td>
         </tr>
       </ng-template>
@@ -165,10 +224,12 @@
           </tbody>
         </table>
         <p>Tổng giá trị của tất cả các loại phòng: {{ totalAmount }}</p>
-        <button (click)="goToPaymentPage()" class="btn btn-primary">Đi đến trang thanh toán</button>
+        <button (click)="goToPaymentPage()" class="btn btn-primary">
+          Đi đến trang thanh toán
+        </button>
       </div>
     </div>
-<!-- Kết thúc phần Bảng tổng -->
+    <!-- Kết thúc phần Bảng tổng -->
   </div>
   <!-- Kết thúc phần Bảng -->
 </div>
