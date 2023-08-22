@@ -139,7 +139,7 @@
               <!-- Parent ID là ID của bình luận mà người dùng đang trả lời -->
               <input type="number" id="cmt_id" formControlName="cmt_id" [value]="item.id" style="display: none;">
               <textarea class="form-control" id="content" formControlName="content" rows="4"
-                placeholder="Viết 1 câu gì đó vào đây..." style="background: #fff;"></textarea>
+                placeholder="Nhập bình luận của bạn..." style="background: #fff;"></textarea>
             </form>
           </div>
           <div class="float-end mt-2 pt-1">
@@ -186,13 +186,13 @@
         <form class="form-outline w-100" [formGroup]="formComment">
           <input type="number" id="blog_id" formControlName="blog_id" style="display: none;">
           <textarea class="form-control" id="content" formControlName="content" rows="4"
-            placeholder="Viết 1 câu gì đó vào đây..." style="background: #fff;"></textarea>
+            placeholder="Nhập bình luận của bạn..." style="background: #fff;"></textarea>
           <!-- <label class="form-label" for="textAreaExample">Message</label> -->
         </form>
       </div>
       <div class="float-end mt-2 pt-1">
-        <button type="button" class="btn btn-primary btn-sm" (click)="addComment()">Post comment</button>
-        <button type="button" class="btn btn-outline-primary btn-sm">Cancel</button>
+        <button type="button" class="btn btn-primary btn-sm" (click)="addComment()">Gửi</button>
+        <button type="button" class="btn btn-outline-primary btn-sm">Hủy</button>
       </div>
     </div>
     <div class="card-footer py-3 border-0" *ngIf="note">

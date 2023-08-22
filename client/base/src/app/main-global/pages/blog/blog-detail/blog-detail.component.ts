@@ -6,6 +6,8 @@ import { Subscription } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { BlogClientService } from 'src/app/main-global/services/blogClient.service';
 import { environment } from 'src/environments/environment';
+import { NzMessageService } from 'ng-zorro-antd/message';
+import { ERROR } from 'src/app/module/_mShared/model/url.class';
 
 interface PageEvent {
   first: number;
@@ -40,7 +42,7 @@ export class BlogDetailComponent implements OnInit{
     private blogClientService: BlogClientService,
     private CommentService: CommentServiceService,
     private fb: FormBuilder,
-    private http: HttpClient,
+    private message: NzMessageService,
     private router: Router
   ) { }
   private subscription = new Subscription();
@@ -138,6 +140,7 @@ export class BlogDetailComponent implements OnInit{
         },
         error: (err) => {
           console.log('Đã xảy ra lỗi khi gọi API:', err);
+          this.message.create(ERROR, err.error.error);
         }
       })
     }
